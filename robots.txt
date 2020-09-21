@@ -1,1 +1,1 @@
-Sitemap: https://londogard.github.io/londogard/sitemap.xml
+Sitemap: https://blog.londogard.com/sitemap.xml
