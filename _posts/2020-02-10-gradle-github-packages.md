@@ -1,0 +1,137 @@
+---
+toc: true
+layout: post
+description: "A simple show-case on how to publish libraries to both _GitHub Packages_ & _JitPack_ with a one-button release using gradle & GitHub Actions."
+categories: [gradle, jvm, library]
+title: "Gradle, JVM and GitHub Packages"
+comments: true
+author: Hampus Londögård
+---
+# Gradle, JVM and GitHub Packages
+
+*Initial comment* this is mainly done as a reminder to myself.
+
+So about 6 months ago GitHub launched a new exciting service; [GitHub Package Registry](https://github.blog/2019-05-10-introducing-github-package-registry/). This service lets you as a GitHub-user upload your Open Source code for free on GitHubs registry supporting a wide array of languagues and build systems - JavaScript (npm), Java/JVM-languages (Maven/Gradle), Ruby (RubyGems), .NET (NuGet), and Docker images. Perhaps more have been added since I last verified.
+
+In this post I'll try to keep to the point and give clear easy instruction that you'll be able to bookmark and go back to whenever you need to set this up.
+
+I'll give the instruction directly beneath with some comments afterwards for the one who'd like to read some extra.
+
+---
+
+## 1. Add Maven Publish Plugin
+
+`build.gradle.kts`
+
+```kotlin
+plugins {
+    `maven-publish` // Add this
+    kotlin(\"jvm\") version \"1.3.60\"
+}
+```
+
+`build.gradle`
+
+```groovy
+plugins {
+    id(\"maven-publish\")
+}
+```
+
+`build.gradle` (using the *old* `apply` way of things)
+
+```groovy
+apply plugin: 'maven-publish'
+```
+
+## 2. Add Publication Part
+
+`build.gradle.kts`
+
+```kotlin
+publishing {
+    repositories {
+        maven {
+            name = \"GitHubPackages\"
+            url = uri(\"https://maven.pkg.github.com/OWNER/REPO\")
+            credentials {
+                username = project.findProperty(\"gpr.user\") as String? ?: System.getenv(\"GITHUB_ACTOR\")
+                password = project.findProperty(\"gpr.key\") as String? ?: System.getenv(\"GITHUB_TOKEN\")
+            }
+        }
+    }
+    publications {
+        register<MavenPublication>(\"gpr\"){
+            from(components[\"java\"])
+        }
+    }
+}
+```
+
+`build.gradle`
+
+```groovy
+publishing {
+    repositories {
+        maven {
+            name = \"GitHubPackages\"
+            url = uri(\"https://maven.pkg.github.com/OWNER/REPOSITORY\")
+            credentials {
+                username = project.findProperty(\"gpr.user\") ?: System.getenv(\"GITHUB_ACTOR\")
+                password = project.findProperty(\"gpr.key\") ?: System.getenv(\"GITHUB_TOKEN\")
+            }
+        }
+    }
+    publications {
+        gpr(MavenPublication) {
+            from(components.java)
+        }
+    }
+}
+```
+
+## 3. Automating Release Workflow
+
+To simplify our lifes further;
+
+- JitPack is already automated and tracking your repository automatically adding the new releases ones a release is created.
+- GitHub is _not_ automated and we need to upload our assets
+
+**Automating GitHub packages upload through release & GitHub Actions**
+
+We'll use GitHub Actions to create a workflow where once a release passes stage 'published' the assets will be uploaded to the repository/artifactory of GitHub Packages.
+This integration is really awesome as once we've set it up we only need to press \"Create Release\" on the GitHub page to deploy our library to both GitHub Packages & JitPack!
+
+Create the directory `.github/workflows` in your root-folder of the project if it doesn't exist yet. Add the following file:
+
+``` yaml
+name: Release & Publish Build
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v1
+
+      - name: Set up JDK 1.8
+        uses: actions/setup-java@v1
+        with:
+          java-version: 1.8
+
+      - name: Clean Build
+        run: ./gradlew clean build
+
+      - name: Publish Build
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: ./gradlew publish
+```
+
+The `secrets.GITHUB_TOKEN` is automatically supplied by GitHub itself during the run of the GitHub Actions-script. 
+
+Pretty awesome right? Go build your libraries and deploy!
