@@ -1,0 +1,5255 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="twitter:card" content="summary_large_image" /><!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>CoViD-19 FAQ Search Engine 2.0 | Londogard</title>
+<meta name="generator" content="Jekyll v4.1.1" />
+<meta property="og:title" content="CoViD-19 FAQ Search Engine 2.0" />
+<meta name="author" content="Hampus Londögård" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="A tutorial of fastpages for Jupyter notebooks." />
+<meta property="og:description" content="A tutorial of fastpages for Jupyter notebooks." />
+<link rel="canonical" href="https://blog.londogard.com/jupyter/nlp/machine-learning/deep-learning/2020/10/12/CoViD_19_QA_cont.html" />
+<meta property="og:url" content="https://blog.londogard.com/jupyter/nlp/machine-learning/deep-learning/2020/10/12/CoViD_19_QA_cont.html" />
+<meta property="og:site_name" content="Londogard" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2020-10-12T00:00:00-05:00" />
+<script type="application/ld+json">
+{"description":"A tutorial of fastpages for Jupyter notebooks.","url":"https://blog.londogard.com/jupyter/nlp/machine-learning/deep-learning/2020/10/12/CoViD_19_QA_cont.html","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"https://blog.londogard.com/jupyter/nlp/machine-learning/deep-learning/2020/10/12/CoViD_19_QA_cont.html"},"headline":"CoViD-19 FAQ Search Engine 2.0","dateModified":"2020-10-12T00:00:00-05:00","datePublished":"2020-10-12T00:00:00-05:00","author":{"@type":"Person","name":"Hampus Londögård"},"@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/assets/css/style.css"><link type="application/atom+xml" rel="alternate" href="https://blog.londogard.com/feed.xml" title="Londogard" /><link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico"><link href="https://unpkg.com/@primer/css/dist/primer.css" rel="stylesheet" />
+<link rel="stylesheet" href="//use.fontawesome.com/releases/v5.0.7/css/all.css">
+
+<script>
+function wrap_img(fn) {
+    if (document.attachEvent ? document.readyState === "complete" : document.readyState !== "loading") {
+        var elements = document.querySelectorAll(".post img");
+        Array.prototype.forEach.call(elements, function(el, i) {
+            if (el.getAttribute("title") && (el.className != "emoji")) {
+                const caption = document.createElement('figcaption');
+                var node = document.createTextNode(el.getAttribute("title"));
+                caption.appendChild(node);
+                const wrapper = document.createElement('figure');
+                wrapper.className = 'image';
+                el.parentNode.insertBefore(wrapper, el);
+                el.parentNode.removeChild(el);
+                wrapper.appendChild(el);
+                wrapper.appendChild(caption);
+            }
+        });
+    } else { document.addEventListener('DOMContentLoaded', fn); }
+}
+window.onload = wrap_img;
+</script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function(){
+    // add link icon to anchor tags
+    var elem = document.querySelectorAll(".anchor-link")
+    elem.forEach(e => (e.innerHTML = '<i class="fas fa-link fa-xs"></i>'));
+    });
+</script>
+</head>
+<body><header class="site-header">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/">Londogard</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="/about/">About Me</a><a class="page-link" href="/Londogard">Londogard</a><a class="page-link" href="/search/">Search</a><a class="page-link" href="/categories/">Tags</a></div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">CoViD-19 FAQ Search Engine 2.0</h1><p class="page-description">A tutorial of fastpages for Jupyter notebooks.</p><p class="post-meta post-meta-title"><time class="dt-published" datetime="2020-10-12T00:00:00-05:00" itemprop="datePublished">
+        Oct 12, 2020
+      </time>• 
+          <span itemprop="author" itemscope itemtype="http://schema.org/Person">
+            <span class="p-author h-card" itemprop="name">Hampus Londögård</span></span>
+       • <span class="read-time" title="Estimated read time">
+    
+    
+      15 min read
+    
+</span></p>
+
+    
+      <p class="category-tags"><i class="fas fa-tags category-tags-icon"></i></i> 
+      
+        <a class="category-tags-link" href="/categories/#jupyter">jupyter</a>
+        &nbsp;
+      
+        <a class="category-tags-link" href="/categories/#nlp">nlp</a>
+        &nbsp;
+      
+        <a class="category-tags-link" href="/categories/#machine-learning">machine-learning</a>
+        &nbsp;
+      
+        <a class="category-tags-link" href="/categories/#deep-learning">deep-learning</a>
+        
+      
+      </p>
+    
+
+    
+      
+        <div class="pb-5 d-flex flex-wrap flex-justify-end">
+          <div class="px-2">
+
+    <a href="https://github.com/londogard/londogard/tree/master/_notebooks/CoViD_19_QA_cont.ipynb" role="button" target="_blank">
+<img class="notebook-badge-image" src="/assets/badges/github.svg" alt="View On GitHub">
+    </a>
+</div>
+
+          <div class="px-2">
+    <a href="https://mybinder.org/v2/gh/londogard/londogard/master?filepath=_notebooks%2FCoViD_19_QA_cont.ipynb" target="_blank">
+        <img class="notebook-badge-image" src="/assets/badges/binder.svg" alt="Open In Binder"/>
+    </a>
+</div>
+
+          <div class="px-2">
+    <a href="https://colab.research.google.com/github/londogard/londogard/blob/master/_notebooks/CoViD_19_QA_cont.ipynb" target="_blank">
+        <img class="notebook-badge-image" src="/assets/badges/colab.svg" alt="Open In Colab"/>
+    </a>
+</div>
+        </div>
+      </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <ul class="section-nav">
+<li class="toc-entry toc-h1"><a href="#CoViD-19-FAQ-Search-Engine-2.0">CoViD-19 FAQ Search Engine 2.0 </a>
+<ul>
+<li class="toc-entry toc-h2"><a href="#Improvements-to-be-done">Improvements to be done </a></li>
+<li class="toc-entry toc-h2"><a href="#Re-adding-the-old-code">Re-adding the old code </a>
+<ul>
+<li class="toc-entry toc-h4"><a href="#Loading-all-the-models">Loading all the models </a></li>
+</ul>
+</li>
+<li class="toc-entry toc-h2"><a href="#Going-forward">Going forward </a>
+<ul>
+<li class="toc-entry toc-h3"><a href="#1.-Tokenization-&-lower-case">1. Tokenization &amp; lower-case </a>
+<ul>
+<li class="toc-entry toc-h4"><a href="#Lower-casing">Lower-casing </a></li>
+</ul>
+</li>
+<li class="toc-entry toc-h3"><a href="#Testing-the-new-input-data">Testing the new input-data </a></li>
+<li class="toc-entry toc-h3"><a href="#2.-Lemmatization-and-Stop-Words">2. Lemmatization and Stop Words </a>
+<ul>
+<li class="toc-entry toc-h4"><a href="#Lemmatization">Lemmatization </a></li>
+<li class="toc-entry toc-h4"><a href="#What-is-stop-words?">What is stop-words? </a></li>
+<li class="toc-entry toc-h4"><a href="#Analyzing-the-results">Analyzing the results </a></li>
+<li class="toc-entry toc-h4"><a href="#Stop-words">Stop words </a></li>
+<li class="toc-entry toc-h4"><a href="#Further-analyzing">Further analyzing </a>
+<ul>
+<li class="toc-entry toc-h5"><a href="#Custom-Stop-Words-(breaking-the-rules)">Custom Stop Words (breaking the rules) </a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul><!--
+#################################################
+### THIS FILE WAS AUTOGENERATED! DO NOT EDIT! ###
+#################################################
+# file to edit: _notebooks/CoViD_19_QA_cont.ipynb
+-->
+
+<div class="container" id="notebook-container">
+        
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="CoViD-19-FAQ-Search-Engine-2.0">
+<a class="anchor" href="#CoViD-19-FAQ-Search-Engine-2.0" aria-hidden="true"><span class="octicon octicon-link"></span></a>CoViD-19 FAQ Search Engine 2.0<a class="anchor-link" href="#CoViD-19-FAQ-Search-Engine-2.0"> </a>
+</h1>
+<p>(Open in Google Colab <a href="https://colab.research.google.com/github/londogard/nlp-projects/blob/master/python/CoViD_19_QA_cont.ipynb">here</a> to run the code)</p>
+<p>As promised here's a new improved (or is it?) <em>FAQ Search Engine</em> with some minor NLP-lessons added as we go, be ready to learn new (or old) things!<br>
+Previously I added some requirements and I wish keep them, here they are as a refresher:</p>
+<ul>
+<li>The end-product must be unsupervised<ul>
+<li>No manually annotated data</li>
+<li>No heuristic applied (i.e. understand the data and improve result by applying domain-specific knowledge on the task)</li>
+</ul>
+</li>
+<li>It should be light enough to run on a Raspberry Pi later on (hopefully on the JVM to keep it simple with my back-end)</li>
+<li>Must be Swedish all the way through - no translations (English models you can transfer knowledge from tends to be stronger, but I want to keep this fun!)</li>
+</ul>
+<p>These specifications adds a bit of spice, keep manual labour to a minimum at the same time as they prove a challenge that doesn't aim to achieve State of the Art but rather to be applicable and light!</p>
+<p>With that in mind, let's move onwards!</p>
+<h2 id="Improvements-to-be-done">
+<a class="anchor" href="#Improvements-to-be-done" aria-hidden="true"><span class="octicon octicon-link"></span></a>Improvements to be done<a class="anchor-link" href="#Improvements-to-be-done"> </a>
+</h2>
+<p>In the previous <a href="https://londogard.com/blog/4">blog</a> &amp; <a href="https://colab.research.google.com/github/londogard/nlp-projects/blob/master/python/CoViD_19_QA.ipynb">notebook</a> I first implemented a basic FAQ search based on finding the nearest neighbour from the embedded sentences, in the end I used <em>Smooth Inverse Frequency Embeddings</em> (<a href="https://openreview.net/forum?id=SyK00v5xx">A Simple but Tough-to-Beat Baseline for Sentence Embeddings</a>) to embed the sentence which is an improvement from simply averaging the embeddings of the words in the sentence.</p>
+<p>In the end I discussed some potential improvements which I wished to investigate. In this notebook I'll deliver these "improvements" based on grabbing some low hanging fruit. The total "improvements" to try out:</p>
+<ul>
+<li>Lowercase</li>
+<li>Better tokenization</li>
+<li>Lemmatizing</li>
+<li>Stop words</li>
+<li>Ngram &amp; Custom Embeddings (will not be done because of time)</li>
+</ul>
+<p>To improve further I'd say that either A) <em>a lot</em> of time to understand the data in depth and apply heuristics or B) a <em>supervised</em> approach, which in turn require labeled data (a.k.a sweet valued time). A larger dataset would also be helpful.<br>
+All which I don't have currently.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Re-adding-the-old-code">
+<a class="anchor" href="#Re-adding-the-old-code" aria-hidden="true"><span class="octicon octicon-link"></span></a>Re-adding the old code<a class="anchor-link" href="#Re-adding-the-old-code"> </a>
+</h2>
+<p>First I'll add the code from "part one" and it'll not be commented as it has been walked through.<br>
+Further I've removed the download &amp; parsing of FAQ, now the data is directly downloaded as a <code>tsv</code>-file allowing us to skip some libraries / code-cells.<br>
+Some new dependencies are also added, e.g. <code>stanza</code> which is Stanfords new NLP-lib in Python (inspired by <code>spaCy</code>).</p>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%capture</span>
+<span class="err">!</span><span class="n">pip</span> <span class="n">install</span> <span class="o">-</span><span class="n">U</span> <span class="n">gensim</span>
+<span class="err">!</span><span class="n">pip</span> <span class="n">install</span> <span class="o">-</span><span class="n">U</span> <span class="n">fse</span>
+<span class="err">!</span><span class="n">pip</span> <span class="n">install</span> <span class="n">stanza</span>
+<span class="err">!</span><span class="n">pip</span> <span class="n">install</span> <span class="n">stop</span><span class="o">-</span><span class="n">words</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span> <span class="c1"># linear algebra</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span> <span class="c1"># data processing, CSV file I/O (e.g. pd.read_csv)</span>
+
+<span class="kn">from</span> <span class="nn">tqdm</span> <span class="kn">import</span> <span class="n">tqdm</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="n">tqdm</span><span class="o">.</span><span class="n">pandas</span><span class="p">()</span>
+
+<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">random</span> 
+<span class="kn">import</span> <span class="nn">operator</span> 
+<span class="kn">import</span> <span class="nn">regex</span> <span class="k">as</span> <span class="nn">re</span>
+
+<span class="c1"># gensim + fasttext</span>
+<span class="kn">from</span> <span class="nn">gensim.models.fasttext</span> <span class="kn">import</span> <span class="n">FastText</span><span class="p">,</span> <span class="n">load_facebook_vectors</span>
+<span class="kn">from</span> <span class="nn">gensim.models</span> <span class="kn">import</span> <span class="n">KeyedVectors</span>
+
+<span class="kn">from</span> <span class="nn">stop_words</span> <span class="kn">import</span> <span class="n">get_stop_words</span> <span class="c1"># stop-words from basically all languages</span>
+
+<span class="kn">import</span> <span class="nn">stanza</span>
+
+<span class="kn">from</span> <span class="nn">fse</span> <span class="kn">import</span> <span class="n">IndexedList</span>
+<span class="kn">from</span> <span class="nn">fse.models</span> <span class="kn">import</span> <span class="n">uSIF</span>
+<span class="kn">from</span> <span class="nn">fse.models.average</span> <span class="kn">import</span> <span class="n">FAST_VERSION</span><span class="p">,</span> <span class="n">MAX_WORDS_IN_BATCH</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">MAX_WORDS_IN_BATCH</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">FAST_VERSION</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>10000
+1
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">stanza</span><span class="o">.</span><span class="n">download</span><span class="p">(</span><span class="s1">'sv'</span><span class="p">,</span> <span class="n">logging_level</span><span class="o">=</span><span class="s1">'ERROR'</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"OBS!!</span><span class="se">\n</span><span class="s2">Please download the Swe fastText model &amp; the CoViD FAQ data from links in this code cell!"</span><span class="p">)</span>
+<span class="c1"># Swe fastText reduced dimensions --&gt;   https://drive.google.com/open?id=1vaWtiSlRAZ3XCdtnSce_6dwQ0T5x0OEJ</span>
+<span class="c1"># CoViD FAQ data --&gt;                    https://github.com/londogard/nlp-projects/blob/master/datasets/covid.tsv</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>OBS!!
+Please download the Swe fastText model &amp; the CoViD FAQ data from links in this code cell!
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h4 id="Loading-all-the-models">
+<a class="anchor" href="#Loading-all-the-models" aria-hidden="true"><span class="octicon octicon-link"></span></a>Loading all the models<a class="anchor-link" href="#Loading-all-the-models"> </a>
+</h4>
+<p>This might take a little while, even though the dimensions are reduced the model is pretty large.</p>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">ft_wv</span> <span class="o">=</span> <span class="n">load_facebook_vectors</span><span class="p">(</span><span class="s1">'~/git/nlp-projects/models/cc.sv.100.bin'</span><span class="p">)</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">'~/git/nlp-projects/datasets/covid.tsv'</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s1">'</span><span class="se">\t</span><span class="s1">'</span><span class="p">)</span>
+<span class="n">nlp</span> <span class="o">=</span> <span class="n">stanza</span><span class="o">.</span><span class="n">Pipeline</span><span class="p">(</span><span class="n">lang</span><span class="o">=</span><span class="s1">'sv'</span><span class="p">,</span> <span class="n">processors</span><span class="o">=</span><span class="s1">'tokenize'</span><span class="p">,</span> <span class="n">logging_level</span><span class="o">=</span><span class="s1">'ERROR'</span><span class="p">)</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">uSIF</span><span class="p">(</span><span class="n">ft_wv</span><span class="p">,</span> <span class="n">workers</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">lang_freq</span><span class="o">=</span><span class="s2">"sv"</span><span class="p">)</span>
+
+<span class="n">flatten</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">l</span><span class="p">:</span> <span class="p">[</span><span class="n">item</span> <span class="k">for</span> <span class="n">sublist</span> <span class="ow">in</span> <span class="n">l</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">sublist</span><span class="p">]</span> <span class="c1"># Helper function to flatten a list</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Going-forward">
+<a class="anchor" href="#Going-forward" aria-hidden="true"><span class="octicon octicon-link"></span></a>Going forward<a class="anchor-link" href="#Going-forward"> </a>
+</h2>
+<p>Let's get on to adding our improvements</p>
+<h3 id="1.-Tokenization-&amp;-lower-case">
+<a class="anchor" href="#1.-Tokenization-&amp;-lower-case" aria-hidden="true"><span class="octicon octicon-link"></span></a>1. Tokenization &amp; lower-case<a class="anchor-link" href="#1.-Tokenization-&amp;-lower-case"> </a>
+</h3>
+<p>The first and forthmost improvement is to lowercase the text and then tokenize it using a better method of tokenization.<br>
+Let's take a look at how <em>stanza</em> helps us out by applying a much better tokenization.</p>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">q</span> <span class="o">=</span> <span class="s2">"Hej där borta! Jag känner igen dig, Johan's kompis? Eller är det Johannas?"</span>
+<span class="n">stanza_tokenize</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="p">[</span><span class="n">token</span><span class="o">.</span><span class="n">text</span> <span class="k">for</span> <span class="n">sentence</span> <span class="ow">in</span> <span class="n">nlp</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="o">.</span><span class="n">sentences</span> <span class="k">for</span> <span class="n">token</span> <span class="ow">in</span> <span class="n">sentence</span><span class="o">.</span><span class="n">tokens</span><span class="p">]</span>
+<span class="n">prev</span> <span class="o">=</span> <span class="n">q</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+<span class="n">new</span> <span class="o">=</span> <span class="n">stanza_tokenize</span><span class="p">(</span><span class="n">q</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Previously:</span><span class="se">\t</span><span class="si">{</span><span class="n">prev</span><span class="p">[:</span><span class="mi">12</span><span class="p">]</span><span class="si">}</span><span class="s2">.."</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"After:</span><span class="se">\t\t</span><span class="si">{</span><span class="n">new</span><span class="p">[:</span><span class="mi">12</span><span class="p">]</span><span class="si">}</span><span class="s2">.."</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>Previously:	['Hej', 'där', 'borta!', 'Jag', 'känner', 'igen', 'dig,', "Johan's", 'kompis?', 'Eller', 'är', 'det']..
+After:		['Hej', 'där', 'borta', '!', 'Jag', 'känner', 'igen', 'dig', ',', 'Johan', "'", 's']..
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><strong>So, what are we looking at?</strong><br>
+Stanza handled our tokenization and increased the number of tokens, can this really be good!?<br>
+Yes! Keep calm and don't jump the ship yet, the increased number of tokens will be followed by a decrease of unique tokens, and indirectly out of vocobulary (OOV) tokens. Unlike what we set out to do we still don't lower-case the output, this will follow later, now let me explain what the tokenization helps us achieve:</p>
+<ol>
+<li>Punctuation, e.g. [!,?..], is tokenized into its own token.</li>
+<li>Some compound words are split up, e.g. <em>Johan's</em> is now <em>Johan</em>, <em>'</em>, <em>s</em> which is three (3) separate tokens rather than one.</li>
+</ol>
+<p>Because of the updated tokenization <em>fredag</em> and <em>fredag!</em> is now tokenized as [<em>fredag</em>] and [<em>fredag</em>, <em>!</em>], this in fact turns <em>fredag</em> into the same token in both thus achieving the same vector when embedded which is great, because it really means the same. The exclamation mark itself also applies the same meaning to all places it's applied, which in itself is an improvement now also as we embed it separately.</p>
+<p><strong>Why is this good?</strong><br>
+Even though we see a direct increase in number of tokens we see a <strong>decrease</strong> of number of unique tokens because we now tokenize <em>borta</em>, <em>borta?</em>, &amp; <em>borta!</em> as the same token, with one additional for the punctuation in the two latter cases rather than 3 separate tokens which would map to different data.<br>
+The coverage of our Word Embeddings also increase because we now tokenize the text better. Perhaps <em>borta!</em> does not exist but <em>borta</em> surely do exist in the embedding dictionary / lookup.</p>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">test_dimensions</span><span class="p">(</span><span class="n">preprocessing</span><span class="o">=</span><span class="p">[</span><span class="n">stanza_tokenize</span><span class="p">]):</span>
+    <span class="n">prev</span> <span class="o">=</span> <span class="n">flatten</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">'question'</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">split</span><span class="p">())</span><span class="o">.</span><span class="n">tolist</span><span class="p">())</span>
+    <span class="n">post</span> <span class="o">=</span> <span class="n">flatten</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">'question'</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">preprocess</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">preprocessing</span><span class="p">))</span><span class="o">.</span><span class="n">tolist</span><span class="p">())</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Previously: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">prev</span><span class="p">)</span><span class="si">}</span><span class="s2"> tokens (</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">prev</span><span class="p">))</span><span class="si">}</span><span class="s2"> unique)"</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Post: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">post</span><span class="p">)</span><span class="si">}</span><span class="s2"> tokens (</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">post</span><span class="p">))</span><span class="si">}</span><span class="s2"> unique)"</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Token reduction by ~</span><span class="si">{</span><span class="mi">100</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span><span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">post</span><span class="p">))</span><span class="o">/</span><span class="nb">len</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">prev</span><span class="p">)))</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2"> %"</span><span class="p">)</span>
+    <span class="n">labels</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'#Tokens'</span><span class="p">,</span> <span class="s1">'#Unique Tokens'</span><span class="p">]</span>
+    <span class="n">width</span> <span class="o">=</span> <span class="mf">0.35</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">labels</span><span class="p">))</span>
+    <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
+    <span class="n">rects1</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="n">x</span> <span class="o">-</span> <span class="n">width</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">prev</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">prev</span><span class="p">))],</span> <span class="n">width</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">'Before'</span><span class="p">)</span>
+    <span class="n">rects2</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="n">x</span> <span class="o">+</span> <span class="n">width</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">post</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">post</span><span class="p">))],</span> <span class="n">width</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">'After'</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">'Tokens'</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">'Tokens before and after'</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_xticklabels</span><span class="p">(</span><span class="n">labels</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_xticks</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+    <span class="n">fig</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+<span class="c1"># preprocessing is a list of lambda functions to apply</span>
+<span class="k">def</span> <span class="nf">preprocess</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">preprocessing</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">preprocessing</span><span class="p">:</span>
+        <span class="n">text</span> <span class="o">=</span> <span class="n">f</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">text</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Let's take a look how much this actually mattered!</p>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">test_dimensions</span><span class="p">()</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>Previously: 629 tokens (289 unique)
+Post: 713 tokens (273 unique)
+Token reduction by ~5.5 %
+</pre>
+</div>
+</div>
+
+<div class="output_area">
+
+
+<div class="output_svg output_subarea ">
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+&lt;!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"&gt;
+<!-- Created with matplotlib (https://matplotlib.org/) -->
+<svg height="279.59625pt" version="1.1" viewbox="0 0 424.690625 279.59625" width="424.690625pt" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+ <defs>
+  <style type="text/css">
+*{stroke-linecap:butt;stroke-linejoin:round;}
+  </style>
+ </defs>
+ <g id="figure_1">
+  <g id="patch_1">
+   <path d="M -0 279.59625 
+L 424.690625 279.59625 
+L 424.690625 0 
+L -0 0 
+z
+" style="fill:none;"></path>
+  </g>
+  <g id="axes_1">
+   <g id="patch_2">
+    <path d="M 46.965625 255.718125 
+L 417.490625 255.718125 
+L 417.490625 22.318125 
+L 46.965625 22.318125 
+z
+" style="fill:#ffffff;"></path>
+   </g>
+   <g id="patch_3">
+    <path clip-path="url(#pcf4f1f332e)" d="M 63.80767 255.718125 
+L 133.157269 255.718125 
+L 133.157269 59.620349 
+L 63.80767 59.620349 
+z
+" style="fill:#1f77b4;"></path>
+   </g>
+   <g id="patch_4">
+    <path clip-path="url(#pcf4f1f332e)" d="M 261.949382 255.718125 
+L 331.298981 255.718125 
+L 331.298981 165.619147 
+L 261.949382 165.619147 
+z
+" style="fill:#1f77b4;"></path>
+   </g>
+   <g id="patch_5">
+    <path clip-path="url(#pcf4f1f332e)" d="M 133.157269 255.718125 
+L 202.506868 255.718125 
+L 202.506868 33.432411 
+L 133.157269 33.432411 
+z
+" style="fill:#ff7f0e;"></path>
+   </g>
+   <g id="patch_6">
+    <path clip-path="url(#pcf4f1f332e)" d="M 331.298981 255.718125 
+L 400.64858 255.718125 
+L 400.64858 170.607326 
+L 331.298981 170.607326 
+z
+" style="fill:#ff7f0e;"></path>
+   </g>
+   <g id="matplotlib.axis_1">
+    <g id="xtick_1">
+     <g id="line2d_1">
+      <defs>
+       <path d="M 0 0 
+L 0 3.5 
+" id="m142415d3cc" style="stroke:#000000;stroke-width:0.8;"></path>
+      </defs>
+      <g>
+       <use style="stroke:#000000;stroke-width:0.8;" x="133.157269" xlink:href="#m142415d3cc" y="255.718125"></use>
+      </g>
+     </g>
+     <g id="text_1">
+      <!-- #Tokens -->
+      <defs>
+       <path d="M 51.125 44 
+L 36.921875 44 
+L 32.8125 27.6875 
+L 47.125 27.6875 
+z
+M 43.796875 71.78125 
+L 38.71875 51.515625 
+L 52.984375 51.515625 
+L 58.109375 71.78125 
+L 65.921875 71.78125 
+L 60.890625 51.515625 
+L 76.125 51.515625 
+L 76.125 44 
+L 58.984375 44 
+L 54.984375 27.6875 
+L 70.515625 27.6875 
+L 70.515625 20.21875 
+L 53.078125 20.21875 
+L 48 0 
+L 40.1875 0 
+L 45.21875 20.21875 
+L 30.90625 20.21875 
+L 25.875 0 
+L 18.015625 0 
+L 23.09375 20.21875 
+L 7.71875 20.21875 
+L 7.71875 27.6875 
+L 24.90625 27.6875 
+L 29 44 
+L 13.28125 44 
+L 13.28125 51.515625 
+L 30.90625 51.515625 
+L 35.890625 71.78125 
+z
+" id="DejaVuSans-35"></path>
+       <path d="M -0.296875 72.90625 
+L 61.375 72.90625 
+L 61.375 64.59375 
+L 35.5 64.59375 
+L 35.5 0 
+L 25.59375 0 
+L 25.59375 64.59375 
+L -0.296875 64.59375 
+z
+" id="DejaVuSans-84"></path>
+       <path d="M 30.609375 48.390625 
+Q 23.390625 48.390625 19.1875 42.75 
+Q 14.984375 37.109375 14.984375 27.296875 
+Q 14.984375 17.484375 19.15625 11.84375 
+Q 23.34375 6.203125 30.609375 6.203125 
+Q 37.796875 6.203125 41.984375 11.859375 
+Q 46.1875 17.53125 46.1875 27.296875 
+Q 46.1875 37.015625 41.984375 42.703125 
+Q 37.796875 48.390625 30.609375 48.390625 
+z
+M 30.609375 56 
+Q 42.328125 56 49.015625 48.375 
+Q 55.71875 40.765625 55.71875 27.296875 
+Q 55.71875 13.875 49.015625 6.21875 
+Q 42.328125 -1.421875 30.609375 -1.421875 
+Q 18.84375 -1.421875 12.171875 6.21875 
+Q 5.515625 13.875 5.515625 27.296875 
+Q 5.515625 40.765625 12.171875 48.375 
+Q 18.84375 56 30.609375 56 
+z
+" id="DejaVuSans-111"></path>
+       <path d="M 9.078125 75.984375 
+L 18.109375 75.984375 
+L 18.109375 31.109375 
+L 44.921875 54.6875 
+L 56.390625 54.6875 
+L 27.390625 29.109375 
+L 57.625 0 
+L 45.90625 0 
+L 18.109375 26.703125 
+L 18.109375 0 
+L 9.078125 0 
+z
+" id="DejaVuSans-107"></path>
+       <path d="M 56.203125 29.59375 
+L 56.203125 25.203125 
+L 14.890625 25.203125 
+Q 15.484375 15.921875 20.484375 11.0625 
+Q 25.484375 6.203125 34.421875 6.203125 
+Q 39.59375 6.203125 44.453125 7.46875 
+Q 49.3125 8.734375 54.109375 11.28125 
+L 54.109375 2.78125 
+Q 49.265625 0.734375 44.1875 -0.34375 
+Q 39.109375 -1.421875 33.890625 -1.421875 
+Q 20.796875 -1.421875 13.15625 6.1875 
+Q 5.515625 13.8125 5.515625 26.8125 
+Q 5.515625 40.234375 12.765625 48.109375 
+Q 20.015625 56 32.328125 56 
+Q 43.359375 56 49.78125 48.890625 
+Q 56.203125 41.796875 56.203125 29.59375 
+z
+M 47.21875 32.234375 
+Q 47.125 39.59375 43.09375 43.984375 
+Q 39.0625 48.390625 32.421875 48.390625 
+Q 24.90625 48.390625 20.390625 44.140625 
+Q 15.875 39.890625 15.1875 32.171875 
+z
+" id="DejaVuSans-101"></path>
+       <path d="M 54.890625 33.015625 
+L 54.890625 0 
+L 45.90625 0 
+L 45.90625 32.71875 
+Q 45.90625 40.484375 42.875 44.328125 
+Q 39.84375 48.1875 33.796875 48.1875 
+Q 26.515625 48.1875 22.3125 43.546875 
+Q 18.109375 38.921875 18.109375 30.90625 
+L 18.109375 0 
+L 9.078125 0 
+L 9.078125 54.6875 
+L 18.109375 54.6875 
+L 18.109375 46.1875 
+Q 21.34375 51.125 25.703125 53.5625 
+Q 30.078125 56 35.796875 56 
+Q 45.21875 56 50.046875 50.171875 
+Q 54.890625 44.34375 54.890625 33.015625 
+z
+" id="DejaVuSans-110"></path>
+       <path d="M 44.28125 53.078125 
+L 44.28125 44.578125 
+Q 40.484375 46.53125 36.375 47.5 
+Q 32.28125 48.484375 27.875 48.484375 
+Q 21.1875 48.484375 17.84375 46.4375 
+Q 14.5 44.390625 14.5 40.28125 
+Q 14.5 37.15625 16.890625 35.375 
+Q 19.28125 33.59375 26.515625 31.984375 
+L 29.59375 31.296875 
+Q 39.15625 29.25 43.1875 25.515625 
+Q 47.21875 21.78125 47.21875 15.09375 
+Q 47.21875 7.46875 41.1875 3.015625 
+Q 35.15625 -1.421875 24.609375 -1.421875 
+Q 20.21875 -1.421875 15.453125 -0.5625 
+Q 10.6875 0.296875 5.421875 2 
+L 5.421875 11.28125 
+Q 10.40625 8.6875 15.234375 7.390625 
+Q 20.0625 6.109375 24.8125 6.109375 
+Q 31.15625 6.109375 34.5625 8.28125 
+Q 37.984375 10.453125 37.984375 14.40625 
+Q 37.984375 18.0625 35.515625 20.015625 
+Q 33.0625 21.96875 24.703125 23.78125 
+L 21.578125 24.515625 
+Q 13.234375 26.265625 9.515625 29.90625 
+Q 5.8125 33.546875 5.8125 39.890625 
+Q 5.8125 47.609375 11.28125 51.796875 
+Q 16.75 56 26.8125 56 
+Q 31.78125 56 36.171875 55.265625 
+Q 40.578125 54.546875 44.28125 53.078125 
+z
+" id="DejaVuSans-115"></path>
+      </defs>
+      <g transform="translate(112.140082 270.316563)scale(0.1 -0.1)">
+       <use xlink:href="#DejaVuSans-35"></use>
+       <use x="83.789062" xlink:href="#DejaVuSans-84"></use>
+       <use x="127.873047" xlink:href="#DejaVuSans-111"></use>
+       <use x="189.054688" xlink:href="#DejaVuSans-107"></use>
+       <use x="243.339844" xlink:href="#DejaVuSans-101"></use>
+       <use x="304.863281" xlink:href="#DejaVuSans-110"></use>
+       <use x="368.242188" xlink:href="#DejaVuSans-115"></use>
+      </g>
+     </g>
+    </g>
+    <g id="xtick_2">
+     <g id="line2d_2">
+      <g>
+       <use style="stroke:#000000;stroke-width:0.8;" x="331.298981" xlink:href="#m142415d3cc" y="255.718125"></use>
+      </g>
+     </g>
+     <g id="text_2">
+      <!-- #Unique Tokens -->
+      <defs>
+       <path d="M 8.6875 72.90625 
+L 18.609375 72.90625 
+L 18.609375 28.609375 
+Q 18.609375 16.890625 22.84375 11.734375 
+Q 27.09375 6.59375 36.625 6.59375 
+Q 46.09375 6.59375 50.34375 11.734375 
+Q 54.59375 16.890625 54.59375 28.609375 
+L 54.59375 72.90625 
+L 64.5 72.90625 
+L 64.5 27.390625 
+Q 64.5 13.140625 57.4375 5.859375 
+Q 50.390625 -1.421875 36.625 -1.421875 
+Q 22.796875 -1.421875 15.734375 5.859375 
+Q 8.6875 13.140625 8.6875 27.390625 
+z
+" id="DejaVuSans-85"></path>
+       <path d="M 9.421875 54.6875 
+L 18.40625 54.6875 
+L 18.40625 0 
+L 9.421875 0 
+z
+M 9.421875 75.984375 
+L 18.40625 75.984375 
+L 18.40625 64.59375 
+L 9.421875 64.59375 
+z
+" id="DejaVuSans-105"></path>
+       <path d="M 14.796875 27.296875 
+Q 14.796875 17.390625 18.875 11.75 
+Q 22.953125 6.109375 30.078125 6.109375 
+Q 37.203125 6.109375 41.296875 11.75 
+Q 45.40625 17.390625 45.40625 27.296875 
+Q 45.40625 37.203125 41.296875 42.84375 
+Q 37.203125 48.484375 30.078125 48.484375 
+Q 22.953125 48.484375 18.875 42.84375 
+Q 14.796875 37.203125 14.796875 27.296875 
+z
+M 45.40625 8.203125 
+Q 42.578125 3.328125 38.25 0.953125 
+Q 33.9375 -1.421875 27.875 -1.421875 
+Q 17.96875 -1.421875 11.734375 6.484375 
+Q 5.515625 14.40625 5.515625 27.296875 
+Q 5.515625 40.1875 11.734375 48.09375 
+Q 17.96875 56 27.875 56 
+Q 33.9375 56 38.25 53.625 
+Q 42.578125 51.265625 45.40625 46.390625 
+L 45.40625 54.6875 
+L 54.390625 54.6875 
+L 54.390625 -20.796875 
+L 45.40625 -20.796875 
+z
+" id="DejaVuSans-113"></path>
+       <path d="M 8.5 21.578125 
+L 8.5 54.6875 
+L 17.484375 54.6875 
+L 17.484375 21.921875 
+Q 17.484375 14.15625 20.5 10.265625 
+Q 23.53125 6.390625 29.59375 6.390625 
+Q 36.859375 6.390625 41.078125 11.03125 
+Q 45.3125 15.671875 45.3125 23.6875 
+L 45.3125 54.6875 
+L 54.296875 54.6875 
+L 54.296875 0 
+L 45.3125 0 
+L 45.3125 8.40625 
+Q 42.046875 3.421875 37.71875 1 
+Q 33.40625 -1.421875 27.6875 -1.421875 
+Q 18.265625 -1.421875 13.375 4.4375 
+Q 8.5 10.296875 8.5 21.578125 
+z
+M 31.109375 56 
+z
+" id="DejaVuSans-117"></path>
+       <path id="DejaVuSans-32"></path>
+      </defs>
+      <g transform="translate(291.056012 270.316563)scale(0.1 -0.1)">
+       <use xlink:href="#DejaVuSans-35"></use>
+       <use x="83.789062" xlink:href="#DejaVuSans-85"></use>
+       <use x="156.982422" xlink:href="#DejaVuSans-110"></use>
+       <use x="220.361328" xlink:href="#DejaVuSans-105"></use>
+       <use x="248.144531" xlink:href="#DejaVuSans-113"></use>
+       <use x="311.621094" xlink:href="#DejaVuSans-117"></use>
+       <use x="375" xlink:href="#DejaVuSans-101"></use>
+       <use x="436.523438" xlink:href="#DejaVuSans-32"></use>
+       <use x="468.310547" xlink:href="#DejaVuSans-84"></use>
+       <use x="512.394531" xlink:href="#DejaVuSans-111"></use>
+       <use x="573.576172" xlink:href="#DejaVuSans-107"></use>
+       <use x="627.861328" xlink:href="#DejaVuSans-101"></use>
+       <use x="689.384766" xlink:href="#DejaVuSans-110"></use>
+       <use x="752.763672" xlink:href="#DejaVuSans-115"></use>
+      </g>
+     </g>
+    </g>
+   </g>
+   <g id="matplotlib.axis_2">
+    <g id="ytick_1">
+     <g id="line2d_3">
+      <defs>
+       <path d="M 0 0 
+L -3.5 0 
+" id="mc9e918930c" style="stroke:#000000;stroke-width:0.8;"></path>
+      </defs>
+      <g>
+       <use style="stroke:#000000;stroke-width:0.8;" x="46.965625" xlink:href="#mc9e918930c" y="255.718125"></use>
+      </g>
+     </g>
+     <g id="text_3">
+      <!-- 0 -->
+      <defs>
+       <path d="M 31.78125 66.40625 
+Q 24.171875 66.40625 20.328125 58.90625 
+Q 16.5 51.421875 16.5 36.375 
+Q 16.5 21.390625 20.328125 13.890625 
+Q 24.171875 6.390625 31.78125 6.390625 
+Q 39.453125 6.390625 43.28125 13.890625 
+Q 47.125 21.390625 47.125 36.375 
+Q 47.125 51.421875 43.28125 58.90625 
+Q 39.453125 66.40625 31.78125 66.40625 
+z
+M 31.78125 74.21875 
+Q 44.046875 74.21875 50.515625 64.515625 
+Q 56.984375 54.828125 56.984375 36.375 
+Q 56.984375 17.96875 50.515625 8.265625 
+Q 44.046875 -1.421875 31.78125 -1.421875 
+Q 19.53125 -1.421875 13.0625 8.265625 
+Q 6.59375 17.96875 6.59375 36.375 
+Q 6.59375 54.828125 13.0625 64.515625 
+Q 19.53125 74.21875 31.78125 74.21875 
+z
+" id="DejaVuSans-48"></path>
+      </defs>
+      <g transform="translate(33.603125 259.517344)scale(0.1 -0.1)">
+       <use xlink:href="#DejaVuSans-48"></use>
+      </g>
+     </g>
+    </g>
+    <g id="ytick_2">
+     <g id="line2d_4">
+      <g>
+       <use style="stroke:#000000;stroke-width:0.8;" x="46.965625" xlink:href="#mc9e918930c" y="224.542008"></use>
+      </g>
+     </g>
+     <g id="text_4">
+      <!-- 100 -->
+      <defs>
+       <path d="M 12.40625 8.296875 
+L 28.515625 8.296875 
+L 28.515625 63.921875 
+L 10.984375 60.40625 
+L 10.984375 69.390625 
+L 28.421875 72.90625 
+L 38.28125 72.90625 
+L 38.28125 8.296875 
+L 54.390625 8.296875 
+L 54.390625 0 
+L 12.40625 0 
+z
+" id="DejaVuSans-49"></path>
+      </defs>
+      <g transform="translate(20.878125 228.341227)scale(0.1 -0.1)">
+       <use xlink:href="#DejaVuSans-49"></use>
+       <use x="63.623047" xlink:href="#DejaVuSans-48"></use>
+       <use x="127.246094" xlink:href="#DejaVuSans-48"></use>
+      </g>
+     </g>
+    </g>
+    <g id="ytick_3">
+     <g id="line2d_5">
+      <g>
+       <use style="stroke:#000000;stroke-width:0.8;" x="46.965625" xlink:href="#mc9e918930c" y="193.365891"></use>
+      </g>
+     </g>
+     <g id="text_5">
+      <!-- 200 -->
+      <defs>
+       <path d="M 19.1875 8.296875 
+L 53.609375 8.296875 
+L 53.609375 0 
+L 7.328125 0 
+L 7.328125 8.296875 
+Q 12.9375 14.109375 22.625 23.890625 
+Q 32.328125 33.6875 34.8125 36.53125 
+Q 39.546875 41.84375 41.421875 45.53125 
+Q 43.3125 49.21875 43.3125 52.78125 
+Q 43.3125 58.59375 39.234375 62.25 
+Q 35.15625 65.921875 28.609375 65.921875 
+Q 23.96875 65.921875 18.8125 64.3125 
+Q 13.671875 62.703125 7.8125 59.421875 
+L 7.8125 69.390625 
+Q 13.765625 71.78125 18.9375 73 
+Q 24.125 74.21875 28.421875 74.21875 
+Q 39.75 74.21875 46.484375 68.546875 
+Q 53.21875 62.890625 53.21875 53.421875 
+Q 53.21875 48.921875 51.53125 44.890625 
+Q 49.859375 40.875 45.40625 35.40625 
+Q 44.1875 33.984375 37.640625 27.21875 
+Q 31.109375 20.453125 19.1875 8.296875 
+z
+" id="DejaVuSans-50"></path>
+      </defs>
+      <g transform="translate(20.878125 197.16511)scale(0.1 -0.1)">
+       <use xlink:href="#DejaVuSans-50"></use>
+       <use x="63.623047" xlink:href="#DejaVuSans-48"></use>
+       <use x="127.246094" xlink:href="#DejaVuSans-48"></use>
+      </g>
+     </g>
+    </g>
+    <g id="ytick_4">
+     <g id="line2d_6">
+      <g>
+       <use style="stroke:#000000;stroke-width:0.8;" x="46.965625" xlink:href="#mc9e918930c" y="162.189774"></use>
+      </g>
+     </g>
+     <g id="text_6">
+      <!-- 300 -->
+      <defs>
+       <path d="M 40.578125 39.3125 
+Q 47.65625 37.796875 51.625 33 
+Q 55.609375 28.21875 55.609375 21.1875 
+Q 55.609375 10.40625 48.1875 4.484375 
+Q 40.765625 -1.421875 27.09375 -1.421875 
+Q 22.515625 -1.421875 17.65625 -0.515625 
+Q 12.796875 0.390625 7.625 2.203125 
+L 7.625 11.71875 
+Q 11.71875 9.328125 16.59375 8.109375 
+Q 21.484375 6.890625 26.8125 6.890625 
+Q 36.078125 6.890625 40.9375 10.546875 
+Q 45.796875 14.203125 45.796875 21.1875 
+Q 45.796875 27.640625 41.28125 31.265625 
+Q 36.765625 34.90625 28.71875 34.90625 
+L 20.21875 34.90625 
+L 20.21875 43.015625 
+L 29.109375 43.015625 
+Q 36.375 43.015625 40.234375 45.921875 
+Q 44.09375 48.828125 44.09375 54.296875 
+Q 44.09375 59.90625 40.109375 62.90625 
+Q 36.140625 65.921875 28.71875 65.921875 
+Q 24.65625 65.921875 20.015625 65.03125 
+Q 15.375 64.15625 9.8125 62.3125 
+L 9.8125 71.09375 
+Q 15.4375 72.65625 20.34375 73.4375 
+Q 25.25 74.21875 29.59375 74.21875 
+Q 40.828125 74.21875 47.359375 69.109375 
+Q 53.90625 64.015625 53.90625 55.328125 
+Q 53.90625 49.265625 50.4375 45.09375 
+Q 46.96875 40.921875 40.578125 39.3125 
+z
+" id="DejaVuSans-51"></path>
+      </defs>
+      <g transform="translate(20.878125 165.988993)scale(0.1 -0.1)">
+       <use xlink:href="#DejaVuSans-51"></use>
+       <use x="63.623047" xlink:href="#DejaVuSans-48"></use>
+       <use x="127.246094" xlink:href="#DejaVuSans-48"></use>
+      </g>
+     </g>
+    </g>
+    <g id="ytick_5">
+     <g id="line2d_7">
+      <g>
+       <use style="stroke:#000000;stroke-width:0.8;" x="46.965625" xlink:href="#mc9e918930c" y="131.013657"></use>
+      </g>
+     </g>
+     <g id="text_7">
+      <!-- 400 -->
+      <defs>
+       <path d="M 37.796875 64.3125 
+L 12.890625 25.390625 
+L 37.796875 25.390625 
+z
+M 35.203125 72.90625 
+L 47.609375 72.90625 
+L 47.609375 25.390625 
+L 58.015625 25.390625 
+L 58.015625 17.1875 
+L 47.609375 17.1875 
+L 47.609375 0 
+L 37.796875 0 
+L 37.796875 17.1875 
+L 4.890625 17.1875 
+L 4.890625 26.703125 
+z
+" id="DejaVuSans-52"></path>
+      </defs>
+      <g transform="translate(20.878125 134.812876)scale(0.1 -0.1)">
+       <use xlink:href="#DejaVuSans-52"></use>
+       <use x="63.623047" xlink:href="#DejaVuSans-48"></use>
+       <use x="127.246094" xlink:href="#DejaVuSans-48"></use>
+      </g>
+     </g>
+    </g>
+    <g id="ytick_6">
+     <g id="line2d_8">
+      <g>
+       <use style="stroke:#000000;stroke-width:0.8;" x="46.965625" xlink:href="#mc9e918930c" y="99.83754"></use>
+      </g>
+     </g>
+     <g id="text_8">
+      <!-- 500 -->
+      <defs>
+       <path d="M 10.796875 72.90625 
+L 49.515625 72.90625 
+L 49.515625 64.59375 
+L 19.828125 64.59375 
+L 19.828125 46.734375 
+Q 21.96875 47.46875 24.109375 47.828125 
+Q 26.265625 48.1875 28.421875 48.1875 
+Q 40.625 48.1875 47.75 41.5 
+Q 54.890625 34.8125 54.890625 23.390625 
+Q 54.890625 11.625 47.5625 5.09375 
+Q 40.234375 -1.421875 26.90625 -1.421875 
+Q 22.3125 -1.421875 17.546875 -0.640625 
+Q 12.796875 0.140625 7.71875 1.703125 
+L 7.71875 11.625 
+Q 12.109375 9.234375 16.796875 8.0625 
+Q 21.484375 6.890625 26.703125 6.890625 
+Q 35.15625 6.890625 40.078125 11.328125 
+Q 45.015625 15.765625 45.015625 23.390625 
+Q 45.015625 31 40.078125 35.4375 
+Q 35.15625 39.890625 26.703125 39.890625 
+Q 22.75 39.890625 18.8125 39.015625 
+Q 14.890625 38.140625 10.796875 36.28125 
+z
+" id="DejaVuSans-53"></path>
+      </defs>
+      <g transform="translate(20.878125 103.636759)scale(0.1 -0.1)">
+       <use xlink:href="#DejaVuSans-53"></use>
+       <use x="63.623047" xlink:href="#DejaVuSans-48"></use>
+       <use x="127.246094" xlink:href="#DejaVuSans-48"></use>
+      </g>
+     </g>
+    </g>
+    <g id="ytick_7">
+     <g id="line2d_9">
+      <g>
+       <use style="stroke:#000000;stroke-width:0.8;" x="46.965625" xlink:href="#mc9e918930c" y="68.661423"></use>
+      </g>
+     </g>
+     <g id="text_9">
+      <!-- 600 -->
+      <defs>
+       <path d="M 33.015625 40.375 
+Q 26.375 40.375 22.484375 35.828125 
+Q 18.609375 31.296875 18.609375 23.390625 
+Q 18.609375 15.53125 22.484375 10.953125 
+Q 26.375 6.390625 33.015625 6.390625 
+Q 39.65625 6.390625 43.53125 10.953125 
+Q 47.40625 15.53125 47.40625 23.390625 
+Q 47.40625 31.296875 43.53125 35.828125 
+Q 39.65625 40.375 33.015625 40.375 
+z
+M 52.59375 71.296875 
+L 52.59375 62.3125 
+Q 48.875 64.0625 45.09375 64.984375 
+Q 41.3125 65.921875 37.59375 65.921875 
+Q 27.828125 65.921875 22.671875 59.328125 
+Q 17.53125 52.734375 16.796875 39.40625 
+Q 19.671875 43.65625 24.015625 45.921875 
+Q 28.375 48.1875 33.59375 48.1875 
+Q 44.578125 48.1875 50.953125 41.515625 
+Q 57.328125 34.859375 57.328125 23.390625 
+Q 57.328125 12.15625 50.6875 5.359375 
+Q 44.046875 -1.421875 33.015625 -1.421875 
+Q 20.359375 -1.421875 13.671875 8.265625 
+Q 6.984375 17.96875 6.984375 36.375 
+Q 6.984375 53.65625 15.1875 63.9375 
+Q 23.390625 74.21875 37.203125 74.21875 
+Q 40.921875 74.21875 44.703125 73.484375 
+Q 48.484375 72.75 52.59375 71.296875 
+z
+" id="DejaVuSans-54"></path>
+      </defs>
+      <g transform="translate(20.878125 72.460642)scale(0.1 -0.1)">
+       <use xlink:href="#DejaVuSans-54"></use>
+       <use x="63.623047" xlink:href="#DejaVuSans-48"></use>
+       <use x="127.246094" xlink:href="#DejaVuSans-48"></use>
+      </g>
+     </g>
+    </g>
+    <g id="ytick_8">
+     <g id="line2d_10">
+      <g>
+       <use style="stroke:#000000;stroke-width:0.8;" x="46.965625" xlink:href="#mc9e918930c" y="37.485306"></use>
+      </g>
+     </g>
+     <g id="text_10">
+      <!-- 700 -->
+      <defs>
+       <path d="M 8.203125 72.90625 
+L 55.078125 72.90625 
+L 55.078125 68.703125 
+L 28.609375 0 
+L 18.3125 0 
+L 43.21875 64.59375 
+L 8.203125 64.59375 
+z
+" id="DejaVuSans-55"></path>
+      </defs>
+      <g transform="translate(20.878125 41.284525)scale(0.1 -0.1)">
+       <use xlink:href="#DejaVuSans-55"></use>
+       <use x="63.623047" xlink:href="#DejaVuSans-48"></use>
+       <use x="127.246094" xlink:href="#DejaVuSans-48"></use>
+      </g>
+     </g>
+    </g>
+    <g id="text_11">
+     <!-- Tokens -->
+     <g transform="translate(14.798438 155.845469)rotate(-90)scale(0.1 -0.1)">
+      <use xlink:href="#DejaVuSans-84"></use>
+      <use x="44.083984" xlink:href="#DejaVuSans-111"></use>
+      <use x="105.265625" xlink:href="#DejaVuSans-107"></use>
+      <use x="159.550781" xlink:href="#DejaVuSans-101"></use>
+      <use x="221.074219" xlink:href="#DejaVuSans-110"></use>
+      <use x="284.453125" xlink:href="#DejaVuSans-115"></use>
+     </g>
+    </g>
+   </g>
+   <g id="patch_7">
+    <path d="M 46.965625 255.718125 
+L 46.965625 22.318125 
+" style="fill:none;stroke:#000000;stroke-linecap:square;stroke-linejoin:miter;stroke-width:0.8;"></path>
+   </g>
+   <g id="patch_8">
+    <path d="M 417.490625 255.718125 
+L 417.490625 22.318125 
+" style="fill:none;stroke:#000000;stroke-linecap:square;stroke-linejoin:miter;stroke-width:0.8;"></path>
+   </g>
+   <g id="patch_9">
+    <path d="M 46.965625 255.718125 
+L 417.490625 255.718125 
+" style="fill:none;stroke:#000000;stroke-linecap:square;stroke-linejoin:miter;stroke-width:0.8;"></path>
+   </g>
+   <g id="patch_10">
+    <path d="M 46.965625 22.318125 
+L 417.490625 22.318125 
+" style="fill:none;stroke:#000000;stroke-linecap:square;stroke-linejoin:miter;stroke-width:0.8;"></path>
+   </g>
+   <g id="text_12">
+    <!-- Tokens before and after -->
+    <defs>
+     <path d="M 48.6875 27.296875 
+Q 48.6875 37.203125 44.609375 42.84375 
+Q 40.53125 48.484375 33.40625 48.484375 
+Q 26.265625 48.484375 22.1875 42.84375 
+Q 18.109375 37.203125 18.109375 27.296875 
+Q 18.109375 17.390625 22.1875 11.75 
+Q 26.265625 6.109375 33.40625 6.109375 
+Q 40.53125 6.109375 44.609375 11.75 
+Q 48.6875 17.390625 48.6875 27.296875 
+z
+M 18.109375 46.390625 
+Q 20.953125 51.265625 25.265625 53.625 
+Q 29.59375 56 35.59375 56 
+Q 45.5625 56 51.78125 48.09375 
+Q 58.015625 40.1875 58.015625 27.296875 
+Q 58.015625 14.40625 51.78125 6.484375 
+Q 45.5625 -1.421875 35.59375 -1.421875 
+Q 29.59375 -1.421875 25.265625 0.953125 
+Q 20.953125 3.328125 18.109375 8.203125 
+L 18.109375 0 
+L 9.078125 0 
+L 9.078125 75.984375 
+L 18.109375 75.984375 
+z
+" id="DejaVuSans-98"></path>
+     <path d="M 37.109375 75.984375 
+L 37.109375 68.5 
+L 28.515625 68.5 
+Q 23.6875 68.5 21.796875 66.546875 
+Q 19.921875 64.59375 19.921875 59.515625 
+L 19.921875 54.6875 
+L 34.71875 54.6875 
+L 34.71875 47.703125 
+L 19.921875 47.703125 
+L 19.921875 0 
+L 10.890625 0 
+L 10.890625 47.703125 
+L 2.296875 47.703125 
+L 2.296875 54.6875 
+L 10.890625 54.6875 
+L 10.890625 58.5 
+Q 10.890625 67.625 15.140625 71.796875 
+Q 19.390625 75.984375 28.609375 75.984375 
+z
+" id="DejaVuSans-102"></path>
+     <path d="M 41.109375 46.296875 
+Q 39.59375 47.171875 37.8125 47.578125 
+Q 36.03125 48 33.890625 48 
+Q 26.265625 48 22.1875 43.046875 
+Q 18.109375 38.09375 18.109375 28.8125 
+L 18.109375 0 
+L 9.078125 0 
+L 9.078125 54.6875 
+L 18.109375 54.6875 
+L 18.109375 46.1875 
+Q 20.953125 51.171875 25.484375 53.578125 
+Q 30.03125 56 36.53125 56 
+Q 37.453125 56 38.578125 55.875 
+Q 39.703125 55.765625 41.0625 55.515625 
+z
+" id="DejaVuSans-114"></path>
+     <path d="M 34.28125 27.484375 
+Q 23.390625 27.484375 19.1875 25 
+Q 14.984375 22.515625 14.984375 16.5 
+Q 14.984375 11.71875 18.140625 8.90625 
+Q 21.296875 6.109375 26.703125 6.109375 
+Q 34.1875 6.109375 38.703125 11.40625 
+Q 43.21875 16.703125 43.21875 25.484375 
+L 43.21875 27.484375 
+z
+M 52.203125 31.203125 
+L 52.203125 0 
+L 43.21875 0 
+L 43.21875 8.296875 
+Q 40.140625 3.328125 35.546875 0.953125 
+Q 30.953125 -1.421875 24.3125 -1.421875 
+Q 15.921875 -1.421875 10.953125 3.296875 
+Q 6 8.015625 6 15.921875 
+Q 6 25.140625 12.171875 29.828125 
+Q 18.359375 34.515625 30.609375 34.515625 
+L 43.21875 34.515625 
+L 43.21875 35.40625 
+Q 43.21875 41.609375 39.140625 45 
+Q 35.0625 48.390625 27.6875 48.390625 
+Q 23 48.390625 18.546875 47.265625 
+Q 14.109375 46.140625 10.015625 43.890625 
+L 10.015625 52.203125 
+Q 14.9375 54.109375 19.578125 55.046875 
+Q 24.21875 56 28.609375 56 
+Q 40.484375 56 46.34375 49.84375 
+Q 52.203125 43.703125 52.203125 31.203125 
+z
+" id="DejaVuSans-97"></path>
+     <path d="M 45.40625 46.390625 
+L 45.40625 75.984375 
+L 54.390625 75.984375 
+L 54.390625 0 
+L 45.40625 0 
+L 45.40625 8.203125 
+Q 42.578125 3.328125 38.25 0.953125 
+Q 33.9375 -1.421875 27.875 -1.421875 
+Q 17.96875 -1.421875 11.734375 6.484375 
+Q 5.515625 14.40625 5.515625 27.296875 
+Q 5.515625 40.1875 11.734375 48.09375 
+Q 17.96875 56 27.875 56 
+Q 33.9375 56 38.25 53.625 
+Q 42.578125 51.265625 45.40625 46.390625 
+z
+M 14.796875 27.296875 
+Q 14.796875 17.390625 18.875 11.75 
+Q 22.953125 6.109375 30.078125 6.109375 
+Q 37.203125 6.109375 41.296875 11.75 
+Q 45.40625 17.390625 45.40625 27.296875 
+Q 45.40625 37.203125 41.296875 42.84375 
+Q 37.203125 48.484375 30.078125 48.484375 
+Q 22.953125 48.484375 18.875 42.84375 
+Q 14.796875 37.203125 14.796875 27.296875 
+z
+" id="DejaVuSans-100"></path>
+     <path d="M 18.3125 70.21875 
+L 18.3125 54.6875 
+L 36.8125 54.6875 
+L 36.8125 47.703125 
+L 18.3125 47.703125 
+L 18.3125 18.015625 
+Q 18.3125 11.328125 20.140625 9.421875 
+Q 21.96875 7.515625 27.59375 7.515625 
+L 36.8125 7.515625 
+L 36.8125 0 
+L 27.59375 0 
+Q 17.1875 0 13.234375 3.875 
+Q 9.28125 7.765625 9.28125 18.015625 
+L 9.28125 47.703125 
+L 2.6875 47.703125 
+L 2.6875 54.6875 
+L 9.28125 54.6875 
+L 9.28125 70.21875 
+z
+" id="DejaVuSans-116"></path>
+    </defs>
+    <g transform="translate(161.52375 16.318125)scale(0.12 -0.12)">
+     <use xlink:href="#DejaVuSans-84"></use>
+     <use x="44.083984" xlink:href="#DejaVuSans-111"></use>
+     <use x="105.265625" xlink:href="#DejaVuSans-107"></use>
+     <use x="159.550781" xlink:href="#DejaVuSans-101"></use>
+     <use x="221.074219" xlink:href="#DejaVuSans-110"></use>
+     <use x="284.453125" xlink:href="#DejaVuSans-115"></use>
+     <use x="336.552734" xlink:href="#DejaVuSans-32"></use>
+     <use x="368.339844" xlink:href="#DejaVuSans-98"></use>
+     <use x="431.816406" xlink:href="#DejaVuSans-101"></use>
+     <use x="493.339844" xlink:href="#DejaVuSans-102"></use>
+     <use x="528.544922" xlink:href="#DejaVuSans-111"></use>
+     <use x="589.726562" xlink:href="#DejaVuSans-114"></use>
+     <use x="628.589844" xlink:href="#DejaVuSans-101"></use>
+     <use x="690.113281" xlink:href="#DejaVuSans-32"></use>
+     <use x="721.900391" xlink:href="#DejaVuSans-97"></use>
+     <use x="783.179688" xlink:href="#DejaVuSans-110"></use>
+     <use x="846.558594" xlink:href="#DejaVuSans-100"></use>
+     <use x="910.035156" xlink:href="#DejaVuSans-32"></use>
+     <use x="941.822266" xlink:href="#DejaVuSans-97"></use>
+     <use x="1003.101562" xlink:href="#DejaVuSans-102"></use>
+     <use x="1036.556641" xlink:href="#DejaVuSans-116"></use>
+     <use x="1075.765625" xlink:href="#DejaVuSans-101"></use>
+     <use x="1137.289062" xlink:href="#DejaVuSans-114"></use>
+    </g>
+   </g>
+   <g id="legend_1">
+    <g id="patch_11">
+     <path d="M 345.798437 59.674375 
+L 410.490625 59.674375 
+Q 412.490625 59.674375 412.490625 57.674375 
+L 412.490625 29.318125 
+Q 412.490625 27.318125 410.490625 27.318125 
+L 345.798437 27.318125 
+Q 343.798437 27.318125 343.798437 29.318125 
+L 343.798437 57.674375 
+Q 343.798437 59.674375 345.798437 59.674375 
+z
+" style="fill:#ffffff;opacity:0.8;stroke:#cccccc;stroke-linejoin:miter;"></path>
+    </g>
+    <g id="patch_12">
+     <path d="M 347.798437 38.916562 
+L 367.798437 38.916562 
+L 367.798437 31.916562 
+L 347.798437 31.916562 
+z
+" style="fill:#1f77b4;"></path>
+    </g>
+    <g id="text_13">
+     <!-- Before -->
+     <defs>
+      <path d="M 19.671875 34.8125 
+L 19.671875 8.109375 
+L 35.5 8.109375 
+Q 43.453125 8.109375 47.28125 11.40625 
+Q 51.125 14.703125 51.125 21.484375 
+Q 51.125 28.328125 47.28125 31.5625 
+Q 43.453125 34.8125 35.5 34.8125 
+z
+M 19.671875 64.796875 
+L 19.671875 42.828125 
+L 34.28125 42.828125 
+Q 41.5 42.828125 45.03125 45.53125 
+Q 48.578125 48.25 48.578125 53.8125 
+Q 48.578125 59.328125 45.03125 62.0625 
+Q 41.5 64.796875 34.28125 64.796875 
+z
+M 9.8125 72.90625 
+L 35.015625 72.90625 
+Q 46.296875 72.90625 52.390625 68.21875 
+Q 58.5 63.53125 58.5 54.890625 
+Q 58.5 48.1875 55.375 44.234375 
+Q 52.25 40.28125 46.1875 39.3125 
+Q 53.46875 37.75 57.5 32.78125 
+Q 61.53125 27.828125 61.53125 20.40625 
+Q 61.53125 10.640625 54.890625 5.3125 
+Q 48.25 0 35.984375 0 
+L 9.8125 0 
+z
+" id="DejaVuSans-66"></path>
+     </defs>
+     <g transform="translate(375.798437 38.916562)scale(0.1 -0.1)">
+      <use xlink:href="#DejaVuSans-66"></use>
+      <use x="68.603516" xlink:href="#DejaVuSans-101"></use>
+      <use x="130.126953" xlink:href="#DejaVuSans-102"></use>
+      <use x="165.332031" xlink:href="#DejaVuSans-111"></use>
+      <use x="226.513672" xlink:href="#DejaVuSans-114"></use>
+      <use x="265.376953" xlink:href="#DejaVuSans-101"></use>
+     </g>
+    </g>
+    <g id="patch_13">
+     <path d="M 347.798437 53.594687 
+L 367.798437 53.594687 
+L 367.798437 46.594687 
+L 347.798437 46.594687 
+z
+" style="fill:#ff7f0e;"></path>
+    </g>
+    <g id="text_14">
+     <!-- After -->
+     <defs>
+      <path d="M 34.1875 63.1875 
+L 20.796875 26.90625 
+L 47.609375 26.90625 
+z
+M 28.609375 72.90625 
+L 39.796875 72.90625 
+L 67.578125 0 
+L 57.328125 0 
+L 50.6875 18.703125 
+L 17.828125 18.703125 
+L 11.1875 0 
+L 0.78125 0 
+z
+" id="DejaVuSans-65"></path>
+     </defs>
+     <g transform="translate(375.798437 53.594687)scale(0.1 -0.1)">
+      <use xlink:href="#DejaVuSans-65"></use>
+      <use x="64.783203" xlink:href="#DejaVuSans-102"></use>
+      <use x="98.238281" xlink:href="#DejaVuSans-116"></use>
+      <use x="137.447266" xlink:href="#DejaVuSans-101"></use>
+      <use x="198.970703" xlink:href="#DejaVuSans-114"></use>
+     </g>
+    </g>
+   </g>
+  </g>
+ </g>
+ <defs>
+  <clippath id="pcf4f1f332e">
+   <rect height="233.4" width="370.525" x="46.965625" y="22.318125"></rect>
+  </clippath>
+ </defs>
+</svg>
+
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>The expectations set up has been achieved and we can clearly see that the raw number of tokens grew while the unique token count shrinked.<br>
+Applying lower-case to the text will further reduce the number of unique tokens, and obviously keep the number of tokens at the same count.</p>
+<p>Let's add lower-casing and see what happens!</p>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">lowercase</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+<span class="n">preprocess_funcs</span> <span class="o">=</span> <span class="p">[</span><span class="n">lowercase</span><span class="p">,</span> <span class="n">stanza_tokenize</span><span class="p">]</span>
+<span class="n">test_dimensions</span><span class="p">(</span><span class="n">preprocessing</span><span class="o">=</span><span class="n">preprocess_funcs</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>Previously: 629 tokens (289 unique)
+Post: 712 tokens (260 unique)
+Token reduction by ~10.0 %
+</pre>
+</div>
+</div>
+
+<div class="output_area">
+
+
+<div class="output_svg output_subarea ">
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+&lt;!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"&gt;
+<!-- Created with matplotlib (https://matplotlib.org/) -->
+<svg height="279.59625pt" version="1.1" viewbox="0 0 424.690625 279.59625" width="424.690625pt" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+ <defs>
+  <style type="text/css">
+*{stroke-linecap:butt;stroke-linejoin:round;}
+  </style>
+ </defs>
+ <g id="figure_1">
+  <g id="patch_1">
+   <path d="M -0 279.59625 
+L 424.690625 279.59625 
+L 424.690625 0 
+L -0 0 
+z
+" style="fill:none;"></path>
+  </g>
+  <g id="axes_1">
+   <g id="patch_2">
+    <path d="M 46.965625 255.718125 
+L 417.490625 255.718125 
+L 417.490625 22.318125 
+L 46.965625 22.318125 
+z
+" style="fill:#ffffff;"></path>
+   </g>
+   <g id="patch_3">
+    <path clip-path="url(#p2e43525c47)" d="M 63.80767 255.718125 
+L 133.157269 255.718125 
+L 133.157269 59.344931 
+L 63.80767 59.344931 
+z
+" style="fill:#1f77b4;"></path>
+   </g>
+   <g id="patch_4">
+    <path clip-path="url(#p2e43525c47)" d="M 261.949382 255.718125 
+L 331.298981 255.718125 
+L 331.298981 165.492603 
+L 261.949382 165.492603 
+z
+" style="fill:#1f77b4;"></path>
+   </g>
+   <g id="patch_5">
+    <path clip-path="url(#p2e43525c47)" d="M 133.157269 255.718125 
+L 202.506868 255.718125 
+L 202.506868 33.432411 
+L 133.157269 33.432411 
+z
+" style="fill:#ff7f0e;"></path>
+   </g>
+   <g id="patch_6">
+    <path clip-path="url(#p2e43525c47)" d="M 331.298981 255.718125 
+L 400.64858 255.718125 
+L 400.64858 174.546375 
+L 331.298981 174.546375 
+z
+" style="fill:#ff7f0e;"></path>
+   </g>
+   <g id="matplotlib.axis_1">
+    <g id="xtick_1">
+     <g id="line2d_1">
+      <defs>
+       <path d="M 0 0 
+L 0 3.5 
+" id="m61aa9f46c5" style="stroke:#000000;stroke-width:0.8;"></path>
+      </defs>
+      <g>
+       <use style="stroke:#000000;stroke-width:0.8;" x="133.157269" xlink:href="#m61aa9f46c5" y="255.718125"></use>
+      </g>
+     </g>
+     <g id="text_1">
+      <!-- #Tokens -->
+      <defs>
+       <path d="M 51.125 44 
+L 36.921875 44 
+L 32.8125 27.6875 
+L 47.125 27.6875 
+z
+M 43.796875 71.78125 
+L 38.71875 51.515625 
+L 52.984375 51.515625 
+L 58.109375 71.78125 
+L 65.921875 71.78125 
+L 60.890625 51.515625 
+L 76.125 51.515625 
+L 76.125 44 
+L 58.984375 44 
+L 54.984375 27.6875 
+L 70.515625 27.6875 
+L 70.515625 20.21875 
+L 53.078125 20.21875 
+L 48 0 
+L 40.1875 0 
+L 45.21875 20.21875 
+L 30.90625 20.21875 
+L 25.875 0 
+L 18.015625 0 
+L 23.09375 20.21875 
+L 7.71875 20.21875 
+L 7.71875 27.6875 
+L 24.90625 27.6875 
+L 29 44 
+L 13.28125 44 
+L 13.28125 51.515625 
+L 30.90625 51.515625 
+L 35.890625 71.78125 
+z
+" id="DejaVuSans-35"></path>
+       <path d="M -0.296875 72.90625 
+L 61.375 72.90625 
+L 61.375 64.59375 
+L 35.5 64.59375 
+L 35.5 0 
+L 25.59375 0 
+L 25.59375 64.59375 
+L -0.296875 64.59375 
+z
+" id="DejaVuSans-84"></path>
+       <path d="M 30.609375 48.390625 
+Q 23.390625 48.390625 19.1875 42.75 
+Q 14.984375 37.109375 14.984375 27.296875 
+Q 14.984375 17.484375 19.15625 11.84375 
+Q 23.34375 6.203125 30.609375 6.203125 
+Q 37.796875 6.203125 41.984375 11.859375 
+Q 46.1875 17.53125 46.1875 27.296875 
+Q 46.1875 37.015625 41.984375 42.703125 
+Q 37.796875 48.390625 30.609375 48.390625 
+z
+M 30.609375 56 
+Q 42.328125 56 49.015625 48.375 
+Q 55.71875 40.765625 55.71875 27.296875 
+Q 55.71875 13.875 49.015625 6.21875 
+Q 42.328125 -1.421875 30.609375 -1.421875 
+Q 18.84375 -1.421875 12.171875 6.21875 
+Q 5.515625 13.875 5.515625 27.296875 
+Q 5.515625 40.765625 12.171875 48.375 
+Q 18.84375 56 30.609375 56 
+z
+" id="DejaVuSans-111"></path>
+       <path d="M 9.078125 75.984375 
+L 18.109375 75.984375 
+L 18.109375 31.109375 
+L 44.921875 54.6875 
+L 56.390625 54.6875 
+L 27.390625 29.109375 
+L 57.625 0 
+L 45.90625 0 
+L 18.109375 26.703125 
+L 18.109375 0 
+L 9.078125 0 
+z
+" id="DejaVuSans-107"></path>
+       <path d="M 56.203125 29.59375 
+L 56.203125 25.203125 
+L 14.890625 25.203125 
+Q 15.484375 15.921875 20.484375 11.0625 
+Q 25.484375 6.203125 34.421875 6.203125 
+Q 39.59375 6.203125 44.453125 7.46875 
+Q 49.3125 8.734375 54.109375 11.28125 
+L 54.109375 2.78125 
+Q 49.265625 0.734375 44.1875 -0.34375 
+Q 39.109375 -1.421875 33.890625 -1.421875 
+Q 20.796875 -1.421875 13.15625 6.1875 
+Q 5.515625 13.8125 5.515625 26.8125 
+Q 5.515625 40.234375 12.765625 48.109375 
+Q 20.015625 56 32.328125 56 
+Q 43.359375 56 49.78125 48.890625 
+Q 56.203125 41.796875 56.203125 29.59375 
+z
+M 47.21875 32.234375 
+Q 47.125 39.59375 43.09375 43.984375 
+Q 39.0625 48.390625 32.421875 48.390625 
+Q 24.90625 48.390625 20.390625 44.140625 
+Q 15.875 39.890625 15.1875 32.171875 
+z
+" id="DejaVuSans-101"></path>
+       <path d="M 54.890625 33.015625 
+L 54.890625 0 
+L 45.90625 0 
+L 45.90625 32.71875 
+Q 45.90625 40.484375 42.875 44.328125 
+Q 39.84375 48.1875 33.796875 48.1875 
+Q 26.515625 48.1875 22.3125 43.546875 
+Q 18.109375 38.921875 18.109375 30.90625 
+L 18.109375 0 
+L 9.078125 0 
+L 9.078125 54.6875 
+L 18.109375 54.6875 
+L 18.109375 46.1875 
+Q 21.34375 51.125 25.703125 53.5625 
+Q 30.078125 56 35.796875 56 
+Q 45.21875 56 50.046875 50.171875 
+Q 54.890625 44.34375 54.890625 33.015625 
+z
+" id="DejaVuSans-110"></path>
+       <path d="M 44.28125 53.078125 
+L 44.28125 44.578125 
+Q 40.484375 46.53125 36.375 47.5 
+Q 32.28125 48.484375 27.875 48.484375 
+Q 21.1875 48.484375 17.84375 46.4375 
+Q 14.5 44.390625 14.5 40.28125 
+Q 14.5 37.15625 16.890625 35.375 
+Q 19.28125 33.59375 26.515625 31.984375 
+L 29.59375 31.296875 
+Q 39.15625 29.25 43.1875 25.515625 
+Q 47.21875 21.78125 47.21875 15.09375 
+Q 47.21875 7.46875 41.1875 3.015625 
+Q 35.15625 -1.421875 24.609375 -1.421875 
+Q 20.21875 -1.421875 15.453125 -0.5625 
+Q 10.6875 0.296875 5.421875 2 
+L 5.421875 11.28125 
+Q 10.40625 8.6875 15.234375 7.390625 
+Q 20.0625 6.109375 24.8125 6.109375 
+Q 31.15625 6.109375 34.5625 8.28125 
+Q 37.984375 10.453125 37.984375 14.40625 
+Q 37.984375 18.0625 35.515625 20.015625 
+Q 33.0625 21.96875 24.703125 23.78125 
+L 21.578125 24.515625 
+Q 13.234375 26.265625 9.515625 29.90625 
+Q 5.8125 33.546875 5.8125 39.890625 
+Q 5.8125 47.609375 11.28125 51.796875 
+Q 16.75 56 26.8125 56 
+Q 31.78125 56 36.171875 55.265625 
+Q 40.578125 54.546875 44.28125 53.078125 
+z
+" id="DejaVuSans-115"></path>
+      </defs>
+      <g transform="translate(112.140082 270.316563)scale(0.1 -0.1)">
+       <use xlink:href="#DejaVuSans-35"></use>
+       <use x="83.789062" xlink:href="#DejaVuSans-84"></use>
+       <use x="127.873047" xlink:href="#DejaVuSans-111"></use>
+       <use x="189.054688" xlink:href="#DejaVuSans-107"></use>
+       <use x="243.339844" xlink:href="#DejaVuSans-101"></use>
+       <use x="304.863281" xlink:href="#DejaVuSans-110"></use>
+       <use x="368.242188" xlink:href="#DejaVuSans-115"></use>
+      </g>
+     </g>
+    </g>
+    <g id="xtick_2">
+     <g id="line2d_2">
+      <g>
+       <use style="stroke:#000000;stroke-width:0.8;" x="331.298981" xlink:href="#m61aa9f46c5" y="255.718125"></use>
+      </g>
+     </g>
+     <g id="text_2">
+      <!-- #Unique Tokens -->
+      <defs>
+       <path d="M 8.6875 72.90625 
+L 18.609375 72.90625 
+L 18.609375 28.609375 
+Q 18.609375 16.890625 22.84375 11.734375 
+Q 27.09375 6.59375 36.625 6.59375 
+Q 46.09375 6.59375 50.34375 11.734375 
+Q 54.59375 16.890625 54.59375 28.609375 
+L 54.59375 72.90625 
+L 64.5 72.90625 
+L 64.5 27.390625 
+Q 64.5 13.140625 57.4375 5.859375 
+Q 50.390625 -1.421875 36.625 -1.421875 
+Q 22.796875 -1.421875 15.734375 5.859375 
+Q 8.6875 13.140625 8.6875 27.390625 
+z
+" id="DejaVuSans-85"></path>
+       <path d="M 9.421875 54.6875 
+L 18.40625 54.6875 
+L 18.40625 0 
+L 9.421875 0 
+z
+M 9.421875 75.984375 
+L 18.40625 75.984375 
+L 18.40625 64.59375 
+L 9.421875 64.59375 
+z
+" id="DejaVuSans-105"></path>
+       <path d="M 14.796875 27.296875 
+Q 14.796875 17.390625 18.875 11.75 
+Q 22.953125 6.109375 30.078125 6.109375 
+Q 37.203125 6.109375 41.296875 11.75 
+Q 45.40625 17.390625 45.40625 27.296875 
+Q 45.40625 37.203125 41.296875 42.84375 
+Q 37.203125 48.484375 30.078125 48.484375 
+Q 22.953125 48.484375 18.875 42.84375 
+Q 14.796875 37.203125 14.796875 27.296875 
+z
+M 45.40625 8.203125 
+Q 42.578125 3.328125 38.25 0.953125 
+Q 33.9375 -1.421875 27.875 -1.421875 
+Q 17.96875 -1.421875 11.734375 6.484375 
+Q 5.515625 14.40625 5.515625 27.296875 
+Q 5.515625 40.1875 11.734375 48.09375 
+Q 17.96875 56 27.875 56 
+Q 33.9375 56 38.25 53.625 
+Q 42.578125 51.265625 45.40625 46.390625 
+L 45.40625 54.6875 
+L 54.390625 54.6875 
+L 54.390625 -20.796875 
+L 45.40625 -20.796875 
+z
+" id="DejaVuSans-113"></path>
+       <path d="M 8.5 21.578125 
+L 8.5 54.6875 
+L 17.484375 54.6875 
+L 17.484375 21.921875 
+Q 17.484375 14.15625 20.5 10.265625 
+Q 23.53125 6.390625 29.59375 6.390625 
+Q 36.859375 6.390625 41.078125 11.03125 
+Q 45.3125 15.671875 45.3125 23.6875 
+L 45.3125 54.6875 
+L 54.296875 54.6875 
+L 54.296875 0 
+L 45.3125 0 
+L 45.3125 8.40625 
+Q 42.046875 3.421875 37.71875 1 
+Q 33.40625 -1.421875 27.6875 -1.421875 
+Q 18.265625 -1.421875 13.375 4.4375 
+Q 8.5 10.296875 8.5 21.578125 
+z
+M 31.109375 56 
+z
+" id="DejaVuSans-117"></path>
+       <path id="DejaVuSans-32"></path>
+      </defs>
+      <g transform="translate(291.056012 270.316563)scale(0.1 -0.1)">
+       <use xlink:href="#DejaVuSans-35"></use>
+       <use x="83.789062" xlink:href="#DejaVuSans-85"></use>
+       <use x="156.982422" xlink:href="#DejaVuSans-110"></use>
+       <use x="220.361328" xlink:href="#DejaVuSans-105"></use>
+       <use x="248.144531" xlink:href="#DejaVuSans-113"></use>
+       <use x="311.621094" xlink:href="#DejaVuSans-117"></use>
+       <use x="375" xlink:href="#DejaVuSans-101"></use>
+       <use x="436.523438" xlink:href="#DejaVuSans-32"></use>
+       <use x="468.310547" xlink:href="#DejaVuSans-84"></use>
+       <use x="512.394531" xlink:href="#DejaVuSans-111"></use>
+       <use x="573.576172" xlink:href="#DejaVuSans-107"></use>
+       <use x="627.861328" xlink:href="#DejaVuSans-101"></use>
+       <use x="689.384766" xlink:href="#DejaVuSans-110"></use>
+       <use x="752.763672" xlink:href="#DejaVuSans-115"></use>
+      </g>
+     </g>
+    </g>
+   </g>
+   <g id="matplotlib.axis_2">
+    <g id="ytick_1">
+     <g id="line2d_3">
+      <defs>
+       <path d="M 0 0 
+L -3.5 0 
+" id="md168fdfda4" style="stroke:#000000;stroke-width:0.8;"></path>
+      </defs>
+      <g>
+       <use style="stroke:#000000;stroke-width:0.8;" x="46.965625" xlink:href="#md168fdfda4" y="255.718125"></use>
+      </g>
+     </g>
+     <g id="text_3">
+      <!-- 0 -->
+      <defs>
+       <path d="M 31.78125 66.40625 
+Q 24.171875 66.40625 20.328125 58.90625 
+Q 16.5 51.421875 16.5 36.375 
+Q 16.5 21.390625 20.328125 13.890625 
+Q 24.171875 6.390625 31.78125 6.390625 
+Q 39.453125 6.390625 43.28125 13.890625 
+Q 47.125 21.390625 47.125 36.375 
+Q 47.125 51.421875 43.28125 58.90625 
+Q 39.453125 66.40625 31.78125 66.40625 
+z
+M 31.78125 74.21875 
+Q 44.046875 74.21875 50.515625 64.515625 
+Q 56.984375 54.828125 56.984375 36.375 
+Q 56.984375 17.96875 50.515625 8.265625 
+Q 44.046875 -1.421875 31.78125 -1.421875 
+Q 19.53125 -1.421875 13.0625 8.265625 
+Q 6.59375 17.96875 6.59375 36.375 
+Q 6.59375 54.828125 13.0625 64.515625 
+Q 19.53125 74.21875 31.78125 74.21875 
+z
+" id="DejaVuSans-48"></path>
+      </defs>
+      <g transform="translate(33.603125 259.517344)scale(0.1 -0.1)">
+       <use xlink:href="#DejaVuSans-48"></use>
+      </g>
+     </g>
+    </g>
+    <g id="ytick_2">
+     <g id="line2d_4">
+      <g>
+       <use style="stroke:#000000;stroke-width:0.8;" x="46.965625" xlink:href="#md168fdfda4" y="224.498221"></use>
+      </g>
+     </g>
+     <g id="text_4">
+      <!-- 100 -->
+      <defs>
+       <path d="M 12.40625 8.296875 
+L 28.515625 8.296875 
+L 28.515625 63.921875 
+L 10.984375 60.40625 
+L 10.984375 69.390625 
+L 28.421875 72.90625 
+L 38.28125 72.90625 
+L 38.28125 8.296875 
+L 54.390625 8.296875 
+L 54.390625 0 
+L 12.40625 0 
+z
+" id="DejaVuSans-49"></path>
+      </defs>
+      <g transform="translate(20.878125 228.29744)scale(0.1 -0.1)">
+       <use xlink:href="#DejaVuSans-49"></use>
+       <use x="63.623047" xlink:href="#DejaVuSans-48"></use>
+       <use x="127.246094" xlink:href="#DejaVuSans-48"></use>
+      </g>
+     </g>
+    </g>
+    <g id="ytick_3">
+     <g id="line2d_5">
+      <g>
+       <use style="stroke:#000000;stroke-width:0.8;" x="46.965625" xlink:href="#md168fdfda4" y="193.278318"></use>
+      </g>
+     </g>
+     <g id="text_5">
+      <!-- 200 -->
+      <defs>
+       <path d="M 19.1875 8.296875 
+L 53.609375 8.296875 
+L 53.609375 0 
+L 7.328125 0 
+L 7.328125 8.296875 
+Q 12.9375 14.109375 22.625 23.890625 
+Q 32.328125 33.6875 34.8125 36.53125 
+Q 39.546875 41.84375 41.421875 45.53125 
+Q 43.3125 49.21875 43.3125 52.78125 
+Q 43.3125 58.59375 39.234375 62.25 
+Q 35.15625 65.921875 28.609375 65.921875 
+Q 23.96875 65.921875 18.8125 64.3125 
+Q 13.671875 62.703125 7.8125 59.421875 
+L 7.8125 69.390625 
+Q 13.765625 71.78125 18.9375 73 
+Q 24.125 74.21875 28.421875 74.21875 
+Q 39.75 74.21875 46.484375 68.546875 
+Q 53.21875 62.890625 53.21875 53.421875 
+Q 53.21875 48.921875 51.53125 44.890625 
+Q 49.859375 40.875 45.40625 35.40625 
+Q 44.1875 33.984375 37.640625 27.21875 
+Q 31.109375 20.453125 19.1875 8.296875 
+z
+" id="DejaVuSans-50"></path>
+      </defs>
+      <g transform="translate(20.878125 197.077536)scale(0.1 -0.1)">
+       <use xlink:href="#DejaVuSans-50"></use>
+       <use x="63.623047" xlink:href="#DejaVuSans-48"></use>
+       <use x="127.246094" xlink:href="#DejaVuSans-48"></use>
+      </g>
+     </g>
+    </g>
+    <g id="ytick_4">
+     <g id="line2d_6">
+      <g>
+       <use style="stroke:#000000;stroke-width:0.8;" x="46.965625" xlink:href="#md168fdfda4" y="162.058414"></use>
+      </g>
+     </g>
+     <g id="text_6">
+      <!-- 300 -->
+      <defs>
+       <path d="M 40.578125 39.3125 
+Q 47.65625 37.796875 51.625 33 
+Q 55.609375 28.21875 55.609375 21.1875 
+Q 55.609375 10.40625 48.1875 4.484375 
+Q 40.765625 -1.421875 27.09375 -1.421875 
+Q 22.515625 -1.421875 17.65625 -0.515625 
+Q 12.796875 0.390625 7.625 2.203125 
+L 7.625 11.71875 
+Q 11.71875 9.328125 16.59375 8.109375 
+Q 21.484375 6.890625 26.8125 6.890625 
+Q 36.078125 6.890625 40.9375 10.546875 
+Q 45.796875 14.203125 45.796875 21.1875 
+Q 45.796875 27.640625 41.28125 31.265625 
+Q 36.765625 34.90625 28.71875 34.90625 
+L 20.21875 34.90625 
+L 20.21875 43.015625 
+L 29.109375 43.015625 
+Q 36.375 43.015625 40.234375 45.921875 
+Q 44.09375 48.828125 44.09375 54.296875 
+Q 44.09375 59.90625 40.109375 62.90625 
+Q 36.140625 65.921875 28.71875 65.921875 
+Q 24.65625 65.921875 20.015625 65.03125 
+Q 15.375 64.15625 9.8125 62.3125 
+L 9.8125 71.09375 
+Q 15.4375 72.65625 20.34375 73.4375 
+Q 25.25 74.21875 29.59375 74.21875 
+Q 40.828125 74.21875 47.359375 69.109375 
+Q 53.90625 64.015625 53.90625 55.328125 
+Q 53.90625 49.265625 50.4375 45.09375 
+Q 46.96875 40.921875 40.578125 39.3125 
+z
+" id="DejaVuSans-51"></path>
+      </defs>
+      <g transform="translate(20.878125 165.857633)scale(0.1 -0.1)">
+       <use xlink:href="#DejaVuSans-51"></use>
+       <use x="63.623047" xlink:href="#DejaVuSans-48"></use>
+       <use x="127.246094" xlink:href="#DejaVuSans-48"></use>
+      </g>
+     </g>
+    </g>
+    <g id="ytick_5">
+     <g id="line2d_7">
+      <g>
+       <use style="stroke:#000000;stroke-width:0.8;" x="46.965625" xlink:href="#md168fdfda4" y="130.83851"></use>
+      </g>
+     </g>
+     <g id="text_7">
+      <!-- 400 -->
+      <defs>
+       <path d="M 37.796875 64.3125 
+L 12.890625 25.390625 
+L 37.796875 25.390625 
+z
+M 35.203125 72.90625 
+L 47.609375 72.90625 
+L 47.609375 25.390625 
+L 58.015625 25.390625 
+L 58.015625 17.1875 
+L 47.609375 17.1875 
+L 47.609375 0 
+L 37.796875 0 
+L 37.796875 17.1875 
+L 4.890625 17.1875 
+L 4.890625 26.703125 
+z
+" id="DejaVuSans-52"></path>
+      </defs>
+      <g transform="translate(20.878125 134.637729)scale(0.1 -0.1)">
+       <use xlink:href="#DejaVuSans-52"></use>
+       <use x="63.623047" xlink:href="#DejaVuSans-48"></use>
+       <use x="127.246094" xlink:href="#DejaVuSans-48"></use>
+      </g>
+     </g>
+    </g>
+    <g id="ytick_6">
+     <g id="line2d_8">
+      <g>
+       <use style="stroke:#000000;stroke-width:0.8;" x="46.965625" xlink:href="#md168fdfda4" y="99.618607"></use>
+      </g>
+     </g>
+     <g id="text_8">
+      <!-- 500 -->
+      <defs>
+       <path d="M 10.796875 72.90625 
+L 49.515625 72.90625 
+L 49.515625 64.59375 
+L 19.828125 64.59375 
+L 19.828125 46.734375 
+Q 21.96875 47.46875 24.109375 47.828125 
+Q 26.265625 48.1875 28.421875 48.1875 
+Q 40.625 48.1875 47.75 41.5 
+Q 54.890625 34.8125 54.890625 23.390625 
+Q 54.890625 11.625 47.5625 5.09375 
+Q 40.234375 -1.421875 26.90625 -1.421875 
+Q 22.3125 -1.421875 17.546875 -0.640625 
+Q 12.796875 0.140625 7.71875 1.703125 
+L 7.71875 11.625 
+Q 12.109375 9.234375 16.796875 8.0625 
+Q 21.484375 6.890625 26.703125 6.890625 
+Q 35.15625 6.890625 40.078125 11.328125 
+Q 45.015625 15.765625 45.015625 23.390625 
+Q 45.015625 31 40.078125 35.4375 
+Q 35.15625 39.890625 26.703125 39.890625 
+Q 22.75 39.890625 18.8125 39.015625 
+Q 14.890625 38.140625 10.796875 36.28125 
+z
+" id="DejaVuSans-53"></path>
+      </defs>
+      <g transform="translate(20.878125 103.417825)scale(0.1 -0.1)">
+       <use xlink:href="#DejaVuSans-53"></use>
+       <use x="63.623047" xlink:href="#DejaVuSans-48"></use>
+       <use x="127.246094" xlink:href="#DejaVuSans-48"></use>
+      </g>
+     </g>
+    </g>
+    <g id="ytick_7">
+     <g id="line2d_9">
+      <g>
+       <use style="stroke:#000000;stroke-width:0.8;" x="46.965625" xlink:href="#md168fdfda4" y="68.398703"></use>
+      </g>
+     </g>
+     <g id="text_9">
+      <!-- 600 -->
+      <defs>
+       <path d="M 33.015625 40.375 
+Q 26.375 40.375 22.484375 35.828125 
+Q 18.609375 31.296875 18.609375 23.390625 
+Q 18.609375 15.53125 22.484375 10.953125 
+Q 26.375 6.390625 33.015625 6.390625 
+Q 39.65625 6.390625 43.53125 10.953125 
+Q 47.40625 15.53125 47.40625 23.390625 
+Q 47.40625 31.296875 43.53125 35.828125 
+Q 39.65625 40.375 33.015625 40.375 
+z
+M 52.59375 71.296875 
+L 52.59375 62.3125 
+Q 48.875 64.0625 45.09375 64.984375 
+Q 41.3125 65.921875 37.59375 65.921875 
+Q 27.828125 65.921875 22.671875 59.328125 
+Q 17.53125 52.734375 16.796875 39.40625 
+Q 19.671875 43.65625 24.015625 45.921875 
+Q 28.375 48.1875 33.59375 48.1875 
+Q 44.578125 48.1875 50.953125 41.515625 
+Q 57.328125 34.859375 57.328125 23.390625 
+Q 57.328125 12.15625 50.6875 5.359375 
+Q 44.046875 -1.421875 33.015625 -1.421875 
+Q 20.359375 -1.421875 13.671875 8.265625 
+Q 6.984375 17.96875 6.984375 36.375 
+Q 6.984375 53.65625 15.1875 63.9375 
+Q 23.390625 74.21875 37.203125 74.21875 
+Q 40.921875 74.21875 44.703125 73.484375 
+Q 48.484375 72.75 52.59375 71.296875 
+z
+" id="DejaVuSans-54"></path>
+      </defs>
+      <g transform="translate(20.878125 72.197922)scale(0.1 -0.1)">
+       <use xlink:href="#DejaVuSans-54"></use>
+       <use x="63.623047" xlink:href="#DejaVuSans-48"></use>
+       <use x="127.246094" xlink:href="#DejaVuSans-48"></use>
+      </g>
+     </g>
+    </g>
+    <g id="ytick_8">
+     <g id="line2d_10">
+      <g>
+       <use style="stroke:#000000;stroke-width:0.8;" x="46.965625" xlink:href="#md168fdfda4" y="37.178799"></use>
+      </g>
+     </g>
+     <g id="text_10">
+      <!-- 700 -->
+      <defs>
+       <path d="M 8.203125 72.90625 
+L 55.078125 72.90625 
+L 55.078125 68.703125 
+L 28.609375 0 
+L 18.3125 0 
+L 43.21875 64.59375 
+L 8.203125 64.59375 
+z
+" id="DejaVuSans-55"></path>
+      </defs>
+      <g transform="translate(20.878125 40.978018)scale(0.1 -0.1)">
+       <use xlink:href="#DejaVuSans-55"></use>
+       <use x="63.623047" xlink:href="#DejaVuSans-48"></use>
+       <use x="127.246094" xlink:href="#DejaVuSans-48"></use>
+      </g>
+     </g>
+    </g>
+    <g id="text_11">
+     <!-- Tokens -->
+     <g transform="translate(14.798438 155.845469)rotate(-90)scale(0.1 -0.1)">
+      <use xlink:href="#DejaVuSans-84"></use>
+      <use x="44.083984" xlink:href="#DejaVuSans-111"></use>
+      <use x="105.265625" xlink:href="#DejaVuSans-107"></use>
+      <use x="159.550781" xlink:href="#DejaVuSans-101"></use>
+      <use x="221.074219" xlink:href="#DejaVuSans-110"></use>
+      <use x="284.453125" xlink:href="#DejaVuSans-115"></use>
+     </g>
+    </g>
+   </g>
+   <g id="patch_7">
+    <path d="M 46.965625 255.718125 
+L 46.965625 22.318125 
+" style="fill:none;stroke:#000000;stroke-linecap:square;stroke-linejoin:miter;stroke-width:0.8;"></path>
+   </g>
+   <g id="patch_8">
+    <path d="M 417.490625 255.718125 
+L 417.490625 22.318125 
+" style="fill:none;stroke:#000000;stroke-linecap:square;stroke-linejoin:miter;stroke-width:0.8;"></path>
+   </g>
+   <g id="patch_9">
+    <path d="M 46.965625 255.718125 
+L 417.490625 255.718125 
+" style="fill:none;stroke:#000000;stroke-linecap:square;stroke-linejoin:miter;stroke-width:0.8;"></path>
+   </g>
+   <g id="patch_10">
+    <path d="M 46.965625 22.318125 
+L 417.490625 22.318125 
+" style="fill:none;stroke:#000000;stroke-linecap:square;stroke-linejoin:miter;stroke-width:0.8;"></path>
+   </g>
+   <g id="text_12">
+    <!-- Tokens before and after -->
+    <defs>
+     <path d="M 48.6875 27.296875 
+Q 48.6875 37.203125 44.609375 42.84375 
+Q 40.53125 48.484375 33.40625 48.484375 
+Q 26.265625 48.484375 22.1875 42.84375 
+Q 18.109375 37.203125 18.109375 27.296875 
+Q 18.109375 17.390625 22.1875 11.75 
+Q 26.265625 6.109375 33.40625 6.109375 
+Q 40.53125 6.109375 44.609375 11.75 
+Q 48.6875 17.390625 48.6875 27.296875 
+z
+M 18.109375 46.390625 
+Q 20.953125 51.265625 25.265625 53.625 
+Q 29.59375 56 35.59375 56 
+Q 45.5625 56 51.78125 48.09375 
+Q 58.015625 40.1875 58.015625 27.296875 
+Q 58.015625 14.40625 51.78125 6.484375 
+Q 45.5625 -1.421875 35.59375 -1.421875 
+Q 29.59375 -1.421875 25.265625 0.953125 
+Q 20.953125 3.328125 18.109375 8.203125 
+L 18.109375 0 
+L 9.078125 0 
+L 9.078125 75.984375 
+L 18.109375 75.984375 
+z
+" id="DejaVuSans-98"></path>
+     <path d="M 37.109375 75.984375 
+L 37.109375 68.5 
+L 28.515625 68.5 
+Q 23.6875 68.5 21.796875 66.546875 
+Q 19.921875 64.59375 19.921875 59.515625 
+L 19.921875 54.6875 
+L 34.71875 54.6875 
+L 34.71875 47.703125 
+L 19.921875 47.703125 
+L 19.921875 0 
+L 10.890625 0 
+L 10.890625 47.703125 
+L 2.296875 47.703125 
+L 2.296875 54.6875 
+L 10.890625 54.6875 
+L 10.890625 58.5 
+Q 10.890625 67.625 15.140625 71.796875 
+Q 19.390625 75.984375 28.609375 75.984375 
+z
+" id="DejaVuSans-102"></path>
+     <path d="M 41.109375 46.296875 
+Q 39.59375 47.171875 37.8125 47.578125 
+Q 36.03125 48 33.890625 48 
+Q 26.265625 48 22.1875 43.046875 
+Q 18.109375 38.09375 18.109375 28.8125 
+L 18.109375 0 
+L 9.078125 0 
+L 9.078125 54.6875 
+L 18.109375 54.6875 
+L 18.109375 46.1875 
+Q 20.953125 51.171875 25.484375 53.578125 
+Q 30.03125 56 36.53125 56 
+Q 37.453125 56 38.578125 55.875 
+Q 39.703125 55.765625 41.0625 55.515625 
+z
+" id="DejaVuSans-114"></path>
+     <path d="M 34.28125 27.484375 
+Q 23.390625 27.484375 19.1875 25 
+Q 14.984375 22.515625 14.984375 16.5 
+Q 14.984375 11.71875 18.140625 8.90625 
+Q 21.296875 6.109375 26.703125 6.109375 
+Q 34.1875 6.109375 38.703125 11.40625 
+Q 43.21875 16.703125 43.21875 25.484375 
+L 43.21875 27.484375 
+z
+M 52.203125 31.203125 
+L 52.203125 0 
+L 43.21875 0 
+L 43.21875 8.296875 
+Q 40.140625 3.328125 35.546875 0.953125 
+Q 30.953125 -1.421875 24.3125 -1.421875 
+Q 15.921875 -1.421875 10.953125 3.296875 
+Q 6 8.015625 6 15.921875 
+Q 6 25.140625 12.171875 29.828125 
+Q 18.359375 34.515625 30.609375 34.515625 
+L 43.21875 34.515625 
+L 43.21875 35.40625 
+Q 43.21875 41.609375 39.140625 45 
+Q 35.0625 48.390625 27.6875 48.390625 
+Q 23 48.390625 18.546875 47.265625 
+Q 14.109375 46.140625 10.015625 43.890625 
+L 10.015625 52.203125 
+Q 14.9375 54.109375 19.578125 55.046875 
+Q 24.21875 56 28.609375 56 
+Q 40.484375 56 46.34375 49.84375 
+Q 52.203125 43.703125 52.203125 31.203125 
+z
+" id="DejaVuSans-97"></path>
+     <path d="M 45.40625 46.390625 
+L 45.40625 75.984375 
+L 54.390625 75.984375 
+L 54.390625 0 
+L 45.40625 0 
+L 45.40625 8.203125 
+Q 42.578125 3.328125 38.25 0.953125 
+Q 33.9375 -1.421875 27.875 -1.421875 
+Q 17.96875 -1.421875 11.734375 6.484375 
+Q 5.515625 14.40625 5.515625 27.296875 
+Q 5.515625 40.1875 11.734375 48.09375 
+Q 17.96875 56 27.875 56 
+Q 33.9375 56 38.25 53.625 
+Q 42.578125 51.265625 45.40625 46.390625 
+z
+M 14.796875 27.296875 
+Q 14.796875 17.390625 18.875 11.75 
+Q 22.953125 6.109375 30.078125 6.109375 
+Q 37.203125 6.109375 41.296875 11.75 
+Q 45.40625 17.390625 45.40625 27.296875 
+Q 45.40625 37.203125 41.296875 42.84375 
+Q 37.203125 48.484375 30.078125 48.484375 
+Q 22.953125 48.484375 18.875 42.84375 
+Q 14.796875 37.203125 14.796875 27.296875 
+z
+" id="DejaVuSans-100"></path>
+     <path d="M 18.3125 70.21875 
+L 18.3125 54.6875 
+L 36.8125 54.6875 
+L 36.8125 47.703125 
+L 18.3125 47.703125 
+L 18.3125 18.015625 
+Q 18.3125 11.328125 20.140625 9.421875 
+Q 21.96875 7.515625 27.59375 7.515625 
+L 36.8125 7.515625 
+L 36.8125 0 
+L 27.59375 0 
+Q 17.1875 0 13.234375 3.875 
+Q 9.28125 7.765625 9.28125 18.015625 
+L 9.28125 47.703125 
+L 2.6875 47.703125 
+L 2.6875 54.6875 
+L 9.28125 54.6875 
+L 9.28125 70.21875 
+z
+" id="DejaVuSans-116"></path>
+    </defs>
+    <g transform="translate(161.52375 16.318125)scale(0.12 -0.12)">
+     <use xlink:href="#DejaVuSans-84"></use>
+     <use x="44.083984" xlink:href="#DejaVuSans-111"></use>
+     <use x="105.265625" xlink:href="#DejaVuSans-107"></use>
+     <use x="159.550781" xlink:href="#DejaVuSans-101"></use>
+     <use x="221.074219" xlink:href="#DejaVuSans-110"></use>
+     <use x="284.453125" xlink:href="#DejaVuSans-115"></use>
+     <use x="336.552734" xlink:href="#DejaVuSans-32"></use>
+     <use x="368.339844" xlink:href="#DejaVuSans-98"></use>
+     <use x="431.816406" xlink:href="#DejaVuSans-101"></use>
+     <use x="493.339844" xlink:href="#DejaVuSans-102"></use>
+     <use x="528.544922" xlink:href="#DejaVuSans-111"></use>
+     <use x="589.726562" xlink:href="#DejaVuSans-114"></use>
+     <use x="628.589844" xlink:href="#DejaVuSans-101"></use>
+     <use x="690.113281" xlink:href="#DejaVuSans-32"></use>
+     <use x="721.900391" xlink:href="#DejaVuSans-97"></use>
+     <use x="783.179688" xlink:href="#DejaVuSans-110"></use>
+     <use x="846.558594" xlink:href="#DejaVuSans-100"></use>
+     <use x="910.035156" xlink:href="#DejaVuSans-32"></use>
+     <use x="941.822266" xlink:href="#DejaVuSans-97"></use>
+     <use x="1003.101562" xlink:href="#DejaVuSans-102"></use>
+     <use x="1036.556641" xlink:href="#DejaVuSans-116"></use>
+     <use x="1075.765625" xlink:href="#DejaVuSans-101"></use>
+     <use x="1137.289062" xlink:href="#DejaVuSans-114"></use>
+    </g>
+   </g>
+   <g id="legend_1">
+    <g id="patch_11">
+     <path d="M 345.798437 59.674375 
+L 410.490625 59.674375 
+Q 412.490625 59.674375 412.490625 57.674375 
+L 412.490625 29.318125 
+Q 412.490625 27.318125 410.490625 27.318125 
+L 345.798437 27.318125 
+Q 343.798437 27.318125 343.798437 29.318125 
+L 343.798437 57.674375 
+Q 343.798437 59.674375 345.798437 59.674375 
+z
+" style="fill:#ffffff;opacity:0.8;stroke:#cccccc;stroke-linejoin:miter;"></path>
+    </g>
+    <g id="patch_12">
+     <path d="M 347.798437 38.916562 
+L 367.798437 38.916562 
+L 367.798437 31.916562 
+L 347.798437 31.916562 
+z
+" style="fill:#1f77b4;"></path>
+    </g>
+    <g id="text_13">
+     <!-- Before -->
+     <defs>
+      <path d="M 19.671875 34.8125 
+L 19.671875 8.109375 
+L 35.5 8.109375 
+Q 43.453125 8.109375 47.28125 11.40625 
+Q 51.125 14.703125 51.125 21.484375 
+Q 51.125 28.328125 47.28125 31.5625 
+Q 43.453125 34.8125 35.5 34.8125 
+z
+M 19.671875 64.796875 
+L 19.671875 42.828125 
+L 34.28125 42.828125 
+Q 41.5 42.828125 45.03125 45.53125 
+Q 48.578125 48.25 48.578125 53.8125 
+Q 48.578125 59.328125 45.03125 62.0625 
+Q 41.5 64.796875 34.28125 64.796875 
+z
+M 9.8125 72.90625 
+L 35.015625 72.90625 
+Q 46.296875 72.90625 52.390625 68.21875 
+Q 58.5 63.53125 58.5 54.890625 
+Q 58.5 48.1875 55.375 44.234375 
+Q 52.25 40.28125 46.1875 39.3125 
+Q 53.46875 37.75 57.5 32.78125 
+Q 61.53125 27.828125 61.53125 20.40625 
+Q 61.53125 10.640625 54.890625 5.3125 
+Q 48.25 0 35.984375 0 
+L 9.8125 0 
+z
+" id="DejaVuSans-66"></path>
+     </defs>
+     <g transform="translate(375.798437 38.916562)scale(0.1 -0.1)">
+      <use xlink:href="#DejaVuSans-66"></use>
+      <use x="68.603516" xlink:href="#DejaVuSans-101"></use>
+      <use x="130.126953" xlink:href="#DejaVuSans-102"></use>
+      <use x="165.332031" xlink:href="#DejaVuSans-111"></use>
+      <use x="226.513672" xlink:href="#DejaVuSans-114"></use>
+      <use x="265.376953" xlink:href="#DejaVuSans-101"></use>
+     </g>
+    </g>
+    <g id="patch_13">
+     <path d="M 347.798437 53.594687 
+L 367.798437 53.594687 
+L 367.798437 46.594687 
+L 347.798437 46.594687 
+z
+" style="fill:#ff7f0e;"></path>
+    </g>
+    <g id="text_14">
+     <!-- After -->
+     <defs>
+      <path d="M 34.1875 63.1875 
+L 20.796875 26.90625 
+L 47.609375 26.90625 
+z
+M 28.609375 72.90625 
+L 39.796875 72.90625 
+L 67.578125 0 
+L 57.328125 0 
+L 50.6875 18.703125 
+L 17.828125 18.703125 
+L 11.1875 0 
+L 0.78125 0 
+z
+" id="DejaVuSans-65"></path>
+     </defs>
+     <g transform="translate(375.798437 53.594687)scale(0.1 -0.1)">
+      <use xlink:href="#DejaVuSans-65"></use>
+      <use x="64.783203" xlink:href="#DejaVuSans-102"></use>
+      <use x="98.238281" xlink:href="#DejaVuSans-116"></use>
+      <use x="137.447266" xlink:href="#DejaVuSans-101"></use>
+      <use x="198.970703" xlink:href="#DejaVuSans-114"></use>
+     </g>
+    </g>
+   </g>
+  </g>
+ </g>
+ <defs>
+  <clippath id="p2e43525c47">
+   <rect height="233.4" width="370.525" x="46.965625" y="22.318125"></rect>
+  </clippath>
+ </defs>
+</svg>
+
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h4 id="Lower-casing">
+<a class="anchor" href="#Lower-casing" aria-hidden="true"><span class="octicon octicon-link"></span></a>Lower-casing<a class="anchor-link" href="#Lower-casing"> </a>
+</h4>
+<p>Going from 5.5 to 10 % reduction is nothing to sneeze at, by applying these two simple techniques we now have the same data in a better format which allows us to have a lower number of unique tokens.<br>
+Pretty awesome right?</p>
+<p>Let's get on with this and apply the preprocessing to the questions and test it out with the FAQ-search!</p>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df</span><span class="p">[</span><span class="s1">'X'</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">'question'</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">preprocess</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">preprocess_funcs</span><span class="p">))</span>
+<span class="n">df</span><span class="p">[</span><span class="s1">'X'</span><span class="p">]</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>0                            [vad, är, coronavirus, ?]
+1                               [vad, är, covid-19, ?]
+2    [vad, skiljer, covid-19, från, säsongsinfluens...
+3               [vilka, är, symtomen, på, covid-19, ?]
+4    [hur, vet, jag, om, mina, symtom, beror, på, p...
+Name: X, dtype: object</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Testing-the-new-input-data">
+<a class="anchor" href="#Testing-the-new-input-data" aria-hidden="true"><span class="octicon octicon-link"></span></a>Testing the new input-data<a class="anchor-link" href="#Testing-the-new-input-data"> </a>
+</h3>
+<p>Now that we've created our input data we need to test our model on this!<br>
+By applying the <code>IndexedList</code> which is the dataformat <code>SFE</code> wants as input we can train the model and then test it.</p>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">sfe_format</span> <span class="o">=</span> <span class="n">IndexedList</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">'X'</span><span class="p">]</span><span class="o">.</span><span class="n">tolist</span><span class="p">())</span>
+<span class="n">model</span><span class="o">.</span><span class="n">train</span><span class="p">(</span><span class="n">sfe_format</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>(75, 712)</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">get_n_closest_questions</span><span class="p">(</span><span class="n">question</span><span class="p">,</span> <span class="n">preprocessing</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">4</span><span class="p">):</span>
+    <span class="n">q_fixed</span> <span class="o">=</span> <span class="n">preprocess</span><span class="p">(</span><span class="n">question</span><span class="p">,</span> <span class="n">preprocessing</span><span class="p">)</span>
+    <span class="n">resp</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">sv</span><span class="o">.</span><span class="n">similar_by_sentence</span><span class="p">(</span><span class="n">q_fixed</span><span class="p">,</span> <span class="n">model</span><span class="o">=</span><span class="n">model</span><span class="p">,</span> <span class="n">indexable</span><span class="o">=</span><span class="n">df</span><span class="p">[</span><span class="s1">'question'</span><span class="p">]</span><span class="o">.</span><span class="n">tolist</span><span class="p">())</span> <span class="c1"># [([tokens], score)]</span>
+    <span class="n">resp</span> <span class="o">=</span> <span class="p">[</span><span class="sa">f</span><span class="s1">'</span><span class="si">{</span><span class="n">result</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="si">:</span><span class="s1">.2f</span><span class="si">}</span><span class="s1">: </span><span class="si">{</span><span class="n">result</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s1">'</span> <span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> <span class="n">resp</span><span class="p">]</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">'</span><span class="se">\n</span><span class="s1">'</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">resp</span><span class="p">[:</span><span class="n">n</span><span class="p">]))</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">get_n_closest_questions</span><span class="p">(</span><span class="s2">"kan min hamster bli smittad?"</span><span class="p">,</span> <span class="n">preprocess_funcs</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>0.67: Kan man bli smittad av en person som har covid-19 men som inte har några symtom?
+0.63: Kan covid-19 smitta mellan djur och människa och kan mitt husdjur smittas av viruset?
+0.54: Kan viruset smitta till människa via post och paket?
+0.42: Kan smitta överföras från mygg till människa?
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">get_n_closest_questions</span><span class="p">(</span><span class="s2">"Hur får jag min son att förstå?"</span><span class="p">,</span> <span class="n">preprocess_funcs</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>0.82: Hur pratar man med barn om det nya coronaviruset?
+0.80: Vad är covid-19?
+0.78: Hur sjuk blir man av covid-19?
+0.77: Hur länge är man sjuk av covid-19?
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="2.-Lemmatization-and-Stop-Words">
+<a class="anchor" href="#2.-Lemmatization-and-Stop-Words" aria-hidden="true"><span class="octicon octicon-link"></span></a>2. Lemmatization and Stop Words<a class="anchor-link" href="#2.-Lemmatization-and-Stop-Words"> </a>
+</h3>
+<p>Let's try to further improve this by actually lemmatizing and applying stop-words!</p>
+<h4 id="Lemmatization">
+<a class="anchor" href="#Lemmatization" aria-hidden="true"><span class="octicon octicon-link"></span></a>Lemmatization<a class="anchor-link" href="#Lemmatization"> </a>
+</h4>
+<p>So what is Lemmatization? Quoting Stanfords description:</p>
+<blockquote>
+<p>For grammatical reasons, documents are going to use different forms of a word, such as organize, organizes, and organizing. Additionally, there are families of derivationally related words with similar meanings, such as democracy, democratic, and democratization. In many situations, it seems as if it would be useful for a search for one of these words to return documents that contain another word in the set.</p>
+<p>The goal of both stemming and lemmatization is to reduce inflectional forms and sometimes derivationally related forms of a word to a common base form. For instance:```     am, are, is =&gt; be
+     car, cars, car's, cars' =&gt; car</p>
+
+<pre><code>The result of this mapping of text will be something like:```     the boy's cars are different colors =&gt;
+     the boy car be differ color</code></pre>
+</blockquote>
+<h4 id="What-is-stop-words?">
+<a class="anchor" href="#What-is-stop-words?" aria-hidden="true"><span class="octicon octicon-link"></span></a>What is stop-words?<a class="anchor-link" href="#What-is-stop-words?"> </a>
+</h4>
+<p>Stop-words are words we want to throw away as they add no real purpose. In older Machine Learning approaches it was way more important to add stop-words but in newer Deep Learning with Neural Networks stop-words often can be a negative thing, removing understanding of the sentence and perhaps minor differences which makes the world for understanding.</p>
+<p>A example of a stop-word list could be <code>["hej", "vem", "då", "och", ...]</code> which means that these words would be removed from a sentence.</p>
+<p>In our case it makes sense to remove words like 'vad', 'varför'  and so on because the return of the FAQ seems to be very weighted towards these words.</p>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">nlp</span> <span class="o">=</span> <span class="n">stanza</span><span class="o">.</span><span class="n">Pipeline</span><span class="p">(</span><span class="n">lang</span><span class="o">=</span><span class="s1">'sv'</span><span class="p">,</span> <span class="n">processors</span><span class="o">=</span><span class="s1">'tokenize,mwt,pos,lemma'</span><span class="p">,</span> <span class="n">logging_level</span><span class="o">=</span><span class="s1">'ERROR'</span><span class="p">)</span>
+<span class="n">stanza_lemma</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="p">[</span><span class="n">token</span><span class="o">.</span><span class="n">lemma</span> <span class="k">for</span> <span class="n">sentence</span> <span class="ow">in</span> <span class="n">nlp</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="o">.</span><span class="n">sentences</span> <span class="k">for</span> <span class="n">token</span> <span class="ow">in</span> <span class="n">sentence</span><span class="o">.</span><span class="n">words</span><span class="p">]</span>
+<span class="n">preprocess_funcs_lemma</span> <span class="o">=</span> <span class="p">[</span><span class="n">lowercase</span><span class="p">,</span> <span class="n">stanza_lemma</span><span class="p">]</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">'Previously:</span><span class="se">\t</span><span class="si">{</span><span class="n">preprocess</span><span class="p">(</span><span class="s2">"hur förklarar jag för min dotter och son?"</span><span class="p">,</span> <span class="n">preprocess_funcs</span><span class="p">)</span><span class="si">}</span><span class="s1">'</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">'After:</span><span class="se">\t\t</span><span class="si">{</span><span class="n">preprocess</span><span class="p">(</span><span class="s2">"hur förklarar jag för min dotter och son?"</span><span class="p">,</span> <span class="n">preprocess_funcs_lemma</span><span class="p">)</span><span class="si">}</span><span class="s1">'</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>Previously:	['hur', 'förklarar', 'jag', 'för', 'min', 'dotter', 'och', 'son', '?']
+After:		['hur', 'förklara', 'jag', 'för', 'jag', 'dotter', 'och', 'son', '?']
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><strong>Some interesting notes</strong><br>
+Seeing '<em>min</em>' getting converted to '<em>jag</em>' is both good and bad, in this case we reduce dimensionality of the problem but we loose context and understanding. <em>jag</em> and <em>min</em> certainly does not mean the same thing.</p>
+<p>Let's see how it pans out...</p>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">test_dimensions</span><span class="p">(</span><span class="n">preprocess_funcs_lemma</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>Previously: 629 tokens (289 unique)
+Post: 712 tokens (228 unique)
+Token reduction by ~21.1 %
+</pre>
+</div>
+</div>
+
+<div class="output_area">
+
+
+<div class="output_svg output_subarea ">
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+&lt;!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"&gt;
+<!-- Created with matplotlib (https://matplotlib.org/) -->
+<svg height="279.59625pt" version="1.1" viewbox="0 0 424.690625 279.59625" width="424.690625pt" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+ <defs>
+  <style type="text/css">
+*{stroke-linecap:butt;stroke-linejoin:round;}
+  </style>
+ </defs>
+ <g id="figure_1">
+  <g id="patch_1">
+   <path d="M -0 279.59625 
+L 424.690625 279.59625 
+L 424.690625 0 
+L -0 0 
+z
+" style="fill:none;"></path>
+  </g>
+  <g id="axes_1">
+   <g id="patch_2">
+    <path d="M 46.965625 255.718125 
+L 417.490625 255.718125 
+L 417.490625 22.318125 
+L 46.965625 22.318125 
+z
+" style="fill:#ffffff;"></path>
+   </g>
+   <g id="patch_3">
+    <path clip-path="url(#pcebb41a186)" d="M 63.80767 255.718125 
+L 133.157269 255.718125 
+L 133.157269 59.344931 
+L 63.80767 59.344931 
+z
+" style="fill:#1f77b4;"></path>
+   </g>
+   <g id="patch_4">
+    <path clip-path="url(#pcebb41a186)" d="M 261.949382 255.718125 
+L 331.298981 255.718125 
+L 331.298981 165.492603 
+L 261.949382 165.492603 
+z
+" style="fill:#1f77b4;"></path>
+   </g>
+   <g id="patch_5">
+    <path clip-path="url(#pcebb41a186)" d="M 133.157269 255.718125 
+L 202.506868 255.718125 
+L 202.506868 33.432411 
+L 133.157269 33.432411 
+z
+" style="fill:#ff7f0e;"></path>
+   </g>
+   <g id="patch_6">
+    <path clip-path="url(#pcebb41a186)" d="M 331.298981 255.718125 
+L 400.64858 255.718125 
+L 400.64858 184.536745 
+L 331.298981 184.536745 
+z
+" style="fill:#ff7f0e;"></path>
+   </g>
+   <g id="matplotlib.axis_1">
+    <g id="xtick_1">
+     <g id="line2d_1">
+      <defs>
+       <path d="M 0 0 
+L 0 3.5 
+" id="m4d2d8ecdd4" style="stroke:#000000;stroke-width:0.8;"></path>
+      </defs>
+      <g>
+       <use style="stroke:#000000;stroke-width:0.8;" x="133.157269" xlink:href="#m4d2d8ecdd4" y="255.718125"></use>
+      </g>
+     </g>
+     <g id="text_1">
+      <!-- #Tokens -->
+      <defs>
+       <path d="M 51.125 44 
+L 36.921875 44 
+L 32.8125 27.6875 
+L 47.125 27.6875 
+z
+M 43.796875 71.78125 
+L 38.71875 51.515625 
+L 52.984375 51.515625 
+L 58.109375 71.78125 
+L 65.921875 71.78125 
+L 60.890625 51.515625 
+L 76.125 51.515625 
+L 76.125 44 
+L 58.984375 44 
+L 54.984375 27.6875 
+L 70.515625 27.6875 
+L 70.515625 20.21875 
+L 53.078125 20.21875 
+L 48 0 
+L 40.1875 0 
+L 45.21875 20.21875 
+L 30.90625 20.21875 
+L 25.875 0 
+L 18.015625 0 
+L 23.09375 20.21875 
+L 7.71875 20.21875 
+L 7.71875 27.6875 
+L 24.90625 27.6875 
+L 29 44 
+L 13.28125 44 
+L 13.28125 51.515625 
+L 30.90625 51.515625 
+L 35.890625 71.78125 
+z
+" id="DejaVuSans-35"></path>
+       <path d="M -0.296875 72.90625 
+L 61.375 72.90625 
+L 61.375 64.59375 
+L 35.5 64.59375 
+L 35.5 0 
+L 25.59375 0 
+L 25.59375 64.59375 
+L -0.296875 64.59375 
+z
+" id="DejaVuSans-84"></path>
+       <path d="M 30.609375 48.390625 
+Q 23.390625 48.390625 19.1875 42.75 
+Q 14.984375 37.109375 14.984375 27.296875 
+Q 14.984375 17.484375 19.15625 11.84375 
+Q 23.34375 6.203125 30.609375 6.203125 
+Q 37.796875 6.203125 41.984375 11.859375 
+Q 46.1875 17.53125 46.1875 27.296875 
+Q 46.1875 37.015625 41.984375 42.703125 
+Q 37.796875 48.390625 30.609375 48.390625 
+z
+M 30.609375 56 
+Q 42.328125 56 49.015625 48.375 
+Q 55.71875 40.765625 55.71875 27.296875 
+Q 55.71875 13.875 49.015625 6.21875 
+Q 42.328125 -1.421875 30.609375 -1.421875 
+Q 18.84375 -1.421875 12.171875 6.21875 
+Q 5.515625 13.875 5.515625 27.296875 
+Q 5.515625 40.765625 12.171875 48.375 
+Q 18.84375 56 30.609375 56 
+z
+" id="DejaVuSans-111"></path>
+       <path d="M 9.078125 75.984375 
+L 18.109375 75.984375 
+L 18.109375 31.109375 
+L 44.921875 54.6875 
+L 56.390625 54.6875 
+L 27.390625 29.109375 
+L 57.625 0 
+L 45.90625 0 
+L 18.109375 26.703125 
+L 18.109375 0 
+L 9.078125 0 
+z
+" id="DejaVuSans-107"></path>
+       <path d="M 56.203125 29.59375 
+L 56.203125 25.203125 
+L 14.890625 25.203125 
+Q 15.484375 15.921875 20.484375 11.0625 
+Q 25.484375 6.203125 34.421875 6.203125 
+Q 39.59375 6.203125 44.453125 7.46875 
+Q 49.3125 8.734375 54.109375 11.28125 
+L 54.109375 2.78125 
+Q 49.265625 0.734375 44.1875 -0.34375 
+Q 39.109375 -1.421875 33.890625 -1.421875 
+Q 20.796875 -1.421875 13.15625 6.1875 
+Q 5.515625 13.8125 5.515625 26.8125 
+Q 5.515625 40.234375 12.765625 48.109375 
+Q 20.015625 56 32.328125 56 
+Q 43.359375 56 49.78125 48.890625 
+Q 56.203125 41.796875 56.203125 29.59375 
+z
+M 47.21875 32.234375 
+Q 47.125 39.59375 43.09375 43.984375 
+Q 39.0625 48.390625 32.421875 48.390625 
+Q 24.90625 48.390625 20.390625 44.140625 
+Q 15.875 39.890625 15.1875 32.171875 
+z
+" id="DejaVuSans-101"></path>
+       <path d="M 54.890625 33.015625 
+L 54.890625 0 
+L 45.90625 0 
+L 45.90625 32.71875 
+Q 45.90625 40.484375 42.875 44.328125 
+Q 39.84375 48.1875 33.796875 48.1875 
+Q 26.515625 48.1875 22.3125 43.546875 
+Q 18.109375 38.921875 18.109375 30.90625 
+L 18.109375 0 
+L 9.078125 0 
+L 9.078125 54.6875 
+L 18.109375 54.6875 
+L 18.109375 46.1875 
+Q 21.34375 51.125 25.703125 53.5625 
+Q 30.078125 56 35.796875 56 
+Q 45.21875 56 50.046875 50.171875 
+Q 54.890625 44.34375 54.890625 33.015625 
+z
+" id="DejaVuSans-110"></path>
+       <path d="M 44.28125 53.078125 
+L 44.28125 44.578125 
+Q 40.484375 46.53125 36.375 47.5 
+Q 32.28125 48.484375 27.875 48.484375 
+Q 21.1875 48.484375 17.84375 46.4375 
+Q 14.5 44.390625 14.5 40.28125 
+Q 14.5 37.15625 16.890625 35.375 
+Q 19.28125 33.59375 26.515625 31.984375 
+L 29.59375 31.296875 
+Q 39.15625 29.25 43.1875 25.515625 
+Q 47.21875 21.78125 47.21875 15.09375 
+Q 47.21875 7.46875 41.1875 3.015625 
+Q 35.15625 -1.421875 24.609375 -1.421875 
+Q 20.21875 -1.421875 15.453125 -0.5625 
+Q 10.6875 0.296875 5.421875 2 
+L 5.421875 11.28125 
+Q 10.40625 8.6875 15.234375 7.390625 
+Q 20.0625 6.109375 24.8125 6.109375 
+Q 31.15625 6.109375 34.5625 8.28125 
+Q 37.984375 10.453125 37.984375 14.40625 
+Q 37.984375 18.0625 35.515625 20.015625 
+Q 33.0625 21.96875 24.703125 23.78125 
+L 21.578125 24.515625 
+Q 13.234375 26.265625 9.515625 29.90625 
+Q 5.8125 33.546875 5.8125 39.890625 
+Q 5.8125 47.609375 11.28125 51.796875 
+Q 16.75 56 26.8125 56 
+Q 31.78125 56 36.171875 55.265625 
+Q 40.578125 54.546875 44.28125 53.078125 
+z
+" id="DejaVuSans-115"></path>
+      </defs>
+      <g transform="translate(112.140082 270.316563)scale(0.1 -0.1)">
+       <use xlink:href="#DejaVuSans-35"></use>
+       <use x="83.789062" xlink:href="#DejaVuSans-84"></use>
+       <use x="127.873047" xlink:href="#DejaVuSans-111"></use>
+       <use x="189.054688" xlink:href="#DejaVuSans-107"></use>
+       <use x="243.339844" xlink:href="#DejaVuSans-101"></use>
+       <use x="304.863281" xlink:href="#DejaVuSans-110"></use>
+       <use x="368.242188" xlink:href="#DejaVuSans-115"></use>
+      </g>
+     </g>
+    </g>
+    <g id="xtick_2">
+     <g id="line2d_2">
+      <g>
+       <use style="stroke:#000000;stroke-width:0.8;" x="331.298981" xlink:href="#m4d2d8ecdd4" y="255.718125"></use>
+      </g>
+     </g>
+     <g id="text_2">
+      <!-- #Unique Tokens -->
+      <defs>
+       <path d="M 8.6875 72.90625 
+L 18.609375 72.90625 
+L 18.609375 28.609375 
+Q 18.609375 16.890625 22.84375 11.734375 
+Q 27.09375 6.59375 36.625 6.59375 
+Q 46.09375 6.59375 50.34375 11.734375 
+Q 54.59375 16.890625 54.59375 28.609375 
+L 54.59375 72.90625 
+L 64.5 72.90625 
+L 64.5 27.390625 
+Q 64.5 13.140625 57.4375 5.859375 
+Q 50.390625 -1.421875 36.625 -1.421875 
+Q 22.796875 -1.421875 15.734375 5.859375 
+Q 8.6875 13.140625 8.6875 27.390625 
+z
+" id="DejaVuSans-85"></path>
+       <path d="M 9.421875 54.6875 
+L 18.40625 54.6875 
+L 18.40625 0 
+L 9.421875 0 
+z
+M 9.421875 75.984375 
+L 18.40625 75.984375 
+L 18.40625 64.59375 
+L 9.421875 64.59375 
+z
+" id="DejaVuSans-105"></path>
+       <path d="M 14.796875 27.296875 
+Q 14.796875 17.390625 18.875 11.75 
+Q 22.953125 6.109375 30.078125 6.109375 
+Q 37.203125 6.109375 41.296875 11.75 
+Q 45.40625 17.390625 45.40625 27.296875 
+Q 45.40625 37.203125 41.296875 42.84375 
+Q 37.203125 48.484375 30.078125 48.484375 
+Q 22.953125 48.484375 18.875 42.84375 
+Q 14.796875 37.203125 14.796875 27.296875 
+z
+M 45.40625 8.203125 
+Q 42.578125 3.328125 38.25 0.953125 
+Q 33.9375 -1.421875 27.875 -1.421875 
+Q 17.96875 -1.421875 11.734375 6.484375 
+Q 5.515625 14.40625 5.515625 27.296875 
+Q 5.515625 40.1875 11.734375 48.09375 
+Q 17.96875 56 27.875 56 
+Q 33.9375 56 38.25 53.625 
+Q 42.578125 51.265625 45.40625 46.390625 
+L 45.40625 54.6875 
+L 54.390625 54.6875 
+L 54.390625 -20.796875 
+L 45.40625 -20.796875 
+z
+" id="DejaVuSans-113"></path>
+       <path d="M 8.5 21.578125 
+L 8.5 54.6875 
+L 17.484375 54.6875 
+L 17.484375 21.921875 
+Q 17.484375 14.15625 20.5 10.265625 
+Q 23.53125 6.390625 29.59375 6.390625 
+Q 36.859375 6.390625 41.078125 11.03125 
+Q 45.3125 15.671875 45.3125 23.6875 
+L 45.3125 54.6875 
+L 54.296875 54.6875 
+L 54.296875 0 
+L 45.3125 0 
+L 45.3125 8.40625 
+Q 42.046875 3.421875 37.71875 1 
+Q 33.40625 -1.421875 27.6875 -1.421875 
+Q 18.265625 -1.421875 13.375 4.4375 
+Q 8.5 10.296875 8.5 21.578125 
+z
+M 31.109375 56 
+z
+" id="DejaVuSans-117"></path>
+       <path id="DejaVuSans-32"></path>
+      </defs>
+      <g transform="translate(291.056012 270.316563)scale(0.1 -0.1)">
+       <use xlink:href="#DejaVuSans-35"></use>
+       <use x="83.789062" xlink:href="#DejaVuSans-85"></use>
+       <use x="156.982422" xlink:href="#DejaVuSans-110"></use>
+       <use x="220.361328" xlink:href="#DejaVuSans-105"></use>
+       <use x="248.144531" xlink:href="#DejaVuSans-113"></use>
+       <use x="311.621094" xlink:href="#DejaVuSans-117"></use>
+       <use x="375" xlink:href="#DejaVuSans-101"></use>
+       <use x="436.523438" xlink:href="#DejaVuSans-32"></use>
+       <use x="468.310547" xlink:href="#DejaVuSans-84"></use>
+       <use x="512.394531" xlink:href="#DejaVuSans-111"></use>
+       <use x="573.576172" xlink:href="#DejaVuSans-107"></use>
+       <use x="627.861328" xlink:href="#DejaVuSans-101"></use>
+       <use x="689.384766" xlink:href="#DejaVuSans-110"></use>
+       <use x="752.763672" xlink:href="#DejaVuSans-115"></use>
+      </g>
+     </g>
+    </g>
+   </g>
+   <g id="matplotlib.axis_2">
+    <g id="ytick_1">
+     <g id="line2d_3">
+      <defs>
+       <path d="M 0 0 
+L -3.5 0 
+" id="m66a3796414" style="stroke:#000000;stroke-width:0.8;"></path>
+      </defs>
+      <g>
+       <use style="stroke:#000000;stroke-width:0.8;" x="46.965625" xlink:href="#m66a3796414" y="255.718125"></use>
+      </g>
+     </g>
+     <g id="text_3">
+      <!-- 0 -->
+      <defs>
+       <path d="M 31.78125 66.40625 
+Q 24.171875 66.40625 20.328125 58.90625 
+Q 16.5 51.421875 16.5 36.375 
+Q 16.5 21.390625 20.328125 13.890625 
+Q 24.171875 6.390625 31.78125 6.390625 
+Q 39.453125 6.390625 43.28125 13.890625 
+Q 47.125 21.390625 47.125 36.375 
+Q 47.125 51.421875 43.28125 58.90625 
+Q 39.453125 66.40625 31.78125 66.40625 
+z
+M 31.78125 74.21875 
+Q 44.046875 74.21875 50.515625 64.515625 
+Q 56.984375 54.828125 56.984375 36.375 
+Q 56.984375 17.96875 50.515625 8.265625 
+Q 44.046875 -1.421875 31.78125 -1.421875 
+Q 19.53125 -1.421875 13.0625 8.265625 
+Q 6.59375 17.96875 6.59375 36.375 
+Q 6.59375 54.828125 13.0625 64.515625 
+Q 19.53125 74.21875 31.78125 74.21875 
+z
+" id="DejaVuSans-48"></path>
+      </defs>
+      <g transform="translate(33.603125 259.517344)scale(0.1 -0.1)">
+       <use xlink:href="#DejaVuSans-48"></use>
+      </g>
+     </g>
+    </g>
+    <g id="ytick_2">
+     <g id="line2d_4">
+      <g>
+       <use style="stroke:#000000;stroke-width:0.8;" x="46.965625" xlink:href="#m66a3796414" y="224.498221"></use>
+      </g>
+     </g>
+     <g id="text_4">
+      <!-- 100 -->
+      <defs>
+       <path d="M 12.40625 8.296875 
+L 28.515625 8.296875 
+L 28.515625 63.921875 
+L 10.984375 60.40625 
+L 10.984375 69.390625 
+L 28.421875 72.90625 
+L 38.28125 72.90625 
+L 38.28125 8.296875 
+L 54.390625 8.296875 
+L 54.390625 0 
+L 12.40625 0 
+z
+" id="DejaVuSans-49"></path>
+      </defs>
+      <g transform="translate(20.878125 228.29744)scale(0.1 -0.1)">
+       <use xlink:href="#DejaVuSans-49"></use>
+       <use x="63.623047" xlink:href="#DejaVuSans-48"></use>
+       <use x="127.246094" xlink:href="#DejaVuSans-48"></use>
+      </g>
+     </g>
+    </g>
+    <g id="ytick_3">
+     <g id="line2d_5">
+      <g>
+       <use style="stroke:#000000;stroke-width:0.8;" x="46.965625" xlink:href="#m66a3796414" y="193.278318"></use>
+      </g>
+     </g>
+     <g id="text_5">
+      <!-- 200 -->
+      <defs>
+       <path d="M 19.1875 8.296875 
+L 53.609375 8.296875 
+L 53.609375 0 
+L 7.328125 0 
+L 7.328125 8.296875 
+Q 12.9375 14.109375 22.625 23.890625 
+Q 32.328125 33.6875 34.8125 36.53125 
+Q 39.546875 41.84375 41.421875 45.53125 
+Q 43.3125 49.21875 43.3125 52.78125 
+Q 43.3125 58.59375 39.234375 62.25 
+Q 35.15625 65.921875 28.609375 65.921875 
+Q 23.96875 65.921875 18.8125 64.3125 
+Q 13.671875 62.703125 7.8125 59.421875 
+L 7.8125 69.390625 
+Q 13.765625 71.78125 18.9375 73 
+Q 24.125 74.21875 28.421875 74.21875 
+Q 39.75 74.21875 46.484375 68.546875 
+Q 53.21875 62.890625 53.21875 53.421875 
+Q 53.21875 48.921875 51.53125 44.890625 
+Q 49.859375 40.875 45.40625 35.40625 
+Q 44.1875 33.984375 37.640625 27.21875 
+Q 31.109375 20.453125 19.1875 8.296875 
+z
+" id="DejaVuSans-50"></path>
+      </defs>
+      <g transform="translate(20.878125 197.077536)scale(0.1 -0.1)">
+       <use xlink:href="#DejaVuSans-50"></use>
+       <use x="63.623047" xlink:href="#DejaVuSans-48"></use>
+       <use x="127.246094" xlink:href="#DejaVuSans-48"></use>
+      </g>
+     </g>
+    </g>
+    <g id="ytick_4">
+     <g id="line2d_6">
+      <g>
+       <use style="stroke:#000000;stroke-width:0.8;" x="46.965625" xlink:href="#m66a3796414" y="162.058414"></use>
+      </g>
+     </g>
+     <g id="text_6">
+      <!-- 300 -->
+      <defs>
+       <path d="M 40.578125 39.3125 
+Q 47.65625 37.796875 51.625 33 
+Q 55.609375 28.21875 55.609375 21.1875 
+Q 55.609375 10.40625 48.1875 4.484375 
+Q 40.765625 -1.421875 27.09375 -1.421875 
+Q 22.515625 -1.421875 17.65625 -0.515625 
+Q 12.796875 0.390625 7.625 2.203125 
+L 7.625 11.71875 
+Q 11.71875 9.328125 16.59375 8.109375 
+Q 21.484375 6.890625 26.8125 6.890625 
+Q 36.078125 6.890625 40.9375 10.546875 
+Q 45.796875 14.203125 45.796875 21.1875 
+Q 45.796875 27.640625 41.28125 31.265625 
+Q 36.765625 34.90625 28.71875 34.90625 
+L 20.21875 34.90625 
+L 20.21875 43.015625 
+L 29.109375 43.015625 
+Q 36.375 43.015625 40.234375 45.921875 
+Q 44.09375 48.828125 44.09375 54.296875 
+Q 44.09375 59.90625 40.109375 62.90625 
+Q 36.140625 65.921875 28.71875 65.921875 
+Q 24.65625 65.921875 20.015625 65.03125 
+Q 15.375 64.15625 9.8125 62.3125 
+L 9.8125 71.09375 
+Q 15.4375 72.65625 20.34375 73.4375 
+Q 25.25 74.21875 29.59375 74.21875 
+Q 40.828125 74.21875 47.359375 69.109375 
+Q 53.90625 64.015625 53.90625 55.328125 
+Q 53.90625 49.265625 50.4375 45.09375 
+Q 46.96875 40.921875 40.578125 39.3125 
+z
+" id="DejaVuSans-51"></path>
+      </defs>
+      <g transform="translate(20.878125 165.857633)scale(0.1 -0.1)">
+       <use xlink:href="#DejaVuSans-51"></use>
+       <use x="63.623047" xlink:href="#DejaVuSans-48"></use>
+       <use x="127.246094" xlink:href="#DejaVuSans-48"></use>
+      </g>
+     </g>
+    </g>
+    <g id="ytick_5">
+     <g id="line2d_7">
+      <g>
+       <use style="stroke:#000000;stroke-width:0.8;" x="46.965625" xlink:href="#m66a3796414" y="130.83851"></use>
+      </g>
+     </g>
+     <g id="text_7">
+      <!-- 400 -->
+      <defs>
+       <path d="M 37.796875 64.3125 
+L 12.890625 25.390625 
+L 37.796875 25.390625 
+z
+M 35.203125 72.90625 
+L 47.609375 72.90625 
+L 47.609375 25.390625 
+L 58.015625 25.390625 
+L 58.015625 17.1875 
+L 47.609375 17.1875 
+L 47.609375 0 
+L 37.796875 0 
+L 37.796875 17.1875 
+L 4.890625 17.1875 
+L 4.890625 26.703125 
+z
+" id="DejaVuSans-52"></path>
+      </defs>
+      <g transform="translate(20.878125 134.637729)scale(0.1 -0.1)">
+       <use xlink:href="#DejaVuSans-52"></use>
+       <use x="63.623047" xlink:href="#DejaVuSans-48"></use>
+       <use x="127.246094" xlink:href="#DejaVuSans-48"></use>
+      </g>
+     </g>
+    </g>
+    <g id="ytick_6">
+     <g id="line2d_8">
+      <g>
+       <use style="stroke:#000000;stroke-width:0.8;" x="46.965625" xlink:href="#m66a3796414" y="99.618607"></use>
+      </g>
+     </g>
+     <g id="text_8">
+      <!-- 500 -->
+      <defs>
+       <path d="M 10.796875 72.90625 
+L 49.515625 72.90625 
+L 49.515625 64.59375 
+L 19.828125 64.59375 
+L 19.828125 46.734375 
+Q 21.96875 47.46875 24.109375 47.828125 
+Q 26.265625 48.1875 28.421875 48.1875 
+Q 40.625 48.1875 47.75 41.5 
+Q 54.890625 34.8125 54.890625 23.390625 
+Q 54.890625 11.625 47.5625 5.09375 
+Q 40.234375 -1.421875 26.90625 -1.421875 
+Q 22.3125 -1.421875 17.546875 -0.640625 
+Q 12.796875 0.140625 7.71875 1.703125 
+L 7.71875 11.625 
+Q 12.109375 9.234375 16.796875 8.0625 
+Q 21.484375 6.890625 26.703125 6.890625 
+Q 35.15625 6.890625 40.078125 11.328125 
+Q 45.015625 15.765625 45.015625 23.390625 
+Q 45.015625 31 40.078125 35.4375 
+Q 35.15625 39.890625 26.703125 39.890625 
+Q 22.75 39.890625 18.8125 39.015625 
+Q 14.890625 38.140625 10.796875 36.28125 
+z
+" id="DejaVuSans-53"></path>
+      </defs>
+      <g transform="translate(20.878125 103.417825)scale(0.1 -0.1)">
+       <use xlink:href="#DejaVuSans-53"></use>
+       <use x="63.623047" xlink:href="#DejaVuSans-48"></use>
+       <use x="127.246094" xlink:href="#DejaVuSans-48"></use>
+      </g>
+     </g>
+    </g>
+    <g id="ytick_7">
+     <g id="line2d_9">
+      <g>
+       <use style="stroke:#000000;stroke-width:0.8;" x="46.965625" xlink:href="#m66a3796414" y="68.398703"></use>
+      </g>
+     </g>
+     <g id="text_9">
+      <!-- 600 -->
+      <defs>
+       <path d="M 33.015625 40.375 
+Q 26.375 40.375 22.484375 35.828125 
+Q 18.609375 31.296875 18.609375 23.390625 
+Q 18.609375 15.53125 22.484375 10.953125 
+Q 26.375 6.390625 33.015625 6.390625 
+Q 39.65625 6.390625 43.53125 10.953125 
+Q 47.40625 15.53125 47.40625 23.390625 
+Q 47.40625 31.296875 43.53125 35.828125 
+Q 39.65625 40.375 33.015625 40.375 
+z
+M 52.59375 71.296875 
+L 52.59375 62.3125 
+Q 48.875 64.0625 45.09375 64.984375 
+Q 41.3125 65.921875 37.59375 65.921875 
+Q 27.828125 65.921875 22.671875 59.328125 
+Q 17.53125 52.734375 16.796875 39.40625 
+Q 19.671875 43.65625 24.015625 45.921875 
+Q 28.375 48.1875 33.59375 48.1875 
+Q 44.578125 48.1875 50.953125 41.515625 
+Q 57.328125 34.859375 57.328125 23.390625 
+Q 57.328125 12.15625 50.6875 5.359375 
+Q 44.046875 -1.421875 33.015625 -1.421875 
+Q 20.359375 -1.421875 13.671875 8.265625 
+Q 6.984375 17.96875 6.984375 36.375 
+Q 6.984375 53.65625 15.1875 63.9375 
+Q 23.390625 74.21875 37.203125 74.21875 
+Q 40.921875 74.21875 44.703125 73.484375 
+Q 48.484375 72.75 52.59375 71.296875 
+z
+" id="DejaVuSans-54"></path>
+      </defs>
+      <g transform="translate(20.878125 72.197922)scale(0.1 -0.1)">
+       <use xlink:href="#DejaVuSans-54"></use>
+       <use x="63.623047" xlink:href="#DejaVuSans-48"></use>
+       <use x="127.246094" xlink:href="#DejaVuSans-48"></use>
+      </g>
+     </g>
+    </g>
+    <g id="ytick_8">
+     <g id="line2d_10">
+      <g>
+       <use style="stroke:#000000;stroke-width:0.8;" x="46.965625" xlink:href="#m66a3796414" y="37.178799"></use>
+      </g>
+     </g>
+     <g id="text_10">
+      <!-- 700 -->
+      <defs>
+       <path d="M 8.203125 72.90625 
+L 55.078125 72.90625 
+L 55.078125 68.703125 
+L 28.609375 0 
+L 18.3125 0 
+L 43.21875 64.59375 
+L 8.203125 64.59375 
+z
+" id="DejaVuSans-55"></path>
+      </defs>
+      <g transform="translate(20.878125 40.978018)scale(0.1 -0.1)">
+       <use xlink:href="#DejaVuSans-55"></use>
+       <use x="63.623047" xlink:href="#DejaVuSans-48"></use>
+       <use x="127.246094" xlink:href="#DejaVuSans-48"></use>
+      </g>
+     </g>
+    </g>
+    <g id="text_11">
+     <!-- Tokens -->
+     <g transform="translate(14.798438 155.845469)rotate(-90)scale(0.1 -0.1)">
+      <use xlink:href="#DejaVuSans-84"></use>
+      <use x="44.083984" xlink:href="#DejaVuSans-111"></use>
+      <use x="105.265625" xlink:href="#DejaVuSans-107"></use>
+      <use x="159.550781" xlink:href="#DejaVuSans-101"></use>
+      <use x="221.074219" xlink:href="#DejaVuSans-110"></use>
+      <use x="284.453125" xlink:href="#DejaVuSans-115"></use>
+     </g>
+    </g>
+   </g>
+   <g id="patch_7">
+    <path d="M 46.965625 255.718125 
+L 46.965625 22.318125 
+" style="fill:none;stroke:#000000;stroke-linecap:square;stroke-linejoin:miter;stroke-width:0.8;"></path>
+   </g>
+   <g id="patch_8">
+    <path d="M 417.490625 255.718125 
+L 417.490625 22.318125 
+" style="fill:none;stroke:#000000;stroke-linecap:square;stroke-linejoin:miter;stroke-width:0.8;"></path>
+   </g>
+   <g id="patch_9">
+    <path d="M 46.965625 255.718125 
+L 417.490625 255.718125 
+" style="fill:none;stroke:#000000;stroke-linecap:square;stroke-linejoin:miter;stroke-width:0.8;"></path>
+   </g>
+   <g id="patch_10">
+    <path d="M 46.965625 22.318125 
+L 417.490625 22.318125 
+" style="fill:none;stroke:#000000;stroke-linecap:square;stroke-linejoin:miter;stroke-width:0.8;"></path>
+   </g>
+   <g id="text_12">
+    <!-- Tokens before and after -->
+    <defs>
+     <path d="M 48.6875 27.296875 
+Q 48.6875 37.203125 44.609375 42.84375 
+Q 40.53125 48.484375 33.40625 48.484375 
+Q 26.265625 48.484375 22.1875 42.84375 
+Q 18.109375 37.203125 18.109375 27.296875 
+Q 18.109375 17.390625 22.1875 11.75 
+Q 26.265625 6.109375 33.40625 6.109375 
+Q 40.53125 6.109375 44.609375 11.75 
+Q 48.6875 17.390625 48.6875 27.296875 
+z
+M 18.109375 46.390625 
+Q 20.953125 51.265625 25.265625 53.625 
+Q 29.59375 56 35.59375 56 
+Q 45.5625 56 51.78125 48.09375 
+Q 58.015625 40.1875 58.015625 27.296875 
+Q 58.015625 14.40625 51.78125 6.484375 
+Q 45.5625 -1.421875 35.59375 -1.421875 
+Q 29.59375 -1.421875 25.265625 0.953125 
+Q 20.953125 3.328125 18.109375 8.203125 
+L 18.109375 0 
+L 9.078125 0 
+L 9.078125 75.984375 
+L 18.109375 75.984375 
+z
+" id="DejaVuSans-98"></path>
+     <path d="M 37.109375 75.984375 
+L 37.109375 68.5 
+L 28.515625 68.5 
+Q 23.6875 68.5 21.796875 66.546875 
+Q 19.921875 64.59375 19.921875 59.515625 
+L 19.921875 54.6875 
+L 34.71875 54.6875 
+L 34.71875 47.703125 
+L 19.921875 47.703125 
+L 19.921875 0 
+L 10.890625 0 
+L 10.890625 47.703125 
+L 2.296875 47.703125 
+L 2.296875 54.6875 
+L 10.890625 54.6875 
+L 10.890625 58.5 
+Q 10.890625 67.625 15.140625 71.796875 
+Q 19.390625 75.984375 28.609375 75.984375 
+z
+" id="DejaVuSans-102"></path>
+     <path d="M 41.109375 46.296875 
+Q 39.59375 47.171875 37.8125 47.578125 
+Q 36.03125 48 33.890625 48 
+Q 26.265625 48 22.1875 43.046875 
+Q 18.109375 38.09375 18.109375 28.8125 
+L 18.109375 0 
+L 9.078125 0 
+L 9.078125 54.6875 
+L 18.109375 54.6875 
+L 18.109375 46.1875 
+Q 20.953125 51.171875 25.484375 53.578125 
+Q 30.03125 56 36.53125 56 
+Q 37.453125 56 38.578125 55.875 
+Q 39.703125 55.765625 41.0625 55.515625 
+z
+" id="DejaVuSans-114"></path>
+     <path d="M 34.28125 27.484375 
+Q 23.390625 27.484375 19.1875 25 
+Q 14.984375 22.515625 14.984375 16.5 
+Q 14.984375 11.71875 18.140625 8.90625 
+Q 21.296875 6.109375 26.703125 6.109375 
+Q 34.1875 6.109375 38.703125 11.40625 
+Q 43.21875 16.703125 43.21875 25.484375 
+L 43.21875 27.484375 
+z
+M 52.203125 31.203125 
+L 52.203125 0 
+L 43.21875 0 
+L 43.21875 8.296875 
+Q 40.140625 3.328125 35.546875 0.953125 
+Q 30.953125 -1.421875 24.3125 -1.421875 
+Q 15.921875 -1.421875 10.953125 3.296875 
+Q 6 8.015625 6 15.921875 
+Q 6 25.140625 12.171875 29.828125 
+Q 18.359375 34.515625 30.609375 34.515625 
+L 43.21875 34.515625 
+L 43.21875 35.40625 
+Q 43.21875 41.609375 39.140625 45 
+Q 35.0625 48.390625 27.6875 48.390625 
+Q 23 48.390625 18.546875 47.265625 
+Q 14.109375 46.140625 10.015625 43.890625 
+L 10.015625 52.203125 
+Q 14.9375 54.109375 19.578125 55.046875 
+Q 24.21875 56 28.609375 56 
+Q 40.484375 56 46.34375 49.84375 
+Q 52.203125 43.703125 52.203125 31.203125 
+z
+" id="DejaVuSans-97"></path>
+     <path d="M 45.40625 46.390625 
+L 45.40625 75.984375 
+L 54.390625 75.984375 
+L 54.390625 0 
+L 45.40625 0 
+L 45.40625 8.203125 
+Q 42.578125 3.328125 38.25 0.953125 
+Q 33.9375 -1.421875 27.875 -1.421875 
+Q 17.96875 -1.421875 11.734375 6.484375 
+Q 5.515625 14.40625 5.515625 27.296875 
+Q 5.515625 40.1875 11.734375 48.09375 
+Q 17.96875 56 27.875 56 
+Q 33.9375 56 38.25 53.625 
+Q 42.578125 51.265625 45.40625 46.390625 
+z
+M 14.796875 27.296875 
+Q 14.796875 17.390625 18.875 11.75 
+Q 22.953125 6.109375 30.078125 6.109375 
+Q 37.203125 6.109375 41.296875 11.75 
+Q 45.40625 17.390625 45.40625 27.296875 
+Q 45.40625 37.203125 41.296875 42.84375 
+Q 37.203125 48.484375 30.078125 48.484375 
+Q 22.953125 48.484375 18.875 42.84375 
+Q 14.796875 37.203125 14.796875 27.296875 
+z
+" id="DejaVuSans-100"></path>
+     <path d="M 18.3125 70.21875 
+L 18.3125 54.6875 
+L 36.8125 54.6875 
+L 36.8125 47.703125 
+L 18.3125 47.703125 
+L 18.3125 18.015625 
+Q 18.3125 11.328125 20.140625 9.421875 
+Q 21.96875 7.515625 27.59375 7.515625 
+L 36.8125 7.515625 
+L 36.8125 0 
+L 27.59375 0 
+Q 17.1875 0 13.234375 3.875 
+Q 9.28125 7.765625 9.28125 18.015625 
+L 9.28125 47.703125 
+L 2.6875 47.703125 
+L 2.6875 54.6875 
+L 9.28125 54.6875 
+L 9.28125 70.21875 
+z
+" id="DejaVuSans-116"></path>
+    </defs>
+    <g transform="translate(161.52375 16.318125)scale(0.12 -0.12)">
+     <use xlink:href="#DejaVuSans-84"></use>
+     <use x="44.083984" xlink:href="#DejaVuSans-111"></use>
+     <use x="105.265625" xlink:href="#DejaVuSans-107"></use>
+     <use x="159.550781" xlink:href="#DejaVuSans-101"></use>
+     <use x="221.074219" xlink:href="#DejaVuSans-110"></use>
+     <use x="284.453125" xlink:href="#DejaVuSans-115"></use>
+     <use x="336.552734" xlink:href="#DejaVuSans-32"></use>
+     <use x="368.339844" xlink:href="#DejaVuSans-98"></use>
+     <use x="431.816406" xlink:href="#DejaVuSans-101"></use>
+     <use x="493.339844" xlink:href="#DejaVuSans-102"></use>
+     <use x="528.544922" xlink:href="#DejaVuSans-111"></use>
+     <use x="589.726562" xlink:href="#DejaVuSans-114"></use>
+     <use x="628.589844" xlink:href="#DejaVuSans-101"></use>
+     <use x="690.113281" xlink:href="#DejaVuSans-32"></use>
+     <use x="721.900391" xlink:href="#DejaVuSans-97"></use>
+     <use x="783.179688" xlink:href="#DejaVuSans-110"></use>
+     <use x="846.558594" xlink:href="#DejaVuSans-100"></use>
+     <use x="910.035156" xlink:href="#DejaVuSans-32"></use>
+     <use x="941.822266" xlink:href="#DejaVuSans-97"></use>
+     <use x="1003.101562" xlink:href="#DejaVuSans-102"></use>
+     <use x="1036.556641" xlink:href="#DejaVuSans-116"></use>
+     <use x="1075.765625" xlink:href="#DejaVuSans-101"></use>
+     <use x="1137.289062" xlink:href="#DejaVuSans-114"></use>
+    </g>
+   </g>
+   <g id="legend_1">
+    <g id="patch_11">
+     <path d="M 345.798437 59.674375 
+L 410.490625 59.674375 
+Q 412.490625 59.674375 412.490625 57.674375 
+L 412.490625 29.318125 
+Q 412.490625 27.318125 410.490625 27.318125 
+L 345.798437 27.318125 
+Q 343.798437 27.318125 343.798437 29.318125 
+L 343.798437 57.674375 
+Q 343.798437 59.674375 345.798437 59.674375 
+z
+" style="fill:#ffffff;opacity:0.8;stroke:#cccccc;stroke-linejoin:miter;"></path>
+    </g>
+    <g id="patch_12">
+     <path d="M 347.798437 38.916562 
+L 367.798437 38.916562 
+L 367.798437 31.916562 
+L 347.798437 31.916562 
+z
+" style="fill:#1f77b4;"></path>
+    </g>
+    <g id="text_13">
+     <!-- Before -->
+     <defs>
+      <path d="M 19.671875 34.8125 
+L 19.671875 8.109375 
+L 35.5 8.109375 
+Q 43.453125 8.109375 47.28125 11.40625 
+Q 51.125 14.703125 51.125 21.484375 
+Q 51.125 28.328125 47.28125 31.5625 
+Q 43.453125 34.8125 35.5 34.8125 
+z
+M 19.671875 64.796875 
+L 19.671875 42.828125 
+L 34.28125 42.828125 
+Q 41.5 42.828125 45.03125 45.53125 
+Q 48.578125 48.25 48.578125 53.8125 
+Q 48.578125 59.328125 45.03125 62.0625 
+Q 41.5 64.796875 34.28125 64.796875 
+z
+M 9.8125 72.90625 
+L 35.015625 72.90625 
+Q 46.296875 72.90625 52.390625 68.21875 
+Q 58.5 63.53125 58.5 54.890625 
+Q 58.5 48.1875 55.375 44.234375 
+Q 52.25 40.28125 46.1875 39.3125 
+Q 53.46875 37.75 57.5 32.78125 
+Q 61.53125 27.828125 61.53125 20.40625 
+Q 61.53125 10.640625 54.890625 5.3125 
+Q 48.25 0 35.984375 0 
+L 9.8125 0 
+z
+" id="DejaVuSans-66"></path>
+     </defs>
+     <g transform="translate(375.798437 38.916562)scale(0.1 -0.1)">
+      <use xlink:href="#DejaVuSans-66"></use>
+      <use x="68.603516" xlink:href="#DejaVuSans-101"></use>
+      <use x="130.126953" xlink:href="#DejaVuSans-102"></use>
+      <use x="165.332031" xlink:href="#DejaVuSans-111"></use>
+      <use x="226.513672" xlink:href="#DejaVuSans-114"></use>
+      <use x="265.376953" xlink:href="#DejaVuSans-101"></use>
+     </g>
+    </g>
+    <g id="patch_13">
+     <path d="M 347.798437 53.594687 
+L 367.798437 53.594687 
+L 367.798437 46.594687 
+L 347.798437 46.594687 
+z
+" style="fill:#ff7f0e;"></path>
+    </g>
+    <g id="text_14">
+     <!-- After -->
+     <defs>
+      <path d="M 34.1875 63.1875 
+L 20.796875 26.90625 
+L 47.609375 26.90625 
+z
+M 28.609375 72.90625 
+L 39.796875 72.90625 
+L 67.578125 0 
+L 57.328125 0 
+L 50.6875 18.703125 
+L 17.828125 18.703125 
+L 11.1875 0 
+L 0.78125 0 
+z
+" id="DejaVuSans-65"></path>
+     </defs>
+     <g transform="translate(375.798437 53.594687)scale(0.1 -0.1)">
+      <use xlink:href="#DejaVuSans-65"></use>
+      <use x="64.783203" xlink:href="#DejaVuSans-102"></use>
+      <use x="98.238281" xlink:href="#DejaVuSans-116"></use>
+      <use x="137.447266" xlink:href="#DejaVuSans-101"></use>
+      <use x="198.970703" xlink:href="#DejaVuSans-114"></use>
+     </g>
+    </g>
+   </g>
+  </g>
+ </g>
+ <defs>
+  <clippath id="pcebb41a186">
+   <rect height="233.4" width="370.525" x="46.965625" y="22.318125"></rect>
+  </clippath>
+ </defs>
+</svg>
+
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">del</span> <span class="n">model</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">uSIF</span><span class="p">(</span><span class="n">ft_wv</span><span class="p">,</span> <span class="n">workers</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">lang_freq</span><span class="o">=</span><span class="s2">"sv"</span><span class="p">)</span>
+<span class="n">df</span><span class="p">[</span><span class="s1">'X'</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">'question'</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">preprocess</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">preprocess_funcs_lemma</span><span class="p">))</span>
+<span class="n">sfe_format</span> <span class="o">=</span> <span class="n">IndexedList</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">'X'</span><span class="p">]</span><span class="o">.</span><span class="n">tolist</span><span class="p">())</span>
+
+<span class="n">model</span><span class="o">.</span><span class="n">train</span><span class="p">(</span><span class="n">sfe_format</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>(75, 712)</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">get_n_closest_questions</span><span class="p">(</span><span class="s2">"kan min hamster bli smittad?"</span><span class="p">,</span> <span class="n">preprocess_funcs_lemma</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>0.75: Kan covid-19 smitta mellan djur och människa och kan mitt husdjur smittas av viruset?
+0.69: Hur smittar covid-19?
+0.68: Kan man smittas flera gånger av det nya coronaviruset?
+0.63: Smittar covid-19 via vatten och mat?
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">get_n_closest_questions</span><span class="p">(</span><span class="s2">"Hur får jag min son att förstå?"</span><span class="p">,</span> <span class="n">preprocess_funcs_lemma</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>0.79: Vad är covid-19?
+0.75: Hur sjuk blir man av covid-19?
+0.74: Hur länge är man sjuk av covid-19?
+0.66: Om en person i familjen är sjuk - måste alla stanna hemma då?
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h4 id="Analyzing-the-results">
+<a class="anchor" href="#Analyzing-the-results" aria-hidden="true"><span class="octicon octicon-link"></span></a>Analyzing the results<a class="anchor-link" href="#Analyzing-the-results"> </a>
+</h4>
+<p><strong>Improvements?</strong><br>
+Not really, the model has an improved response to the 'hamster-question' but it's way off when asking about the son.</p>
+<p><strong>Why?</strong><br>
+The most likely explanation is that even though we reduce the input dimensions an awful lot we remove dimensions that brings value, and removing value is bad - just as was touched upon previously. It might be helpful in some cases, perhaps this could prove helpful for a supervised approach such as TF-IDF + Support Vector Machine.</p>
+<p><strong>Any good parts?</strong><br>
+Yes, we can see some pretty hefty memory-requirement reductions when working with other types of models by applying this. Actually, in the case of this we could reduce the memory requirement by lemmatizing the dictionary of the embeddings and removing all non-lemmas. All in all, this could lead to a small performance loss but great memory win.</p>
+<h4 id="Stop-words">
+<a class="anchor" href="#Stop-words" aria-hidden="true"><span class="octicon octicon-link"></span></a>Stop words<a class="anchor-link" href="#Stop-words"> </a>
+</h4>
+<p>As promised we shall apply stop-words, but as we saw no performance gain with lemmatization we'll keep the old tokenization.</p>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">stop_words</span> <span class="o">=</span> <span class="n">get_stop_words</span><span class="p">(</span><span class="s1">'sv'</span><span class="p">)</span>
+<span class="n">clean_stop</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="p">[</span><span class="n">word</span> <span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">x</span> <span class="k">if</span> <span class="n">word</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">stop_words</span><span class="p">]</span>
+<span class="n">preprocessing_func_stop</span> <span class="o">=</span> <span class="p">[</span><span class="n">lowercase</span><span class="p">,</span> <span class="n">stanza_tokenize</span><span class="p">,</span> <span class="n">clean_stop</span><span class="p">]</span>
+
+<span class="k">del</span> <span class="n">model</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">uSIF</span><span class="p">(</span><span class="n">ft_wv</span><span class="p">,</span> <span class="n">workers</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">lang_freq</span><span class="o">=</span><span class="s2">"sv"</span><span class="p">)</span>
+<span class="n">df</span><span class="p">[</span><span class="s1">'X'</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">'question'</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">preprocess</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">preprocessing_func_stop</span><span class="p">))</span> <span class="c1"># We don't need to remove stop-words in the sentences in our </span>
+<span class="n">sfe_format</span> <span class="o">=</span> <span class="n">IndexedList</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">'X'</span><span class="p">]</span><span class="o">.</span><span class="n">tolist</span><span class="p">())</span>
+
+<span class="n">model</span><span class="o">.</span><span class="n">train</span><span class="p">(</span><span class="n">sfe_format</span><span class="p">)</span>
+
+<span class="n">preprocess</span><span class="p">(</span><span class="s2">"hur förklarar jag för min dotter och son?"</span><span class="p">,</span> <span class="n">preprocessing_func_stop</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>['förklarar', 'dotter', 'son', '?']</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">test_dimensions</span><span class="p">(</span><span class="n">preprocessing_func_stop</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>Previously: 629 tokens (289 unique)
+Post: 417 tokens (206 unique)
+Token reduction by ~28.7 %
+</pre>
+</div>
+</div>
+
+<div class="output_area">
+
+
+<div class="output_svg output_subarea ">
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+&lt;!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"&gt;
+<!-- Created with matplotlib (https://matplotlib.org/) -->
+<svg height="279.59625pt" version="1.1" viewbox="0 0 424.690625 279.59625" width="424.690625pt" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+ <defs>
+  <style type="text/css">
+*{stroke-linecap:butt;stroke-linejoin:round;}
+  </style>
+ </defs>
+ <g id="figure_1">
+  <g id="patch_1">
+   <path d="M -0 279.59625 
+L 424.690625 279.59625 
+L 424.690625 0 
+L -0 0 
+z
+" style="fill:none;"></path>
+  </g>
+  <g id="axes_1">
+   <g id="patch_2">
+    <path d="M 46.965625 255.718125 
+L 417.490625 255.718125 
+L 417.490625 22.318125 
+L 46.965625 22.318125 
+z
+" style="fill:#ffffff;"></path>
+   </g>
+   <g id="patch_3">
+    <path clip-path="url(#pa0ce76070e)" d="M 63.80767 255.718125 
+L 133.157269 255.718125 
+L 133.157269 33.432411 
+L 63.80767 33.432411 
+z
+" style="fill:#1f77b4;"></path>
+   </g>
+   <g id="patch_4">
+    <path clip-path="url(#pa0ce76070e)" d="M 261.949382 255.718125 
+L 331.298981 255.718125 
+L 331.298981 153.586851 
+L 261.949382 153.586851 
+z
+" style="fill:#1f77b4;"></path>
+   </g>
+   <g id="patch_5">
+    <path clip-path="url(#pa0ce76070e)" d="M 133.157269 255.718125 
+L 202.506868 255.718125 
+L 202.506868 108.352238 
+L 133.157269 108.352238 
+z
+" style="fill:#ff7f0e;"></path>
+   </g>
+   <g id="patch_6">
+    <path clip-path="url(#pa0ce76070e)" d="M 331.298981 255.718125 
+L 400.64858 255.718125 
+L 400.64858 182.91867 
+L 331.298981 182.91867 
+z
+" style="fill:#ff7f0e;"></path>
+   </g>
+   <g id="matplotlib.axis_1">
+    <g id="xtick_1">
+     <g id="line2d_1">
+      <defs>
+       <path d="M 0 0 
+L 0 3.5 
+" id="m6b1ba60724" style="stroke:#000000;stroke-width:0.8;"></path>
+      </defs>
+      <g>
+       <use style="stroke:#000000;stroke-width:0.8;" x="133.157269" xlink:href="#m6b1ba60724" y="255.718125"></use>
+      </g>
+     </g>
+     <g id="text_1">
+      <!-- #Tokens -->
+      <defs>
+       <path d="M 51.125 44 
+L 36.921875 44 
+L 32.8125 27.6875 
+L 47.125 27.6875 
+z
+M 43.796875 71.78125 
+L 38.71875 51.515625 
+L 52.984375 51.515625 
+L 58.109375 71.78125 
+L 65.921875 71.78125 
+L 60.890625 51.515625 
+L 76.125 51.515625 
+L 76.125 44 
+L 58.984375 44 
+L 54.984375 27.6875 
+L 70.515625 27.6875 
+L 70.515625 20.21875 
+L 53.078125 20.21875 
+L 48 0 
+L 40.1875 0 
+L 45.21875 20.21875 
+L 30.90625 20.21875 
+L 25.875 0 
+L 18.015625 0 
+L 23.09375 20.21875 
+L 7.71875 20.21875 
+L 7.71875 27.6875 
+L 24.90625 27.6875 
+L 29 44 
+L 13.28125 44 
+L 13.28125 51.515625 
+L 30.90625 51.515625 
+L 35.890625 71.78125 
+z
+" id="DejaVuSans-35"></path>
+       <path d="M -0.296875 72.90625 
+L 61.375 72.90625 
+L 61.375 64.59375 
+L 35.5 64.59375 
+L 35.5 0 
+L 25.59375 0 
+L 25.59375 64.59375 
+L -0.296875 64.59375 
+z
+" id="DejaVuSans-84"></path>
+       <path d="M 30.609375 48.390625 
+Q 23.390625 48.390625 19.1875 42.75 
+Q 14.984375 37.109375 14.984375 27.296875 
+Q 14.984375 17.484375 19.15625 11.84375 
+Q 23.34375 6.203125 30.609375 6.203125 
+Q 37.796875 6.203125 41.984375 11.859375 
+Q 46.1875 17.53125 46.1875 27.296875 
+Q 46.1875 37.015625 41.984375 42.703125 
+Q 37.796875 48.390625 30.609375 48.390625 
+z
+M 30.609375 56 
+Q 42.328125 56 49.015625 48.375 
+Q 55.71875 40.765625 55.71875 27.296875 
+Q 55.71875 13.875 49.015625 6.21875 
+Q 42.328125 -1.421875 30.609375 -1.421875 
+Q 18.84375 -1.421875 12.171875 6.21875 
+Q 5.515625 13.875 5.515625 27.296875 
+Q 5.515625 40.765625 12.171875 48.375 
+Q 18.84375 56 30.609375 56 
+z
+" id="DejaVuSans-111"></path>
+       <path d="M 9.078125 75.984375 
+L 18.109375 75.984375 
+L 18.109375 31.109375 
+L 44.921875 54.6875 
+L 56.390625 54.6875 
+L 27.390625 29.109375 
+L 57.625 0 
+L 45.90625 0 
+L 18.109375 26.703125 
+L 18.109375 0 
+L 9.078125 0 
+z
+" id="DejaVuSans-107"></path>
+       <path d="M 56.203125 29.59375 
+L 56.203125 25.203125 
+L 14.890625 25.203125 
+Q 15.484375 15.921875 20.484375 11.0625 
+Q 25.484375 6.203125 34.421875 6.203125 
+Q 39.59375 6.203125 44.453125 7.46875 
+Q 49.3125 8.734375 54.109375 11.28125 
+L 54.109375 2.78125 
+Q 49.265625 0.734375 44.1875 -0.34375 
+Q 39.109375 -1.421875 33.890625 -1.421875 
+Q 20.796875 -1.421875 13.15625 6.1875 
+Q 5.515625 13.8125 5.515625 26.8125 
+Q 5.515625 40.234375 12.765625 48.109375 
+Q 20.015625 56 32.328125 56 
+Q 43.359375 56 49.78125 48.890625 
+Q 56.203125 41.796875 56.203125 29.59375 
+z
+M 47.21875 32.234375 
+Q 47.125 39.59375 43.09375 43.984375 
+Q 39.0625 48.390625 32.421875 48.390625 
+Q 24.90625 48.390625 20.390625 44.140625 
+Q 15.875 39.890625 15.1875 32.171875 
+z
+" id="DejaVuSans-101"></path>
+       <path d="M 54.890625 33.015625 
+L 54.890625 0 
+L 45.90625 0 
+L 45.90625 32.71875 
+Q 45.90625 40.484375 42.875 44.328125 
+Q 39.84375 48.1875 33.796875 48.1875 
+Q 26.515625 48.1875 22.3125 43.546875 
+Q 18.109375 38.921875 18.109375 30.90625 
+L 18.109375 0 
+L 9.078125 0 
+L 9.078125 54.6875 
+L 18.109375 54.6875 
+L 18.109375 46.1875 
+Q 21.34375 51.125 25.703125 53.5625 
+Q 30.078125 56 35.796875 56 
+Q 45.21875 56 50.046875 50.171875 
+Q 54.890625 44.34375 54.890625 33.015625 
+z
+" id="DejaVuSans-110"></path>
+       <path d="M 44.28125 53.078125 
+L 44.28125 44.578125 
+Q 40.484375 46.53125 36.375 47.5 
+Q 32.28125 48.484375 27.875 48.484375 
+Q 21.1875 48.484375 17.84375 46.4375 
+Q 14.5 44.390625 14.5 40.28125 
+Q 14.5 37.15625 16.890625 35.375 
+Q 19.28125 33.59375 26.515625 31.984375 
+L 29.59375 31.296875 
+Q 39.15625 29.25 43.1875 25.515625 
+Q 47.21875 21.78125 47.21875 15.09375 
+Q 47.21875 7.46875 41.1875 3.015625 
+Q 35.15625 -1.421875 24.609375 -1.421875 
+Q 20.21875 -1.421875 15.453125 -0.5625 
+Q 10.6875 0.296875 5.421875 2 
+L 5.421875 11.28125 
+Q 10.40625 8.6875 15.234375 7.390625 
+Q 20.0625 6.109375 24.8125 6.109375 
+Q 31.15625 6.109375 34.5625 8.28125 
+Q 37.984375 10.453125 37.984375 14.40625 
+Q 37.984375 18.0625 35.515625 20.015625 
+Q 33.0625 21.96875 24.703125 23.78125 
+L 21.578125 24.515625 
+Q 13.234375 26.265625 9.515625 29.90625 
+Q 5.8125 33.546875 5.8125 39.890625 
+Q 5.8125 47.609375 11.28125 51.796875 
+Q 16.75 56 26.8125 56 
+Q 31.78125 56 36.171875 55.265625 
+Q 40.578125 54.546875 44.28125 53.078125 
+z
+" id="DejaVuSans-115"></path>
+      </defs>
+      <g transform="translate(112.140082 270.316563)scale(0.1 -0.1)">
+       <use xlink:href="#DejaVuSans-35"></use>
+       <use x="83.789062" xlink:href="#DejaVuSans-84"></use>
+       <use x="127.873047" xlink:href="#DejaVuSans-111"></use>
+       <use x="189.054688" xlink:href="#DejaVuSans-107"></use>
+       <use x="243.339844" xlink:href="#DejaVuSans-101"></use>
+       <use x="304.863281" xlink:href="#DejaVuSans-110"></use>
+       <use x="368.242188" xlink:href="#DejaVuSans-115"></use>
+      </g>
+     </g>
+    </g>
+    <g id="xtick_2">
+     <g id="line2d_2">
+      <g>
+       <use style="stroke:#000000;stroke-width:0.8;" x="331.298981" xlink:href="#m6b1ba60724" y="255.718125"></use>
+      </g>
+     </g>
+     <g id="text_2">
+      <!-- #Unique Tokens -->
+      <defs>
+       <path d="M 8.6875 72.90625 
+L 18.609375 72.90625 
+L 18.609375 28.609375 
+Q 18.609375 16.890625 22.84375 11.734375 
+Q 27.09375 6.59375 36.625 6.59375 
+Q 46.09375 6.59375 50.34375 11.734375 
+Q 54.59375 16.890625 54.59375 28.609375 
+L 54.59375 72.90625 
+L 64.5 72.90625 
+L 64.5 27.390625 
+Q 64.5 13.140625 57.4375 5.859375 
+Q 50.390625 -1.421875 36.625 -1.421875 
+Q 22.796875 -1.421875 15.734375 5.859375 
+Q 8.6875 13.140625 8.6875 27.390625 
+z
+" id="DejaVuSans-85"></path>
+       <path d="M 9.421875 54.6875 
+L 18.40625 54.6875 
+L 18.40625 0 
+L 9.421875 0 
+z
+M 9.421875 75.984375 
+L 18.40625 75.984375 
+L 18.40625 64.59375 
+L 9.421875 64.59375 
+z
+" id="DejaVuSans-105"></path>
+       <path d="M 14.796875 27.296875 
+Q 14.796875 17.390625 18.875 11.75 
+Q 22.953125 6.109375 30.078125 6.109375 
+Q 37.203125 6.109375 41.296875 11.75 
+Q 45.40625 17.390625 45.40625 27.296875 
+Q 45.40625 37.203125 41.296875 42.84375 
+Q 37.203125 48.484375 30.078125 48.484375 
+Q 22.953125 48.484375 18.875 42.84375 
+Q 14.796875 37.203125 14.796875 27.296875 
+z
+M 45.40625 8.203125 
+Q 42.578125 3.328125 38.25 0.953125 
+Q 33.9375 -1.421875 27.875 -1.421875 
+Q 17.96875 -1.421875 11.734375 6.484375 
+Q 5.515625 14.40625 5.515625 27.296875 
+Q 5.515625 40.1875 11.734375 48.09375 
+Q 17.96875 56 27.875 56 
+Q 33.9375 56 38.25 53.625 
+Q 42.578125 51.265625 45.40625 46.390625 
+L 45.40625 54.6875 
+L 54.390625 54.6875 
+L 54.390625 -20.796875 
+L 45.40625 -20.796875 
+z
+" id="DejaVuSans-113"></path>
+       <path d="M 8.5 21.578125 
+L 8.5 54.6875 
+L 17.484375 54.6875 
+L 17.484375 21.921875 
+Q 17.484375 14.15625 20.5 10.265625 
+Q 23.53125 6.390625 29.59375 6.390625 
+Q 36.859375 6.390625 41.078125 11.03125 
+Q 45.3125 15.671875 45.3125 23.6875 
+L 45.3125 54.6875 
+L 54.296875 54.6875 
+L 54.296875 0 
+L 45.3125 0 
+L 45.3125 8.40625 
+Q 42.046875 3.421875 37.71875 1 
+Q 33.40625 -1.421875 27.6875 -1.421875 
+Q 18.265625 -1.421875 13.375 4.4375 
+Q 8.5 10.296875 8.5 21.578125 
+z
+M 31.109375 56 
+z
+" id="DejaVuSans-117"></path>
+       <path id="DejaVuSans-32"></path>
+      </defs>
+      <g transform="translate(291.056012 270.316563)scale(0.1 -0.1)">
+       <use xlink:href="#DejaVuSans-35"></use>
+       <use x="83.789062" xlink:href="#DejaVuSans-85"></use>
+       <use x="156.982422" xlink:href="#DejaVuSans-110"></use>
+       <use x="220.361328" xlink:href="#DejaVuSans-105"></use>
+       <use x="248.144531" xlink:href="#DejaVuSans-113"></use>
+       <use x="311.621094" xlink:href="#DejaVuSans-117"></use>
+       <use x="375" xlink:href="#DejaVuSans-101"></use>
+       <use x="436.523438" xlink:href="#DejaVuSans-32"></use>
+       <use x="468.310547" xlink:href="#DejaVuSans-84"></use>
+       <use x="512.394531" xlink:href="#DejaVuSans-111"></use>
+       <use x="573.576172" xlink:href="#DejaVuSans-107"></use>
+       <use x="627.861328" xlink:href="#DejaVuSans-101"></use>
+       <use x="689.384766" xlink:href="#DejaVuSans-110"></use>
+       <use x="752.763672" xlink:href="#DejaVuSans-115"></use>
+      </g>
+     </g>
+    </g>
+   </g>
+   <g id="matplotlib.axis_2">
+    <g id="ytick_1">
+     <g id="line2d_3">
+      <defs>
+       <path d="M 0 0 
+L -3.5 0 
+" id="me5044283a3" style="stroke:#000000;stroke-width:0.8;"></path>
+      </defs>
+      <g>
+       <use style="stroke:#000000;stroke-width:0.8;" x="46.965625" xlink:href="#me5044283a3" y="255.718125"></use>
+      </g>
+     </g>
+     <g id="text_3">
+      <!-- 0 -->
+      <defs>
+       <path d="M 31.78125 66.40625 
+Q 24.171875 66.40625 20.328125 58.90625 
+Q 16.5 51.421875 16.5 36.375 
+Q 16.5 21.390625 20.328125 13.890625 
+Q 24.171875 6.390625 31.78125 6.390625 
+Q 39.453125 6.390625 43.28125 13.890625 
+Q 47.125 21.390625 47.125 36.375 
+Q 47.125 51.421875 43.28125 58.90625 
+Q 39.453125 66.40625 31.78125 66.40625 
+z
+M 31.78125 74.21875 
+Q 44.046875 74.21875 50.515625 64.515625 
+Q 56.984375 54.828125 56.984375 36.375 
+Q 56.984375 17.96875 50.515625 8.265625 
+Q 44.046875 -1.421875 31.78125 -1.421875 
+Q 19.53125 -1.421875 13.0625 8.265625 
+Q 6.59375 17.96875 6.59375 36.375 
+Q 6.59375 54.828125 13.0625 64.515625 
+Q 19.53125 74.21875 31.78125 74.21875 
+z
+" id="DejaVuSans-48"></path>
+      </defs>
+      <g transform="translate(33.603125 259.517344)scale(0.1 -0.1)">
+       <use xlink:href="#DejaVuSans-48"></use>
+      </g>
+     </g>
+    </g>
+    <g id="ytick_2">
+     <g id="line2d_4">
+      <g>
+       <use style="stroke:#000000;stroke-width:0.8;" x="46.965625" xlink:href="#me5044283a3" y="220.378584"></use>
+      </g>
+     </g>
+     <g id="text_4">
+      <!-- 100 -->
+      <defs>
+       <path d="M 12.40625 8.296875 
+L 28.515625 8.296875 
+L 28.515625 63.921875 
+L 10.984375 60.40625 
+L 10.984375 69.390625 
+L 28.421875 72.90625 
+L 38.28125 72.90625 
+L 38.28125 8.296875 
+L 54.390625 8.296875 
+L 54.390625 0 
+L 12.40625 0 
+z
+" id="DejaVuSans-49"></path>
+      </defs>
+      <g transform="translate(20.878125 224.177803)scale(0.1 -0.1)">
+       <use xlink:href="#DejaVuSans-49"></use>
+       <use x="63.623047" xlink:href="#DejaVuSans-48"></use>
+       <use x="127.246094" xlink:href="#DejaVuSans-48"></use>
+      </g>
+     </g>
+    </g>
+    <g id="ytick_3">
+     <g id="line2d_5">
+      <g>
+       <use style="stroke:#000000;stroke-width:0.8;" x="46.965625" xlink:href="#me5044283a3" y="185.039043"></use>
+      </g>
+     </g>
+     <g id="text_5">
+      <!-- 200 -->
+      <defs>
+       <path d="M 19.1875 8.296875 
+L 53.609375 8.296875 
+L 53.609375 0 
+L 7.328125 0 
+L 7.328125 8.296875 
+Q 12.9375 14.109375 22.625 23.890625 
+Q 32.328125 33.6875 34.8125 36.53125 
+Q 39.546875 41.84375 41.421875 45.53125 
+Q 43.3125 49.21875 43.3125 52.78125 
+Q 43.3125 58.59375 39.234375 62.25 
+Q 35.15625 65.921875 28.609375 65.921875 
+Q 23.96875 65.921875 18.8125 64.3125 
+Q 13.671875 62.703125 7.8125 59.421875 
+L 7.8125 69.390625 
+Q 13.765625 71.78125 18.9375 73 
+Q 24.125 74.21875 28.421875 74.21875 
+Q 39.75 74.21875 46.484375 68.546875 
+Q 53.21875 62.890625 53.21875 53.421875 
+Q 53.21875 48.921875 51.53125 44.890625 
+Q 49.859375 40.875 45.40625 35.40625 
+Q 44.1875 33.984375 37.640625 27.21875 
+Q 31.109375 20.453125 19.1875 8.296875 
+z
+" id="DejaVuSans-50"></path>
+      </defs>
+      <g transform="translate(20.878125 188.838261)scale(0.1 -0.1)">
+       <use xlink:href="#DejaVuSans-50"></use>
+       <use x="63.623047" xlink:href="#DejaVuSans-48"></use>
+       <use x="127.246094" xlink:href="#DejaVuSans-48"></use>
+      </g>
+     </g>
+    </g>
+    <g id="ytick_4">
+     <g id="line2d_6">
+      <g>
+       <use style="stroke:#000000;stroke-width:0.8;" x="46.965625" xlink:href="#me5044283a3" y="149.699501"></use>
+      </g>
+     </g>
+     <g id="text_6">
+      <!-- 300 -->
+      <defs>
+       <path d="M 40.578125 39.3125 
+Q 47.65625 37.796875 51.625 33 
+Q 55.609375 28.21875 55.609375 21.1875 
+Q 55.609375 10.40625 48.1875 4.484375 
+Q 40.765625 -1.421875 27.09375 -1.421875 
+Q 22.515625 -1.421875 17.65625 -0.515625 
+Q 12.796875 0.390625 7.625 2.203125 
+L 7.625 11.71875 
+Q 11.71875 9.328125 16.59375 8.109375 
+Q 21.484375 6.890625 26.8125 6.890625 
+Q 36.078125 6.890625 40.9375 10.546875 
+Q 45.796875 14.203125 45.796875 21.1875 
+Q 45.796875 27.640625 41.28125 31.265625 
+Q 36.765625 34.90625 28.71875 34.90625 
+L 20.21875 34.90625 
+L 20.21875 43.015625 
+L 29.109375 43.015625 
+Q 36.375 43.015625 40.234375 45.921875 
+Q 44.09375 48.828125 44.09375 54.296875 
+Q 44.09375 59.90625 40.109375 62.90625 
+Q 36.140625 65.921875 28.71875 65.921875 
+Q 24.65625 65.921875 20.015625 65.03125 
+Q 15.375 64.15625 9.8125 62.3125 
+L 9.8125 71.09375 
+Q 15.4375 72.65625 20.34375 73.4375 
+Q 25.25 74.21875 29.59375 74.21875 
+Q 40.828125 74.21875 47.359375 69.109375 
+Q 53.90625 64.015625 53.90625 55.328125 
+Q 53.90625 49.265625 50.4375 45.09375 
+Q 46.96875 40.921875 40.578125 39.3125 
+z
+" id="DejaVuSans-51"></path>
+      </defs>
+      <g transform="translate(20.878125 153.49872)scale(0.1 -0.1)">
+       <use xlink:href="#DejaVuSans-51"></use>
+       <use x="63.623047" xlink:href="#DejaVuSans-48"></use>
+       <use x="127.246094" xlink:href="#DejaVuSans-48"></use>
+      </g>
+     </g>
+    </g>
+    <g id="ytick_5">
+     <g id="line2d_7">
+      <g>
+       <use style="stroke:#000000;stroke-width:0.8;" x="46.965625" xlink:href="#me5044283a3" y="114.35996"></use>
+      </g>
+     </g>
+     <g id="text_7">
+      <!-- 400 -->
+      <defs>
+       <path d="M 37.796875 64.3125 
+L 12.890625 25.390625 
+L 37.796875 25.390625 
+z
+M 35.203125 72.90625 
+L 47.609375 72.90625 
+L 47.609375 25.390625 
+L 58.015625 25.390625 
+L 58.015625 17.1875 
+L 47.609375 17.1875 
+L 47.609375 0 
+L 37.796875 0 
+L 37.796875 17.1875 
+L 4.890625 17.1875 
+L 4.890625 26.703125 
+z
+" id="DejaVuSans-52"></path>
+      </defs>
+      <g transform="translate(20.878125 118.159179)scale(0.1 -0.1)">
+       <use xlink:href="#DejaVuSans-52"></use>
+       <use x="63.623047" xlink:href="#DejaVuSans-48"></use>
+       <use x="127.246094" xlink:href="#DejaVuSans-48"></use>
+      </g>
+     </g>
+    </g>
+    <g id="ytick_6">
+     <g id="line2d_8">
+      <g>
+       <use style="stroke:#000000;stroke-width:0.8;" x="46.965625" xlink:href="#me5044283a3" y="79.020419"></use>
+      </g>
+     </g>
+     <g id="text_8">
+      <!-- 500 -->
+      <defs>
+       <path d="M 10.796875 72.90625 
+L 49.515625 72.90625 
+L 49.515625 64.59375 
+L 19.828125 64.59375 
+L 19.828125 46.734375 
+Q 21.96875 47.46875 24.109375 47.828125 
+Q 26.265625 48.1875 28.421875 48.1875 
+Q 40.625 48.1875 47.75 41.5 
+Q 54.890625 34.8125 54.890625 23.390625 
+Q 54.890625 11.625 47.5625 5.09375 
+Q 40.234375 -1.421875 26.90625 -1.421875 
+Q 22.3125 -1.421875 17.546875 -0.640625 
+Q 12.796875 0.140625 7.71875 1.703125 
+L 7.71875 11.625 
+Q 12.109375 9.234375 16.796875 8.0625 
+Q 21.484375 6.890625 26.703125 6.890625 
+Q 35.15625 6.890625 40.078125 11.328125 
+Q 45.015625 15.765625 45.015625 23.390625 
+Q 45.015625 31 40.078125 35.4375 
+Q 35.15625 39.890625 26.703125 39.890625 
+Q 22.75 39.890625 18.8125 39.015625 
+Q 14.890625 38.140625 10.796875 36.28125 
+z
+" id="DejaVuSans-53"></path>
+      </defs>
+      <g transform="translate(20.878125 82.819638)scale(0.1 -0.1)">
+       <use xlink:href="#DejaVuSans-53"></use>
+       <use x="63.623047" xlink:href="#DejaVuSans-48"></use>
+       <use x="127.246094" xlink:href="#DejaVuSans-48"></use>
+      </g>
+     </g>
+    </g>
+    <g id="ytick_7">
+     <g id="line2d_9">
+      <g>
+       <use style="stroke:#000000;stroke-width:0.8;" x="46.965625" xlink:href="#me5044283a3" y="43.680878"></use>
+      </g>
+     </g>
+     <g id="text_9">
+      <!-- 600 -->
+      <defs>
+       <path d="M 33.015625 40.375 
+Q 26.375 40.375 22.484375 35.828125 
+Q 18.609375 31.296875 18.609375 23.390625 
+Q 18.609375 15.53125 22.484375 10.953125 
+Q 26.375 6.390625 33.015625 6.390625 
+Q 39.65625 6.390625 43.53125 10.953125 
+Q 47.40625 15.53125 47.40625 23.390625 
+Q 47.40625 31.296875 43.53125 35.828125 
+Q 39.65625 40.375 33.015625 40.375 
+z
+M 52.59375 71.296875 
+L 52.59375 62.3125 
+Q 48.875 64.0625 45.09375 64.984375 
+Q 41.3125 65.921875 37.59375 65.921875 
+Q 27.828125 65.921875 22.671875 59.328125 
+Q 17.53125 52.734375 16.796875 39.40625 
+Q 19.671875 43.65625 24.015625 45.921875 
+Q 28.375 48.1875 33.59375 48.1875 
+Q 44.578125 48.1875 50.953125 41.515625 
+Q 57.328125 34.859375 57.328125 23.390625 
+Q 57.328125 12.15625 50.6875 5.359375 
+Q 44.046875 -1.421875 33.015625 -1.421875 
+Q 20.359375 -1.421875 13.671875 8.265625 
+Q 6.984375 17.96875 6.984375 36.375 
+Q 6.984375 53.65625 15.1875 63.9375 
+Q 23.390625 74.21875 37.203125 74.21875 
+Q 40.921875 74.21875 44.703125 73.484375 
+Q 48.484375 72.75 52.59375 71.296875 
+z
+" id="DejaVuSans-54"></path>
+      </defs>
+      <g transform="translate(20.878125 47.480096)scale(0.1 -0.1)">
+       <use xlink:href="#DejaVuSans-54"></use>
+       <use x="63.623047" xlink:href="#DejaVuSans-48"></use>
+       <use x="127.246094" xlink:href="#DejaVuSans-48"></use>
+      </g>
+     </g>
+    </g>
+    <g id="text_10">
+     <!-- Tokens -->
+     <g transform="translate(14.798438 155.845469)rotate(-90)scale(0.1 -0.1)">
+      <use xlink:href="#DejaVuSans-84"></use>
+      <use x="44.083984" xlink:href="#DejaVuSans-111"></use>
+      <use x="105.265625" xlink:href="#DejaVuSans-107"></use>
+      <use x="159.550781" xlink:href="#DejaVuSans-101"></use>
+      <use x="221.074219" xlink:href="#DejaVuSans-110"></use>
+      <use x="284.453125" xlink:href="#DejaVuSans-115"></use>
+     </g>
+    </g>
+   </g>
+   <g id="patch_7">
+    <path d="M 46.965625 255.718125 
+L 46.965625 22.318125 
+" style="fill:none;stroke:#000000;stroke-linecap:square;stroke-linejoin:miter;stroke-width:0.8;"></path>
+   </g>
+   <g id="patch_8">
+    <path d="M 417.490625 255.718125 
+L 417.490625 22.318125 
+" style="fill:none;stroke:#000000;stroke-linecap:square;stroke-linejoin:miter;stroke-width:0.8;"></path>
+   </g>
+   <g id="patch_9">
+    <path d="M 46.965625 255.718125 
+L 417.490625 255.718125 
+" style="fill:none;stroke:#000000;stroke-linecap:square;stroke-linejoin:miter;stroke-width:0.8;"></path>
+   </g>
+   <g id="patch_10">
+    <path d="M 46.965625 22.318125 
+L 417.490625 22.318125 
+" style="fill:none;stroke:#000000;stroke-linecap:square;stroke-linejoin:miter;stroke-width:0.8;"></path>
+   </g>
+   <g id="text_11">
+    <!-- Tokens before and after -->
+    <defs>
+     <path d="M 48.6875 27.296875 
+Q 48.6875 37.203125 44.609375 42.84375 
+Q 40.53125 48.484375 33.40625 48.484375 
+Q 26.265625 48.484375 22.1875 42.84375 
+Q 18.109375 37.203125 18.109375 27.296875 
+Q 18.109375 17.390625 22.1875 11.75 
+Q 26.265625 6.109375 33.40625 6.109375 
+Q 40.53125 6.109375 44.609375 11.75 
+Q 48.6875 17.390625 48.6875 27.296875 
+z
+M 18.109375 46.390625 
+Q 20.953125 51.265625 25.265625 53.625 
+Q 29.59375 56 35.59375 56 
+Q 45.5625 56 51.78125 48.09375 
+Q 58.015625 40.1875 58.015625 27.296875 
+Q 58.015625 14.40625 51.78125 6.484375 
+Q 45.5625 -1.421875 35.59375 -1.421875 
+Q 29.59375 -1.421875 25.265625 0.953125 
+Q 20.953125 3.328125 18.109375 8.203125 
+L 18.109375 0 
+L 9.078125 0 
+L 9.078125 75.984375 
+L 18.109375 75.984375 
+z
+" id="DejaVuSans-98"></path>
+     <path d="M 37.109375 75.984375 
+L 37.109375 68.5 
+L 28.515625 68.5 
+Q 23.6875 68.5 21.796875 66.546875 
+Q 19.921875 64.59375 19.921875 59.515625 
+L 19.921875 54.6875 
+L 34.71875 54.6875 
+L 34.71875 47.703125 
+L 19.921875 47.703125 
+L 19.921875 0 
+L 10.890625 0 
+L 10.890625 47.703125 
+L 2.296875 47.703125 
+L 2.296875 54.6875 
+L 10.890625 54.6875 
+L 10.890625 58.5 
+Q 10.890625 67.625 15.140625 71.796875 
+Q 19.390625 75.984375 28.609375 75.984375 
+z
+" id="DejaVuSans-102"></path>
+     <path d="M 41.109375 46.296875 
+Q 39.59375 47.171875 37.8125 47.578125 
+Q 36.03125 48 33.890625 48 
+Q 26.265625 48 22.1875 43.046875 
+Q 18.109375 38.09375 18.109375 28.8125 
+L 18.109375 0 
+L 9.078125 0 
+L 9.078125 54.6875 
+L 18.109375 54.6875 
+L 18.109375 46.1875 
+Q 20.953125 51.171875 25.484375 53.578125 
+Q 30.03125 56 36.53125 56 
+Q 37.453125 56 38.578125 55.875 
+Q 39.703125 55.765625 41.0625 55.515625 
+z
+" id="DejaVuSans-114"></path>
+     <path d="M 34.28125 27.484375 
+Q 23.390625 27.484375 19.1875 25 
+Q 14.984375 22.515625 14.984375 16.5 
+Q 14.984375 11.71875 18.140625 8.90625 
+Q 21.296875 6.109375 26.703125 6.109375 
+Q 34.1875 6.109375 38.703125 11.40625 
+Q 43.21875 16.703125 43.21875 25.484375 
+L 43.21875 27.484375 
+z
+M 52.203125 31.203125 
+L 52.203125 0 
+L 43.21875 0 
+L 43.21875 8.296875 
+Q 40.140625 3.328125 35.546875 0.953125 
+Q 30.953125 -1.421875 24.3125 -1.421875 
+Q 15.921875 -1.421875 10.953125 3.296875 
+Q 6 8.015625 6 15.921875 
+Q 6 25.140625 12.171875 29.828125 
+Q 18.359375 34.515625 30.609375 34.515625 
+L 43.21875 34.515625 
+L 43.21875 35.40625 
+Q 43.21875 41.609375 39.140625 45 
+Q 35.0625 48.390625 27.6875 48.390625 
+Q 23 48.390625 18.546875 47.265625 
+Q 14.109375 46.140625 10.015625 43.890625 
+L 10.015625 52.203125 
+Q 14.9375 54.109375 19.578125 55.046875 
+Q 24.21875 56 28.609375 56 
+Q 40.484375 56 46.34375 49.84375 
+Q 52.203125 43.703125 52.203125 31.203125 
+z
+" id="DejaVuSans-97"></path>
+     <path d="M 45.40625 46.390625 
+L 45.40625 75.984375 
+L 54.390625 75.984375 
+L 54.390625 0 
+L 45.40625 0 
+L 45.40625 8.203125 
+Q 42.578125 3.328125 38.25 0.953125 
+Q 33.9375 -1.421875 27.875 -1.421875 
+Q 17.96875 -1.421875 11.734375 6.484375 
+Q 5.515625 14.40625 5.515625 27.296875 
+Q 5.515625 40.1875 11.734375 48.09375 
+Q 17.96875 56 27.875 56 
+Q 33.9375 56 38.25 53.625 
+Q 42.578125 51.265625 45.40625 46.390625 
+z
+M 14.796875 27.296875 
+Q 14.796875 17.390625 18.875 11.75 
+Q 22.953125 6.109375 30.078125 6.109375 
+Q 37.203125 6.109375 41.296875 11.75 
+Q 45.40625 17.390625 45.40625 27.296875 
+Q 45.40625 37.203125 41.296875 42.84375 
+Q 37.203125 48.484375 30.078125 48.484375 
+Q 22.953125 48.484375 18.875 42.84375 
+Q 14.796875 37.203125 14.796875 27.296875 
+z
+" id="DejaVuSans-100"></path>
+     <path d="M 18.3125 70.21875 
+L 18.3125 54.6875 
+L 36.8125 54.6875 
+L 36.8125 47.703125 
+L 18.3125 47.703125 
+L 18.3125 18.015625 
+Q 18.3125 11.328125 20.140625 9.421875 
+Q 21.96875 7.515625 27.59375 7.515625 
+L 36.8125 7.515625 
+L 36.8125 0 
+L 27.59375 0 
+Q 17.1875 0 13.234375 3.875 
+Q 9.28125 7.765625 9.28125 18.015625 
+L 9.28125 47.703125 
+L 2.6875 47.703125 
+L 2.6875 54.6875 
+L 9.28125 54.6875 
+L 9.28125 70.21875 
+z
+" id="DejaVuSans-116"></path>
+    </defs>
+    <g transform="translate(161.52375 16.318125)scale(0.12 -0.12)">
+     <use xlink:href="#DejaVuSans-84"></use>
+     <use x="44.083984" xlink:href="#DejaVuSans-111"></use>
+     <use x="105.265625" xlink:href="#DejaVuSans-107"></use>
+     <use x="159.550781" xlink:href="#DejaVuSans-101"></use>
+     <use x="221.074219" xlink:href="#DejaVuSans-110"></use>
+     <use x="284.453125" xlink:href="#DejaVuSans-115"></use>
+     <use x="336.552734" xlink:href="#DejaVuSans-32"></use>
+     <use x="368.339844" xlink:href="#DejaVuSans-98"></use>
+     <use x="431.816406" xlink:href="#DejaVuSans-101"></use>
+     <use x="493.339844" xlink:href="#DejaVuSans-102"></use>
+     <use x="528.544922" xlink:href="#DejaVuSans-111"></use>
+     <use x="589.726562" xlink:href="#DejaVuSans-114"></use>
+     <use x="628.589844" xlink:href="#DejaVuSans-101"></use>
+     <use x="690.113281" xlink:href="#DejaVuSans-32"></use>
+     <use x="721.900391" xlink:href="#DejaVuSans-97"></use>
+     <use x="783.179688" xlink:href="#DejaVuSans-110"></use>
+     <use x="846.558594" xlink:href="#DejaVuSans-100"></use>
+     <use x="910.035156" xlink:href="#DejaVuSans-32"></use>
+     <use x="941.822266" xlink:href="#DejaVuSans-97"></use>
+     <use x="1003.101562" xlink:href="#DejaVuSans-102"></use>
+     <use x="1036.556641" xlink:href="#DejaVuSans-116"></use>
+     <use x="1075.765625" xlink:href="#DejaVuSans-101"></use>
+     <use x="1137.289062" xlink:href="#DejaVuSans-114"></use>
+    </g>
+   </g>
+   <g id="legend_1">
+    <g id="patch_11">
+     <path d="M 345.798437 59.674375 
+L 410.490625 59.674375 
+Q 412.490625 59.674375 412.490625 57.674375 
+L 412.490625 29.318125 
+Q 412.490625 27.318125 410.490625 27.318125 
+L 345.798437 27.318125 
+Q 343.798437 27.318125 343.798437 29.318125 
+L 343.798437 57.674375 
+Q 343.798437 59.674375 345.798437 59.674375 
+z
+" style="fill:#ffffff;opacity:0.8;stroke:#cccccc;stroke-linejoin:miter;"></path>
+    </g>
+    <g id="patch_12">
+     <path d="M 347.798437 38.916562 
+L 367.798437 38.916562 
+L 367.798437 31.916562 
+L 347.798437 31.916562 
+z
+" style="fill:#1f77b4;"></path>
+    </g>
+    <g id="text_12">
+     <!-- Before -->
+     <defs>
+      <path d="M 19.671875 34.8125 
+L 19.671875 8.109375 
+L 35.5 8.109375 
+Q 43.453125 8.109375 47.28125 11.40625 
+Q 51.125 14.703125 51.125 21.484375 
+Q 51.125 28.328125 47.28125 31.5625 
+Q 43.453125 34.8125 35.5 34.8125 
+z
+M 19.671875 64.796875 
+L 19.671875 42.828125 
+L 34.28125 42.828125 
+Q 41.5 42.828125 45.03125 45.53125 
+Q 48.578125 48.25 48.578125 53.8125 
+Q 48.578125 59.328125 45.03125 62.0625 
+Q 41.5 64.796875 34.28125 64.796875 
+z
+M 9.8125 72.90625 
+L 35.015625 72.90625 
+Q 46.296875 72.90625 52.390625 68.21875 
+Q 58.5 63.53125 58.5 54.890625 
+Q 58.5 48.1875 55.375 44.234375 
+Q 52.25 40.28125 46.1875 39.3125 
+Q 53.46875 37.75 57.5 32.78125 
+Q 61.53125 27.828125 61.53125 20.40625 
+Q 61.53125 10.640625 54.890625 5.3125 
+Q 48.25 0 35.984375 0 
+L 9.8125 0 
+z
+" id="DejaVuSans-66"></path>
+     </defs>
+     <g transform="translate(375.798437 38.916562)scale(0.1 -0.1)">
+      <use xlink:href="#DejaVuSans-66"></use>
+      <use x="68.603516" xlink:href="#DejaVuSans-101"></use>
+      <use x="130.126953" xlink:href="#DejaVuSans-102"></use>
+      <use x="165.332031" xlink:href="#DejaVuSans-111"></use>
+      <use x="226.513672" xlink:href="#DejaVuSans-114"></use>
+      <use x="265.376953" xlink:href="#DejaVuSans-101"></use>
+     </g>
+    </g>
+    <g id="patch_13">
+     <path d="M 347.798437 53.594687 
+L 367.798437 53.594687 
+L 367.798437 46.594687 
+L 347.798437 46.594687 
+z
+" style="fill:#ff7f0e;"></path>
+    </g>
+    <g id="text_13">
+     <!-- After -->
+     <defs>
+      <path d="M 34.1875 63.1875 
+L 20.796875 26.90625 
+L 47.609375 26.90625 
+z
+M 28.609375 72.90625 
+L 39.796875 72.90625 
+L 67.578125 0 
+L 57.328125 0 
+L 50.6875 18.703125 
+L 17.828125 18.703125 
+L 11.1875 0 
+L 0.78125 0 
+z
+" id="DejaVuSans-65"></path>
+     </defs>
+     <g transform="translate(375.798437 53.594687)scale(0.1 -0.1)">
+      <use xlink:href="#DejaVuSans-65"></use>
+      <use x="64.783203" xlink:href="#DejaVuSans-102"></use>
+      <use x="98.238281" xlink:href="#DejaVuSans-116"></use>
+      <use x="137.447266" xlink:href="#DejaVuSans-101"></use>
+      <use x="198.970703" xlink:href="#DejaVuSans-114"></use>
+     </g>
+    </g>
+   </g>
+  </g>
+ </g>
+ <defs>
+  <clippath id="pa0ce76070e">
+   <rect height="233.4" width="370.525" x="46.965625" y="22.318125"></rect>
+  </clippath>
+ </defs>
+</svg>
+
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">get_n_closest_questions</span><span class="p">(</span><span class="s2">"kan min hamster bli smittad?"</span><span class="p">,</span> <span class="n">preprocessing_func_stop</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>0.66: Kan man bli smittad av en person som har covid-19 men som inte har några symtom?
+0.64: Kan covid-19 smitta mellan djur och människa och kan mitt husdjur smittas av viruset?
+0.54: Kan viruset smitta till människa via post och paket?
+0.41: Kan smitta överföras från mygg till människa?
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">get_n_closest_questions</span><span class="p">(</span><span class="s2">"Hur får jag min son att förstå?"</span><span class="p">,</span> <span class="n">preprocessing_func_stop</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>0.83: Vad är covid-19?
+0.83: Hur pratar man med barn om det nya coronaviruset?
+0.80: Hur sjuk blir man av covid-19?
+0.80: Hur länge är man sjuk av covid-19?
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h4 id="Further-analyzing">
+<a class="anchor" href="#Further-analyzing" aria-hidden="true"><span class="octicon octicon-link"></span></a>Further analyzing<a class="anchor-link" href="#Further-analyzing"> </a>
+</h4>
+<p>In my mind we've some pretty good responses, in a way better and another way worse than lemmatizaton. Certainly not a set-back but neither a step forward.<br>
+Testing different approaches and turning things on and off is a great way to increase data understanding and also gives a better sense of what different preprocessing functions actually does.<br>
+In fact this is actually part of the most common Machine Learning development approach, working much like agile, which is iteratively circular and called <a href="https://en.wikipedia.org/wiki/Cross-industry_standard_process_for_data_mining">CRISP-DM</a>. I won't go deeply into CRISP-DM (already did once in my Master Thesis), but the following image gives you the gist.<br>
+<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b9/CRISP-DM_Process_Diagram.png/220px-CRISP-DM_Process_Diagram.png" alt="CRISP-DM"></p>
+<p>Finally, as we see no great impact by applying either lemmatization nor stop-words we might just give up at the lower-case + stanza tokenization, but I'd like to make one last shot in the dark - custom stop words! Let's see how it fares...</p>
+<h5 id="Custom-Stop-Words-(breaking-the-rules)">
+<a class="anchor" href="#Custom-Stop-Words-(breaking-the-rules)" aria-hidden="true"><span class="octicon octicon-link"></span></a>Custom Stop Words (breaking the rules)<a class="anchor-link" href="#Custom-Stop-Words-(breaking-the-rules)"> </a>
+</h5>
+<p>So I decided to break the rules and create a small simple heuristic by applying custom stop words.<br>
+Let's figure out which words we should remove using the following steps (which could in fact be automated)!</p>
+<ol>
+<li>Find the most common words</li>
+<li>Remove the ones which does not give any greater value</li>
+</ol>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">Counter</span>
+
+<span class="n">df</span><span class="p">[</span><span class="s1">'X'</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">'question'</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">preprocess</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">preprocess_funcs</span><span class="p">))</span>
+
+<span class="n">counter</span> <span class="o">=</span> <span class="n">Counter</span><span class="p">(</span><span class="n">flatten</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">'X'</span><span class="p">]</span><span class="o">.</span><span class="n">tolist</span><span class="p">()))</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="nb">sorted</span><span class="p">(</span><span class="n">counter</span><span class="o">.</span><span class="n">items</span><span class="p">(),</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">item</span><span class="p">:</span> <span class="n">item</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">True</span><span class="p">)[:</span><span class="mi">15</span><span class="p">]</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>[('?', 75),
+ ('covid-19', 28),
+ ('vad', 25),
+ ('och', 22),
+ ('hur', 21),
+ ('för', 20),
+ ('det', 15),
+ ('kan', 14),
+ ('i', 14),
+ ('jag', 13),
+ ('av', 13),
+ ('gäller', 12),
+ ('som', 12),
+ ('är', 11),
+ ('en', 11)]</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">stop_words</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'?'</span><span class="p">,</span> <span class="s1">'och'</span><span class="p">,</span> <span class="s1">'jag'</span><span class="p">,</span> <span class="s1">'i'</span><span class="p">,</span> <span class="s1">'är'</span><span class="p">,</span> <span class="s1">'en'</span><span class="p">,</span> <span class="s1">'min'</span><span class="p">,</span> <span class="s1">'?'</span><span class="p">]</span>
+<span class="n">clean_stop</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="p">[</span><span class="n">word</span> <span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">x</span> <span class="k">if</span> <span class="n">word</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">stop_words</span><span class="p">]</span>
+<span class="n">preprocessing_func_stop</span> <span class="o">=</span> <span class="p">[</span><span class="n">lowercase</span><span class="p">,</span> <span class="n">stanza_tokenize</span><span class="p">,</span> <span class="n">clean_stop</span><span class="p">]</span>
+
+<span class="k">del</span> <span class="n">model</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">uSIF</span><span class="p">(</span><span class="n">ft_wv</span><span class="p">,</span> <span class="n">workers</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">lang_freq</span><span class="o">=</span><span class="s2">"sv"</span><span class="p">)</span>
+<span class="n">df</span><span class="p">[</span><span class="s1">'X'</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">'question'</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">preprocess</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">preprocessing_func_stop</span><span class="p">))</span> <span class="c1"># We don't need to remove stop-words in the sentences in our </span>
+<span class="n">sfe_format</span> <span class="o">=</span> <span class="n">IndexedList</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">'X'</span><span class="p">]</span><span class="o">.</span><span class="n">tolist</span><span class="p">())</span>
+
+<span class="n">model</span><span class="o">.</span><span class="n">train</span><span class="p">(</span><span class="n">sfe_format</span><span class="p">)</span>
+
+<span class="n">preprocess</span><span class="p">(</span><span class="s2">"hur förklarar jag för min dotter och son?"</span><span class="p">,</span> <span class="n">preprocessing_func_stop</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>['hur', 'förklarar', 'för', 'dotter', 'son']</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">get_n_closest_questions</span><span class="p">(</span><span class="s2">"Hur får jag min son att förstå?"</span><span class="p">,</span> <span class="n">preprocessing</span><span class="o">=</span><span class="n">preprocess_funcs</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>0.83: Hur pratar man med barn om det nya coronaviruset?
+0.83: Vad är covid-19?
+0.80: Hur sjuk blir man av covid-19?
+0.79: Hur länge är man sjuk av covid-19?
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">get_n_closest_questions</span><span class="p">(</span><span class="s2">"kan min hamster bli smittad?"</span><span class="p">,</span> <span class="n">preprocessing</span><span class="o">=</span><span class="n">preprocess_funcs</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>0.66: Kan man bli smittad av en person som har covid-19 men som inte har några symtom?
+0.63: Kan covid-19 smitta mellan djur och människa och kan mitt husdjur smittas av viruset?
+0.54: Kan viruset smitta till människa via post och paket?
+0.41: Kan smitta överföras från mygg till människa?
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Not bad, not amazing - I feel pretty happy about this.</p>
+<p>So what can be done from now on if time and resources where available?</p>
+<ul>
+<li>Add a classifier + TF-IDF</li>
+<li>BERT / ALBERT QA (the State-of-the-Art right now)</li>
+</ul>
+<p>Thanks for this time,<br>
+- Hampus Londögård</p>
+
+</div>
+</div>
+</div>
+</div>
+
+
+
+  </div><!-- from https://github.com/utterance/utterances -->
+<script src="https://utteranc.es/client.js"
+        repo="londogard/londogard"
+        issue-term="title"
+        label="blogpost-comment"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+</script><a class="u-url" href="/jupyter/nlp/machine-learning/deep-learning/2020/10/12/CoViD_19_QA_cont.html" hidden></a>
+</article>
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/"></data>
+
+  <div class="wrapper">
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col">
+        <p class="feed-subscribe">
+          <a href="/feed.xml">
+            <svg class="svg-icon orange">
+              <use xlink:href="/assets/minima-social-icons.svg#rss"></use>
+            </svg><span>Subscribe</span>
+          </a>
+        </p>
+      </div>
+      <div class="footer-col">
+        <p>A blog with a focus on Deep Learning, JVM and Performance.</p>
+      </div>
+    </div>
+
+    <div class="social-links"><ul class="social-media-list"><li><a rel="me" href="https://github.com/londogard" title="londogard"><svg class="svg-icon grey"><use xlink:href="/assets/minima-social-icons.svg#github"></use></svg></a></li></ul>
+</div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>
