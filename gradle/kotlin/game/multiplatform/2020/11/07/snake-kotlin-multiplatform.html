@@ -111,51 +111,7 @@ window.onload = wrap_img;
     </header>
 
   <div class="post-content e-content" itemprop="articleBody">
-    <ul class="section-nav">
-<li class="toc-entry toc-h1">
-<a href="#how-to-build-and-play-snake-via-native-binary-jvm-and-jsbrowser-kotlin">How to build and play Snake via Native Binary, JVM and JS/Browser (Kotlin)</a>
-<ul>
-<li class="toc-entry toc-h2"><a href="#introduction">Introduction</a></li>
-<li class="toc-entry toc-h2">
-<a href="#part-1-how-does-kotlin-multiplatform-work">Part 1: How does Kotlin Multiplatform work?</a>
-<ul>
-<li class="toc-entry toc-h4"><a href="#llvm">LLVM</a></li>
-<li class="toc-entry toc-h3">
-<a href="#how-the-kotlin-compiler-works-frontend-to-backend">How the Kotlin Compiler works, Frontend to Backend</a>
-<ul>
-<li class="toc-entry toc-h4"><a href="#the-kotlin-compiler-frontend">The Kotlin Compiler Frontend</a></li>
-<li class="toc-entry toc-h4"><a href="#the-kotlin-compiler-backend">The Kotlin Compiler Backend</a></li>
-<li class="toc-entry toc-h4"><a href="#how-kotlin-keeps-multiplatform-clean">How Kotlin keeps multiplatform clean</a></li>
-</ul>
-</li>
-<li class="toc-entry toc-h3"><a href="#wrapping-up-how-native-works">Wrapping up how Native works</a></li>
-<li class="toc-entry toc-h3"><a href="#outro-kotlin-multiplatform-and-why-it-matters">Outro: Kotlin Multiplatform and why it matters</a></li>
-</ul>
-</li>
-<li class="toc-entry toc-h2">
-<a href="#part-two-how-to-set-up-multiplatform-and-build-snake">Part two: How to set up Multiplatform and build Snake</a>
-<ul>
-<li class="toc-entry toc-h4"><a href="#building-a-jvm-app-snake">Building a JVM App (Snake)</a></li>
-<li class="toc-entry toc-h4"><a href="#drawing-the-snake--apple">Drawing the snake &amp; apple</a></li>
-<li class="toc-entry toc-h4"><a href="#creating-the-data-structures">Creating the data structures</a></li>
-<li class="toc-entry toc-h4"><a href="#adding-a-direction">Adding a Direction</a></li>
-<li class="toc-entry toc-h4"><a href="#wrapping-up-the-code-with-some-minor-refactoring--new-functionality">Wrapping up the code with some minor refactoring / new functionality</a></li>
-</ul>
-</li>
-<li class="toc-entry toc-h2">
-<a href="#part-3-true-multiplatform-moving-to-js--native">Part 3: True multiplatform (moving to JS &amp; Native)</a>
-<ul>
-<li class="toc-entry toc-h4"><a href="#jsbrowser-target">JS/Browser target</a></li>
-<li class="toc-entry toc-h4"><a href="#native-target">Native target</a></li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-<h1 id="how-to-build-and-play-snake-via-native-binary-jvm-and-jsbrowser-kotlin">
-<a class="anchor" href="#how-to-build-and-play-snake-via-native-binary-jvm-and-jsbrowser-kotlin" aria-hidden="true"><span class="octicon octicon-link"></span></a>How to build and play Snake via Native Binary, JVM and JS/Browser (Kotlin)</h1>
-
-<blockquote>
+    <blockquote>
   <p><strong>Disclaimer:</strong> this post is pretty long and I recommend reading one part at a time (it’s 3 parts).</p>
 
   <p>Personally I hate unfinished blogs that are multiple parts, hence I uploaded all at once. So be assured, you’re getting all parts - right here, right now! :happy:</p>
@@ -171,8 +127,9 @@ The third, and final, part covers how we are able to use the same code on JS/Bro
   <li><a href="#Part%203:%20True%20multiplatform%20(moving%20to%20JS%20&amp;%20Native)">True multiplatform (moving to JS &amp; Native)</a></li>
 </ol>
 
-<h2 id="introduction">
-<a class="anchor" href="#introduction" aria-hidden="true"><span class="octicon octicon-link"></span></a>Introduction</h2>
+<p>All the code is available <a href="https://github.com/londogard/snake-js-jvm-native">here</a>.</p>
+
+<h2 id="introduction">Introduction</h2>
 
 <p>First off, what is Kotlin?</p>
 
@@ -203,8 +160,7 @@ The third, and final, part covers how we are able to use the same code on JS/Bro
 
 <p>Enough praises, let’s get onto how the multiplatform solution actually works through <a href="#Part%201:%20How%20does%20Kotlin%20Multiplatform%20work"><strong>Part 1</strong></a>.</p>
 
-<h2 id="part-1-how-does-kotlin-multiplatform-work">
-<a class="anchor" href="#part-1-how-does-kotlin-multiplatform-work" aria-hidden="true"><span class="octicon octicon-link"></span></a>Part 1: How does Kotlin Multiplatform work?</h2>
+<h2 id="part-1-how-does-kotlin-multiplatform-work">Part 1: How does Kotlin Multiplatform work?</h2>
 <p>Let’s start by explaining <strong>Native</strong>, what exactly is <em>Native</em>?</p>
 
 <p><img src="https://lh4.googleusercontent.com/zIac8EL2JUDSjqkVgj4WUyGi-ggpsIdKVh7TawshcQOCEj7Fa-jWrSQEz9XwowPURejMBKm1qxl995-NCMpW5uso89VMx3eaHsTk3Y7H-ZQaMOMeygCYIGr3JvSHsGpOXHb8dkKce1c" alt=""></p>
@@ -230,8 +186,7 @@ The third, and final, part covers how we are able to use the same code on JS/Bro
 <p>❌Development speed
 ❌… and so on.</p>
 
-<h4 id="llvm">
-<a class="anchor" href="#llvm" aria-hidden="true"><span class="octicon octicon-link"></span></a>LLVM</h4>
+<h4 id="llvm">LLVM</h4>
 
 <p>What is LLVM? 
 LLVM is probably the biggest project (compiler) that exists to build native binaries. Languages such as C, C++, Haskell, Rust &amp; Swift compiles to native binaries through LLVM.</p>
@@ -244,8 +199,7 @@ LLVM is probably the biggest project (compiler) that exists to build native bina
 
 <p>So… What is a backend? More specifically, what is a backend for a compiler?</p>
 
-<h3 id="how-the-kotlin-compiler-works-frontend-to-backend">
-<a class="anchor" href="#how-the-kotlin-compiler-works-frontend-to-backend" aria-hidden="true"><span class="octicon octicon-link"></span></a>How the Kotlin Compiler works, Frontend to Backend</h3>
+<h3 id="how-the-kotlin-compiler-works-frontend-to-backend">How the Kotlin Compiler works, Frontend to Backend</h3>
 
 <p>First, what is a compiler? 
 A compiler is like a translator, just as you’d translate Swedish into English a compiler instead translates computer code written in one programming language into another one of lower level, e.g. assembly.</p>
@@ -257,8 +211,7 @@ The Kotlin Compiler first compiles Kotlin code into a <em>Intermediate Represent
 
 <p>The first part is called the <strong>Compiler Frontend</strong></p>
 
-<h4 id="the-kotlin-compiler-frontend">
-<a class="anchor" href="#the-kotlin-compiler-frontend" aria-hidden="true"><span class="octicon octicon-link"></span></a>The Kotlin Compiler Frontend</h4>
+<h4 id="the-kotlin-compiler-frontend">The Kotlin Compiler Frontend</h4>
 
 <p><img src="https://user-images.githubusercontent.com/7490199/97027463-1137aa00-155b-11eb-9c31-a60e3e25af87.png" alt="image"></p>
 
@@ -267,8 +220,7 @@ The process involves <a href="https://en.wikipedia.org/wiki/Lexical_analysis">le
 
 <p>Moving on, the second and final part is called the <strong>Compiler Backend</strong>.</p>
 
-<h4 id="the-kotlin-compiler-backend">
-<a class="anchor" href="#the-kotlin-compiler-backend" aria-hidden="true"><span class="octicon octicon-link"></span></a>The Kotlin Compiler Backend</h4>
+<h4 id="the-kotlin-compiler-backend">The Kotlin Compiler Backend</h4>
 
 <p><img src="https://user-images.githubusercontent.com/7490199/97077672-ddee2d00-15e5-11eb-9f71-916c5b2a0544.png" alt="image"></p>
 
@@ -282,8 +234,7 @@ The process involves <a href="https://en.wikipedia.org/wiki/Lexical_analysis">le
   <p><strong>Side-note</strong>: For Native Backend we actually have two <em>Intermediate Representations</em>, first Kotlin <em>IR</em> which is compiled into LLVM <em>IR</em> which LLVM then compiles into a native binary through its own Compiler Backend. This means that all the optimizations applied to C, C++, Swift &amp; many more are also applied to Kotlin Native code!</p>
 </blockquote>
 
-<h4 id="how-kotlin-keeps-multiplatform-clean">
-<a class="anchor" href="#how-kotlin-keeps-multiplatform-clean" aria-hidden="true"><span class="octicon octicon-link"></span></a>How Kotlin keeps multiplatform clean</h4>
+<h4 id="how-kotlin-keeps-multiplatform-clean">How Kotlin keeps multiplatform clean</h4>
 
 <p>It might sound messy to target multiple platforms like this, and how could it possibly end up clean?</p>
 
@@ -299,8 +250,7 @@ The process involves <a href="https://en.wikipedia.org/wiki/Lexical_analysis">le
 
 <p>You can take this concept and apply to anything such as IO , network &amp; more - all which are included in the std-lib!</p>
 
-<h3 id="wrapping-up-how-native-works">
-<a class="anchor" href="#wrapping-up-how-native-works" aria-hidden="true"><span class="octicon octicon-link"></span></a>Wrapping up how Native works</h3>
+<h3 id="wrapping-up-how-native-works">Wrapping up how Native works</h3>
 
 <p>Let’s recollect what we’ve gone through</p>
 
@@ -326,8 +276,7 @@ Native has a lot of quirks like pointers, address space and much more!</p>
 
 <p>Kotlin also has some really nice convenience syntax such as the <code class="language-plaintext highlighter-rouge">memScope</code>-block.</p>
 
-<h3 id="outro-kotlin-multiplatform-and-why-it-matters">
-<a class="anchor" href="#outro-kotlin-multiplatform-and-why-it-matters" aria-hidden="true"><span class="octicon octicon-link"></span></a>Outro: Kotlin Multiplatform and why it matters</h3>
+<h3 id="outro-kotlin-multiplatform-and-why-it-matters">Outro: Kotlin Multiplatform and why it matters</h3>
 
 <p>✔️ One code-base for common logic
 			Serialization logic, e.g. parsing JSON into a data class
@@ -346,8 +295,7 @@ The final, and perhaps obvious, one I’d like to mention straight away is that 
 
 <p>Personally I see Kotlin Multiplatform as a great way to share core logic between different targets, but one must use it with care and not try to force it into being used everywhere in every way.</p>
 
-<h2 id="part-two-how-to-set-up-multiplatform-and-build-snake">
-<a class="anchor" href="#part-two-how-to-set-up-multiplatform-and-build-snake" aria-hidden="true"><span class="octicon octicon-link"></span></a>Part two: How to set up Multiplatform and build Snake</h2>
+<h2 id="part-two-how-to-set-up-multiplatform-and-build-snake">Part two: How to set up Multiplatform and build Snake</h2>
 
 <p>So first we need to understand how to set up a Multiplatform project. The <a href="https://kotlinlang.org/docs/reference/mpp-create-lib.html">official guide</a> is actually really good, and if you’re using IntelliJ it’s a breeze to setup! Just as in the guide make sure to select <code class="language-plaintext highlighter-rouge">Library</code>.</p>
 
@@ -355,8 +303,7 @@ The final, and perhaps obvious, one I’d like to mention straight away is that 
 
 <p>Let the build run, <code class="language-plaintext highlighter-rouge">gradle</code> is a really good build-tool that I’d like to discuss more. But for now let’s just enjoy the simplicity of how our whole project is setup with builds possible for JS, JVM &amp; Native which also contains our common-code which is the glue!</p>
 
-<h4 id="building-a-jvm-app-snake">
-<a class="anchor" href="#building-a-jvm-app-snake" aria-hidden="true"><span class="octicon octicon-link"></span></a>Building a JVM App (Snake)</h4>
+<h4 id="building-a-jvm-app-snake">Building a JVM App (Snake)</h4>
 
 <p>Let’s start simple, Keep It Simple Stupid (KISS) principle applied, and create a JVM app which is easily runnable on all OS:es and has <em>great</em> debugging!</p>
 
@@ -444,8 +391,7 @@ Make sure to add <code class="language-plaintext highlighter-rouge">pack()</code
 
 <p>Super! We’re now able to render our <code class="language-plaintext highlighter-rouge">Board</code> and see the whole deal.</p>
 
-<h4 id="drawing-the-snake--apple">
-<a class="anchor" href="#drawing-the-snake--apple" aria-hidden="true"><span class="octicon octicon-link"></span></a>Drawing the snake &amp; apple</h4>
+<h4 id="drawing-the-snake--apple">Drawing the snake &amp; apple</h4>
 
 <p>We’ve got the canvas (Board), now we just need to get artsy and add a Snake and some Apples!
 I’ll keep it simple and will make the Board exist of a few cells, all pretty large. On each cell you either have nothing, Snake or Apple - pretty simple right?
@@ -507,8 +453,7 @@ For those wondering how you safely execute on <code class="language-plaintext hi
 <p>Summing up, we now know how to render stuff on the <code class="language-plaintext highlighter-rouge">Board</code> and it’s all very static. 
 The next step is to make the rendering less static and I believe the natural step from now is to create the data structures that’ll contain the game &amp; its state. Then we can make sure the data structures are able to update, so we can render new states.</p>
 
-<h4 id="creating-the-data-structures">
-<a class="anchor" href="#creating-the-data-structures" aria-hidden="true"><span class="octicon octicon-link"></span></a>Creating the data structures</h4>
+<h4 id="creating-the-data-structures">Creating the data structures</h4>
 
 <p>Data structures are required to have a game state, that is the score and position of everything.</p>
 
@@ -590,8 +535,7 @@ Let’s add all the required code.</p>
   <li>Ability to actually move the data structures ( <code class="language-plaintext highlighter-rouge">Snake</code>)</li>
 </ol>
 
-<h4 id="adding-a-direction">
-<a class="anchor" href="#adding-a-direction" aria-hidden="true"><span class="octicon octicon-link"></span></a>Adding a Direction</h4>
+<h4 id="adding-a-direction">Adding a Direction</h4>
 
 <p>To be able to move we need to know what directions to move in. In my humble opinion this is simplest done through a <code class="language-plaintext highlighter-rouge">Enum</code>.</p>
 
@@ -770,8 +714,7 @@ We need to make sure that the end can be lost, let’s do it by adding a new att
 <span class="p">}</span>
 </code></pre></div></div>
 
-<h4 id="wrapping-up-the-code-with-some-minor-refactoring--new-functionality">
-<a class="anchor" href="#wrapping-up-the-code-with-some-minor-refactoring--new-functionality" aria-hidden="true"><span class="octicon octicon-link"></span></a>Wrapping up the code with some minor refactoring / new functionality</h4>
+<h4 id="wrapping-up-the-code-with-some-minor-refactoring--new-functionality">Wrapping up the code with some minor refactoring / new functionality</h4>
 
 <p>Kotlin has a wonderful concept of <strong>extension functions</strong>, which simply is incredible. An extension function extends a class with new functionality. Did you ever wish <code class="language-plaintext highlighter-rouge">Double</code> had a rounding to string? <code class="language-plaintext highlighter-rouge">fun Double.roundTo(n: Int): String = "%.${decimals}f".format(this)</code> solves this for you! Now your <code class="language-plaintext highlighter-rouge">Double</code>’s automatically gives you a hint to use <code class="language-plaintext highlighter-rouge">.roundTo</code> as one of <code class="language-plaintext highlighter-rouge">Double</code>’s built-in functions!</p>
 
@@ -803,8 +746,7 @@ We need to make sure that the end can be lost, let’s do it by adding a new att
   <li>Better &amp; cleaner code!</li>
 </ol>
 
-<h2 id="part-3-true-multiplatform-moving-to-js--native">
-<a class="anchor" href="#part-3-true-multiplatform-moving-to-js--native" aria-hidden="true"><span class="octicon octicon-link"></span></a>Part 3: True multiplatform (moving to JS &amp; Native)</h2>
+<h2 id="part-3-true-multiplatform-moving-to-js--native">Part 3: True multiplatform (moving to JS &amp; Native)</h2>
 
 <p>First off, this part is more of a reader exercise. If you want the code please go to the GitHub repository.</p>
 
@@ -818,8 +760,7 @@ We need to make sure that the end can be lost, let’s do it by adding a new att
 
 <p>When the code has been migrated and import-paths are updated, run the JVM app again and validate that everything works.</p>
 
-<h4 id="jsbrowser-target">
-<a class="anchor" href="#jsbrowser-target" aria-hidden="true"><span class="octicon octicon-link"></span></a>JS/Browser target</h4>
+<h4 id="jsbrowser-target">JS/Browser target</h4>
 
 <p>Now create <code class="language-plaintext highlighter-rouge">src/jsMain/kotlin/main.kt</code>.</p>
 
@@ -848,8 +789,7 @@ We need to make sure that the end can be lost, let’s do it by adding a new att
 
 <p>Congratulations, you have now achieved creating a desktop game and a browser game!</p>
 
-<h4 id="native-target">
-<a class="anchor" href="#native-target" aria-hidden="true"><span class="octicon octicon-link"></span></a>Native target</h4>
+<h4 id="native-target">Native target</h4>
 
 <p>And onto our final target, Native Binary, that runs completely without a browser or a virtual machine.</p>
 
@@ -912,6 +852,8 @@ We need to make sure that the end can be lost, let’s do it by adding a new att
 <p>Try running it in the terminal.</p>
 
 <p>This blog was created as a companion to a workshop I’m gonna do at AFRY, it has a bit more content including a presentation in person.</p>
+
+<p>All the code is available <a href="https://github.com/londogard/snake-js-jvm-native">here</a>.</p>
 
 <p>Thanks!</p>
 
