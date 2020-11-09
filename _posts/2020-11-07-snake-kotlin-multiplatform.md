@@ -43,16 +43,12 @@ Enough praises, let's get onto how the multiplatform solution actually works thr
 
 ## Part 1: How does Kotlin Multiplatform work?
 Let's start by explaining **Native**, what exactly is _Native_?
-
-![](https://lh4.googleusercontent.com/zIac8EL2JUDSjqkVgj4WUyGi-ggpsIdKVh7TawshcQOCEj7Fa-jWrSQEz9XwowPURejMBKm1qxl995-NCMpW5uso89VMx3eaHsTk3Y7H-ZQaMOMeygCYIGr3JvSHsGpOXHb8dkKce1c)
-
-> Landing page of [kotlinlang.org/native](https://kotlinlang.org/docs/reference/native-overview.html)
-
-If we zoom in and focus on the text
+From the landing page of [kotlinlang.org/native](https://kotlinlang.org/docs/reference/native-overview.html).
 
 > Kotlin/Native is a technology for compiling Kotlin code to native binaries, which can run without a virtual machine. It is an  [LLVM](https://llvm.org/)  based backend for the Kotlin compiler and native implementation of the Kotlin standard library.
 
-Through this one can figure that _native_ actually refers to binary executables that can run on a OS (natively). No virtual machine or browser required! What does this mean in practice?
+
+By this statement we learn that _native_ refers to binary executables that can run on a OS (natively). No virtual machine or browser required! What does this mean in practice?
 
 ✔️ Small file size
 ✔️ No overhead
