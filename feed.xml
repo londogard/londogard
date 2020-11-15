@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.1.1">Jekyll</generator><link href="https://blog.londogard.com/feed.xml" rel="self" type="application/atom+xml" /><link href="https://blog.londogard.com/" rel="alternate" type="text/html" /><updated>2020-11-09T08:33:40-06:00</updated><id>https://blog.londogard.com/feed.xml</id><title type="html">Londogard</title><subtitle>A blog with a focus on Deep Learning, JVM and Performance.</subtitle><entry><title type="html">How to build and play Snake via Native Binary, JVM and JS/Browser (Kotlin)</title><link href="https://blog.londogard.com/gradle/kotlin/game/multiplatform/2020/11/07/snake-kotlin-multiplatform.html" rel="alternate" type="text/html" title="How to build and play Snake via Native Binary, JVM and JS/Browser (Kotlin)" /><published>2020-11-07T00:00:00-06:00</published><updated>2020-11-07T00:00:00-06:00</updated><id>https://blog.londogard.com/gradle/kotlin/game/multiplatform/2020/11/07/snake-kotlin-multiplatform</id><content type="html" xml:base="https://blog.londogard.com/gradle/kotlin/game/multiplatform/2020/11/07/snake-kotlin-multiplatform.html">&lt;blockquote&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.1.1">Jekyll</generator><link href="https://blog.londogard.com/feed.xml" rel="self" type="application/atom+xml" /><link href="https://blog.londogard.com/" rel="alternate" type="text/html" /><updated>2020-11-15T10:53:30-06:00</updated><id>https://blog.londogard.com/feed.xml</id><title type="html">Londogard</title><subtitle>A blog with a focus on Deep Learning, JVM and Performance.</subtitle><entry><title type="html">How to build and play Snake via Native Binary, JVM and JS/Browser (Kotlin)</title><link href="https://blog.londogard.com/gradle/kotlin/game/multiplatform/2020/11/07/snake-kotlin-multiplatform.html" rel="alternate" type="text/html" title="How to build and play Snake via Native Binary, JVM and JS/Browser (Kotlin)" /><published>2020-11-07T00:00:00-06:00</published><updated>2020-11-07T00:00:00-06:00</updated><id>https://blog.londogard.com/gradle/kotlin/game/multiplatform/2020/11/07/snake-kotlin-multiplatform</id><content type="html" xml:base="https://blog.londogard.com/gradle/kotlin/game/multiplatform/2020/11/07/snake-kotlin-multiplatform.html">&lt;blockquote&gt;
   &lt;p&gt;&lt;strong&gt;Disclaimer:&lt;/strong&gt; this post is pretty long and I recommend reading one part at a time (it’s 3 parts).&lt;/p&gt;
 
   &lt;p&gt;Personally I hate unfinished blogs that are multiple parts, hence I uploaded all at once. So be assured, you’re getting all parts - right here, right now! :happy:&lt;/p&gt;
@@ -47,13 +47,13 @@ From the landing page of &lt;a href=&quot;https://kotlinlang.org/docs/reference/
 
 &lt;p&gt;By this statement we learn that &lt;em&gt;native&lt;/em&gt; refers to binary executables that can run on a OS (natively). No virtual machine or browser required! What does this mean in practice?&lt;/p&gt;
 
-&lt;p&gt;✔️ Small file size
-✔️ No overhead
+&lt;p&gt;✔️ Small file size&lt;br /&gt;
+✔️ No overhead&lt;br /&gt;
 ✔️ Incredibly fast starting-time&lt;/p&gt;
 
 &lt;p&gt;As usual it isn’t a win-win situation but you loose some&lt;/p&gt;
 
-&lt;p&gt;❌Development speed
+&lt;p&gt;❌Development speed&lt;br /&gt;
 ❌… and so on.&lt;/p&gt;
 
 &lt;h4 id=&quot;llvm&quot;&gt;LLVM&lt;/h4&gt;
@@ -147,15 +147,20 @@ Native has a lot of quirks like pointers, address space and much more!&lt;/p&gt;
 
 &lt;h3 id=&quot;outro-kotlin-multiplatform-and-why-it-matters&quot;&gt;Outro: Kotlin Multiplatform and why it matters&lt;/h3&gt;
 
-&lt;p&gt;✔️ One code-base for common logic
-			Serialization logic, e.g. parsing JSON into a data class
-			Networking
-			Database
-✔️ Development speed
+&lt;p&gt;✔️ One code-base for common logic&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;Serialization logic, e.g. parsing JSON into a data class&lt;/li&gt;
+  &lt;li&gt;Networking&lt;/li&gt;
+  &lt;li&gt;Database&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;✔️ Development speed&lt;br /&gt;
 ✔️ Required Knowledge&lt;/p&gt;
 
-&lt;p&gt;❌ Still requires some code in said language
-			Especially for UI&lt;/p&gt;
+&lt;p&gt;❌ Still requires some code in said language&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;Especially for UI&lt;/li&gt;
+&lt;/ul&gt;
 
 &lt;p&gt;So all in all we can share our code between platforms which improves development speed &amp;amp; quality in multiple ways.&lt;/p&gt;
 
@@ -164,7 +169,7 @@ The final, and perhaps obvious, one I’d like to mention straight away is that 
 
 &lt;p&gt;Personally I see Kotlin Multiplatform as a great way to share core logic between different targets, but one must use it with care and not try to force it into being used everywhere in every way.&lt;/p&gt;
 
-&lt;h2 id=&quot;part-two-how-to-set-up-multiplatform-and-build-snake&quot;&gt;Part two: How to set up Multiplatform and build Snake&lt;/h2&gt;
+&lt;h2 id=&quot;part-2-how-to-set-up-multiplatform-and-build-snake&quot;&gt;Part 2: How to set up Multiplatform and build Snake&lt;/h2&gt;
 
 &lt;p&gt;So first we need to understand how to set up a Multiplatform project. The &lt;a href=&quot;https://kotlinlang.org/docs/reference/mpp-create-lib.html&quot;&gt;official guide&lt;/a&gt; is actually really good, and if you’re using IntelliJ it’s a breeze to setup! Just as in the guide make sure to select &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Library&lt;/code&gt;.&lt;/p&gt;
 

@@ -130,7 +130,7 @@ window.onload = wrap_img;
 </ul>
 </li>
 <li class="toc-entry toc-h2">
-<a href="#part-two-how-to-set-up-multiplatform-and-build-snake">Part two: How to set up Multiplatform and build Snake</a>
+<a href="#part-2-how-to-set-up-multiplatform-and-build-snake">Part 2: How to set up Multiplatform and build Snake</a>
 <ul>
 <li class="toc-entry toc-h4"><a href="#building-a-jvm-app-snake">Building a JVM App (Snake)</a></li>
 <li class="toc-entry toc-h4"><a href="#drawing-the-snake--apple">Drawing the snake &amp; apple</a></li>
@@ -201,13 +201,13 @@ From the landing page of <a href="https://kotlinlang.org/docs/reference/native-o
 
 <p>By this statement we learn that <em>native</em> refers to binary executables that can run on a OS (natively). No virtual machine or browser required! What does this mean in practice?</p>
 
-<p>✔️ Small file size
-✔️ No overhead
+<p>✔️ Small file size<br>
+✔️ No overhead<br>
 ✔️ Incredibly fast starting-time</p>
 
 <p>As usual it isn’t a win-win situation but you loose some</p>
 
-<p>❌Development speed
+<p>❌Development speed<br>
 ❌… and so on.</p>
 
 <h4 id="llvm">
@@ -309,15 +309,20 @@ Native has a lot of quirks like pointers, address space and much more!</p>
 <h3 id="outro-kotlin-multiplatform-and-why-it-matters">
 <a class="anchor" href="#outro-kotlin-multiplatform-and-why-it-matters" aria-hidden="true"><span class="octicon octicon-link"></span></a>Outro: Kotlin Multiplatform and why it matters</h3>
 
-<p>✔️ One code-base for common logic
-			Serialization logic, e.g. parsing JSON into a data class
-			Networking
-			Database
-✔️ Development speed
+<p>✔️ One code-base for common logic</p>
+<ul>
+  <li>Serialization logic, e.g. parsing JSON into a data class</li>
+  <li>Networking</li>
+  <li>Database</li>
+</ul>
+
+<p>✔️ Development speed<br>
 ✔️ Required Knowledge</p>
 
-<p>❌ Still requires some code in said language
-			Especially for UI</p>
+<p>❌ Still requires some code in said language</p>
+<ul>
+  <li>Especially for UI</li>
+</ul>
 
 <p>So all in all we can share our code between platforms which improves development speed &amp; quality in multiple ways.</p>
 
@@ -326,8 +331,8 @@ The final, and perhaps obvious, one I’d like to mention straight away is that 
 
 <p>Personally I see Kotlin Multiplatform as a great way to share core logic between different targets, but one must use it with care and not try to force it into being used everywhere in every way.</p>
 
-<h2 id="part-two-how-to-set-up-multiplatform-and-build-snake">
-<a class="anchor" href="#part-two-how-to-set-up-multiplatform-and-build-snake" aria-hidden="true"><span class="octicon octicon-link"></span></a>Part two: How to set up Multiplatform and build Snake</h2>
+<h2 id="part-2-how-to-set-up-multiplatform-and-build-snake">
+<a class="anchor" href="#part-2-how-to-set-up-multiplatform-and-build-snake" aria-hidden="true"><span class="octicon octicon-link"></span></a>Part 2: How to set up Multiplatform and build Snake</h2>
 
 <p>So first we need to understand how to set up a Multiplatform project. The <a href="https://kotlinlang.org/docs/reference/mpp-create-lib.html">official guide</a> is actually really good, and if you’re using IntelliJ it’s a breeze to setup! Just as in the guide make sure to select <code class="language-plaintext highlighter-rouge">Library</code>.</p>
 
