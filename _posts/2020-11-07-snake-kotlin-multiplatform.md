@@ -50,13 +50,13 @@ From the landing page of [kotlinlang.org/native](https://kotlinlang.org/docs/ref
 
 By this statement we learn that _native_ refers to binary executables that can run on a OS (natively). No virtual machine or browser required! What does this mean in practice?
 
-✔️ Small file size
-✔️ No overhead
+✔️ Small file size  
+✔️ No overhead  
 ✔️ Incredibly fast starting-time
 
 As usual it isn't a win-win situation but you loose some
 
-❌Development speed
+❌Development speed  
 ❌... and so on.
 
 #### LLVM
@@ -138,15 +138,16 @@ Kotlin also has some really nice convenience syntax such as the `memScope`-block
 
 ### Outro: Kotlin Multiplatform and why it matters
 
-✔️ One code-base for common logic
-			Serialization logic, e.g. parsing JSON into a data class
-			Networking
-			Database
-✔️ Development speed
-✔️ Required Knowledge
+✔️ One code-base for common logic  
+- Serialization logic, e.g. parsing JSON into a data class
+- Networking
+- Database
+  
+✔️ Development speed  
+✔️ Required Knowledge  
 
-❌ Still requires some code in said language
-			Especially for UI
+❌ Still requires some code in said language  
+- Especially for UI
 
 So all in all we can share our code between platforms which improves development speed & quality in multiple ways.
 
