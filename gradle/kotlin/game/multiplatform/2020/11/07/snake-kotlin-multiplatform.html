@@ -125,7 +125,7 @@ window.onload = wrap_img;
 <li class="toc-entry toc-h4"><a href="#how-kotlin-keeps-multiplatform-clean">How Kotlin keeps multiplatform clean</a></li>
 </ul>
 </li>
-<li class="toc-entry toc-h3"><a href="#wrapping-up-how-native-works">Wrapping up how Native works</a></li>
+<li class="toc-entry toc-h3"><a href="#summarizing-how-native-works">Summarizing how Native works</a></li>
 <li class="toc-entry toc-h3"><a href="#outro-kotlin-multiplatform-and-why-it-matters">Outro: Kotlin Multiplatform and why it matters</a></li>
 </ul>
 </li>
@@ -279,8 +279,8 @@ The process involves <a href="https://en.wikipedia.org/wiki/Lexical_analysis">le
 
 <p>You can take this concept and apply to anything such as IO , network &amp; more - all which are included in the std-lib!</p>
 
-<h3 id="wrapping-up-how-native-works">
-<a class="anchor" href="#wrapping-up-how-native-works" aria-hidden="true"><span class="octicon octicon-link"></span></a>Wrapping up how Native works</h3>
+<h3 id="summarizing-how-native-works">
+<a class="anchor" href="#summarizing-how-native-works" aria-hidden="true"><span class="octicon octicon-link"></span></a>Summarizing how Native works</h3>
 
 <p>Let’s recollect what we’ve gone through</p>
 
@@ -329,7 +329,7 @@ Native has a lot of quirks like pointers, address space and much more!</p>
 <p>The biggest “downside” is that even though we share the code we most likely will need some kind of specific code for the platform, for the GUI on iOS as an example. Perhaps <a href="https://www.jetbrains.com/lp/compose/">compose</a> can help us get closer to that reality soon - who knows.
 The final, and perhaps obvious, one I’d like to mention straight away is that platform specific libraries of course are not usable on multiplatform. This includes libraries such as React (JS) &amp; <code class="language-plaintext highlighter-rouge">ncurses</code> (native).</p>
 
-<p>Personally I see Kotlin Multiplatform as a great way to share core logic between different targets, but one must use it with care and not try to force it into being used everywhere in every way.</p>
+<p>Personally I see Kotlin Multiplatform as a great way to <strong>share core logic</strong> between different targets, but one must use it with care and <strong>not try to force it</strong> into being used everywhere in every way.</p>
 
 <h2 id="part-2-how-to-set-up-multiplatform-and-build-snake">
 <a class="anchor" href="#part-2-how-to-set-up-multiplatform-and-build-snake" aria-hidden="true"><span class="octicon octicon-link"></span></a>Part 2: How to set up Multiplatform and build Snake</h2>
@@ -407,8 +407,8 @@ The final, and perhaps obvious, one I’d like to mention straight away is that 
 <span class="p">}</span>
 </code></pre></div></div>
 
-<p>What are we doing?
-<code class="language-plaintext highlighter-rouge">JFrame</code> was refactored <code class="language-plaintext highlighter-rouge">GUI</code> which then is a subclass of <code class="language-plaintext highlighter-rouge">JFrame</code>, with a few extra attributes were added such as <code class="language-plaintext highlighter-rouge">defaultCloseOperation = EXIT_ON_CLOSE</code> that makes sure the program exits if we close the window, feel free to test it out!
+<p>What are we doing?<br>
+<code class="language-plaintext highlighter-rouge">JFrame</code> was refactored <code class="language-plaintext highlighter-rouge">GUI</code> which then is a subclass of <code class="language-plaintext highlighter-rouge">JFrame</code>, with a few extra attributes added such as <code class="language-plaintext highlighter-rouge">defaultCloseOperation = EXIT_ON_CLOSE</code> that makes sure the program exits if we close the window, feel free to test it out!
 Further a <code class="language-plaintext highlighter-rouge">Board</code> was added which extends <code class="language-plaintext highlighter-rouge">JPanel</code>, it’s in the <code class="language-plaintext highlighter-rouge">Board</code> the game will be rendered. 
 Finally, <code class="language-plaintext highlighter-rouge">add(Board())</code> allows us to add our <code class="language-plaintext highlighter-rouge">Board</code>  to the <code class="language-plaintext highlighter-rouge">JFrame</code>.</p>
 
@@ -791,7 +791,7 @@ We need to make sure that the end can be lost, let’s do it by adding a new att
 <h2 id="part-3-true-multiplatform-moving-to-js--native">
 <a class="anchor" href="#part-3-true-multiplatform-moving-to-js--native" aria-hidden="true"><span class="octicon octicon-link"></span></a>Part 3: True multiplatform (moving to JS &amp; Native)</h2>
 
-<p>First off, this part is more of a reader exercise. If you want the code please go to the GitHub repository.</p>
+<p>First off, this part is more of a reader exercise. If you want the code please go to the <a href="https://github.com/londogard/snake-js-jvm-native">GitHub repository</a>.</p>
 
 <p>All the snake-related code that isn’t in your <code class="language-plaintext highlighter-rouge">main.kt</code>-file should be moved into <code class="language-plaintext highlighter-rouge">src/commonMain/kotlin</code> which makes it <strong>multiplatform</strong>-code. This means that it can target JS, Native &amp; JVM instantly!</p>
 

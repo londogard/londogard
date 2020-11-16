@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.1.1">Jekyll</generator><link href="https://blog.londogard.com/feed.xml" rel="self" type="application/atom+xml" /><link href="https://blog.londogard.com/" rel="alternate" type="text/html" /><updated>2020-11-15T10:53:30-06:00</updated><id>https://blog.londogard.com/feed.xml</id><title type="html">Londogard</title><subtitle>A blog with a focus on Deep Learning, JVM and Performance.</subtitle><entry><title type="html">How to build and play Snake via Native Binary, JVM and JS/Browser (Kotlin)</title><link href="https://blog.londogard.com/gradle/kotlin/game/multiplatform/2020/11/07/snake-kotlin-multiplatform.html" rel="alternate" type="text/html" title="How to build and play Snake via Native Binary, JVM and JS/Browser (Kotlin)" /><published>2020-11-07T00:00:00-06:00</published><updated>2020-11-07T00:00:00-06:00</updated><id>https://blog.londogard.com/gradle/kotlin/game/multiplatform/2020/11/07/snake-kotlin-multiplatform</id><content type="html" xml:base="https://blog.londogard.com/gradle/kotlin/game/multiplatform/2020/11/07/snake-kotlin-multiplatform.html">&lt;blockquote&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.1.1">Jekyll</generator><link href="https://blog.londogard.com/feed.xml" rel="self" type="application/atom+xml" /><link href="https://blog.londogard.com/" rel="alternate" type="text/html" /><updated>2020-11-16T12:47:55-06:00</updated><id>https://blog.londogard.com/feed.xml</id><title type="html">Londogard</title><subtitle>A blog with a focus on Deep Learning, JVM and Performance.</subtitle><entry><title type="html">How to build and play Snake via Native Binary, JVM and JS/Browser (Kotlin)</title><link href="https://blog.londogard.com/gradle/kotlin/game/multiplatform/2020/11/07/snake-kotlin-multiplatform.html" rel="alternate" type="text/html" title="How to build and play Snake via Native Binary, JVM and JS/Browser (Kotlin)" /><published>2020-11-07T00:00:00-06:00</published><updated>2020-11-07T00:00:00-06:00</updated><id>https://blog.londogard.com/gradle/kotlin/game/multiplatform/2020/11/07/snake-kotlin-multiplatform</id><content type="html" xml:base="https://blog.londogard.com/gradle/kotlin/game/multiplatform/2020/11/07/snake-kotlin-multiplatform.html">&lt;blockquote&gt;
   &lt;p&gt;&lt;strong&gt;Disclaimer:&lt;/strong&gt; this post is pretty long and I recommend reading one part at a time (it’s 3 parts).&lt;/p&gt;
 
   &lt;p&gt;Personally I hate unfinished blogs that are multiple parts, hence I uploaded all at once. So be assured, you’re getting all parts - right here, right now! :happy:&lt;/p&gt;
@@ -120,7 +120,7 @@ The process involves &lt;a href=&quot;https://en.wikipedia.org/wiki/Lexical_anal
 
 &lt;p&gt;You can take this concept and apply to anything such as IO , network &amp;amp; more - all which are included in the std-lib!&lt;/p&gt;
 
-&lt;h3 id=&quot;wrapping-up-how-native-works&quot;&gt;Wrapping up how Native works&lt;/h3&gt;
+&lt;h3 id=&quot;summarizing-how-native-works&quot;&gt;Summarizing how Native works&lt;/h3&gt;
 
 &lt;p&gt;Let’s recollect what we’ve gone through&lt;/p&gt;
 
@@ -167,7 +167,7 @@ Native has a lot of quirks like pointers, address space and much more!&lt;/p&gt;
 &lt;p&gt;The biggest “downside” is that even though we share the code we most likely will need some kind of specific code for the platform, for the GUI on iOS as an example. Perhaps &lt;a href=&quot;https://www.jetbrains.com/lp/compose/&quot;&gt;compose&lt;/a&gt; can help us get closer to that reality soon - who knows.
 The final, and perhaps obvious, one I’d like to mention straight away is that platform specific libraries of course are not usable on multiplatform. This includes libraries such as React (JS) &amp;amp; &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ncurses&lt;/code&gt; (native).&lt;/p&gt;
 
-&lt;p&gt;Personally I see Kotlin Multiplatform as a great way to share core logic between different targets, but one must use it with care and not try to force it into being used everywhere in every way.&lt;/p&gt;
+&lt;p&gt;Personally I see Kotlin Multiplatform as a great way to &lt;strong&gt;share core logic&lt;/strong&gt; between different targets, but one must use it with care and &lt;strong&gt;not try to force it&lt;/strong&gt; into being used everywhere in every way.&lt;/p&gt;
 
 &lt;h2 id=&quot;part-2-how-to-set-up-multiplatform-and-build-snake&quot;&gt;Part 2: How to set up Multiplatform and build Snake&lt;/h2&gt;
 
@@ -243,8 +243,8 @@ The final, and perhaps obvious, one I’d like to mention straight away is that 
 &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-&lt;p&gt;What are we doing?
-&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;JFrame&lt;/code&gt; was refactored &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;GUI&lt;/code&gt; which then is a subclass of &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;JFrame&lt;/code&gt;, with a few extra attributes were added such as &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;defaultCloseOperation = EXIT_ON_CLOSE&lt;/code&gt; that makes sure the program exits if we close the window, feel free to test it out!
+&lt;p&gt;What are we doing?&lt;br /&gt;
+&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;JFrame&lt;/code&gt; was refactored &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;GUI&lt;/code&gt; which then is a subclass of &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;JFrame&lt;/code&gt;, with a few extra attributes added such as &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;defaultCloseOperation = EXIT_ON_CLOSE&lt;/code&gt; that makes sure the program exits if we close the window, feel free to test it out!
 Further a &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Board&lt;/code&gt; was added which extends &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;JPanel&lt;/code&gt;, it’s in the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Board&lt;/code&gt; the game will be rendered. 
 Finally, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;add(Board())&lt;/code&gt; allows us to add our &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Board&lt;/code&gt;  to the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;JFrame&lt;/code&gt;.&lt;/p&gt;
 
@@ -620,7 +620,7 @@ We need to make sure that the end can be lost, let’s do it by adding a new att
 
 &lt;h2 id=&quot;part-3-true-multiplatform-moving-to-js--native&quot;&gt;Part 3: True multiplatform (moving to JS &amp;amp; Native)&lt;/h2&gt;
 
-&lt;p&gt;First off, this part is more of a reader exercise. If you want the code please go to the GitHub repository.&lt;/p&gt;
+&lt;p&gt;First off, this part is more of a reader exercise. If you want the code please go to the &lt;a href=&quot;https://github.com/londogard/snake-js-jvm-native&quot;&gt;GitHub repository&lt;/a&gt;.&lt;/p&gt;
 
 &lt;p&gt;All the snake-related code that isn’t in your &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;main.kt&lt;/code&gt;-file should be moved into &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;src/commonMain/kotlin&lt;/code&gt; which makes it &lt;strong&gt;multiplatform&lt;/strong&gt;-code. This means that it can target JS, Native &amp;amp; JVM instantly!&lt;/p&gt;
 
