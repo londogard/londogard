@@ -86,7 +86,7 @@ window.onload = wrap_img;
        • <span class="read-time" title="Estimated read time">
     
     
-      25 min read
+      26 min read
     
 </span></p>
 
@@ -112,41 +112,61 @@ window.onload = wrap_img;
 
   <div class="post-content e-content" itemprop="articleBody">
     <ul class="section-nav">
-<li class="toc-entry toc-h2"><a href="#introduction">Introduction</a></li>
-<li class="toc-entry toc-h2">
+<li class="toc-entry toc-h1"><a href="#introduction">Introduction</a></li>
+<li class="toc-entry toc-h1">
 <a href="#part-1-how-does-kotlin-multiplatform-work">Part 1: How does Kotlin Multiplatform work?</a>
 <ul>
-<li class="toc-entry toc-h4"><a href="#llvm">LLVM</a></li>
-<li class="toc-entry toc-h3">
+<li class="toc-entry toc-h2"><a href="#llvm">LLVM</a></li>
+<li class="toc-entry toc-h2">
 <a href="#how-the-kotlin-compiler-works-frontend-to-backend">How the Kotlin Compiler works, Frontend to Backend</a>
 <ul>
-<li class="toc-entry toc-h4"><a href="#the-kotlin-compiler-frontend">The Kotlin Compiler Frontend</a></li>
-<li class="toc-entry toc-h4"><a href="#the-kotlin-compiler-backend">The Kotlin Compiler Backend</a></li>
-<li class="toc-entry toc-h4"><a href="#how-kotlin-keeps-multiplatform-clean">How Kotlin keeps multiplatform clean</a></li>
+<li class="toc-entry toc-h3"><a href="#the-kotlin-compiler-frontend">The Kotlin Compiler Frontend</a></li>
+<li class="toc-entry toc-h3"><a href="#the-kotlin-compiler-backend">The Kotlin Compiler Backend</a></li>
 </ul>
 </li>
-<li class="toc-entry toc-h3"><a href="#summarizing-how-native-works">Summarizing how Native works</a></li>
-<li class="toc-entry toc-h3"><a href="#outro-kotlin-multiplatform-and-why-it-matters">Outro: Kotlin Multiplatform and why it matters</a></li>
+<li class="toc-entry toc-h2"><a href="#how-kotlin-keeps-multiplatform-clean">How Kotlin keeps multiplatform clean</a></li>
+<li class="toc-entry toc-h2"><a href="#summarizing-how-multiplatform-works">Summarizing how Multiplatform works</a></li>
+<li class="toc-entry toc-h2"><a href="#outro-kotlin-multiplatform-and-why-it-matters">Outro: Kotlin Multiplatform and why it matters</a></li>
 </ul>
 </li>
-<li class="toc-entry toc-h2">
+<li class="toc-entry toc-h1">
 <a href="#part-2-how-to-set-up-multiplatform-and-build-snake">Part 2: How to set up Multiplatform and build Snake</a>
 <ul>
-<li class="toc-entry toc-h4"><a href="#building-a-jvm-app-snake">Building a JVM App (Snake)</a></li>
-<li class="toc-entry toc-h4"><a href="#drawing-the-snake--apple">Drawing the snake &amp; apple</a></li>
-<li class="toc-entry toc-h4"><a href="#creating-the-data-structures">Creating the data structures</a></li>
+<li class="toc-entry toc-h2">
+<a href="#building-a-jvm-app-snake">Building a JVM App (Snake)</a>
+<ul>
+<li class="toc-entry toc-h3"><a href="#drawing-the-snake--apple">Drawing the snake &amp; apple</a></li>
+<li class="toc-entry toc-h3">
+<a href="#creating-the-data-structures">Creating the data structures</a>
+<ul>
 <li class="toc-entry toc-h4"><a href="#adding-a-direction">Adding a Direction</a></li>
-<li class="toc-entry toc-h4"><a href="#wrapping-up-the-code-with-some-minor-refactoring--new-functionality">Wrapping up the code with some minor refactoring / new functionality</a></li>
 </ul>
 </li>
-<li class="toc-entry toc-h2">
+</ul>
+</li>
+<li class="toc-entry toc-h2"><a href="#wrapping-up-the-code-with-some-minor-refactoring--new-functionality">Wrapping up the code with some minor refactoring / new functionality</a></li>
+</ul>
+</li>
+<li class="toc-entry toc-h1">
 <a href="#part-3-true-multiplatform-moving-to-js--native">Part 3: True multiplatform (moving to JS &amp; Native)</a>
 <ul>
-<li class="toc-entry toc-h4"><a href="#jsbrowser-target">JS/Browser target</a></li>
-<li class="toc-entry toc-h4"><a href="#native-target">Native target</a></li>
+<li class="toc-entry toc-h2"><a href="#jsbrowser-target">JS/Browser target</a></li>
+<li class="toc-entry toc-h2"><a href="#native-target">Native target</a></li>
 </ul>
 </li>
 </ul>
+<p>A three part blog (all included in this one) that goes through</p>
+
+<ol>
+  <li>How Kotlin Multiplatform works (compiler and everything)</li>
+  <li>How to build a game (Snake) and finally</li>
+  <li>how to make it multiplatform.</li>
+</ol>
+
+<p><strong>All the code is available <a href="https://github.com/londogard/snake-js-jvm-native">here</a>.</strong></p>
+
+<p>It’s highly recommended using IntelliJ, a free (community) edition can be downloaded from <a href="https://www.jetbrains.com/idea/download/#section=windows">jetbrains.com</a>.</p>
+
 <blockquote>
   <p><strong>Disclaimer:</strong> this post is pretty long and I recommend reading one part at a time (it’s 3 parts).</p>
 
@@ -158,8 +178,8 @@ The third, and final, part covers how we are able to use the same code on JS/Bro
 
 <p><strong>All the code is available <a href="https://github.com/londogard/snake-js-jvm-native">here</a>.</strong></p>
 
-<h2 id="introduction">
-<a class="anchor" href="#introduction" aria-hidden="true"><span class="octicon octicon-link"></span></a>Introduction</h2>
+<h1 id="introduction">
+<a class="anchor" href="#introduction" aria-hidden="true"><span class="octicon octicon-link"></span></a>Introduction</h1>
 
 <p>First off, what is Kotlin?</p>
 
@@ -190,16 +210,17 @@ The third, and final, part covers how we are able to use the same code on JS/Bro
 
 <p>Enough praises, let’s get onto how the multiplatform solution actually works through <a href="#Part%201:%20How%20does%20Kotlin%20Multiplatform%20work"><strong>Part 1</strong></a>.</p>
 
-<h2 id="part-1-how-does-kotlin-multiplatform-work">
-<a class="anchor" href="#part-1-how-does-kotlin-multiplatform-work" aria-hidden="true"><span class="octicon octicon-link"></span></a>Part 1: How does Kotlin Multiplatform work?</h2>
-<p>Let’s start by explaining <strong>Native</strong>, what exactly is <em>Native</em>?
+<h1 id="part-1-how-does-kotlin-multiplatform-work">
+<a class="anchor" href="#part-1-how-does-kotlin-multiplatform-work" aria-hidden="true"><span class="octicon octicon-link"></span></a>Part 1: How does Kotlin Multiplatform work?</h1>
+<p>Let’s begin by understanding exactly what <strong>Native</strong> is?
 From the landing page of <a href="https://kotlinlang.org/docs/reference/native-overview.html">kotlinlang.org/native</a>.</p>
 
 <blockquote>
   <p>Kotlin/Native is a technology for compiling Kotlin code to native binaries, which can run without a virtual machine. It is an  <a href="https://llvm.org/">LLVM</a>  based backend for the Kotlin compiler and native implementation of the Kotlin standard library.</p>
 </blockquote>
 
-<p>By this statement we learn that <em>native</em> refers to binary executables that can run on a OS (natively). No virtual machine or browser required! What does this mean in practice?</p>
+<p>This statement tells us a few things, such as <em>native</em> refering to binary executables that can run on a OS (natively) using no virtual machine or browser!<br>
+But in practice?</p>
 
 <p>✔️ Small file size<br>
 ✔️ No overhead<br>
@@ -207,16 +228,14 @@ From the landing page of <a href="https://kotlinlang.org/docs/reference/native-o
 
 <p>As usual it isn’t a win-win situation but you loose some</p>
 
-<p>❌Development speed<br>
-❌… and so on.</p>
+<p>❌Development speed</p>
 
-<h4 id="llvm">
-<a class="anchor" href="#llvm" aria-hidden="true"><span class="octicon octicon-link"></span></a>LLVM</h4>
+<h2 id="llvm">
+<a class="anchor" href="#llvm" aria-hidden="true"><span class="octicon octicon-link"></span></a>LLVM</h2>
 
-<p>What is LLVM? 
-LLVM is probably the biggest project (compiler) that exists to build native binaries. Languages such as C, C++, Haskell, Rust &amp; Swift compiles to native binaries through LLVM.</p>
+<p>LLVM is probably the biggest project (compiler) that exists to build native binaries. Languages such as C, C++, Haskell, Rust &amp; Swift compile into native binaries through LLVM.</p>
 
-<p>Moving back to the info-text,</p>
+<p>From the info-box previously,</p>
 
 <blockquote>
   <p><strong>It is an  <a href="https://llvm.org/">LLVM</a>  based backend for the Kotlin compiler</strong> and native implementation of the Kotlin standard library.</p>
@@ -224,90 +243,93 @@ LLVM is probably the biggest project (compiler) that exists to build native bina
 
 <p>So… What is a backend? More specifically, what is a backend for a compiler?</p>
 
-<h3 id="how-the-kotlin-compiler-works-frontend-to-backend">
-<a class="anchor" href="#how-the-kotlin-compiler-works-frontend-to-backend" aria-hidden="true"><span class="octicon octicon-link"></span></a>How the Kotlin Compiler works, Frontend to Backend</h3>
+<h2 id="how-the-kotlin-compiler-works-frontend-to-backend">
+<a class="anchor" href="#how-the-kotlin-compiler-works-frontend-to-backend" aria-hidden="true"><span class="octicon octicon-link"></span></a>How the Kotlin Compiler works, Frontend to Backend</h2>
 
-<p>First, what is a compiler? 
-A compiler is like a translator, just as you’d translate Swedish into English a compiler instead translates computer code written in one programming language into another one of lower level, e.g. assembly.</p>
+<p>A compiler is like a translator, just as you’d translate Swedish into English a compiler instead translates computer code written in one programming language into another one of lower level, e.g. assembly.</p>
 
-<p>What are the steps then taken? In general all compilers follow the same pattern, and Kotlin is no different. Even though it’s a similar path it’s interesting to learn about, even more if you don’t know how it usually works!
+<p>In general all compilers follow the same pattern, and Kotlin is no different. Even though it’s a similar path it’s interesting to learn about, even more if you don’t know how it usually works!<br>
 The Kotlin Compiler first compiles Kotlin code into a <em>Intermediate Representation</em>, or <em>IR</em>, which it later turns into Java Bytecode, when targeting the <em>Java Virtual Machine</em> (<em>JVM</em>).</p>
 
 <p><img src="https://user-images.githubusercontent.com/7490199/97027300-d2095900-155a-11eb-9d18-6fb58a0a9699.png" alt="image"></p>
 
 <p>The first part is called the <strong>Compiler Frontend</strong></p>
 
-<h4 id="the-kotlin-compiler-frontend">
-<a class="anchor" href="#the-kotlin-compiler-frontend" aria-hidden="true"><span class="octicon octicon-link"></span></a>The Kotlin Compiler Frontend</h4>
+<h3 id="the-kotlin-compiler-frontend">
+<a class="anchor" href="#the-kotlin-compiler-frontend" aria-hidden="true"><span class="octicon octicon-link"></span></a>The Kotlin Compiler Frontend</h3>
 
 <p><img src="https://user-images.githubusercontent.com/7490199/97027463-1137aa00-155b-11eb-9c31-a60e3e25af87.png" alt="image"></p>
 
-<p>As mentioned the <em>Compiler Frontend</em> turns the Kotlin code into a <em>Intermediate Representation</em> of the code which is represented by a <a href="https://en.wikipedia.org/wiki/Abstract_syntax_tree">abstract syntax tree</a>, which is built from concrete syntax, e.g. strings.
-The process involves <a href="https://en.wikipedia.org/wiki/Lexical_analysis">lexical analysis</a> which creates tokens and pass it forward to the <a href="https://en.wikipedia.org/wiki/Parsing">parser</a> that finally builds said abstract syntax tree. For those interested this could be a really fun challenge and learning lesson to implement yourself!</p>
+<p>The <em>Compiler Frontend</em> turns the Kotlin code into a <em>Intermediate Representation</em> of the code which is represented by a <a href="https://en.wikipedia.org/wiki/Abstract_syntax_tree">abstract syntax tree</a>. The <em>abstract syntax tree</em> in turn is built from concrete syntax, e.g. strings.<br>
+The process involves <a href="https://en.wikipedia.org/wiki/Lexical_analysis">lexical analysis</a> which creates tokens and pass it forward to the <a href="https://en.wikipedia.org/wiki/Parsing">parser</a> that finally builds the <em>abstract syntax tree</em>.<br>
+For those interested this could be a really fun challenge and learning lesson to implement yourself!</p>
 
 <p>Moving on, the second and final part is called the <strong>Compiler Backend</strong>.</p>
 
-<h4 id="the-kotlin-compiler-backend">
-<a class="anchor" href="#the-kotlin-compiler-backend" aria-hidden="true"><span class="octicon octicon-link"></span></a>The Kotlin Compiler Backend</h4>
+<h3 id="the-kotlin-compiler-backend">
+<a class="anchor" href="#the-kotlin-compiler-backend" aria-hidden="true"><span class="octicon octicon-link"></span></a>The Kotlin Compiler Backend</h3>
 
 <p><img src="https://user-images.githubusercontent.com/7490199/97077672-ddee2d00-15e5-11eb-9f71-916c5b2a0544.png" alt="image"></p>
 
-<p>The <em>Compiler Backend</em> actually turns this abstract syntax tree, or <em>IR</em>, into computer output language. In this case it’s Java Bytecode which is understood by the <em>JVM</em>. The backend is the part that actually optimize code to remove for-loops where applicable, exchange variables into constants and so on. Just as with the frontend it’s a really good challenge to either implement a backend without optimizations, or focus on a existing one and adding a optimization yourself!</p>
+<p>The <em>Compiler Backend</em> turns this abstract syntax tree, or <em>IR</em>, into computer output language.<br>
+In the image that is Java Bytecode which is understood by the <em>JVM</em>. The backend is the part that actually optimize code to remove for-loops where applicable, exchange variables into constants and so on.<br>
+Just as with the frontend it’s a really good challenge to either implement a backend without optimizations, or focus on a existing one and adding a optimization yourself!</p>
 
-<p>What is interesting about Kotlin is that it has different backends, which means that the <em>IR</em> compile not only into Java Bytecode but also JS/Browser &amp; Native binaries.</p>
+<p>What is interesting about Kotlin is that it has different compiler backends, which means that the <em>IR</em> compile not only into Java Bytecode but also JS/Browser &amp; Native binaries.</p>
 
 <p><img src="https://user-images.githubusercontent.com/7490199/97077776-b8155800-15e6-11eb-8ae6-a83a77253087.png" alt="image"></p>
 
 <blockquote>
-  <p><strong>Side-note</strong>: For Native Backend we actually have two <em>Intermediate Representations</em>, first Kotlin <em>IR</em> which is compiled into LLVM <em>IR</em> which LLVM then compiles into a native binary through its own Compiler Backend. This means that all the optimizations applied to C, C++, Swift &amp; many more are also applied to Kotlin Native code!</p>
+  <p><strong>Side-note</strong>: For Native Backend there’s in fact two <em>Intermediate Representations</em>, first Kotlin <em>IR</em> which then compiles into LLVM <em>IR</em>. LLVM finally turns this into a native binary through its own Compiler Backend.<br>
+During the final step in LLVM all the optimizations applied to C, C++, Swift &amp; many more is also applied to Kotlin Native code!</p>
 </blockquote>
 
-<h4 id="how-kotlin-keeps-multiplatform-clean">
-<a class="anchor" href="#how-kotlin-keeps-multiplatform-clean" aria-hidden="true"><span class="octicon octicon-link"></span></a>How Kotlin keeps multiplatform clean</h4>
+<h2 id="how-kotlin-keeps-multiplatform-clean">
+<a class="anchor" href="#how-kotlin-keeps-multiplatform-clean" aria-hidden="true"><span class="octicon octicon-link"></span></a>How Kotlin keeps multiplatform clean</h2>
 
 <p>It might sound messy to target multiple platforms like this, and how could it possibly end up clean?</p>
 
-<p>By using the standard libraries that are included with Kotlin, which includes almost everything you need, and multiplatform-developed community libraries, e.g. <a href="https://github.com/cashapp/sqldelight">SQLDelight</a>, you get code that looks the same and works the same irregardless of if you target JS/Browser, Native or the JVM.</p>
+<p>By using the standard libraries that are included with Kotlin, which includes almost everything you need, and multiplatform-developed community libraries, e.g. <a href="https://github.com/cashapp/sqldelight">SQLDelight</a>, you get code that looks the same and works the same irregardless of target (JS/Browser, Native or the JVM).</p>
 
-<p>To give an example of how Kotlin std-lib works, let’s take one of the most common types - String.</p>
+<p>To give an example of how Kotlin std-lib works, let’s take one of the most common types - <code class="language-plaintext highlighter-rouge">String</code>.</p>
 
 <p><img src="https://user-images.githubusercontent.com/7490199/97077938-2dcdf380-15e8-11eb-8282-873d80f6178e.png" alt="image"></p>
 
-<p>By using Kotlin.String rather than the usual Java.lang.String you do when programming Java you get a String type that works on multiple platform and has the same convenience functions (&amp; even more than the Java one). Imagine, you can write native code using <code class="language-plaintext highlighter-rouge">.substring</code>, <code class="language-plaintext highlighter-rouge">.take(n)</code> &amp; <code class="language-plaintext highlighter-rouge">.replace</code> - amazing compared to <code class="language-plaintext highlighter-rouge">c</code> right? :happy:</p>
+<p>By using <code class="language-plaintext highlighter-rouge">Kotlin.String</code> rather than the usual <code class="language-plaintext highlighter-rouge">Java.lang.String</code> you do when programming Java you get a type that works on multiple platforms, including some awesome convenience functions. Imagine, you can write native code using <code class="language-plaintext highlighter-rouge">.substring</code>, <code class="language-plaintext highlighter-rouge">.take(n)</code> &amp; <code class="language-plaintext highlighter-rouge">.replace</code> - amazing compared to <code class="language-plaintext highlighter-rouge">c</code> right? :happy:</p>
 
-<p>Thinking about the compiler, this means that the Backend Compiler automatically maps the <em>IR</em> of a Kotlin.String into the correct type.</p>
+<p>To put this in context of the compiler, this means that the <em>Compiler Backend</em> automatically maps the <em>IR</em> of a <code class="language-plaintext highlighter-rouge">Kotlin.String</code> into the correct type.</p>
 
 <p>You can take this concept and apply to anything such as IO , network &amp; more - all which are included in the std-lib!</p>
 
-<h3 id="summarizing-how-native-works">
-<a class="anchor" href="#summarizing-how-native-works" aria-hidden="true"><span class="octicon octicon-link"></span></a>Summarizing how Native works</h3>
+<h2 id="summarizing-how-multiplatform-works">
+<a class="anchor" href="#summarizing-how-multiplatform-works" aria-hidden="true"><span class="octicon octicon-link"></span></a>Summarizing how Multiplatform works</h2>
 
 <p>Let’s recollect what we’ve gone through</p>
 
 <ol>
   <li>Kotlin Compiler compiles Kotlin code into a <em>Intermediate Representation</em> (IR) through the <em>Compiler Frontend</em>.
     <ol>
-      <li>This IR is a abstract syntax tree</li>
+      <li>
+<em>IR</em> is a abstract syntax tree.</li>
     </ol>
   </li>
-  <li>Kotlin Compiler then goes the <em>Compiler Backend</em> which turns the code into the lower level language, e.g. Java Bytecode, and applies optimisations</li>
+  <li>Kotlin Compiler then goes the <em>Compiler Backend</em> which turns the code into the lower level language, e.g. Java Bytecode, and applies multiple optimisations.</li>
   <li>Kotlin has a std-lib which has functionalities as <code class="language-plaintext highlighter-rouge">Kotlin.String</code>, <code class="language-plaintext highlighter-rouge">Kotlin.List</code>, networking and much more.
     <ol>
       <li>
-<code class="language-plaintext highlighter-rouge">Kotlin.String</code> turns into <code class="language-plaintext highlighter-rouge">KString</code> which is Kotlins own native strings with a lot of helper methods.</li>
+<code class="language-plaintext highlighter-rouge">Kotlin.String</code> turns into <code class="language-plaintext highlighter-rouge">KString</code> in the case of targeting <em>Native</em>. <code class="language-plaintext highlighter-rouge">KString</code> is Kotlins own native strings with some cool helper methods.</li>
     </ol>
   </li>
 </ol>
 
-<p>What more could be good to know in relation to native?
-Native has a lot of quirks like pointers, address space and much more!</p>
+<p>Native is usually considered “dangerous” and “hard” because of all the quirks like pointers, address space and other.</p>
 
-<p>Kotlin has solved memory allocation through the same approach as Swift, namely <a href="https://en.wikipedia.org/wiki/Reference_counting"><em>reference counting</em></a> which deallocates objects once they’ve got no references. There’s some advantages such as being really fast, but also downsides such as <em>reference cycles</em> which it handles poorly.</p>
+<p>Kotlin Native deals with <em>memory allocation</em> in the same way as Swift, namely <a href="https://en.wikipedia.org/wiki/Reference_counting"><em>reference counting</em></a> which deallocates objects once they’ve got no references. There’s some advantages such as being really fast, but also downsides such as <em>reference cycles</em> which it handles poorly when compared to the JVM Garbace Collector (GC).</p>
 
 <p>Kotlin also has some really nice convenience syntax such as the <code class="language-plaintext highlighter-rouge">memScope</code>-block.</p>
 
-<h3 id="outro-kotlin-multiplatform-and-why-it-matters">
-<a class="anchor" href="#outro-kotlin-multiplatform-and-why-it-matters" aria-hidden="true"><span class="octicon octicon-link"></span></a>Outro: Kotlin Multiplatform and why it matters</h3>
+<h2 id="outro-kotlin-multiplatform-and-why-it-matters">
+<a class="anchor" href="#outro-kotlin-multiplatform-and-why-it-matters" aria-hidden="true"><span class="octicon octicon-link"></span></a>Outro: Kotlin Multiplatform and why it matters</h2>
 
 <p>✔️ One code-base for common logic</p>
 <ul>
@@ -326,24 +348,35 @@ Native has a lot of quirks like pointers, address space and much more!</p>
 
 <p>So all in all we can share our code between platforms which improves development speed &amp; quality in multiple ways.</p>
 
-<p>The biggest “downside” is that even though we share the code we most likely will need some kind of specific code for the platform, for the GUI on iOS as an example. Perhaps <a href="https://www.jetbrains.com/lp/compose/">compose</a> can help us get closer to that reality soon - who knows.
+<p>The biggest “downside” is that even though we share the code we most likely will need some kind of specific code for the platform, for the GUI on iOS as an example. Perhaps <a href="https://www.jetbrains.com/lp/compose/">compose</a> can help us get closer to that reality soon - who knows.<br>
 The final, and perhaps obvious, one I’d like to mention straight away is that platform specific libraries of course are not usable on multiplatform. This includes libraries such as React (JS) &amp; <code class="language-plaintext highlighter-rouge">ncurses</code> (native).</p>
 
 <p>Personally I see Kotlin Multiplatform as a great way to <strong>share core logic</strong> between different targets, but one must use it with care and <strong>not try to force it</strong> into being used everywhere in every way.</p>
 
-<h2 id="part-2-how-to-set-up-multiplatform-and-build-snake">
-<a class="anchor" href="#part-2-how-to-set-up-multiplatform-and-build-snake" aria-hidden="true"><span class="octicon octicon-link"></span></a>Part 2: How to set up Multiplatform and build Snake</h2>
+<h1 id="part-2-how-to-set-up-multiplatform-and-build-snake">
+<a class="anchor" href="#part-2-how-to-set-up-multiplatform-and-build-snake" aria-hidden="true"><span class="octicon octicon-link"></span></a>Part 2: How to set up Multiplatform and build Snake</h1>
 
-<p>So first we need to understand how to set up a Multiplatform project. The <a href="https://kotlinlang.org/docs/reference/mpp-create-lib.html">official guide</a> is actually really good, and if you’re using IntelliJ it’s a breeze to setup! Just as in the guide make sure to select <code class="language-plaintext highlighter-rouge">Library</code>.</p>
+<p>First we’ll have to set up a Multiplatform project. The <a href="https://kotlinlang.org/docs/reference/mpp-create-lib.html">official guide</a> is actually really good, and if you’re using IntelliJ it’s a breeze to setup! Just as in the guide make sure to select <code class="language-plaintext highlighter-rouge">Library</code>.</p>
 
 <p><img src="https://kotlinlang.org/assets/images/reference/mpp/mpp-project-1.png" alt="Select a project template"></p>
 
-<p>Let the build run, <code class="language-plaintext highlighter-rouge">gradle</code> is a really good build-tool that I’d like to discuss more. But for now let’s just enjoy the simplicity of how our whole project is setup with builds possible for JS, JVM &amp; Native which also contains our common-code which is the glue!</p>
+<p>Run the build.</p>
 
-<h4 id="building-a-jvm-app-snake">
-<a class="anchor" href="#building-a-jvm-app-snake" aria-hidden="true"><span class="octicon octicon-link"></span></a>Building a JVM App (Snake)</h4>
+<blockquote>
+  <p><strong>Side-note:</strong> <code class="language-plaintext highlighter-rouge">gradle</code> is a really good build-tool that I’d like to discuss more. But for now let’s just enjoy the simplicity of how our whole project ‘automagically’ just works and builds as expected while targeting different platforms.</p>
+</blockquote>
 
-<p>Let’s start simple, Keep It Simple Stupid (KISS) principle applied, and create a JVM app which is easily runnable on all OS:es and has <em>great</em> debugging!</p>
+<h2 id="building-a-jvm-app-snake">
+<a class="anchor" href="#building-a-jvm-app-snake" aria-hidden="true"><span class="octicon octicon-link"></span></a>Building a JVM App (Snake)</h2>
+
+<p>Let’s start simple, Keep It Simple Stupid (KISS) principle applied, and create a JVM app. JVM has multiple advantages while developing such as</p>
+
+<ol>
+  <li>Easy to run on all OS:es</li>
+  <li>
+<em>Great</em> debugging!</li>
+  <li>A ton of resources</li>
+</ol>
 
 <p>First off, we need to draw something. This is easiest done through the Swing library which is included in the default jdk, some might call it old but hey - it does the job.Create a file called <code class="language-plaintext highlighter-rouge">main.kt</code> in <code class="language-plaintext highlighter-rouge">src/jvmMain/kotlin</code>.</p>
 
@@ -408,12 +441,12 @@ The final, and perhaps obvious, one I’d like to mention straight away is that 
 </code></pre></div></div>
 
 <p>What are we doing?<br>
-<code class="language-plaintext highlighter-rouge">JFrame</code> was refactored <code class="language-plaintext highlighter-rouge">GUI</code> which then is a subclass of <code class="language-plaintext highlighter-rouge">JFrame</code>, with a few extra attributes added such as <code class="language-plaintext highlighter-rouge">defaultCloseOperation = EXIT_ON_CLOSE</code> that makes sure the program exits if we close the window, feel free to test it out!
-Further a <code class="language-plaintext highlighter-rouge">Board</code> was added which extends <code class="language-plaintext highlighter-rouge">JPanel</code>, it’s in the <code class="language-plaintext highlighter-rouge">Board</code> the game will be rendered. 
+<code class="language-plaintext highlighter-rouge">JFrame</code> was refactored <code class="language-plaintext highlighter-rouge">GUI</code> which then is a subclass of <code class="language-plaintext highlighter-rouge">JFrame</code>, with a few extra attributes added such as <code class="language-plaintext highlighter-rouge">defaultCloseOperation = EXIT_ON_CLOSE</code> that makes sure the program exits if we close the window, feel free to test it out!<br>
+Further a <code class="language-plaintext highlighter-rouge">Board</code> was added which extends <code class="language-plaintext highlighter-rouge">JPanel</code>, it’s in the <code class="language-plaintext highlighter-rouge">Board</code> the game will be rendered. <br>
 Finally, <code class="language-plaintext highlighter-rouge">add(Board())</code> allows us to add our <code class="language-plaintext highlighter-rouge">Board</code>  to the <code class="language-plaintext highlighter-rouge">JFrame</code>.</p>
 
-<p>Run!
-Something is not right.. The background seems black enough, but the size is most likely not correct. We can’t even resize as <code class="language-plaintext highlighter-rouge">isResizable=false</code> was set. 
+<p>Run!<br>
+Something is not right.. The background seems black enough, but the size is most likely not correct. We can’t even resize as <code class="language-plaintext highlighter-rouge">isResizable=false</code> was set.<br>
 Make sure to add <code class="language-plaintext highlighter-rouge">pack()</code> at the end, as in</p>
 
 <div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">class</span> <span class="nc">GUI</span><span class="p">:</span> <span class="nc">JFrame</span><span class="p">()</span> <span class="p">{</span>
@@ -427,13 +460,13 @@ Make sure to add <code class="language-plaintext highlighter-rouge">pack()</code
 
 <p>What <code class="language-plaintext highlighter-rouge">pack()</code> does is that it packs and resizes the <code class="language-plaintext highlighter-rouge">JFrame</code> to include all its component(s) and their current size(s).</p>
 
-<p>Super! We’re now able to render our <code class="language-plaintext highlighter-rouge">Board</code> and see the whole deal.</p>
+<p>Super! We’re now able to render our <code class="language-plaintext highlighter-rouge">Board</code> and see the whole board.</p>
 
-<h4 id="drawing-the-snake--apple">
-<a class="anchor" href="#drawing-the-snake--apple" aria-hidden="true"><span class="octicon octicon-link"></span></a>Drawing the snake &amp; apple</h4>
+<h3 id="drawing-the-snake--apple">
+<a class="anchor" href="#drawing-the-snake--apple" aria-hidden="true"><span class="octicon octicon-link"></span></a>Drawing the snake &amp; apple</h3>
 
-<p>We’ve got the canvas (Board), now we just need to get artsy and add a Snake and some Apples!
-I’ll keep it simple and will make the Board exist of a few cells, all pretty large. On each cell you either have nothing, Snake or Apple - pretty simple right?
+<p>We’ve got the canvas (Board), now we just need to get artsy and add a Snake and some Apples!<br>
+I’ll keep it simple and will make the Board exist of a few cells, all pretty large. On each cell you either have nothing, Snake or Apple - pretty simple right?<br>
 <code class="language-plaintext highlighter-rouge">JPanel</code> has some nice-to-have methods built-in, such as <code class="language-plaintext highlighter-rouge">repaint()</code> which simply repaints the component, which in turns calls <code class="language-plaintext highlighter-rouge">paintComponent(g: Graphics?)</code> to paint/render it.</p>
 
 <blockquote>
@@ -457,14 +490,17 @@ I’ll keep it simple and will make the Board exist of a few cells, all pretty l
 <span class="p">}</span>
 </code></pre></div></div>
 
-<p>Once again, what’s actually happening?
-First, we override the function <code class="language-plaintext highlighter-rouge">paintComponent</code> which renders <code class="language-plaintext highlighter-rouge">Board</code> layout. The input is a <strong>nullable <code class="language-plaintext highlighter-rouge">Graphics</code></strong>, which is shown by the type having a <code class="language-plaintext highlighter-rouge">?</code> at the end. This is a cool property of Kotlin, if something can be <code class="language-plaintext highlighter-rouge">null</code> it actually is a type. No <code class="language-plaintext highlighter-rouge">Option</code>/<code class="language-plaintext highlighter-rouge">Maybe</code>, just pure type. 
-Then <code class="language-plaintext highlighter-rouge">Graphics?</code> is cast to non-null <code class="language-plaintext highlighter-rouge">Graphics2D</code> through a safe approach using <code class="language-plaintext highlighter-rouge">as?</code>, without <code class="language-plaintext highlighter-rouge">?</code> the cast can crash, with <code class="language-plaintext highlighter-rouge">?</code> the cast would return <code class="language-plaintext highlighter-rouge">null</code> if failing. 
-Finally we use a <strong>elvis-expression <code class="language-plaintext highlighter-rouge">?:</code></strong> which is basically a wrapper for <code class="language-plaintext highlighter-rouge">if (null) doThis else doThat</code>, so if the left-hand-side is <code class="language-plaintext highlighter-rouge">null</code> it’ll give the right-hand-side. The right-hand-side in our case is a empty <code class="language-plaintext highlighter-rouge">return</code> statement, meaning that we just make a early-exit. If the value is <em>not</em> <code class="language-plaintext highlighter-rouge">null</code> it’ll give the non-null variant of the type!</p>
+<p>Once again, let’s dive into what’s happening ‘under the hood’.</p>
+
+<p>First, we override the function <code class="language-plaintext highlighter-rouge">paintComponent</code> which renders <code class="language-plaintext highlighter-rouge">Board</code> layout. The input is a <strong>nullable <code class="language-plaintext highlighter-rouge">Graphics</code></strong>, which is shown by the type having a <code class="language-plaintext highlighter-rouge">?</code> at the end. This is a cool property of Kotlin, if something can be <code class="language-plaintext highlighter-rouge">null</code> it actually is a type. No <code class="language-plaintext highlighter-rouge">Option</code>/<code class="language-plaintext highlighter-rouge">Maybe</code>, just pure type.</p>
+
+<p>Then <code class="language-plaintext highlighter-rouge">Graphics?</code> is cast to non-null <code class="language-plaintext highlighter-rouge">Graphics2D</code> through a safe approach using <code class="language-plaintext highlighter-rouge">as?</code>, without <code class="language-plaintext highlighter-rouge">?</code> the cast can crash, with <code class="language-plaintext highlighter-rouge">?</code> the cast would return <code class="language-plaintext highlighter-rouge">null</code> if failing.</p>
+
+<p>Finally we use a <strong>elvis-expression <code class="language-plaintext highlighter-rouge">?:</code></strong> which is basically a wrapper for <code class="language-plaintext highlighter-rouge">if (null) doThis else doThat</code>, so if the left-hand-side is <code class="language-plaintext highlighter-rouge">null</code> it’ll give the right-hand-side. The right-hand-side in our case is a empty <code class="language-plaintext highlighter-rouge">return</code> statement, meaning that we just make a early-exit. If the value is <em>not</em> <code class="language-plaintext highlighter-rouge">null</code> it’ll give the non-null variant of the type!</p>
 
 <blockquote>
-  <p>Example use-case of elvis-operator <code class="language-plaintext highlighter-rouge">?:</code>
-<code class="language-plaintext highlighter-rouge">val a: Int = 1 ?: 0 // a = 1</code>
+  <p>Example use-case of elvis-operator <code class="language-plaintext highlighter-rouge">?:</code><br>
+<code class="language-plaintext highlighter-rouge">val a: Int = 1 ?: 0 // a = 1</code><br>
 <code class="language-plaintext highlighter-rouge">val b: Int = null ?: 0 // b = 0</code></p>
 </blockquote>
 
@@ -489,11 +525,11 @@ For those wondering how you safely execute on <code class="language-plaintext hi
 </code></pre></div>  </div>
 </blockquote>
 
-<p>Summing up, we now know how to render stuff on the <code class="language-plaintext highlighter-rouge">Board</code> and it’s all very static. 
+<p>Summing up, we now know how to render stuff on the <code class="language-plaintext highlighter-rouge">Board</code> and it’s all very static.<br>
 The next step is to make the rendering less static and I believe the natural step from now is to create the data structures that’ll contain the game &amp; its state. Then we can make sure the data structures are able to update, so we can render new states.</p>
 
-<h4 id="creating-the-data-structures">
-<a class="anchor" href="#creating-the-data-structures" aria-hidden="true"><span class="octicon octicon-link"></span></a>Creating the data structures</h4>
+<h3 id="creating-the-data-structures">
+<a class="anchor" href="#creating-the-data-structures" aria-hidden="true"><span class="octicon octicon-link"></span></a>Creating the data structures</h3>
 
 <p>Data structures are required to have a game state, that is the score and position of everything.</p>
 
@@ -503,8 +539,8 @@ The next step is to make the rendering less static and I believe the natural ste
 </code></pre></div></div>
 
 <blockquote>
-  <p><strong>Side-note:</strong> A <code class="language-plaintext highlighter-rouge">data class</code> is essentially the same as a  <code class="language-plaintext highlighter-rouge">case class</code> from Scala. And for those who don’t know what a <code class="language-plaintext highlighter-rouge">case class</code> is it’s basically a <code class="language-plaintext highlighter-rouge">class</code> that simplifies a lot of stuff, mainly used as a data structure. 
-You get <code class="language-plaintext highlighter-rouge">equals</code>, getters &amp; setters, and much more for free. 
+  <p><strong>Side-note:</strong> A <code class="language-plaintext highlighter-rouge">data class</code> is essentially the same as a  <code class="language-plaintext highlighter-rouge">case class</code> from Scala. And for those who don’t know what a <code class="language-plaintext highlighter-rouge">case class</code> is it’s basically a <code class="language-plaintext highlighter-rouge">class</code> that simplifies a lot of stuff, mainly used as a data structure. <br>
+You get <code class="language-plaintext highlighter-rouge">equals</code>, getters &amp; setters, and much more for free.<br>
 Anyone from Java knows how awesome this is.</p>
 </blockquote>
 
@@ -513,9 +549,10 @@ Anyone from Java knows how awesome this is.</p>
 <div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">data class</span> <span class="nc">Cell</span><span class="p">(</span><span class="kd">val</span> <span class="py">x</span><span class="p">:</span> <span class="nc">Int</span><span class="p">,</span> <span class="kd">val</span> <span class="py">y</span><span class="p">:</span> <span class="nc">Int</span><span class="p">)</span>
 </code></pre></div></div>
 
-<p>Wrapping up our current state we got most of what we need, <code class="language-plaintext highlighter-rouge">Game</code> which contains our game state &amp; <code class="language-plaintext highlighter-rouge">Cell</code> which is our co-ordinates. 
-The next step is to actually draw the <code class="language-plaintext highlighter-rouge">Cell</code>’s and wrap the <code class="language-plaintext highlighter-rouge">Cell</code> in other classes such as <code class="language-plaintext highlighter-rouge">Apple</code> and <code class="language-plaintext highlighter-rouge">Snake</code>.
-Let’s add all the required code.</p>
+<p>Wrapping up our current state we got most of what we need, <code class="language-plaintext highlighter-rouge">Game</code> which contains our game state &amp; <code class="language-plaintext highlighter-rouge">Cell</code> which is our co-ordinates.<br>
+The next step is to actually draw the <code class="language-plaintext highlighter-rouge">Cell</code>’s and wrap the <code class="language-plaintext highlighter-rouge">Cell</code> in other classes such as <code class="language-plaintext highlighter-rouge">Apple</code> and <code class="language-plaintext highlighter-rouge">Snake</code>.</p>
+
+<p>Let’s add all the required code.</p>
 
 <div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">data class</span> <span class="nc">Apples</span><span class="p">(</span><span class="kd">val</span> <span class="py">cells</span><span class="p">:</span> <span class="nc">Set</span><span class="p">&lt;</span><span class="nc">Cell</span><span class="p">&gt;</span> <span class="p">=</span> <span class="nf">emptySet</span><span class="p">())</span>
 
@@ -564,9 +601,9 @@ Let’s add all the required code.</p>
 
 <p><img src="https://user-images.githubusercontent.com/7490199/97808473-5c427300-1c67-11eb-9fa9-9110f596533b.png" alt="image"></p>
 
-<p>Pretty cool right!? We’ve got
-<img class="emoji" title=":white_check_mark:" alt=":white_check_mark:" src="https://github.githubassets.com/images/icons/emoji/unicode/2705.png" height="20" width="20"> Rendering
-<img class="emoji" title=":white_check_mark:" alt=":white_check_mark:" src="https://github.githubassets.com/images/icons/emoji/unicode/2705.png" height="20" width="20"> Data Structures</p>
+<p>Pretty cool right!? We’ve got<br>
+✔️ Rendering<br>
+✔️ Data Structures</p>
 
 <p>What’s left?</p>
 
@@ -588,7 +625,7 @@ Let’s add all the required code.</p>
 <span class="p">}</span>
 </code></pre></div></div>
 
-<p>Simple enough. But let’s make it better, even though pre-optimization is the root of all evil it is sometimes fun <img class="emoji" title=":grinning:" alt=":grinning:" src="https://github.githubassets.com/images/icons/emoji/unicode/1f600.png" height="20" width="20">. 
+<p>Simple enough. But let’s make it better, even though pre-optimization is the root of all evil it is sometimes fun <img class="emoji" title=":grinning:" alt=":grinning:" src="https://github.githubassets.com/images/icons/emoji/unicode/1f600.png" height="20" width="20">.<br>
 Enums in Kotlin are pretty awesome, they can both keep values and have methods! Let’s add <code class="language-plaintext highlighter-rouge">dx</code> and <code class="language-plaintext highlighter-rouge">dy</code>.</p>
 
 <div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">enum</span> <span class="kd">class</span> <span class="nc">Direction</span><span class="p">(</span><span class="kd">val</span> <span class="py">dx</span><span class="p">:</span> <span class="nc">Int</span><span class="p">,</span> <span class="kd">val</span> <span class="py">dy</span><span class="p">:</span> <span class="nc">Int</span><span class="p">)</span> <span class="p">{</span>
@@ -624,7 +661,7 @@ Enums in Kotlin are pretty awesome, they can both keep values and have methods! 
 <span class="p">}</span>
 </code></pre></div></div>
 
-<p>This is all fine &amp; dandy, but there is some improvements to be made that’ll clean up the code. 
+<p>This is all fine &amp; dandy, but there is some improvements to be made that’ll clean up the code.<br>
 I mentioned that Kotlin <code class="language-plaintext highlighter-rouge">Enums</code> can have methods, which is awesome. We can simplify the <code class="language-plaintext highlighter-rouge">turn</code>-logic by adding a method to <code class="language-plaintext highlighter-rouge">Direction</code>, namely <code class="language-plaintext highlighter-rouge">isOppositeTo</code>. See the code below.</p>
 
 <div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">enum</span> <span class="kd">class</span> <span class="nc">Direction</span><span class="p">(</span><span class="kd">val</span> <span class="py">dx</span><span class="p">:</span> <span class="nc">Int</span><span class="p">,</span> <span class="kd">val</span> <span class="py">dy</span><span class="p">:</span> <span class="nc">Int</span><span class="p">)</span> <span class="p">{</span>
@@ -705,8 +742,9 @@ I mentioned that Kotlin <code class="language-plaintext highlighter-rouge">Enums
 <span class="p">}</span>
 </code></pre></div></div>
 
-<p>Run the game! …amazing right? 
-We now move our snake, and it moves by itself if we don’t. 
+<p>Run the game! …amazing right?</p>
+
+<p>We now move our snake, and it moves by itself if we don’t. 
 But the game is still pretty boring… We never die, no apples can be eaten and finally no new apples appear. We have a few additions to make to make the game a bit challenging..</p>
 
 <p>Let’s start by fixing the apples. Update the <code class="language-plaintext highlighter-rouge">Apples.kt</code> to randomly add apples to the board when calling <code class="language-plaintext highlighter-rouge">grow()</code>.</p>
@@ -755,8 +793,8 @@ We need to make sure that the end can be lost, let’s do it by adding a new att
 <span class="p">}</span>
 </code></pre></div></div>
 
-<h4 id="wrapping-up-the-code-with-some-minor-refactoring--new-functionality">
-<a class="anchor" href="#wrapping-up-the-code-with-some-minor-refactoring--new-functionality" aria-hidden="true"><span class="octicon octicon-link"></span></a>Wrapping up the code with some minor refactoring / new functionality</h4>
+<h2 id="wrapping-up-the-code-with-some-minor-refactoring--new-functionality">
+<a class="anchor" href="#wrapping-up-the-code-with-some-minor-refactoring--new-functionality" aria-hidden="true"><span class="octicon octicon-link"></span></a>Wrapping up the code with some minor refactoring / new functionality</h2>
 
 <p>Kotlin has a wonderful concept of <strong>extension functions</strong>, which simply is incredible. An extension function extends a class with new functionality. Did you ever wish <code class="language-plaintext highlighter-rouge">Double</code> had a rounding to string? <code class="language-plaintext highlighter-rouge">fun Double.roundTo(n: Int): String = "%.${decimals}f".format(this)</code> solves this for you! Now your <code class="language-plaintext highlighter-rouge">Double</code>’s automatically gives you a hint to use <code class="language-plaintext highlighter-rouge">.roundTo</code> as one of <code class="language-plaintext highlighter-rouge">Double</code>’s built-in functions!</p>
 
@@ -777,7 +815,7 @@ We need to make sure that the end can be lost, let’s do it by adding a new att
 </span><span class="cm">*/</span>
 </code></pre></div></div>
 
-<p>What more improvements can be made?</p>
+<p><strong>What more improvements can be made?</strong></p>
 
 <p>Exercises left for the reader:</p>
 
@@ -788,10 +826,11 @@ We need to make sure that the end can be lost, let’s do it by adding a new att
   <li>Better &amp; cleaner code!</li>
 </ol>
 
-<h2 id="part-3-true-multiplatform-moving-to-js--native">
-<a class="anchor" href="#part-3-true-multiplatform-moving-to-js--native" aria-hidden="true"><span class="octicon octicon-link"></span></a>Part 3: True multiplatform (moving to JS &amp; Native)</h2>
+<h1 id="part-3-true-multiplatform-moving-to-js--native">
+<a class="anchor" href="#part-3-true-multiplatform-moving-to-js--native" aria-hidden="true"><span class="octicon octicon-link"></span></a>Part 3: True multiplatform (moving to JS &amp; Native)</h1>
 
-<p>First off, this part is more of a reader exercise. If you want the code please go to the <a href="https://github.com/londogard/snake-js-jvm-native">GitHub repository</a>.</p>
+<p>I’ll begin by saying that this part is more of a reader exercise. If you want the code please go to the <a href="https://github.com/londogard/snake-js-jvm-native">GitHub repository</a>.<br>
+The idea is that this part will be solved by yourself during the workshop this is intended for.</p>
 
 <p>All the snake-related code that isn’t in your <code class="language-plaintext highlighter-rouge">main.kt</code>-file should be moved into <code class="language-plaintext highlighter-rouge">src/commonMain/kotlin</code> which makes it <strong>multiplatform</strong>-code. This means that it can target JS, Native &amp; JVM instantly!</p>
 
@@ -803,8 +842,8 @@ We need to make sure that the end can be lost, let’s do it by adding a new att
 
 <p>When the code has been migrated and import-paths are updated, run the JVM app again and validate that everything works.</p>
 
-<h4 id="jsbrowser-target">
-<a class="anchor" href="#jsbrowser-target" aria-hidden="true"><span class="octicon octicon-link"></span></a>JS/Browser target</h4>
+<h2 id="jsbrowser-target">
+<a class="anchor" href="#jsbrowser-target" aria-hidden="true"><span class="octicon octicon-link"></span></a>JS/Browser target</h2>
 
 <p>Now create <code class="language-plaintext highlighter-rouge">src/jsMain/kotlin/main.kt</code>.</p>
 
@@ -817,14 +856,13 @@ We need to make sure that the end can be lost, let’s do it by adding a new att
 <code class="language-plaintext highlighter-rouge">window.setInterval({ game = game.update(dir); render(canvas, game) }, 200)</code></p>
 
 <p><strong>Canvas</strong></p>
-
 <div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">val</span> <span class="py">canvas</span> <span class="p">=</span> <span class="n">document</span><span class="p">.</span><span class="nf">getElementById</span><span class="p">(</span><span class="s">"snake-canvas"</span><span class="p">)</span> <span class="k">as</span> <span class="nc">HTMLCanvasElement</span>
 <span class="kd">val</span> <span class="py">ctx</span> <span class="p">=</span> <span class="n">canvas</span><span class="p">.</span><span class="nf">getContext</span><span class="p">(</span><span class="s">"2d"</span><span class="p">)</span> <span class="k">as</span> <span class="nc">CanvasRenderingContext2D</span>
 </code></pre></div></div>
 
 <p>On this <code class="language-plaintext highlighter-rouge">ctx</code> from the canvas you can use <code class="language-plaintext highlighter-rouge">fillRect</code> to draw rectangles, and <code class="language-plaintext highlighter-rouge">fillStyle</code> to set color.</p>
 
-<p><strong>HTML-Canvas</strong> 
+<p><strong>HTML-Canvas</strong> <br>
 <code class="language-plaintext highlighter-rouge">&lt;canvas id="snake-canvas" width="400px" height="300px"&gt;&lt;/canvas&gt;</code> (put in <code class="language-plaintext highlighter-rouge">index.html</code>)</p>
 
 <p>The game is run through <code class="language-plaintext highlighter-rouge">./gradlew jsBrowserRun</code>, or selecting the gradle-icon at the top right (elephant) and typing <code class="language-plaintext highlighter-rouge">jsBrowserRun</code>.</p>
@@ -833,8 +871,8 @@ We need to make sure that the end can be lost, let’s do it by adding a new att
 
 <p>Congratulations, you have now achieved creating a desktop game and a browser game!</p>
 
-<h4 id="native-target">
-<a class="anchor" href="#native-target" aria-hidden="true"><span class="octicon octicon-link"></span></a>Native target</h4>
+<h2 id="native-target">
+<a class="anchor" href="#native-target" aria-hidden="true"><span class="octicon octicon-link"></span></a>Native target</h2>
 
 <p>And onto our final target, Native Binary, that runs completely without a browser or a virtual machine.</p>
 
