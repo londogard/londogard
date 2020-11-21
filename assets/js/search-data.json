@@ -116,10 +116,10 @@
 
   
       ,"page1": {
-          "title": "",
+          "title": "About",
           "content": "Should redirect to here. .",
-          "url": "https://blog.londogard.com/_pages/about.html",
-          "relUrl": "/_pages/about.html",
+          "url": "https://blog.londogard.com/about",
+          "relUrl": "/about",
           "date": ""
       }
       
