@@ -1,5 +1,7 @@
 ---
 redirect:   https://londogard.com/about
+permalink: /about
+title: About
 layout:     redirect
 ---
 
