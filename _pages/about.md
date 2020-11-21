@@ -1,9 +1,6 @@
 ---
-layout: default
-redirect_to:
-  - https://londogard.com/about
-title: Londogard
-search_exclude: true
+redirect:   https://londogard.com/about
+layout:     redirect
 ---
 
 Should redirect to [here](https://londogard.com/about).

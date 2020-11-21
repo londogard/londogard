@@ -91,7 +91,6 @@ plugins:
   - jekyll-relative-links
   - jekyll-seo-tag
   - jekyll-remote-theme
-  - jekyll-redirect-from
   - jekyll-paginate
   - jekyll-sitemap
   - jemoji
