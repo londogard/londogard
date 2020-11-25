@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.1.1">Jekyll</generator><link href="https://blog.londogard.com/feed.xml" rel="self" type="application/atom+xml" /><link href="https://blog.londogard.com/" rel="alternate" type="text/html" /><updated>2020-11-21T14:32:31-06:00</updated><id>https://blog.londogard.com/feed.xml</id><title type="html">Londogard</title><subtitle>A blog with a focus on Deep Learning, JVM and Performance.</subtitle><entry><title type="html">How to build and play Snake via Native Binary, JVM and JS/Browser (Kotlin)</title><link href="https://blog.londogard.com/gradle/kotlin/game/multiplatform/2020/11/07/snake-kotlin-multiplatform.html" rel="alternate" type="text/html" title="How to build and play Snake via Native Binary, JVM and JS/Browser (Kotlin)" /><published>2020-11-07T00:00:00-06:00</published><updated>2020-11-07T00:00:00-06:00</updated><id>https://blog.londogard.com/gradle/kotlin/game/multiplatform/2020/11/07/snake-kotlin-multiplatform</id><content type="html" xml:base="https://blog.londogard.com/gradle/kotlin/game/multiplatform/2020/11/07/snake-kotlin-multiplatform.html">&lt;p&gt;A three part blog (all included in this one) that goes through&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.1.1">Jekyll</generator><link href="https://blog.londogard.com/feed.xml" rel="self" type="application/atom+xml" /><link href="https://blog.londogard.com/" rel="alternate" type="text/html" /><updated>2020-11-25T02:10:32-06:00</updated><id>https://blog.londogard.com/feed.xml</id><title type="html">Londogard</title><subtitle>A blog with a focus on Deep Learning, JVM and Performance.</subtitle><entry><title type="html">How to build and play Snake via Native Binary, JVM and JS/Browser (Kotlin)</title><link href="https://blog.londogard.com/gradle/kotlin/game/multiplatform/2020/11/07/snake-kotlin-multiplatform.html" rel="alternate" type="text/html" title="How to build and play Snake via Native Binary, JVM and JS/Browser (Kotlin)" /><published>2020-11-07T00:00:00-06:00</published><updated>2020-11-07T00:00:00-06:00</updated><id>https://blog.londogard.com/gradle/kotlin/game/multiplatform/2020/11/07/snake-kotlin-multiplatform</id><content type="html" xml:base="https://blog.londogard.com/gradle/kotlin/game/multiplatform/2020/11/07/snake-kotlin-multiplatform.html">&lt;p&gt;A three part blog (all included in this one) that goes through&lt;/p&gt;
 
 &lt;ol&gt;
   &lt;li&gt;How Kotlin Multiplatform works (compiler and everything)&lt;/li&gt;
@@ -8,7 +8,8 @@
 
 &lt;p&gt;&lt;strong&gt;All the code is available &lt;a href=&quot;https://github.com/londogard/snake-js-jvm-native&quot;&gt;here&lt;/a&gt;.&lt;/strong&gt;&lt;/p&gt;
 
-&lt;p&gt;It’s highly recommended using IntelliJ, a free (community) edition can be downloaded from &lt;a href=&quot;https://www.jetbrains.com/idea/download/#section=windows&quot;&gt;jetbrains.com&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;It’s highly recommended using IntelliJ, a free (community) edition can be downloaded from &lt;a href=&quot;https://www.jetbrains.com/idea/download/#section=windows&quot;&gt;jetbrains.com&lt;/a&gt;.&lt;br /&gt;
+It’s also required that your Kotlin version is above 1.4 (some huge Multiplatform changes was added in release 1.4).&lt;/p&gt;
 
 &lt;blockquote&gt;
   &lt;p&gt;&lt;strong&gt;Disclaimer:&lt;/strong&gt; this post is pretty long and I recommend reading one part at a time (it’s 3 parts).&lt;/p&gt;
@@ -183,6 +184,10 @@ The final, and perhaps obvious, one I’d like to mention straight away is that 
 &lt;p&gt;Personally I see Kotlin Multiplatform as a great way to &lt;strong&gt;share core logic&lt;/strong&gt; between different targets, but one must use it with care and &lt;strong&gt;not try to force it&lt;/strong&gt; into being used everywhere in every way.&lt;/p&gt;
 
 &lt;h1 id=&quot;part-2-how-to-set-up-multiplatform-and-build-snake&quot;&gt;Part 2: How to set up Multiplatform and build Snake&lt;/h1&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;&lt;strong&gt;OBS:&lt;/strong&gt; Make sure to have Kotlin 1.4 or higher before starting the project. You can verify version &amp;amp; update through File &amp;gt; Settings &amp;gt; Languages &amp;amp; Frameworks &amp;gt; Kotlin. There you see “current version” and if a newer one is available, make sure it’s at least 1.4 (any higher will work too)!&lt;/p&gt;
+&lt;/blockquote&gt;
 
 &lt;p&gt;First we’ll have to set up a Multiplatform project. The &lt;a href=&quot;https://kotlinlang.org/docs/reference/mpp-create-lib.html&quot;&gt;official guide&lt;/a&gt; is actually really good, and if you’re using IntelliJ it’s a breeze to setup! Just as in the guide make sure to select &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Library&lt;/code&gt;.&lt;/p&gt;
 
