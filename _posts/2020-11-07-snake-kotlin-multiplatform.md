@@ -16,7 +16,8 @@ A three part blog (all included in this one) that goes through
 
 **All the code is available [here](https://github.com/londogard/snake-js-jvm-native).**
 
-It's highly recommended using IntelliJ, a free (community) edition can be downloaded from [jetbrains.com](https://www.jetbrains.com/idea/download/#section=windows).
+It's highly recommended using IntelliJ, a free (community) edition can be downloaded from [jetbrains.com](https://www.jetbrains.com/idea/download/#section=windows).  
+It's also required that your Kotlin version is above 1.4 (some huge Multiplatform changes was added in release 1.4).
 
 
 > **Disclaimer:** this post is pretty long and I recommend reading one part at a time (it's 3 parts).
@@ -169,6 +170,8 @@ The final, and perhaps obvious, one I'd like to mention straight away is that pl
 Personally I see Kotlin Multiplatform as a great way to **share core logic** between different targets, but one must use it with care and **not try to force it** into being used everywhere in every way.
 
 # Part 2: How to set up Multiplatform and build Snake
+
+> **OBS:** Make sure to have Kotlin 1.4 or higher before starting the project. You can verify version & update through File > Settings > Languages & Frameworks > Kotlin. There you see "current version" and if a newer one is available, make sure it's at least 1.4 (any higher will work too)!
 
 First we'll have to set up a Multiplatform project. The [official guide](https://kotlinlang.org/docs/reference/mpp-create-lib.html) is actually really good, and if you're using IntelliJ it's a breeze to setup! Just as in the guide make sure to select `Library`.
 
