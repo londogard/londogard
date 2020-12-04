@@ -1,7 +1,7 @@
 ---
 redirect:   https://londogard.com/
 permalink: /londogard
-title: Londogard
+title: Londogard↗
 layout:     redirect
 search_exclude: true
 ---

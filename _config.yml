@@ -107,6 +107,12 @@ titles_from_headings:
   strip_title: true
   collections: true
 
+header_pages:
+  - search.html
+  - tags.html
+  - londogard.md
+  - about.md
+
 highlighter: rouge
 markdown: kramdown
 kramdown:

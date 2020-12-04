@@ -1,7 +1,7 @@
 ---
 redirect:   https://londogard.com/about
 permalink: /about
-title: About
+title: About↗
 layout:     redirect
 ---
 
