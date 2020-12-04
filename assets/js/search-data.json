@@ -116,7 +116,7 @@
 
   
       ,"page1": {
-          "title": "About",
+          "title": "About↗",
           "content": "Should redirect to here. .",
           "url": "https://blog.londogard.com/about",
           "relUrl": "/about",
