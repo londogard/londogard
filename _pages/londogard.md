@@ -1,5 +1,5 @@
 ---
-redirect:   https://londogard.com/
+redirect:   https://londogard.com:8443
 permalink: /londogard
 title: Londogard↗
 layout:     redirect

@@ -1,5 +1,5 @@
 ---
-redirect:   https://londogard.com/about
+redirect:   https://londogard.com:8443/about
 permalink: /about
 title: About↗
 layout:     redirect
