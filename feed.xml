@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.1.1">Jekyll</generator><link href="https://blog.londogard.com/feed.xml" rel="self" type="application/atom+xml" /><link href="https://blog.londogard.com/" rel="alternate" type="text/html" /><updated>2021-01-21T10:48:40-06:00</updated><id>https://blog.londogard.com/feed.xml</id><title type="html">Londogard</title><subtitle>A blog with a focus on Deep Learning, JVM and Performance.</subtitle><entry><title type="html">How to build and play Snake via Native Binary, JVM and JS/Browser (Kotlin)</title><link href="https://blog.londogard.com/gradle/kotlin/game/multiplatform/2020/11/07/snake-kotlin-multiplatform.html" rel="alternate" type="text/html" title="How to build and play Snake via Native Binary, JVM and JS/Browser (Kotlin)" /><published>2020-11-07T00:00:00-06:00</published><updated>2020-11-07T00:00:00-06:00</updated><id>https://blog.londogard.com/gradle/kotlin/game/multiplatform/2020/11/07/snake-kotlin-multiplatform</id><content type="html" xml:base="https://blog.londogard.com/gradle/kotlin/game/multiplatform/2020/11/07/snake-kotlin-multiplatform.html">&lt;p&gt;A three part blog (all included in this one) that goes through&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.1.1">Jekyll</generator><link href="https://blog.londogard.com/feed.xml" rel="self" type="application/atom+xml" /><link href="https://blog.londogard.com/" rel="alternate" type="text/html" /><updated>2021-01-21T11:56:04-06:00</updated><id>https://blog.londogard.com/feed.xml</id><title type="html">Londogard</title><subtitle>A blog with a focus on Deep Learning, JVM and Performance.</subtitle><entry><title type="html">How to build and play Snake via Native Binary, JVM and JS/Browser (Kotlin)</title><link href="https://blog.londogard.com/gradle/kotlin/game/multiplatform/2020/11/07/snake-kotlin-multiplatform.html" rel="alternate" type="text/html" title="How to build and play Snake via Native Binary, JVM and JS/Browser (Kotlin)" /><published>2020-11-07T00:00:00-06:00</published><updated>2020-11-07T00:00:00-06:00</updated><id>https://blog.londogard.com/gradle/kotlin/game/multiplatform/2020/11/07/snake-kotlin-multiplatform</id><content type="html" xml:base="https://blog.londogard.com/gradle/kotlin/game/multiplatform/2020/11/07/snake-kotlin-multiplatform.html">&lt;p&gt;A three part blog (all included in this one) that goes through&lt;/p&gt;
 
 &lt;ol&gt;
   &lt;li&gt;How Kotlin Multiplatform works (compiler and everything)&lt;/li&gt;
@@ -20,7 +20,7 @@ It’s also required that your Kotlin version is above 1.4 (some huge Multiplatf
 The third, and final, part covers how we are able to use the same code on JS/Browser &amp;amp; Native&lt;/p&gt;
 &lt;/blockquote&gt;
 
-&lt;p&gt;&lt;strong&gt;All the code is available &lt;a href=&quot;https://github.com/londogard/snake-js-jvm-native&quot;&gt;here&lt;/a&gt;.&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;All the finished code is available &lt;a href=&quot;https://github.com/londogard/snake-js-jvm-native/tree/completed_project&quot;&gt;here&lt;/a&gt;&lt;/strong&gt; (open &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;master&lt;/code&gt; if you wish to have the unfinished code).&lt;/p&gt;
 
 &lt;h1 id=&quot;introduction&quot;&gt;Introduction&lt;/h1&gt;
 
@@ -654,7 +654,7 @@ We need to make sure that the end can be lost, let’s do it by adding a new att
 
 &lt;h1 id=&quot;part-3-true-multiplatform-moving-to-js--native&quot;&gt;Part 3: True multiplatform (moving to JS &amp;amp; Native)&lt;/h1&gt;
 
-&lt;p&gt;I’ll begin by saying that this part is more of a reader exercise. If you want the code please go to the &lt;a href=&quot;https://github.com/londogard/snake-js-jvm-native&quot;&gt;GitHub repository&lt;/a&gt;.&lt;br /&gt;
+&lt;p&gt;I’ll begin by saying that this part is more of a reader exercise. If you want the finished code please go to the &lt;a href=&quot;https://github.com/londogard/snake-js-jvm-native/tree/completed_project&quot;&gt;GitHub repository&lt;/a&gt;.&lt;br /&gt;
 The idea is that this part will be solved by yourself during the workshop this is intended for.&lt;/p&gt;
 
 &lt;p&gt;All the snake-related code that isn’t in your &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;main.kt&lt;/code&gt;-file should be moved into &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;src/commonMain/kotlin&lt;/code&gt; which makes it &lt;strong&gt;multiplatform&lt;/strong&gt;-code. This means that it can target JS, Native &amp;amp; JVM instantly!&lt;/p&gt;
@@ -759,7 +759,7 @@ The idea is that this part will be solved by yourself during the workshop this i
 
 &lt;p&gt;This blog was created as a companion to a workshop I’m gonna do at AFRY, it has a bit more content including a presentation in person.&lt;/p&gt;
 
-&lt;p&gt;All the code is available &lt;a href=&quot;https://github.com/londogard/snake-js-jvm-native&quot;&gt;here&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;All the finished code is available &lt;a href=&quot;https://github.com/londogard/snake-js-jvm-native/tree/completed_project&quot;&gt;here&lt;/a&gt;, if you prefer the unfinished code head to &lt;a href=&quot;https://github.com/londogard/snake-js-jvm-native&quot;&gt;master-branch&lt;/a&gt;.&lt;/p&gt;
 
 &lt;p&gt;Thanks!&lt;/p&gt;
 
