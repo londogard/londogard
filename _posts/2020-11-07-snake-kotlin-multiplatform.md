@@ -173,7 +173,8 @@ Personally I see Kotlin Multiplatform as a great way to **share core logic** bet
 
 > **OBS:** Make sure to have Kotlin 1.4 or higher before starting the project. You can verify version & update through File > Settings > Languages & Frameworks > Kotlin. There you see "current version" and if a newer one is available, make sure it's at least 1.4 (any higher will work too)!
 
-First we'll have to set up a Multiplatform project. The [official guide](https://kotlinlang.org/docs/reference/mpp-create-lib.html) is actually really good, and if you're using IntelliJ it's a breeze to setup! Just as in the guide make sure to select `Library`.
+First we'll have to set up a Multiplatform project. The [official guide](https://kotlinlang.org/docs/reference/mpp-create-lib.html) is actually really good, and if you're using IntelliJ it's a breeze to setup! Just as in the guide make sure to select `Library`.  
+**OBS:** For each target (JVM, JS & Native) select "Template" and choose Application for each.
 
 ![Select a project template](https://kotlinlang.org/assets/images/reference/mpp/mpp-project-1.png)
 
