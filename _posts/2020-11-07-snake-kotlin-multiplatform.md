@@ -27,7 +27,7 @@ It's also required that your Kotlin version is above 1.4 (some huge Multiplatfor
 > Finally, the first part is purely informational about how everything works and the second part is how to actually code the game. The second part is interactive and contains a lot of TODOs.
 > The third, and final, part covers how we are able to use the same code on JS/Browser & Native
 
-**All the code is available [here](https://github.com/londogard/snake-js-jvm-native).**
+**All the finished code is available [here](https://github.com/londogard/snake-js-jvm-native/tree/completed_project)** (open `master` if you wish to have the unfinished code).
 
 # Introduction
 
@@ -636,7 +636,7 @@ Exercises left for the reader:
 
 # Part 3: True multiplatform (moving to JS & Native)
 
-I'll begin by saying that this part is more of a reader exercise. If you want the code please go to the [GitHub repository](https://github.com/londogard/snake-js-jvm-native).  
+I'll begin by saying that this part is more of a reader exercise. If you want the finished code please go to the [GitHub repository](https://github.com/londogard/snake-js-jvm-native/tree/completed_project).  
 The idea is that this part will be solved by yourself during the workshop this is intended for.
 
 All the snake-related code that isn't in your `main.kt`-file should be moved into `src/commonMain/kotlin` which makes it **multiplatform**-code. This means that it can target JS, Native & JVM instantly! 
@@ -742,7 +742,7 @@ Try running it in the terminal.
 
 This blog was created as a companion to a workshop I'm gonna do at AFRY, it has a bit more content including a presentation in person.
 
-All the code is available [here](https://github.com/londogard/snake-js-jvm-native).
+All the finished code is available [here](https://github.com/londogard/snake-js-jvm-native/tree/completed_project), if you prefer the unfinished code head to [master-branch](https://github.com/londogard/snake-js-jvm-native).
 
 Thanks!
 
