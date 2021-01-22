@@ -1,4 +1,90 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.1.1">Jekyll</generator><link href="https://blog.londogard.com/feed.xml" rel="self" type="application/atom+xml" /><link href="https://blog.londogard.com/" rel="alternate" type="text/html" /><updated>2021-01-21T11:56:04-06:00</updated><id>https://blog.londogard.com/feed.xml</id><title type="html">Londogard</title><subtitle>A blog with a focus on Deep Learning, JVM and Performance.</subtitle><entry><title type="html">How to build and play Snake via Native Binary, JVM and JS/Browser (Kotlin)</title><link href="https://blog.londogard.com/gradle/kotlin/game/multiplatform/2020/11/07/snake-kotlin-multiplatform.html" rel="alternate" type="text/html" title="How to build and play Snake via Native Binary, JVM and JS/Browser (Kotlin)" /><published>2020-11-07T00:00:00-06:00</published><updated>2020-11-07T00:00:00-06:00</updated><id>https://blog.londogard.com/gradle/kotlin/game/multiplatform/2020/11/07/snake-kotlin-multiplatform</id><content type="html" xml:base="https://blog.londogard.com/gradle/kotlin/game/multiplatform/2020/11/07/snake-kotlin-multiplatform.html">&lt;p&gt;A three part blog (all included in this one) that goes through&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.1.1">Jekyll</generator><link href="https://blog.londogard.com/feed.xml" rel="self" type="application/atom+xml" /><link href="https://blog.londogard.com/" rel="alternate" type="text/html" /><updated>2021-01-22T11:03:00-06:00</updated><id>https://blog.londogard.com/feed.xml</id><title type="html">Londogard</title><subtitle>A blog with a focus on Deep Learning, JVM and Performance.</subtitle><entry><title type="html">Gitpod Kotlin Jvm</title><link href="https://blog.londogard.com/2021/01/21/gitpod-kotlin-jvm.html" rel="alternate" type="text/html" title="Gitpod Kotlin Jvm" /><published>2021-01-21T00:00:00-06:00</published><updated>2021-01-21T00:00:00-06:00</updated><id>https://blog.londogard.com/2021/01/21/gitpod-kotlin-jvm</id><content type="html" xml:base="https://blog.londogard.com/2021/01/21/gitpod-kotlin-jvm.html">&lt;h1 id=&quot;gitpod---your-editor-in-the-cloud&quot;&gt;GitPod - your editor in the cloud&lt;/h1&gt;
+&lt;p&gt;&lt;a href=&quot;https://gitpod.io/&quot;&gt;GitPod.io&lt;/a&gt; is a editor in the cloud based on &lt;a href=&quot;https://theia-ide.org/&quot;&gt;Theia&lt;/a&gt; which is a IDE built for the cloud &amp;amp; desktop. 
+It implements the same language servers and allow you to use the same extensions as in VS Code - which is great.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://user-images.githubusercontent.com/7490199/105518849-0bc43a00-5cd9-11eb-9842-813d8f1b5735.png&quot; alt=&quot;gitpod&quot; width=&quot;50%&quot; height=&quot;50%&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;For more about GitPod and how to combine it with languages such as Kotlin, Java &amp;amp; more, read 👇.&lt;/p&gt;
+
+&lt;h3 id=&quot;what&quot;&gt;What&lt;/h3&gt;
+&lt;p&gt;&lt;a href=&quot;https://gitpod.io/&quot;&gt;GitPod.io&lt;/a&gt; from the start worked for the normal “low-barrier” languages such as JavaScript &amp;amp; Python and still works great, and it really is where it excels. 
+Lately though they’ve stepped up and added more &amp;amp; more targets with further customization.&lt;/p&gt;
+
+&lt;p&gt;You can now:&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;Customize your docker build by installing new packages (through &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;brew&lt;/code&gt; or &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;apt install&lt;/code&gt;).&lt;/li&gt;
+  &lt;li&gt;Customize your extensions (majority, if not all, from VS Code available)&lt;/li&gt;
+  &lt;li&gt;Add VNC (see native desktop programs)&lt;/li&gt;
+  &lt;li&gt;Prebuilt containers (save a lot of time to not rebuild everything each time)&lt;/li&gt;
+  &lt;li&gt;… &amp;amp; more&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;With a free account you get 50h / month of time to use this (as of 2021-01-22), which is very kind of GitPod!&lt;/p&gt;
+
+&lt;h3 id=&quot;how&quot;&gt;How&lt;/h3&gt;
+&lt;p&gt;First of all you need either a GitHub, GitLab or Bitbucket account. Once that is done you need to find a repository that you want to work on, it can be both a private or public repository.&lt;/p&gt;
+
+&lt;p&gt;Once you’ve got your account &amp;amp; repository set up then head to gitpod.io/#{Repository: e.g. https://github.com/londogard/snake-js-jvm-native} and it will open up. 
+This will ask you to create a PR with some new config adding a new file called &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;.gitpod.yml&lt;/code&gt; and further you can add &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;.gitpod.Dockerfile&lt;/code&gt; which configures your Docker setup.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Setting up &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;.gitpod.yml&lt;/code&gt;:&lt;/strong&gt;&lt;/p&gt;
+&lt;div class=&quot;language-yml highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;na&quot;&gt;image&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+  &lt;span class=&quot;na&quot;&gt;file&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;.gitpod.Dockerfile&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;# OBS: only use this if you have a custom image&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;# List the ports you want to expose and what to do when they are served. See https://www.gitpod.io/docs/config-ports/&lt;/span&gt;
+&lt;span class=&quot;na&quot;&gt;ports&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+  &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;port&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;3000&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;onOpen&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;open-preview&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;# List the start up tasks. You can start them in parallel in multiple terminals. See https://www.gitpod.io/docs/config-start-tasks/&lt;/span&gt;
+&lt;span class=&quot;na&quot;&gt;tasks&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+  &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;init&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;./gradlew clean build&lt;/span&gt;
+
+&lt;span class=&quot;na&quot;&gt;vscode&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+  &lt;span class=&quot;na&quot;&gt;extensions&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+    &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;random.extension&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;# (automatically added by adding extensions through interface). &lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;strong&gt;Setting up &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;.gitpod.Docker&lt;/code&gt;:&lt;/strong&gt;&lt;/p&gt;
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;FROM gitpod/workspace-full-vnc  # For NoVNC to work
+
+USER gitpod
+
+RUN sudo apt-get -q update &amp;amp;&amp;amp; \
+    sudo apt-get install -y libgtk-3-dev &amp;amp;&amp;amp; \ # For NoVNC to work
+    sudo apt-get install -yq gcc-multilib &amp;amp;&amp;amp; \
+    sudo apt install -y libtinfo5 &amp;amp;&amp;amp; \ # For Kotlin Native to work
+    sudo rm -rf /var/lib/apt/lists/*
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;With this setup you can push the changes to your repo and re-open the GitPod to reload a brand new Docker image with the updated packages.&lt;/p&gt;
+
+&lt;p&gt;This configuration allows you to do all I’ve mentioned such as running Native Kotlin, run with VNC to view native application windows and more!&lt;br /&gt;
+By default you’re able to view a in-place/preview browser window so doing web development is working from the get-go and as such also Kotlin/JS worked pretty well without any configuration.&lt;/p&gt;
+
+&lt;p&gt;If you’re wondering, the NoVNC is on port 6080.&lt;/p&gt;
+
+&lt;h3 id=&quot;why&quot;&gt;Why&lt;/h3&gt;
+&lt;p&gt;For me there’s actually not just one reason to why I’d like to do this.&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Be able to do some quick coding / reviewing on my tablet.&lt;/li&gt;
+  &lt;li&gt;Workshops at AFRY (no installation required for users)&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;Just in a few days (2021-01-26) I’ll do a workshop at AFRY with Kotlin Multiplatform where GitPod.io will be a great alternative for colleagues who have computers 
+where they’re not allowed to install their own applications.&lt;/p&gt;
+
+&lt;h3 id=&quot;alternatives&quot;&gt;Alternatives&lt;/h3&gt;
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/features/codespaces&quot;&gt;GitHub Codespaces&lt;/a&gt; is coming, but is still in a private BETA.&lt;/li&gt;
+  &lt;li&gt;VS Code Remote (&lt;strong&gt;obs&lt;/strong&gt; this actually require your own computer somewhere to host the vs code server)&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;I think for now GitPod.io is the simplest and best out of them, unless you have your own computer to use as a server for VS Code Remote!&lt;/p&gt;
+
+&lt;p&gt;Thanks&lt;br /&gt;
+~Hampus&lt;/p&gt;</content><author><name></name></author><summary type="html">GitPod - your editor in the cloud GitPod.io is a editor in the cloud based on Theia which is a IDE built for the cloud &amp;amp; desktop. It implements the same language servers and allow you to use the same extensions as in VS Code - which is great.</summary></entry><entry><title type="html">How to build and play Snake via Native Binary, JVM and JS/Browser (Kotlin)</title><link href="https://blog.londogard.com/gradle/kotlin/game/multiplatform/2020/11/07/snake-kotlin-multiplatform.html" rel="alternate" type="text/html" title="How to build and play Snake via Native Binary, JVM and JS/Browser (Kotlin)" /><published>2020-11-07T00:00:00-06:00</published><updated>2020-11-07T00:00:00-06:00</updated><id>https://blog.londogard.com/gradle/kotlin/game/multiplatform/2020/11/07/snake-kotlin-multiplatform</id><content type="html" xml:base="https://blog.londogard.com/gradle/kotlin/game/multiplatform/2020/11/07/snake-kotlin-multiplatform.html">&lt;p&gt;A three part blog (all included in this one) that goes through&lt;/p&gt;
 
 &lt;ol&gt;
   &lt;li&gt;How Kotlin Multiplatform works (compiler and everything)&lt;/li&gt;
@@ -6960,127 +7046,4 @@ print(&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\&quot;&lt;/span&gt;&lt;span
 
 &lt;p&gt;A simple approach to create your own word embeddings without a neural network is by factorizing a co-occurence matrix using SVD (singular-value-decomposition). As mentioned Word2Vec is barely a neural network as it has no hidden layers nor an y non-linearities. GloVe factorizes a co-occurense matrix while gaining even better results.&lt;/p&gt;
 
-&lt;p&gt;I highly recommend you to go check this blog out: https://multithreaded.stitchfix.com/blog/2017/10/18/stop-using-word2vec/ by Stitch Fix. An awesome read and we can go implement this too!&lt;/p&gt;</content><author><name>Hampus Londögård</name></author><category term="python" /><category term="competence" /><category term="machine-learning" /><category term="nlp" /><category term="text-classification" /><summary type="html">2019-02-04 AFRY NLP Competence Meeting: Text Classification IMDB</summary></entry><entry><title type="html">Gradle, JVM and GitHub Packages</title><link href="https://blog.londogard.com/gradle/jvm/library/2020/02/10/gradle-github-packages.html" rel="alternate" type="text/html" title="Gradle, JVM and GitHub Packages" /><published>2020-02-10T00:00:00-06:00</published><updated>2020-02-10T00:00:00-06:00</updated><id>https://blog.londogard.com/gradle/jvm/library/2020/02/10/gradle-github-packages</id><content type="html" xml:base="https://blog.londogard.com/gradle/jvm/library/2020/02/10/gradle-github-packages.html">&lt;h1 id=&quot;gradle-jvm-and-github-packages&quot;&gt;Gradle, JVM and GitHub Packages&lt;/h1&gt;
-
-&lt;p&gt;&lt;em&gt;Initial comment&lt;/em&gt; this is mainly done as a reminder to myself.&lt;/p&gt;
-
-&lt;p&gt;So about 6 months ago GitHub launched a new exciting service; &lt;a href=&quot;https://github.blog/2019-05-10-introducing-github-package-registry/&quot;&gt;GitHub Package Registry&lt;/a&gt;. This service lets you as a GitHub-user upload your Open Source code for free on GitHubs registry supporting a wide array of languagues and build systems - JavaScript (npm), Java/JVM-languages (Maven/Gradle), Ruby (RubyGems), .NET (NuGet), and Docker images. Perhaps more have been added since I last verified.&lt;/p&gt;
-
-&lt;p&gt;In this post I’ll try to keep to the point and give clear easy instruction that you’ll be able to bookmark and go back to whenever you need to set this up.&lt;/p&gt;
-
-&lt;p&gt;I’ll give the instruction directly beneath with some comments afterwards for the one who’d like to read some extra.&lt;/p&gt;
-
-&lt;hr /&gt;
-
-&lt;h2 id=&quot;1-add-maven-publish-plugin&quot;&gt;1. Add Maven Publish Plugin&lt;/h2&gt;
-
-&lt;p&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;build.gradle.kts&lt;/code&gt;&lt;/p&gt;
-
-&lt;div class=&quot;language-kotlin highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nf&quot;&gt;plugins&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;`maven-publish`&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// Add this&lt;/span&gt;
-    &lt;span class=&quot;nf&quot;&gt;kotlin&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;\&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;jvm\&quot;) version \&quot;1.3.60\&quot;
-&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;build.gradle&lt;/code&gt;&lt;/p&gt;
-
-&lt;div class=&quot;language-groovy highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;plugins&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;id&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;\&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;maven-publish\&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;build.gradle&lt;/code&gt; (using the &lt;em&gt;old&lt;/em&gt; &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;apply&lt;/code&gt; way of things)&lt;/p&gt;
-
-&lt;div class=&quot;language-groovy highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;apply&lt;/span&gt; &lt;span class=&quot;nl&quot;&gt;plugin:&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'maven-publish'&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h2 id=&quot;2-add-publication-part&quot;&gt;2. Add Publication Part&lt;/h2&gt;
-
-&lt;p&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;build.gradle.kts&lt;/code&gt;&lt;/p&gt;
-
-&lt;div class=&quot;language-kotlin highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nf&quot;&gt;publishing&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-    &lt;span class=&quot;nf&quot;&gt;repositories&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-        &lt;span class=&quot;nf&quot;&gt;maven&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-            &lt;span class=&quot;n&quot;&gt;name&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;\&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;GitHubPackages\&quot;
-&lt;/span&gt;            &lt;span class=&quot;n&quot;&gt;url&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;uri&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;\&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;https://maven.pkg.github.com/OWNER/REPO\&quot;)
-&lt;/span&gt;            &lt;span class=&quot;nf&quot;&gt;credentials&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-                &lt;span class=&quot;n&quot;&gt;username&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;project&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;findProperty&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;\&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;gpr.user\&quot;) as String? ?: System.getenv(\&quot;GITHUB_ACTOR\&quot;)
-&lt;/span&gt;                &lt;span class=&quot;n&quot;&gt;password&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;project&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;findProperty&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;\&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;gpr.key\&quot;) as String? ?: System.getenv(\&quot;GITHUB_TOKEN\&quot;)
-&lt;/span&gt;            &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-        &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-    &lt;span class=&quot;nf&quot;&gt;publications&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-        &lt;span class=&quot;n&quot;&gt;register&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;MavenPublication&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;&amp;gt;(&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;\&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;gpr\&quot;){
-&lt;/span&gt;            &lt;span class=&quot;nf&quot;&gt;from&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;components&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;\&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;java\&quot;])
-&lt;/span&gt;        &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;build.gradle&lt;/code&gt;&lt;/p&gt;
-
-&lt;div class=&quot;language-groovy highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;publishing&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;repositories&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-        &lt;span class=&quot;n&quot;&gt;maven&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-            &lt;span class=&quot;n&quot;&gt;name&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;\&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;GitHubPackages\&quot;&lt;/span&gt;
-            &lt;span class=&quot;n&quot;&gt;url&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;uri&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;\&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;https://maven.pkg.github.com/OWNER/REPOSITORY\&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-            &lt;span class=&quot;n&quot;&gt;credentials&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-                &lt;span class=&quot;n&quot;&gt;username&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;project&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;findProperty&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;\&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;gpr.user\&quot;) ?: System.getenv(\&quot;GITHUB_ACTOR\&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-                &lt;span class=&quot;n&quot;&gt;password&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;project&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;findProperty&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;\&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;gpr.key\&quot;) ?: System.getenv(\&quot;GITHUB_TOKEN\&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-            &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-        &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-    &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;publications&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-        &lt;span class=&quot;n&quot;&gt;gpr&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;MavenPublication&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-            &lt;span class=&quot;n&quot;&gt;from&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;components&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;java&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-        &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-    &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h2 id=&quot;3-automating-release-workflow&quot;&gt;3. Automating Release Workflow&lt;/h2&gt;
-
-&lt;p&gt;To simplify our lifes further;&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;JitPack is already automated and tracking your repository automatically adding the new releases ones a release is created.&lt;/li&gt;
-  &lt;li&gt;GitHub is &lt;em&gt;not&lt;/em&gt; automated and we need to upload our assets&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;&lt;strong&gt;Automating GitHub packages upload through release &amp;amp; GitHub Actions&lt;/strong&gt;&lt;/p&gt;
-
-&lt;p&gt;We’ll use GitHub Actions to create a workflow where once a release passes stage ‘published’ the assets will be uploaded to the repository/artifactory of GitHub Packages.
-This integration is really awesome as once we’ve set it up we only need to press &quot;Create Release&quot; on the GitHub page to deploy our library to both GitHub Packages &amp;amp; JitPack!&lt;/p&gt;
-
-&lt;p&gt;Create the directory &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;.github/workflows&lt;/code&gt; in your root-folder of the project if it doesn’t exist yet. Add the following file:&lt;/p&gt;
-
-&lt;div class=&quot;language-yaml highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;na&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;Release &amp;amp; Publish Build&lt;/span&gt;
-
-&lt;span class=&quot;na&quot;&gt;on&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
-  &lt;span class=&quot;na&quot;&gt;release&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
-    &lt;span class=&quot;na&quot;&gt;types&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;pi&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;published&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;]&lt;/span&gt;
-
-&lt;span class=&quot;na&quot;&gt;jobs&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
-  &lt;span class=&quot;na&quot;&gt;build&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
-    &lt;span class=&quot;na&quot;&gt;runs-on&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;ubuntu-latest&lt;/span&gt;
-
-    &lt;span class=&quot;na&quot;&gt;steps&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
-      &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;uses&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;actions/checkout@v1&lt;/span&gt;
-
-      &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;Set up JDK &lt;/span&gt;&lt;span class=&quot;m&quot;&gt;1.8&lt;/span&gt;
-        &lt;span class=&quot;na&quot;&gt;uses&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;actions/setup-java@v1&lt;/span&gt;
-        &lt;span class=&quot;na&quot;&gt;with&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
-          &lt;span class=&quot;na&quot;&gt;java-version&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;1.8&lt;/span&gt;
-
-      &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;Clean Build&lt;/span&gt;
-        &lt;span class=&quot;na&quot;&gt;run&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;./gradlew clean build&lt;/span&gt;
-
-      &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;Publish Build&lt;/span&gt;
-        &lt;span class=&quot;na&quot;&gt;env&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
-          &lt;span class=&quot;na&quot;&gt;GITHUB_TOKEN&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;$&lt;/span&gt;
-        &lt;span class=&quot;na&quot;&gt;run&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;./gradlew publish&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;The &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;secrets.GITHUB_TOKEN&lt;/code&gt; is automatically supplied by GitHub itself during the run of the GitHub Actions-script.&lt;/p&gt;
-
-&lt;p&gt;Pretty awesome right? Go build your libraries and deploy!&lt;/p&gt;</content><author><name>Hampus Londögård</name></author><category term="gradle" /><category term="jvm" /><category term="library" /><summary type="html">Gradle, JVM and GitHub Packages</summary></entry></feed>
+&lt;p&gt;I highly recommend you to go check this blog out: https://multithreaded.stitchfix.com/blog/2017/10/18/stop-using-word2vec/ by Stitch Fix. An awesome read and we can go implement this too!&lt;/p&gt;</content><author><name>Hampus Londögård</name></author><category term="python" /><category term="competence" /><category term="machine-learning" /><category term="nlp" /><category term="text-classification" /><summary type="html">2019-02-04 AFRY NLP Competence Meeting: Text Classification IMDB</summary></entry></feed>
