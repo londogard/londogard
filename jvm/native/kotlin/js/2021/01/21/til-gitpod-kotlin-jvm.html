@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="twitter:card" content="summary_large_image" /><!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>TIL: GitPod - your editor in the cloud | Londogard</title>
+<meta name="generator" content="Jekyll v4.1.1" />
+<meta property="og:title" content="TIL: GitPod - your editor in the cloud" />
+<meta name="author" content="Hampus Londögård" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="GitPod is a Cloud IDE where you can run everything from Kotlin to Python/JS. In this TIL how to launch native programs and more is shown in the GitPod IDE." />
+<meta property="og:description" content="GitPod is a Cloud IDE where you can run everything from Kotlin to Python/JS. In this TIL how to launch native programs and more is shown in the GitPod IDE." />
+<link rel="canonical" href="https://blog.londogard.com/jvm/native/kotlin/js/2021/01/21/til-gitpod-kotlin-jvm.html" />
+<meta property="og:url" content="https://blog.londogard.com/jvm/native/kotlin/js/2021/01/21/til-gitpod-kotlin-jvm.html" />
+<meta property="og:site_name" content="Londogard" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2021-01-21T00:00:00-06:00" />
+<script type="application/ld+json">
+{"description":"GitPod is a Cloud IDE where you can run everything from Kotlin to Python/JS. In this TIL how to launch native programs and more is shown in the GitPod IDE.","url":"https://blog.londogard.com/jvm/native/kotlin/js/2021/01/21/til-gitpod-kotlin-jvm.html","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"https://blog.londogard.com/jvm/native/kotlin/js/2021/01/21/til-gitpod-kotlin-jvm.html"},"headline":"TIL: GitPod - your editor in the cloud","dateModified":"2021-01-21T00:00:00-06:00","datePublished":"2021-01-21T00:00:00-06:00","author":{"@type":"Person","name":"Hampus Londögård"},"@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/assets/css/style.css"><link type="application/atom+xml" rel="alternate" href="https://blog.londogard.com/feed.xml" title="Londogard" /><link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico"><link href="https://unpkg.com/@primer/css/dist/primer.css" rel="stylesheet" />
+<link rel="stylesheet" href="//use.fontawesome.com/releases/v5.0.7/css/all.css">
+
+<script>
+function wrap_img(fn) {
+    if (document.attachEvent ? document.readyState === "complete" : document.readyState !== "loading") {
+        var elements = document.querySelectorAll(".post img");
+        Array.prototype.forEach.call(elements, function(el, i) {
+            if (el.getAttribute("title") && (el.className != "emoji")) {
+                const caption = document.createElement('figcaption');
+                var node = document.createTextNode(el.getAttribute("title"));
+                caption.appendChild(node);
+                const wrapper = document.createElement('figure');
+                wrapper.className = 'image';
+                el.parentNode.insertBefore(wrapper, el);
+                el.parentNode.removeChild(el);
+                wrapper.appendChild(el);
+                wrapper.appendChild(caption);
+            }
+        });
+    } else { document.addEventListener('DOMContentLoaded', fn); }
+}
+window.onload = wrap_img;
+</script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function(){
+    // add link icon to anchor tags
+    var elem = document.querySelectorAll(".anchor-link")
+    elem.forEach(e => (e.innerHTML = '<i class="fas fa-link fa-xs"></i>'));
+    });
+</script>
+</head>
+<body><header class="site-header" role="banner">
+
+    <div class="wrapper"><a class="site-title" rel="author" href="/">Londogard</a><nav class="site-nav">
+          <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+          <label for="nav-trigger">
+            <span class="menu-icon">
+              <svg viewBox="0 0 18 15" width="18px" height="15px">
+                <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+              </svg>
+            </span>
+          </label>
+  
+          <div class="trigger"><a class="page-link" href="/about">About↗</a><a class="page-link" href="/londogard">Londogard↗</a><a class="page-link" href="/search/">Search</a><a class="page-link" href="/categories/">Tags</a></div>
+        </nav></div>
+  </header><main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">TIL: GitPod - your editor in the cloud</h1><p class="page-description">GitPod is a Cloud IDE where you can run everything from Kotlin to Python/JS. In this TIL how to launch native programs and more is shown in the GitPod IDE.</p><p class="post-meta post-meta-title"><time class="dt-published" datetime="2021-01-21T00:00:00-06:00" itemprop="datePublished">
+        Jan 21, 2021
+      </time>• 
+          <span itemprop="author" itemscope itemtype="http://schema.org/Person">
+            <span class="p-author h-card" itemprop="name">Hampus Londögård</span></span>
+       • <span class="read-time" title="Estimated read time">
+    
+    
+      3 min read
+    
+</span></p>
+
+    
+      <p class="category-tags"><i class="fas fa-tags category-tags-icon"></i></i> 
+      
+        <a class="category-tags-link" href="/categories/#jvm">jvm</a>
+        &nbsp;
+      
+        <a class="category-tags-link" href="/categories/#native">native</a>
+        &nbsp;
+      
+        <a class="category-tags-link" href="/categories/#kotlin">kotlin</a>
+        &nbsp;
+      
+        <a class="category-tags-link" href="/categories/#js">js</a>
+        
+      
+      </p>
+    
+
+    </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <ul class="section-nav">
+<li class="toc-entry toc-h1"><a href="#til-gitpod---your-editor-in-the-cloud">TIL: GitPod - your editor in the cloud</a>
+<ul>
+<li class="toc-entry toc-h3"><a href="#what">What</a></li>
+<li class="toc-entry toc-h3"><a href="#how">How</a></li>
+<li class="toc-entry toc-h3"><a href="#why">Why</a></li>
+<li class="toc-entry toc-h3"><a href="#alternatives">Alternatives</a></li>
+</ul>
+</li>
+</ul><h1 id="til-gitpod---your-editor-in-the-cloud">
+<a class="anchor" href="#til-gitpod---your-editor-in-the-cloud" aria-hidden="true"><span class="octicon octicon-link"></span></a>TIL: GitPod - your editor in the cloud</h1>
+<p><a href="https://gitpod.io/">GitPod.io</a> is a editor in the cloud based on <a href="https://theia-ide.org/">Theia</a> which is a IDE built for the cloud &amp; desktop. 
+It implements the same language servers and allow you to use the same extensions as in VS Code - which is great.</p>
+
+<p><img src="https://user-images.githubusercontent.com/7490199/105518849-0bc43a00-5cd9-11eb-9842-813d8f1b5735.png" alt="gitpod" width="50%" height="50%"></p>
+
+<p>For more about GitPod and how to combine it with languages such as Kotlin, Java &amp; more, read 👇.</p>
+
+<h3 id="what">
+<a class="anchor" href="#what" aria-hidden="true"><span class="octicon octicon-link"></span></a>What</h3>
+<p><a href="https://gitpod.io/">GitPod.io</a> from the start worked for the normal “low-barrier” languages such as JavaScript &amp; Python and still works great, and it really is where it excels. 
+Lately though they’ve stepped up and added more &amp; more targets with further customization.</p>
+
+<p>You can now:</p>
+<ul>
+  <li>Customize your docker build by installing new packages (through <code class="language-plaintext highlighter-rouge">brew</code> or <code class="language-plaintext highlighter-rouge">apt install</code>).</li>
+  <li>Customize your extensions (majority, if not all, from VS Code available)</li>
+  <li>Add VNC (see native desktop programs)</li>
+  <li>Prebuilt containers (save a lot of time to not rebuild everything each time)</li>
+  <li>… &amp; more</li>
+</ul>
+
+<p>With a free account you get 50h / month of time to use this (as of 2021-01-22), which is very kind of GitPod!</p>
+
+<h3 id="how">
+<a class="anchor" href="#how" aria-hidden="true"><span class="octicon octicon-link"></span></a>How</h3>
+<p>First of all you need either a GitHub, GitLab or Bitbucket account. Once that is done you need to find a repository that you want to work on, it can be both a private or public repository.</p>
+
+<p>Once you’ve got your account &amp; repository set up then head to gitpod.io/#{Repository: e.g. https://github.com/londogard/snake-js-jvm-native} and it will open up. 
+This will ask you to create a PR with some new config adding a new file called <code class="language-plaintext highlighter-rouge">.gitpod.yml</code> and further you can add <code class="language-plaintext highlighter-rouge">.gitpod.Dockerfile</code> which configures your Docker setup.</p>
+
+<p><strong>Setting up <code class="language-plaintext highlighter-rouge">.gitpod.yml</code>:</strong></p>
+<div class="language-yml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">image</span><span class="pi">:</span>
+  <span class="na">file</span><span class="pi">:</span> <span class="s">.gitpod.Dockerfile</span> <span class="c1"># OBS: only use this if you have a custom image</span>
+
+<span class="c1"># List the ports you want to expose and what to do when they are served. See https://www.gitpod.io/docs/config-ports/</span>
+<span class="na">ports</span><span class="pi">:</span>
+  <span class="pi">-</span> <span class="na">port</span><span class="pi">:</span> <span class="m">3000</span>
+    <span class="na">onOpen</span><span class="pi">:</span> <span class="s">open-preview</span>
+
+<span class="c1"># List the start up tasks. You can start them in parallel in multiple terminals. See https://www.gitpod.io/docs/config-start-tasks/</span>
+<span class="na">tasks</span><span class="pi">:</span>
+  <span class="pi">-</span> <span class="na">init</span><span class="pi">:</span> <span class="s">./gradlew clean build</span>
+
+<span class="na">vscode</span><span class="pi">:</span>
+  <span class="na">extensions</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="s">random.extension</span> <span class="c1"># (automatically added by adding extensions through interface). </span>
+</code></pre></div></div>
+
+<p><strong>Setting up <code class="language-plaintext highlighter-rouge">.gitpod.Docker</code>:</strong></p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>FROM gitpod/workspace-full-vnc  # For NoVNC to work
+
+USER gitpod
+
+RUN sudo apt-get -q update &amp;&amp; \
+    sudo apt-get install -y libgtk-3-dev &amp;&amp; \ # For NoVNC to work
+    sudo apt-get install -yq gcc-multilib &amp;&amp; \
+    sudo apt install -y libtinfo5 &amp;&amp; \ # For Kotlin Native to work
+    sudo rm -rf /var/lib/apt/lists/*
+</code></pre></div></div>
+
+<p>With this setup you can push the changes to your repo and re-open the GitPod to reload a brand new Docker image with the updated packages.</p>
+
+<p>This configuration allows you to do all I’ve mentioned such as running Native Kotlin, run with VNC to view native application windows and more!<br>
+By default you’re able to view a in-place/preview browser window so doing web development is working from the get-go and as such also Kotlin/JS worked pretty well without any configuration.</p>
+
+<p>If you’re wondering, the NoVNC is on port 6080.</p>
+
+<h3 id="why">
+<a class="anchor" href="#why" aria-hidden="true"><span class="octicon octicon-link"></span></a>Why</h3>
+<p>For me there’s actually not just one reason to why I’d like to do this.</p>
+
+<ol>
+  <li>Be able to do some quick coding / reviewing on my tablet.</li>
+  <li>Workshops at AFRY (no installation required for users)</li>
+</ol>
+
+<p>Just in a few days (2021-01-26) I’ll do a workshop at AFRY with Kotlin Multiplatform where GitPod.io will be a great alternative for colleagues who have computers 
+where they’re not allowed to install their own applications.</p>
+
+<h3 id="alternatives">
+<a class="anchor" href="#alternatives" aria-hidden="true"><span class="octicon octicon-link"></span></a>Alternatives</h3>
+<ul>
+  <li>
+<a href="https://github.com/features/codespaces">GitHub Codespaces</a> is coming, but is still in a private BETA.</li>
+  <li>VS Code Remote (<strong>obs</strong> this actually require your own computer somewhere to host the vs code server)</li>
+</ul>
+
+<p>I think for now GitPod.io is the simplest and best out of them, unless you have your own computer to use as a server for VS Code Remote!</p>
+
+<p>Thanks<br>
+~Hampus</p>
+
+  </div><!-- from https://github.com/utterance/utterances -->
+<script src="https://utteranc.es/client.js"
+        repo="londogard/londogard"
+        issue-term="title"
+        label="blogpost-comment"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+</script><a class="u-url" href="/jvm/native/kotlin/js/2021/01/21/til-gitpod-kotlin-jvm.html" hidden></a>
+</article>
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/"></data>
+
+  <div class="wrapper">
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col">
+        <p class="feed-subscribe">
+          <a href="/feed.xml">
+            <svg class="svg-icon orange">
+              <use xlink:href="/assets/minima-social-icons.svg#rss"></use>
+            </svg><span>Subscribe</span>
+          </a>
+        </p>
+      </div>
+      <div class="footer-col">
+        <p>A blog with a focus on Deep Learning, JVM and Performance.</p>
+      </div>
+    </div>
+
+    <div class="social-links"><ul class="social-media-list"><li><a rel="me" href="https://github.com/londogard" title="londogard"><svg class="svg-icon grey"><use xlink:href="/assets/minima-social-icons.svg#github"></use></svg></a></li></ul>
+</div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>
