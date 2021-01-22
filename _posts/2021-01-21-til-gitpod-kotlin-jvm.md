@@ -1,4 +1,14 @@
-# GitPod - your editor in the cloud
+---
+toc: true
+layout: post
+description: "GitPod is a Cloud IDE where you can run everything from Kotlin to Python/JS. In this TIL how to launch native programs and more is shown in the GitPod IDE."
+categories: [jvm, native, kotlin, js]
+title: "TIL: GitPod - your editor in the cloud"
+comments: true
+author: Hampus Londögård
+---
+
+# TIL: GitPod - your editor in the cloud
 [GitPod.io](https://gitpod.io/) is a editor in the cloud based on [Theia](https://theia-ide.org/) which is a IDE built for the cloud & desktop. 
 It implements the same language servers and allow you to use the same extensions as in VS Code - which is great. 
 
