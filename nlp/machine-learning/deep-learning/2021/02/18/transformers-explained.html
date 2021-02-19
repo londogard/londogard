@@ -222,12 +222,13 @@ It's assumed a basic understanding of neural networks and backpropagation, for t
 <p><strong>Self-attention is a sequence-to-sequence operation</strong>, that is we input a sequence and we have a sequence returned.<br>
 Let's say we've got <code>x1..xn</code> as input and <code>y1..yn</code> as output where each vector is dimensioned <code>k</code>.</p>
 <p>To produce output vector 𝐲i, the self attention operation simply takes a weighted average over all the input vectors</p>
-<p>$y\_i = \sum\_{j=0}^{j=k}{w\_{ij}x\_j}$</p>
-<p>Where the weights summed over $j=0..k$ is equal to $1$. $w\_{ij}$ is not a parameter but is derived from a function over $x_i$ and $x\_j$.<br>
+<p>$y_i = \sum_{j=0}^{j=k}{w_{ij}x_j}$</p>
+<p>Where the weights summed over $j=0..k$ is equal to $1$. $w_{ij}$ is not a parameter but is derived from a function over $x_i$ and $x_j$.<br>
 The simplest being the dot-product.</p>
-<p>$w\_{ij}^{'} = x\_i^Tx\_j$</p>
+<p>$w_{ij}^{'} = x_i^Tx_j$</p>
 <p>Where $x_i$ is at the same position as $y_i$ and $x_j$ traverses through all k values. For $x_{i+1}$ we get a completely different output!</p>
 <p>Because the dot product has no bounds we apply softmax to the result, so that the whole sequence sum to $1$.</p>
+<p>$w_{ij} = \frac{\text{exp } w_{ij}^{'}}{\sum_{j} \text{exp } w_{ij}^{'}}$</p>
 <p>And that's really it.</p>
 
 </div>
