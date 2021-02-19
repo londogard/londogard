@@ -79,7 +79,7 @@ window.onload = wrap_img;
        • <span class="read-time" title="Estimated read time">
     
     
-      28 min read
+      30 min read
     
 </span></p>
 
@@ -126,6 +126,8 @@ window.onload = wrap_img;
     <ul class="section-nav">
 <li class="toc-entry toc-h1"><a href="#Transformers-From-Scratch">Transformers From Scratch </a>
 <ul>
+<li class="toc-entry toc-h2"><a href="#Transformers-explained">Transformers explained </a></li>
+<li class="toc-entry toc-h2"><a href="#Self-attention">Self-attention </a></li>
 <li class="toc-entry toc-h2"><a href="#Understanding-how-it-works">Understanding how it works </a></li>
 <li class="toc-entry toc-h2"><a href="#In-Pytorch:-basic-self-attention">In Pytorch: basic self-attention </a></li>
 <li class="toc-entry toc-h2"><a href="#Additional-Tricks">Additional Tricks </a>
@@ -185,6 +187,25 @@ window.onload = wrap_img;
 <a class="anchor" href="#Transformers-From-Scratch" aria-hidden="true"><span class="octicon octicon-link"></span></a>Transformers From Scratch<a class="anchor-link" href="#Transformers-From-Scratch"> </a>
 </h1>
 <p>(Open directly in Google Colab <a href="https://colab.research.google.com/github/londogard/londogard/blob/master/_notebooks/2021-02-18-transformers-explained.ipynb">here</a>.)</p>
+<p>Today I'm taking <strong>huge inspiration from Peter Bloem</strong> 
+(Vrije Universiteit Amsterdam) which is a <a href="http://peterbloem.nl/blog/transformers">great blog post</a> &amp; <a href="https://youtu.be/KmAISyVvE1Y?list=PLIXJ-Sacf8u60G1TwcznBmK6rEL3gmZmV">video lecture</a>. It's <strong>essentially a 80-90 % copy of the blog, with minor modifications and reworked code into TODOs</strong> to make it more like a workshop using the Jupyter format (fitting nicely with Google Colab).<br>
+<em>As demonstrations in the end I integrate PyTorch-code with fast.ai framework.</em></p>
+<p>I want to note that the original blog by Peter Bloems is a work of art and does a better job at visualizing graphics in combination with text.</p>
+<h2 id="Transformers-explained">
+<a class="anchor" href="#Transformers-explained" aria-hidden="true"><span class="octicon octicon-link"></span></a>Transformers explained<a class="anchor-link" href="#Transformers-explained"> </a>
+</h2>
+<blockquote>
+<p>Transformers are a very exciting family of machine learning architectures. Many good tutorials exist but in the last few years, transformers have mostly become simpler, so that it is now much more straightforward to explain how modern architectures work. This post (read:Peter Bloems blog) is an attempt to explain directly how modern transformers work, and why, without some of the historical baggage.
+It's assumed a basic understanding of neural networks and backpropagation, for those that are not sure you can either brush up your knowledge in <a href="https://youtu.be/1NVgspM98W0">this video</a> and learn how they're used today <a href="https://youtu.be/DidHjsp_OV0">here</a>.</p>
+</blockquote>
+<p>Further we'll use PyTorch, with some fast.ai for the demos in appendix, to implement the full self attention &amp; transformer module(s).</p>
+<h2 id="Self-attention">
+<a class="anchor" href="#Self-attention" aria-hidden="true"><span class="octicon octicon-link"></span></a>Self-attention<a class="anchor-link" href="#Self-attention"> </a>
+</h2>
+<p>The fundamental operation of any transformer architecture is the self-attention operation.</p>
+<p><strong>Self-attention is a sequence-to-sequence operation</strong>, that is we input a sequence and we have a sequence returned.<br>
+Let's say we've got <code>x1..xn</code> as input and <code>y1..yn</code> as output where each vector is dimensioned <code>k</code>.</p>
+<p>To produce output vector 𝐲i, the self attention operation simply takes a weighted average over all the input vectors</p>
 
 </div>
 </div>
