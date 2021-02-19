@@ -4,20 +4,20 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="twitter:card" content="summary_large_image" /><!-- Begin Jekyll SEO tag v2.6.1 -->
-<title>CoViD-19 FAQ Search Engine 2.1 | Londogard</title>
+<title>Transformers From Scratch | Londogard</title>
 <meta name="generator" content="Jekyll v4.1.1" />
-<meta property="og:title" content="CoViD-19 FAQ Search Engine 2.1" />
+<meta property="og:title" content="Transformers From Scratch" />
 <meta name="author" content="Hampus Londögård" />
 <meta property="og:locale" content="en_US" />
-<meta name="description" content="In this post I improve the previous FAQ search engine by some low hanging fruits. The requirements stay the same thus SotA is not achieved but rather it’s simply generic &amp; easy on hardware (Raspberry Pi capable)." />
-<meta property="og:description" content="In this post I improve the previous FAQ search engine by some low hanging fruits. The requirements stay the same thus SotA is not achieved but rather it’s simply generic &amp; easy on hardware (Raspberry Pi capable)." />
-<link rel="canonical" href="https://blog.londogard.com/nlp/machine-learning/deep-learning/2021/02/18/transformers-explained.html" />
-<meta property="og:url" content="https://blog.londogard.com/nlp/machine-learning/deep-learning/2021/02/18/transformers-explained.html" />
+<meta name="description" content="In this post I walk through Self-Attention Transformers from scratch with demos at the end for Text Classification &amp; Generation, where the PyTorch-code is wrapped by fast.ai to simplify end-2-end." />
+<meta property="og:description" content="In this post I walk through Self-Attention Transformers from scratch with demos at the end for Text Classification &amp; Generation, where the PyTorch-code is wrapped by fast.ai to simplify end-2-end." />
+<link rel="canonical" href="https://blog.londogard.com/nlp,/machine-learning,/deep-learning%5D/2021/02/18/transformers-explained.html" />
+<meta property="og:url" content="https://blog.londogard.com/nlp,/machine-learning,/deep-learning%5D/2021/02/18/transformers-explained.html" />
 <meta property="og:site_name" content="Londogard" />
 <meta property="og:type" content="article" />
 <meta property="article:published_time" content="2021-02-18T00:00:00-06:00" />
 <script type="application/ld+json">
-{"description":"In this post I improve the previous FAQ search engine by some low hanging fruits. The requirements stay the same thus SotA is not achieved but rather it’s simply generic &amp; easy on hardware (Raspberry Pi capable).","url":"https://blog.londogard.com/nlp/machine-learning/deep-learning/2021/02/18/transformers-explained.html","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"https://blog.londogard.com/nlp/machine-learning/deep-learning/2021/02/18/transformers-explained.html"},"headline":"CoViD-19 FAQ Search Engine 2.1","dateModified":"2021-02-18T00:00:00-06:00","datePublished":"2021-02-18T00:00:00-06:00","author":{"@type":"Person","name":"Hampus Londögård"},"@context":"https://schema.org"}</script>
+{"description":"In this post I walk through Self-Attention Transformers from scratch with demos at the end for Text Classification &amp; Generation, where the PyTorch-code is wrapped by fast.ai to simplify end-2-end.","url":"https://blog.londogard.com/nlp,/machine-learning,/deep-learning%5D/2021/02/18/transformers-explained.html","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"https://blog.londogard.com/nlp,/machine-learning,/deep-learning%5D/2021/02/18/transformers-explained.html"},"headline":"Transformers From Scratch","dateModified":"2021-02-18T00:00:00-06:00","datePublished":"2021-02-18T00:00:00-06:00","author":{"@type":"Person","name":"Hampus Londögård"},"@context":"https://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 <link rel="stylesheet" href="/assets/css/style.css"><link type="application/atom+xml" rel="alternate" href="https://blog.londogard.com/feed.xml" title="Londogard" /><link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico"><link href="https://unpkg.com/@primer/css/dist/primer.css" rel="stylesheet" />
 <link rel="stylesheet" href="//use.fontawesome.com/releases/v5.0.7/css/all.css">
@@ -71,7 +71,7 @@ window.onload = wrap_img;
         <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
 
   <header class="post-header">
-    <h1 class="post-title p-name" itemprop="name headline">CoViD-19 FAQ Search Engine 2.1</h1><p class="page-description">In this post I improve the previous FAQ search engine by some low hanging fruits. The requirements stay the same thus SotA is not achieved but rather it's simply generic & easy on hardware (Raspberry Pi capable).</p><p class="post-meta post-meta-title"><time class="dt-published" datetime="2021-02-18T00:00:00-06:00" itemprop="datePublished">
+    <h1 class="post-title p-name" itemprop="name headline">Transformers From Scratch</h1><p class="page-description">In this post I walk through Self-Attention Transformers from scratch with demos at the end for Text Classification & Generation, where the PyTorch-code is wrapped by fast.ai to simplify end-2-end.</p><p class="post-meta post-meta-title"><time class="dt-published" datetime="2021-02-18T00:00:00-06:00" itemprop="datePublished">
         Feb 18, 2021
       </time>• 
           <span itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -86,13 +86,13 @@ window.onload = wrap_img;
     
       <p class="category-tags"><i class="fas fa-tags category-tags-icon"></i></i> 
       
-        <a class="category-tags-link" href="/categories/#nlp">nlp</a>
+        <a class="category-tags-link" href="/categories/#nlp,">nlp,</a>
         &nbsp;
       
-        <a class="category-tags-link" href="/categories/#machine-learning">machine-learning</a>
+        <a class="category-tags-link" href="/categories/#machine-learning,">machine-learning,</a>
         &nbsp;
       
-        <a class="category-tags-link" href="/categories/#deep-learning">deep-learning</a>
+        <a class="category-tags-link" href="/categories/#deep-learning]">deep-learning]</a>
         
       
       </p>
@@ -2550,7 +2550,7 @@ Do note that the depth should probably be increased as should the amount of data
         theme="github-light"
         crossorigin="anonymous"
         async>
-</script><a class="u-url" href="/nlp/machine-learning/deep-learning/2021/02/18/transformers-explained.html" hidden></a>
+</script><a class="u-url" href="/nlp,/machine-learning,/deep-learning%5D/2021/02/18/transformers-explained.html" hidden></a>
 </article>
       </div>
     </main><footer class="site-footer h-card">
