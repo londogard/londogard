@@ -1,4 +1,191 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.1.1">Jekyll</generator><link href="https://blog.londogard.com/feed.xml" rel="self" type="application/atom+xml" /><link href="https://blog.londogard.com/" rel="alternate" type="text/html" /><updated>2021-02-25T10:05:13-06:00</updated><id>https://blog.londogard.com/feed.xml</id><title type="html">Londogard</title><subtitle>A blog with a focus on Deep Learning, JVM and Performance.</subtitle><entry><title type="html">Transformers From Scratch</title><link href="https://blog.londogard.com/nlp/deep-learning/2021/02/18/transformers-explained.html" rel="alternate" type="text/html" title="Transformers From Scratch" /><published>2021-02-18T00:00:00-06:00</published><updated>2021-02-18T00:00:00-06:00</updated><id>https://blog.londogard.com/nlp/deep-learning/2021/02/18/transformers-explained</id><content type="html" xml:base="https://blog.londogard.com/nlp/deep-learning/2021/02/18/transformers-explained.html">&lt;!--
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.1.1">Jekyll</generator><link href="https://blog.londogard.com/feed.xml" rel="self" type="application/atom+xml" /><link href="https://blog.londogard.com/" rel="alternate" type="text/html" /><updated>2021-03-17T12:52:44-05:00</updated><id>https://blog.londogard.com/feed.xml</id><title type="html">Londogard</title><subtitle>A blog with a focus on Deep Learning, JVM and Performance.</subtitle><entry><title type="html">When to use what - RegExp, String Replace &amp;amp; Character Replace (JVM/Kotlin)</title><link href="https://blog.londogard.com/jvm/regex/2021/03/17/replace-in-string.html" rel="alternate" type="text/html" title="When to use what - RegExp, String Replace &amp;amp; Character Replace (JVM/Kotlin)" /><published>2021-03-17T00:00:00-05:00</published><updated>2021-03-17T00:00:00-05:00</updated><id>https://blog.londogard.com/jvm/regex/2021/03/17/replace-in-string</id><content type="html" xml:base="https://blog.londogard.com/jvm/regex/2021/03/17/replace-in-string.html">&lt;h1 id=&quot;when-to-use-what---regexp-string-replace--character-replace&quot;&gt;When to use what - RegExp, String Replace &amp;amp; Character Replace&lt;/h1&gt;
+&lt;p&gt;Sometimes it’s hard to know what to use, and why to use it even.&lt;/p&gt;
+
+&lt;h3 id=&quot;what&quot;&gt;What&lt;/h3&gt;
+&lt;p&gt;In most, or dare I say all, popular programming languages there exists a multitude of string replacements methods, most common is to have one String-based and one RegExp-based. In some languages such as Java there’s also a special method to replace Characters in a String.&lt;/p&gt;
+
+&lt;h3 id=&quot;why&quot;&gt;Why&lt;/h3&gt;
+&lt;p&gt;Performance sometimes matter, sometimes it doesn’t. But if it does it’s really good knowing which method to use as the speed-up can be substantial!&lt;/p&gt;
+
+&lt;h4 id=&quot;the-use-case&quot;&gt;The use-case&lt;/h4&gt;
+&lt;p&gt;Replace “a”, “b” &amp;amp; “c” to “d”. It’s simple, but good.
+As for data I’m using a few of shakespeares works which in total is 4.5 million characters, I’ve also added variants of these as shown in the table.&lt;/p&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt;Type&lt;/th&gt;
+      &lt;th&gt;Length (characters)&lt;/th&gt;
+      &lt;th&gt;Iterations&lt;/th&gt;
+      &lt;th&gt;Average (msg)&lt;/th&gt;
+      &lt;th&gt;Normalized to RegExp&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;RegExp&lt;/td&gt;
+      &lt;td&gt;1k&lt;/td&gt;
+      &lt;td&gt;1 million&lt;/td&gt;
+      &lt;td&gt;0.0049ms&lt;/td&gt;
+      &lt;td&gt;1x&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Char&lt;/td&gt;
+      &lt;td&gt;1k&lt;/td&gt;
+      &lt;td&gt;1 million&lt;/td&gt;
+      &lt;td&gt;0.0027ms&lt;/td&gt;
+      &lt;td&gt;0.55x&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;String&lt;/td&gt;
+      &lt;td&gt;1k&lt;/td&gt;
+      &lt;td&gt;1 million&lt;/td&gt;
+      &lt;td&gt;0.0087ms&lt;/td&gt;
+      &lt;td&gt;1.63x&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;RegExp&lt;/td&gt;
+      &lt;td&gt;4.5 million&lt;/td&gt;
+      &lt;td&gt;1k&lt;/td&gt;
+      &lt;td&gt;29.67ms&lt;/td&gt;
+      &lt;td&gt;1x&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Char&lt;/td&gt;
+      &lt;td&gt;4.5 million&lt;/td&gt;
+      &lt;td&gt;1k&lt;/td&gt;
+      &lt;td&gt;11.84&lt;/td&gt;
+      &lt;td&gt;0.39x&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;String&lt;/td&gt;
+      &lt;td&gt;4.5 million&lt;/td&gt;
+      &lt;td&gt;1k&lt;/td&gt;
+      &lt;td&gt;57.20&lt;/td&gt;
+      &lt;td&gt;1.92x&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;RegExp&lt;/td&gt;
+      &lt;td&gt;45 million&lt;/td&gt;
+      &lt;td&gt;10&lt;/td&gt;
+      &lt;td&gt;361.8ms&lt;/td&gt;
+      &lt;td&gt;1x&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Char&lt;/td&gt;
+      &lt;td&gt;45 million&lt;/td&gt;
+      &lt;td&gt;10&lt;/td&gt;
+      &lt;td&gt;117.0ms&lt;/td&gt;
+      &lt;td&gt;0.32x&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;String&lt;/td&gt;
+      &lt;td&gt;45 million&lt;/td&gt;
+      &lt;td&gt;10&lt;/td&gt;
+      &lt;td&gt;588.1ms&lt;/td&gt;
+      &lt;td&gt;1.54x&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;As shown the Character-based replace is &lt;em&gt;much&lt;/em&gt; faster! It’s only getting faster in comparison to the RegExp the bigger the file is.&lt;/p&gt;
+
+&lt;p&gt;I think a interesting test would be to do character swaps, using these methods and see if it’s retained.&lt;/p&gt;
+
+&lt;h4 id=&quot;when-to-use-what&quot;&gt;When to use what?&lt;/h4&gt;
+&lt;p&gt;I’d say that I see a few clear results.&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Use &lt;em&gt;Character Based Replace&lt;/em&gt; if you only need to replace characters. It’s &lt;strong&gt;much&lt;/strong&gt; faster!&lt;/li&gt;
+  &lt;li&gt;Use &lt;em&gt;String Based Replace&lt;/em&gt; if you only swap one string to another (it’s faster than RegExp), doing multiple swaps grows fast in time consumed.&lt;/li&gt;
+  &lt;li&gt;Use &lt;em&gt;RegExp Based Replace&lt;/em&gt; if you want to swap multiple strings&lt;/li&gt;
+  &lt;li&gt;Use &lt;em&gt;RegExp Based Replace&lt;/em&gt; if you wanna do anything complex really! It’s pretty performant if you remember to compile the pattern :)&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h3 id=&quot;extra&quot;&gt;Extra&lt;/h3&gt;
+&lt;p&gt;Some extra comments that are good to know in cases as these&lt;/p&gt;
+
+&lt;h4 id=&quot;regexp&quot;&gt;RegExp&lt;/h4&gt;
+&lt;p&gt;I’ve said this before but…
+Please remember to compile your patterns once, and not in each loop. Compiling patterns is incredibly expensive!
+Running &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;(1..1_000_000).forEach { str.find(regexStr) }&lt;/code&gt; is a multitude slower than&lt;/p&gt;
+&lt;div class=&quot;language-kotlin highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;// pseudo-code&lt;/span&gt;
+&lt;span class=&quot;kd&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;py&quot;&gt;regexCompiled&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;regexStr&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;toRegex&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;..&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1_000_000&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;forEach&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;regexCompiled&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;find&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;str&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;because in the first example pattern is compiled each time…&lt;/p&gt;
+
+&lt;h4 id=&quot;python-specific&quot;&gt;Python specific&lt;/h4&gt;
+&lt;p&gt;Note that in Python as an example there exists C-implementations for some methods, it’s &lt;strong&gt;very&lt;/strong&gt; important to actually use these if you care about performance.
+As an example &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;str.find(keyword)&lt;/code&gt; is a multitude slower than &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;keyword in str&lt;/code&gt;, because the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;in&lt;/code&gt; keyword is actually a C-implementation when &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;str.find&lt;/code&gt; is a python one.&lt;/p&gt;
+
+&lt;h2 id=&quot;appendix-a-the-code&quot;&gt;Appendix A. The Code&lt;/h2&gt;
+&lt;p&gt;&lt;a href=&quot;https://gist.github.com/Lundez/ee6484422cc2fe5545fffa7eaa2635cc&quot;&gt;GitHub gist&lt;/a&gt;&lt;/p&gt;
+&lt;div class=&quot;language-kotlin highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;java.io.File&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;kotlin.system.measureTimeMillis&lt;/span&gt;
+
+&lt;span class=&quot;kd&quot;&gt;object&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;RegexTester&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;kd&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;py&quot;&gt;text&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;File&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;/home/londet/git/text-gen-kt/files/shakespeare.txt&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;readText&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+    &lt;span class=&quot;kd&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;py&quot;&gt;textSmall&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;text&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;take&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1000&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;kd&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;py&quot;&gt;textLarge&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;text&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;repeat&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;10&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+    &lt;span class=&quot;kd&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;py&quot;&gt;regex&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;[abc]&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;toRegex&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+    &lt;span class=&quot;kd&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;py&quot;&gt;charReplace&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;listOf&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;sc&quot;&gt;'a'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;sc&quot;&gt;'b'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;sc&quot;&gt;'c'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;kd&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;py&quot;&gt;stringReplace&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;listOf&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;a&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;b&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;c&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+    &lt;span class=&quot;nd&quot;&gt;@JvmStatic&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;fun&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;main&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;args&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Array&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;&amp;gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;nf&quot;&gt;println&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Warming up JVM by running 10,000 iterations of each replacer on normal size.&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+        &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;..&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;10_000&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+            &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;forEach&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;regex&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;replace&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;text&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;d&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+        &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;..&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;10_000&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+            &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;forEach&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;charReplace&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;fold&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;text&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;acc&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ch&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;acc&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;replace&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ch&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;sc&quot;&gt;'d'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+        &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;..&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;10_000&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+            &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;forEach&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;stringReplace&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;fold&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;text&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;acc&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ch&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;acc&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;replace&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ch&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;d&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+        &lt;span class=&quot;nf&quot;&gt;println&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Warmup done!&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+
+        &lt;span class=&quot;kd&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;py&quot;&gt;regexSmall&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;measureTimeMillis&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;..&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1_000_000&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;forEach&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;regex&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;replace&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;textSmall&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;d&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;/&lt;/span&gt; &lt;span class=&quot;mf&quot;&gt;1_000_000.0&lt;/span&gt;
+        &lt;span class=&quot;kd&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;py&quot;&gt;regexNormal&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;measureTimeMillis&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;..&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1_000&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;forEach&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;regex&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;replace&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;text&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;d&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;/&lt;/span&gt; &lt;span class=&quot;mf&quot;&gt;1000.0&lt;/span&gt;
+        &lt;span class=&quot;kd&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;py&quot;&gt;regexLarge&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;measureTimeMillis&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;..&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;10&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;forEach&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;regex&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;replace&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;textLarge&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;d&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;/&lt;/span&gt; &lt;span class=&quot;mf&quot;&gt;10.0&lt;/span&gt;
+        &lt;span class=&quot;c1&quot;&gt;// val regexLargeCompile = measureTimeMillis { (1..10).forEach { textLarge.replace(&quot;[abc]&quot;, &quot;d&quot;) } } / 10.0&lt;/span&gt;
+        &lt;span class=&quot;nf&quot;&gt;println&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Regex Small (1000 characters, 1,000,000 avg): $regexSmall&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+        &lt;span class=&quot;nf&quot;&gt;println&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Regex Normal (4.5 million characters, 1000 avg): $regexNormal&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+        &lt;span class=&quot;nf&quot;&gt;println&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Regex Large (45 million characters, 10 avg): $regexLarge&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+
+        &lt;span class=&quot;kd&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;py&quot;&gt;charSmall&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;measureTimeMillis&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;..&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1_000_000&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;forEach&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;charReplace&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;fold&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;textSmall&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;acc&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ch&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;acc&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;replace&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ch&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;sc&quot;&gt;'d'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;/&lt;/span&gt; &lt;span class=&quot;mf&quot;&gt;1_000_000.0&lt;/span&gt;
+        &lt;span class=&quot;kd&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;py&quot;&gt;charNormal&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;measureTimeMillis&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;..&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1_000&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;forEach&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;charReplace&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;fold&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;text&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;acc&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ch&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;acc&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;replace&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ch&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;sc&quot;&gt;'d'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;/&lt;/span&gt; &lt;span class=&quot;mf&quot;&gt;1000.0&lt;/span&gt;
+        &lt;span class=&quot;kd&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;py&quot;&gt;charLarge&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;measureTimeMillis&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;..&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;10&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;forEach&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;charReplace&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;fold&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;textLarge&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;acc&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ch&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;acc&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;replace&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ch&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;sc&quot;&gt;'d'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;/&lt;/span&gt; &lt;span class=&quot;mf&quot;&gt;10.0&lt;/span&gt;
+        &lt;span class=&quot;nf&quot;&gt;println&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;CharReplace Small (1000 characters, 1,000,000 avg): $charSmall&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+        &lt;span class=&quot;nf&quot;&gt;println&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;CharReplace Normal (4.5 million characters, 1000 avg): $charNormal&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+        &lt;span class=&quot;nf&quot;&gt;println&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;CharReplace Large (45 million characters, 10 avg): $charLarge&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+        &lt;span class=&quot;kd&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;py&quot;&gt;stringSmall&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;measureTimeMillis&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;..&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1_000_000&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;forEach&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;stringReplace&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;fold&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;textSmall&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;acc&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ch&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;acc&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;replace&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ch&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;d&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;/&lt;/span&gt; &lt;span class=&quot;mf&quot;&gt;1_000_000.0&lt;/span&gt;
+        &lt;span class=&quot;kd&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;py&quot;&gt;stringNormal&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;measureTimeMillis&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;..&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1_000&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;forEach&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;stringReplace&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;fold&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;text&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;acc&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ch&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;acc&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;replace&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ch&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;d&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;/&lt;/span&gt; &lt;span class=&quot;mf&quot;&gt;1000.0&lt;/span&gt;
+        &lt;span class=&quot;kd&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;py&quot;&gt;stringLarge&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;measureTimeMillis&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;..&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;10&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;forEach&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;stringReplace&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;fold&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;textLarge&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;acc&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ch&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;acc&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;replace&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ch&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;d&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;/&lt;/span&gt; &lt;span class=&quot;mf&quot;&gt;10.0&lt;/span&gt;
+        &lt;span class=&quot;nf&quot;&gt;println&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;StringReplace Small (1000 characters, 1,000,000 avg): $stringSmall&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+        &lt;span class=&quot;nf&quot;&gt;println&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;StringReplace Normal (4.5 million characters, 1000 avg): $stringNormal&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+        &lt;span class=&quot;nf&quot;&gt;println&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;StringReplace Large (45 million characters, 10 avg): $stringLarge&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+        
+        &lt;span class=&quot;cm&quot;&gt;/**&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;
+&lt;/span&gt;&lt;span class=&quot;cm&quot;&gt;        Regex Small (1000 characters, 1,000,00 avg): 0.004949&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;
+&lt;/span&gt;&lt;span class=&quot;cm&quot;&gt;        Regex Normal (4.5 million characters, 1000 avg): 29.671&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;
+&lt;/span&gt;&lt;span class=&quot;cm&quot;&gt;        Regex Large (45 million characters, 10 avg): 361.8&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;
+&lt;/span&gt;&lt;span class=&quot;cm&quot;&gt;        CharReplace Small (1000 characters, 1,000,00 avg): 0.002752&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;
+&lt;/span&gt;&lt;span class=&quot;cm&quot;&gt;        CharReplace Normal (4.5 million characters, 1000 avg): 11.835&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;
+&lt;/span&gt;&lt;span class=&quot;cm&quot;&gt;        CharReplace Large (45 million characters, 10 avg): 117.0&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;
+&lt;/span&gt;&lt;span class=&quot;cm&quot;&gt;        StringReplace Small (1000 characters, 1,000,00 avg): 0.008692&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;
+&lt;/span&gt;&lt;span class=&quot;cm&quot;&gt;        StringReplace Normal (4.5 million characters, 1000 avg): 57.204&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;
+&lt;/span&gt;&lt;span class=&quot;cm&quot;&gt;        StringReplace Large (45 million characters, 10 avg): 588.1&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;
+&lt;/span&gt;&lt;span class=&quot;cm&quot;&gt;        */&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;</content><author><name>Hampus Londögård</name></author><category term="jvm" /><category term="regex" /><summary type="html">When to use what - RegExp, String Replace &amp;amp; Character Replace Sometimes it’s hard to know what to use, and why to use it even.</summary></entry><entry><title type="html">Transformers From Scratch</title><link href="https://blog.londogard.com/nlp/deep-learning/2021/02/18/transformers-explained.html" rel="alternate" type="text/html" title="Transformers From Scratch" /><published>2021-02-18T00:00:00-06:00</published><updated>2021-02-18T00:00:00-06:00</updated><id>https://blog.londogard.com/nlp/deep-learning/2021/02/18/transformers-explained</id><content type="html" xml:base="https://blog.londogard.com/nlp/deep-learning/2021/02/18/transformers-explained.html">&lt;!--
 #################################################
 ### THIS FILE WAS AUTOGENERATED! DO NOT EDIT! ###
 #################################################
@@ -3203,78 +3390,7 @@ Looking at GitHub one can clearly see that SDKMan is more popular, both by stars
 
 &lt;p&gt;One thing I’ve learned both through work and my personal projects is that often it’s better to make an non-optimal decision rather than trying to find the perfect solution, because diving into the pile of research to perfection will take much more time than just getting started.&lt;/p&gt;
 
-&lt;p&gt;-Hampus Londögård&lt;/p&gt;</content><author><name>Hampus Londögård</name></author><category term="jvm" /><category term="jdk" /><category term="til" /><summary type="html">SDKMan - Swapping JDK made simple I’ve decided to not only write blogs but also small snippets, here comes the first one.</summary></entry><entry><title type="html">TIL: fastutil - fast &amp;amp; compact type-speciic collections for JVM (no autobox!)</title><link href="https://blog.londogard.com/jvm/til/optimization/2020/09/03/til-fastutil-primitive-structures.html" rel="alternate" type="text/html" title="TIL: fastutil - fast &amp;amp; compact type-speciic collections for JVM (no autobox!)" /><published>2020-09-03T00:00:00-05:00</published><updated>2020-09-03T00:00:00-05:00</updated><id>https://blog.londogard.com/jvm/til/optimization/2020/09/03/til-fastutil-primitive-structures</id><content type="html" xml:base="https://blog.londogard.com/jvm/til/optimization/2020/09/03/til-fastutil-primitive-structures.html">&lt;h1 id=&quot;fastutil---how-to-optimize-your-collections-by-primitives&quot;&gt;fastutil - how to optimize your collections by primitives&lt;/h1&gt;
-&lt;blockquote&gt;
-  &lt;p&gt;fastutil extends the Java™ Collections Framework by providing type-specific maps, sets, lists and queues with a small memory footprint and fast access and insertion&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;&lt;a href=&quot;http://fastutil.di.unimi.it/&quot;&gt;Homepage&lt;/a&gt; of fastutil&lt;/p&gt;
-
-&lt;h3 id=&quot;what&quot;&gt;What&lt;/h3&gt;
-&lt;p&gt;So what does the quote above actually mean?&lt;br /&gt;
-First we need to dive into, what is a Java Collection, and why are they &quot;bad&quot; for performance and memory requirements?&lt;/p&gt;
-
-&lt;p&gt;Java Collections (&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Collection&amp;lt;E&amp;gt;&lt;/code&gt;) only works with objects, meaning that if we have a &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;List&amp;lt;E&amp;gt;&lt;/code&gt; which we populate with &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;int&lt;/code&gt; it’ll actually &quot;autobox&quot; the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;int&lt;/code&gt; into a &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Integer&lt;/code&gt;, i.e. the class, rather than the primitive type.&lt;br /&gt;
-What does this mean for you as a user?&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;It’s done through &quot;autoboxing&quot; which means automatic casting to the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Integer&lt;/code&gt;-type, so nothing required for you&lt;/li&gt;
-  &lt;li&gt;It allocates more memory than the primitive &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;int&lt;/code&gt;.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;So how do you create an effective &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;List&lt;/code&gt; that contains primitives, such as &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;int, boolean&lt;/code&gt; and &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;float&lt;/code&gt;? You can’t.&lt;br /&gt;
-What you can do is to create an array, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;int[]&lt;/code&gt;, which will contain the actual primitives, no autoboxing applied.&lt;/p&gt;
-
-&lt;p&gt;But what if you want to have the methods from &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;List&lt;/code&gt;, such as &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;find&lt;/code&gt; and &quot;auto-resizing&quot;?
-Then you’ll have to research and find a library, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;fastutil&lt;/code&gt; to the rescue!&lt;/p&gt;
-
-&lt;h3 id=&quot;how&quot;&gt;How&lt;/h3&gt;
-&lt;p&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;fastutil&lt;/code&gt; implements their own versions of &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;List&lt;/code&gt;, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;HashMap&lt;/code&gt; and so on which actually use the raw primitives, thereby increasing throughput while lowering memory used (as we’re not allocating as many objects anymore, when using primitives).&lt;/p&gt;
-
-&lt;p&gt;&lt;em&gt;These types of libraries are only required once you hit an enormous amount of data or very strict requirement.&lt;/em&gt;&lt;/p&gt;
-
-&lt;h4 id=&quot;installation&quot;&gt;Installation&lt;/h4&gt;
-
-&lt;p&gt;Using gradle&lt;/p&gt;
-
-&lt;p&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;implementation: 'it.unimi.dsi:fastutil:8.4.1'&lt;/code&gt; (latest version as of Aug 2020, &lt;a href=&quot;https://mvnrepository.com/artifact/it.unimi.dsi/fastutil&quot;&gt;mvnrepository&lt;/a&gt;)&lt;/p&gt;
-
-&lt;h4 id=&quot;usage&quot;&gt;Usage&lt;/h4&gt;
-
-&lt;p&gt;&lt;em&gt;DoubleToDoubleMap&lt;/em&gt;&lt;/p&gt;
-
-&lt;div class=&quot;language-kotlin highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kd&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;py&quot;&gt;d2dMap&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Double2DoubleMap&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Double2DoubleOpenHashMap&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;().&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;apply&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-    &lt;span class=&quot;nf&quot;&gt;put&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mf&quot;&gt;2.0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mf&quot;&gt;5.5&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-    &lt;span class=&quot;nf&quot;&gt;put&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mf&quot;&gt;3.0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mf&quot;&gt;6.6&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-&lt;span class=&quot;nf&quot;&gt;assertEquals&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mf&quot;&gt;5.5&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;d2dMap&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;get&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mf&quot;&gt;2.0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;This map is not only less memory-hungry (because using &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;double&lt;/code&gt; rather than &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Double&lt;/code&gt;) but is also faster with insertions &amp;amp; get, than the Java Collections counterpart.&lt;/p&gt;
-
-&lt;h3 id=&quot;why&quot;&gt;Why&lt;/h3&gt;
-
-&lt;p&gt;&lt;strong&gt;Less space used &amp;amp; faster&lt;/strong&gt; - it is as simple as that!&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;No &quot;AutoBoxing&quot;&lt;/li&gt;
-  &lt;li&gt;No Object allocations for primitives&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;&lt;em&gt;Side-note&lt;/em&gt;
-Something I noticed while working on my Language Model in Kotlin, with some strict requirements and a lot of data, was that even when using &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;fastutil&lt;/code&gt; I wasn’t gaining that much as I was  mainly using &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;views&lt;/code&gt; of my Lists, further optimizing memory. Views are what the name implies, a view of the List. It never creates a copy but just the indices and make use of the original structure. 
-Using immutable data this is very effective, but if you’d been using mutable data it could prove dangerous as someone can change the structure and data of your view (even if your view is immutable the underlying List might not be).&lt;/p&gt;
-
-&lt;h3 id=&quot;alternatives&quot;&gt;Alternatives&lt;/h3&gt;
-
-&lt;p&gt;&lt;a href=&quot;https://www.eclipse.org/collections/&quot;&gt;Goldman Sachs Collection - now Eclipse Collections&lt;/a&gt; - Probably the best alternative, in my opinion.
-&lt;a href=&quot;http://labs.carrotsearch.com/hppc.html&quot;&gt;HPPC - Carrot Search Labs&lt;/a&gt;
-&lt;a href=&quot;https://bitbucket.org/trove4j/trove/src/master/&quot;&gt;Trove4j&lt;/a&gt; - Not as active as other alternatives, but who cares when it’s performant and &quot;done&quot;?&lt;/p&gt;
-
-&lt;p&gt;Find a 2015 benchmark of the libraries &lt;a href=&quot;http://java-performance.info/hashmap-overview-jdk-fastutil-goldman-sachs-hppc-koloboke-trove-january-2015/&quot;&gt;here&lt;/a&gt;
-At least both &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;fastutil&lt;/code&gt;&amp;amp; &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Eclipse Collections&lt;/code&gt; are updated for Java 8 streams!&lt;/p&gt;
-
-&lt;p&gt;-Hampus Londögård&lt;/p&gt;</content><author><name>Hampus Londögård</name></author><category term="jvm" /><category term="til" /><category term="optimization" /><summary type="html">fastutil - how to optimize your collections by primitives fastutil extends the Java™ Collections Framework by providing type-specific maps, sets, lists and queues with a small memory footprint and fast access and insertion</summary></entry><entry><title type="html">TIL: ‘The Badass Runtime Plugin’, jpackage &amp;amp; jlink - create a ‘native’ installable executable from your JVM-app that isn’t huge</title><link href="https://blog.londogard.com/jvm/jdk/til/jpackage/jlink/2020/09/03/til-badass-runtime.html" rel="alternate" type="text/html" title="TIL: ‘The Badass Runtime Plugin’, jpackage &amp;amp; jlink - create a ‘native’ installable executable from your JVM-app that isn’t huge" /><published>2020-09-03T00:00:00-05:00</published><updated>2020-09-03T00:00:00-05:00</updated><id>https://blog.londogard.com/jvm/jdk/til/jpackage/jlink/2020/09/03/til-badass-runtime</id><content type="html" xml:base="https://blog.londogard.com/jvm/jdk/til/jpackage/jlink/2020/09/03/til-badass-runtime.html">&lt;h1 id=&quot;jpackage-jlink-and-how-to-pack-a-modern-java-app&quot;&gt;JPackage, JLink and how to pack a modern Java App&lt;/h1&gt;
+&lt;p&gt;-Hampus Londögård&lt;/p&gt;</content><author><name>Hampus Londögård</name></author><category term="jvm" /><category term="jdk" /><category term="til" /><summary type="html">SDKMan - Swapping JDK made simple I’ve decided to not only write blogs but also small snippets, here comes the first one.</summary></entry><entry><title type="html">TIL: ‘The Badass Runtime Plugin’, jpackage &amp;amp; jlink - create a ‘native’ installable executable from your JVM-app that isn’t huge</title><link href="https://blog.londogard.com/jvm/jdk/til/jpackage/jlink/2020/09/03/til-badass-runtime.html" rel="alternate" type="text/html" title="TIL: ‘The Badass Runtime Plugin’, jpackage &amp;amp; jlink - create a ‘native’ installable executable from your JVM-app that isn’t huge" /><published>2020-09-03T00:00:00-05:00</published><updated>2020-09-03T00:00:00-05:00</updated><id>https://blog.londogard.com/jvm/jdk/til/jpackage/jlink/2020/09/03/til-badass-runtime</id><content type="html" xml:base="https://blog.londogard.com/jvm/jdk/til/jpackage/jlink/2020/09/03/til-badass-runtime.html">&lt;h1 id=&quot;jpackage-jlink-and-how-to-pack-a-modern-java-app&quot;&gt;JPackage, JLink and how to pack a modern Java App&lt;/h1&gt;
 &lt;p&gt;JPackage is a way to package a modern JVM-program as a installable binary, in a small format.&lt;/p&gt;
 
 &lt;h3 id=&quot;what&quot;&gt;What&lt;/h3&gt;
@@ -3368,7 +3484,78 @@ It’s pretty small in size, even though called FAT, as it doesn’t include a J
 
 &lt;p&gt;&lt;em&gt;I’ll write more about GraalVM and its SubstrateVM which is used to create the native binaries in a new TIL.&lt;/em&gt;&lt;/p&gt;
 
-&lt;p&gt;-Hampus Londögård&lt;/p&gt;</content><author><name>Hampus Londögård</name></author><category term="jvm" /><category term="jdk" /><category term="til" /><category term="jpackage" /><category term="jlink" /><summary type="html">JPackage, JLink and how to pack a modern Java App JPackage is a way to package a modern JVM-program as a installable binary, in a small format.</summary></entry><entry><title type="html">CoViD-19 FAQ Search Engine 2.0</title><link href="https://blog.londogard.com/jupyter/nlp/machine-learning/deep-learning/2020/08/01/faq-search-covid-2.html" rel="alternate" type="text/html" title="CoViD-19 FAQ Search Engine 2.0" /><published>2020-08-01T00:00:00-05:00</published><updated>2020-08-01T00:00:00-05:00</updated><id>https://blog.londogard.com/jupyter/nlp/machine-learning/deep-learning/2020/08/01/faq-search-covid-2</id><content type="html" xml:base="https://blog.londogard.com/jupyter/nlp/machine-learning/deep-learning/2020/08/01/faq-search-covid-2.html">&lt;!--
+&lt;p&gt;-Hampus Londögård&lt;/p&gt;</content><author><name>Hampus Londögård</name></author><category term="jvm" /><category term="jdk" /><category term="til" /><category term="jpackage" /><category term="jlink" /><summary type="html">JPackage, JLink and how to pack a modern Java App JPackage is a way to package a modern JVM-program as a installable binary, in a small format.</summary></entry><entry><title type="html">TIL: fastutil - fast &amp;amp; compact type-speciic collections for JVM (no autobox!)</title><link href="https://blog.londogard.com/jvm/til/optimization/2020/09/03/til-fastutil-primitive-structures.html" rel="alternate" type="text/html" title="TIL: fastutil - fast &amp;amp; compact type-speciic collections for JVM (no autobox!)" /><published>2020-09-03T00:00:00-05:00</published><updated>2020-09-03T00:00:00-05:00</updated><id>https://blog.londogard.com/jvm/til/optimization/2020/09/03/til-fastutil-primitive-structures</id><content type="html" xml:base="https://blog.londogard.com/jvm/til/optimization/2020/09/03/til-fastutil-primitive-structures.html">&lt;h1 id=&quot;fastutil---how-to-optimize-your-collections-by-primitives&quot;&gt;fastutil - how to optimize your collections by primitives&lt;/h1&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;fastutil extends the Java™ Collections Framework by providing type-specific maps, sets, lists and queues with a small memory footprint and fast access and insertion&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;&lt;a href=&quot;http://fastutil.di.unimi.it/&quot;&gt;Homepage&lt;/a&gt; of fastutil&lt;/p&gt;
+
+&lt;h3 id=&quot;what&quot;&gt;What&lt;/h3&gt;
+&lt;p&gt;So what does the quote above actually mean?&lt;br /&gt;
+First we need to dive into, what is a Java Collection, and why are they &quot;bad&quot; for performance and memory requirements?&lt;/p&gt;
+
+&lt;p&gt;Java Collections (&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Collection&amp;lt;E&amp;gt;&lt;/code&gt;) only works with objects, meaning that if we have a &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;List&amp;lt;E&amp;gt;&lt;/code&gt; which we populate with &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;int&lt;/code&gt; it’ll actually &quot;autobox&quot; the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;int&lt;/code&gt; into a &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Integer&lt;/code&gt;, i.e. the class, rather than the primitive type.&lt;br /&gt;
+What does this mean for you as a user?&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;It’s done through &quot;autoboxing&quot; which means automatic casting to the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Integer&lt;/code&gt;-type, so nothing required for you&lt;/li&gt;
+  &lt;li&gt;It allocates more memory than the primitive &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;int&lt;/code&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;So how do you create an effective &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;List&lt;/code&gt; that contains primitives, such as &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;int, boolean&lt;/code&gt; and &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;float&lt;/code&gt;? You can’t.&lt;br /&gt;
+What you can do is to create an array, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;int[]&lt;/code&gt;, which will contain the actual primitives, no autoboxing applied.&lt;/p&gt;
+
+&lt;p&gt;But what if you want to have the methods from &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;List&lt;/code&gt;, such as &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;find&lt;/code&gt; and &quot;auto-resizing&quot;?
+Then you’ll have to research and find a library, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;fastutil&lt;/code&gt; to the rescue!&lt;/p&gt;
+
+&lt;h3 id=&quot;how&quot;&gt;How&lt;/h3&gt;
+&lt;p&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;fastutil&lt;/code&gt; implements their own versions of &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;List&lt;/code&gt;, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;HashMap&lt;/code&gt; and so on which actually use the raw primitives, thereby increasing throughput while lowering memory used (as we’re not allocating as many objects anymore, when using primitives).&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;These types of libraries are only required once you hit an enormous amount of data or very strict requirement.&lt;/em&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;installation&quot;&gt;Installation&lt;/h4&gt;
+
+&lt;p&gt;Using gradle&lt;/p&gt;
+
+&lt;p&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;implementation: 'it.unimi.dsi:fastutil:8.4.1'&lt;/code&gt; (latest version as of Aug 2020, &lt;a href=&quot;https://mvnrepository.com/artifact/it.unimi.dsi/fastutil&quot;&gt;mvnrepository&lt;/a&gt;)&lt;/p&gt;
+
+&lt;h4 id=&quot;usage&quot;&gt;Usage&lt;/h4&gt;
+
+&lt;p&gt;&lt;em&gt;DoubleToDoubleMap&lt;/em&gt;&lt;/p&gt;
+
+&lt;div class=&quot;language-kotlin highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kd&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;py&quot;&gt;d2dMap&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Double2DoubleMap&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Double2DoubleOpenHashMap&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;().&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;apply&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;nf&quot;&gt;put&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mf&quot;&gt;2.0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mf&quot;&gt;5.5&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;nf&quot;&gt;put&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mf&quot;&gt;3.0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mf&quot;&gt;6.6&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;nf&quot;&gt;assertEquals&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mf&quot;&gt;5.5&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;d2dMap&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;get&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mf&quot;&gt;2.0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;This map is not only less memory-hungry (because using &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;double&lt;/code&gt; rather than &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Double&lt;/code&gt;) but is also faster with insertions &amp;amp; get, than the Java Collections counterpart.&lt;/p&gt;
+
+&lt;h3 id=&quot;why&quot;&gt;Why&lt;/h3&gt;
+
+&lt;p&gt;&lt;strong&gt;Less space used &amp;amp; faster&lt;/strong&gt; - it is as simple as that!&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;No &quot;AutoBoxing&quot;&lt;/li&gt;
+  &lt;li&gt;No Object allocations for primitives&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;em&gt;Side-note&lt;/em&gt;
+Something I noticed while working on my Language Model in Kotlin, with some strict requirements and a lot of data, was that even when using &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;fastutil&lt;/code&gt; I wasn’t gaining that much as I was  mainly using &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;views&lt;/code&gt; of my Lists, further optimizing memory. Views are what the name implies, a view of the List. It never creates a copy but just the indices and make use of the original structure. 
+Using immutable data this is very effective, but if you’d been using mutable data it could prove dangerous as someone can change the structure and data of your view (even if your view is immutable the underlying List might not be).&lt;/p&gt;
+
+&lt;h3 id=&quot;alternatives&quot;&gt;Alternatives&lt;/h3&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://www.eclipse.org/collections/&quot;&gt;Goldman Sachs Collection - now Eclipse Collections&lt;/a&gt; - Probably the best alternative, in my opinion.
+&lt;a href=&quot;http://labs.carrotsearch.com/hppc.html&quot;&gt;HPPC - Carrot Search Labs&lt;/a&gt;
+&lt;a href=&quot;https://bitbucket.org/trove4j/trove/src/master/&quot;&gt;Trove4j&lt;/a&gt; - Not as active as other alternatives, but who cares when it’s performant and &quot;done&quot;?&lt;/p&gt;
+
+&lt;p&gt;Find a 2015 benchmark of the libraries &lt;a href=&quot;http://java-performance.info/hashmap-overview-jdk-fastutil-goldman-sachs-hppc-koloboke-trove-january-2015/&quot;&gt;here&lt;/a&gt;
+At least both &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;fastutil&lt;/code&gt;&amp;amp; &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Eclipse Collections&lt;/code&gt; are updated for Java 8 streams!&lt;/p&gt;
+
+&lt;p&gt;-Hampus Londögård&lt;/p&gt;</content><author><name>Hampus Londögård</name></author><category term="jvm" /><category term="til" /><category term="optimization" /><summary type="html">fastutil - how to optimize your collections by primitives fastutil extends the Java™ Collections Framework by providing type-specific maps, sets, lists and queues with a small memory footprint and fast access and insertion</summary></entry><entry><title type="html">CoViD-19 FAQ Search Engine 2.0</title><link href="https://blog.londogard.com/jupyter/nlp/machine-learning/deep-learning/2020/08/01/faq-search-covid-2.html" rel="alternate" type="text/html" title="CoViD-19 FAQ Search Engine 2.0" /><published>2020-08-01T00:00:00-05:00</published><updated>2020-08-01T00:00:00-05:00</updated><id>https://blog.londogard.com/jupyter/nlp/machine-learning/deep-learning/2020/08/01/faq-search-covid-2</id><content type="html" xml:base="https://blog.londogard.com/jupyter/nlp/machine-learning/deep-learning/2020/08/01/faq-search-covid-2.html">&lt;!--
 #################################################
 ### THIS FILE WAS AUTOGENERATED! DO NOT EDIT! ###
 #################################################
@@ -8740,139 +8927,4 @@ Vad är covid-19? - 0.71
 &lt;p&gt;The implementation is available at my &lt;a href=&quot;https://github.com/londogard/nlp-projects/blob/master/python/CoViD_19_QA.ipynb&quot;&gt;GitHub (Londogard)&lt;/a&gt; or directly launched in &lt;a href=&quot;https://colab.research.google.com/github/londogard/nlp-projects/blob/master/python/CoViD_19_QA.ipynb&quot;&gt;Google Colaboratory&lt;/a&gt;.&lt;/p&gt;
 
 &lt;p&gt;Thanks for this time, I’ll be back with more!&lt;br /&gt;
- Hampus Londögård&lt;/p&gt;</content><author><name>Hampus Londögård</name></author><category term="faq" /><category term="nlp" /><category term="machine-learning" /><summary type="html">CoViD-19 Swedish QA I decided to scratch a small itch I’ve had for a while now - creating a search engine using an unsupervised approach. The final product, or the first iteration rather, ended up pretty good and I wanted to share what I’ve done so far.</summary></entry><entry><title type="html">How I created a email generator in Kotlin (for Afry Tipsrundan)</title><link href="https://blog.londogard.com/email/kotlin/html/css/serialization/2020/03/31/email-generator-kotlin-tipsrundan.html" rel="alternate" type="text/html" title="How I created a email generator in Kotlin (for Afry Tipsrundan)" /><published>2020-03-31T00:00:00-05:00</published><updated>2020-03-31T00:00:00-05:00</updated><id>https://blog.londogard.com/email/kotlin/html/css/serialization/2020/03/31/email-generator-kotlin-tipsrundan</id><content type="html" xml:base="https://blog.londogard.com/email/kotlin/html/css/serialization/2020/03/31/email-generator-kotlin-tipsrundan.html">&lt;h1 id=&quot;email-generation---tipsrundan--&quot;&gt;Email Generation - Tipsrundan -&lt;/h1&gt;
-&lt;p&gt;At AFRY IT South I’m co-responsible with Hassan Ftouni at driving the competence. One of my initiatives that we both now drive is to have a biweekly, every second week for all you picky readers out there, newsletter called &quot;Tipsrundan&quot;.&lt;/p&gt;
-
-&lt;p&gt;Tipsrundan has lately gathered some fuss around and Afry IT West now wants to join in. This means new challenges to somehow build an email together with more people, collaborating on what to have and what to keep regional. Let me say that this is a fun challenge!&lt;/p&gt;
-
-&lt;p&gt;In this post I’ll go through how I built our completely new &quot;Email Generator&quot; in Kotlin that I built a Sunday afternoon. This includes a few things such as&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;Learning how CSS works in emails (in comparison to browsers)&lt;/li&gt;
-  &lt;li&gt;Kotlin&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;Let me start at how Tipsrundan has evolved since we initiated it in October (crazy how time flies).&lt;/p&gt;
-
-&lt;h2 id=&quot;the-evolution-of-tipsrundan&quot;&gt;The evolution of Tipsrundan&lt;/h2&gt;
-&lt;p&gt;When we sent the first Tipsrundan, called TL;DR back then, I used a &quot;email templating language&quot; called &lt;a href=&quot;https://mjml.io/&quot;&gt;MJML&lt;/a&gt; and a pre-built template found on their homepage.&lt;br /&gt;
-With this we got a responsive email using their &quot;homemade&quot; templating language. I enjoyed it at the same time as I hated it, there was way to much manual labour copying the sections and inserting my own code, the indentation in the web-editor wasn’t great and so on. I bet it’s a great tool but it didn’t cut it for me, after two or three issues and a ton of research I found a new tool I liked, with a good free variant, called &lt;a href=&quot;https://stripo.email/&quot;&gt;Stripo&lt;/a&gt;. Stripo is a &lt;em&gt;really&lt;/em&gt; good tool which has excellent support with its drag n’ drop editor where you can save modules and much more. We got a good looking &amp;amp; responsive email that worked out great, everything good right?&lt;/p&gt;
-
-&lt;p&gt;It was really good until I realized we had to share the template with new people and Stripo requires premium for this (can’t blame them, they need their cut) which honestly I was to lazy to fix through management.&lt;/p&gt;
-
-&lt;p&gt;With this knowledge I set out to create a tool which we could use internally that is simple and keeps simple. Forward comes a solution I built over a Sunday afternoon where we generate emails from JSON.&lt;/p&gt;
-
-&lt;h2 id=&quot;tipsrundan-generation&quot;&gt;Tipsrundan generation&lt;/h2&gt;
-&lt;p&gt;I had some pretty simple requirement:&lt;/p&gt;
-&lt;ol&gt;
-  &lt;li&gt;JSON or yaml as the filetype which we’d generate Tipsrundan-email from.&lt;/li&gt;
-  &lt;li&gt;Have different sections and easily extendable&lt;/li&gt;
-  &lt;li&gt;Decent looking &amp;amp; responsive (i.e. work on a phone and desktop)&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;By having these requirements I knew that it’ll be easy to sync over git or whatever tool we need and that we can potentially create themed Tipsrundan editions in the future.&lt;/p&gt;
-
-&lt;p&gt;I also knew that I wanted to do this in Kotlin, mainly because I really enjoy coding in Kotlin.&lt;/p&gt;
-
-&lt;h3 id=&quot;step-1-defining-the-format&quot;&gt;Step 1: Defining the format&lt;/h3&gt;
-&lt;p&gt;The first step was to decide what format to use, or at least begin with. Both yaml and JSON was considered and in the end JSON felt like the best fit.&lt;/p&gt;
-
-&lt;div class=&quot;language-json highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-  &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;\&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;title&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;: string,
-  &lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;issue&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;: number,
-  &lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;regional&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;: [item],
-  .. more categories
-}
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;where &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;item &lt;/code&gt; is&lt;/p&gt;
-&lt;div class=&quot;language-json highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-  &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;\&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;title&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;: string,
-  &lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;description&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;: string,
-  &lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;url&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;: string
-}
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Pretty straight-forward, as I said I prefer to keep it simple.&lt;/p&gt;
-
-&lt;h3 id=&quot;step-2-reading-the-data&quot;&gt;Step 2: Reading the data&lt;/h3&gt;
-&lt;p&gt;Now that we have a definition of the data we need to read it, this is really a solved problem in most languages through some kind of library. In my case I choose the serialization library provided by Kotlin in the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;kotlinx&lt;/code&gt;-library. As a FYI this library can serialize using CBOR (Concise Binary Object Representation) and other formats. The name of the library is &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;kotlinx-serialization&lt;/code&gt; and can be found &lt;a href=&quot;https://github.com/Kotlin/kotlinx.serialization&quot;&gt;here&lt;/a&gt;. It’s easiest installed through &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;gradle&lt;/code&gt; (using the Kotlin DSL):&lt;/p&gt;
-
-&lt;div class=&quot;language-kotlin highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nf&quot;&gt;plugins&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-  &lt;span class=&quot;nf&quot;&gt;kotlin&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;\&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;plugin.serialization\&quot;) version \&quot;1.3.70\&quot; // same version as kotlin
-&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-
-&lt;span class=&quot;nf&quot;&gt;dependencies&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-  &lt;span class=&quot;o&quot;&gt;..&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;other&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;dependencies&lt;/span&gt;
-  &lt;span class=&quot;nf&quot;&gt;implementation&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;\&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;org.jetbrains.kotlinx:kotlinx-serialization-runtime:0.20.0\&quot;) // Requires jcenter() as a repository
-&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;kotlinx-serialization&lt;/code&gt; is actually cross-platform compatible meaning that it exists for Kotlin targeting JVM, Native &amp;amp; JS (yes we can target all these platforms through Kotlin!).&lt;/p&gt;
-
-&lt;p&gt;Once installed it’s pretty easy to serialize &amp;amp; deserialize, like any other library really. Create the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;data class&lt;/code&gt;es, which is the equivalent of a &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;case class&lt;/code&gt; in Scala.&lt;/p&gt;
-
-&lt;div class=&quot;language-kotlin highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kd&quot;&gt;data class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Item&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kd&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;py&quot;&gt;title&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;py&quot;&gt;description&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;py&quot;&gt;url&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;Currently &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;kotlinx-serialization&lt;/code&gt; can do the serialization through two different methods, either add an annotation to the class that we’ll use Reflection - this does not work for native. Or we mark the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;data class&lt;/code&gt; as Serializable, the latter being preferred as it’s  truly cross-platform and is more performant. 
-If anyone is wondering a  &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;data class&lt;/code&gt; is basically a class that   provides setters, getters, equality, toString and more! It’s really awesome.
-Adding the annotation we end up with the following:&lt;/p&gt;
-
-&lt;div class=&quot;language-kotlin highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nd&quot;&gt;@Serializable&lt;/span&gt;
-&lt;span class=&quot;kd&quot;&gt;data class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Item&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kd&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;py&quot;&gt;title&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;py&quot;&gt;description&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;py&quot;&gt;url&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h3 id=&quot;step-3-how-to-write-html-in-kotlin&quot;&gt;Step 3: How to write html in Kotlin?&lt;/h3&gt;
-
-&lt;p&gt;We all probably know about html-templating that’s available in most languages, I decided against that and went for a DSL. Kotlin is the language for DSL (Domain Specific Language), for good and bad. Through yet another &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;kotlinx&lt;/code&gt; library we got &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;kotlinx-html&lt;/code&gt; which provides this DSL.&lt;/p&gt;
-
-&lt;p&gt;It looks something like this&lt;/p&gt;
-
-&lt;div class=&quot;language-kotlin highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;fun&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;BODY&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;createFooter&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;footer&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-    &lt;span class=&quot;nf&quot;&gt;hr&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-    &lt;span class=&quot;nf&quot;&gt;section&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-        &lt;span class=&quot;nf&quot;&gt;p&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-            &lt;span class=&quot;nf&quot;&gt;b&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;\&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Thank you for this time see you in two weeks\&quot; }
-&lt;/span&gt;            &lt;span class=&quot;nf&quot;&gt;br&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-            &lt;span class=&quot;p&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;\&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Hampus &amp;amp; Hassan\&quot;
-&lt;/span&gt;        &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;By using a DSL we get types (as you can see on the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;BODY&lt;/code&gt;) and other bonuses. Although this DSL is pretty verbose it works pretty good. In the end using a DSL or html-template engine does not matter that much in my opinion.
-By the way, the way this function is typed is called a &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;extension function&lt;/code&gt; in Kotlin and is one of my favorite tools. It means that we extend the class, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;BODY&lt;/code&gt; with a new method which is usable on a object of the class. Cool right?&lt;/p&gt;
-
-&lt;p&gt;Let’s move on to the styling and how CSS can be annoying.&lt;/p&gt;
-
-&lt;h3 id=&quot;step-4-styling&quot;&gt;Step 4: Styling&lt;/h3&gt;
-
-&lt;p&gt;There was some important parts going into this, we want the email to look at least decent and also be responsive so that it’s viewable on both a phone and computer.&lt;/p&gt;
-
-&lt;p&gt;CSS and emails are not as simple as with a webpage I learned rather fast. I had great issues actually getting the HTML to look good in gmail/outlook. In the end I found &lt;a href=&quot;https://litmus.com/blog/do-email-marketers-and-designers-still-need-to-inline-css&quot;&gt;this&lt;/a&gt; awesome post from Litmus which is one of the leading Email Marketing providers. I learned that&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;External CSS is a no-go for emails (a lot of the providers turned it off because of security concerns)&lt;/li&gt;
-  &lt;li&gt;Embedded CSS (using &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;style&lt;/code&gt;-tag in the header) works on most places today (not true a few years ago)&lt;/li&gt;
-  &lt;li&gt;Inline CSS is the best&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;Because I want to keep it simple I went with the second approach, this mean that I can keep the code a bit cleaner and not write as many wrappers for the styled elements.&lt;/p&gt;
-
-&lt;p&gt;So knowing how I should implement my styling I needed to find a good style, in the end I remembered an old Reddit-post where I found &quot;MVP.css&quot; which is a small CSS that gives cards, buttons and more. Really brilliant in my opinion, made by Andy Brewer and can be found &lt;a href=&quot;https://andybrewer.github.io/mvp/&quot;&gt;here&lt;/a&gt;. I’ve personally tweaked it a bit to keep the email a bit more compact and informative as this is really made for webpages, but the essentials are the same.&lt;/p&gt;
-
-&lt;h3 id=&quot;step-5-wrapping-it-all-up&quot;&gt;Step 5: Wrapping it all up&lt;/h3&gt;
-
-&lt;p&gt;Combining all this into a few files in a git repo we can now generate emails from a JSON easily and have multiple categories.&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;The JSON is used as a data structure&lt;/li&gt;
-  &lt;li&gt;Kotlin used as language&lt;/li&gt;
-  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;kotlinx-serialization&lt;/code&gt; used as a JSON deserializer&lt;/li&gt;
-  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;kotlinx-html&lt;/code&gt; used to build the HTML directly in Kotlin with types&lt;/li&gt;
-  &lt;li&gt;Embedded CSS used as it’s widely usable by today in email clients&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;The repository can be found &lt;a href=&quot;https://github.com/londogard/email-gen-kt&quot;&gt;here&lt;/a&gt;.&lt;/p&gt;
-
-&lt;p&gt;I hope this was somewhat interesting &amp;amp; something learned. If you’ve any comments please reach out to me through any of the available channels!&lt;/p&gt;
-
-&lt;p&gt;&lt;em&gt;Hampus Londögård&lt;/em&gt;&lt;/p&gt;</content><author><name>Hampus Londögård</name></author><category term="email" /><category term="kotlin" /><category term="html" /><category term="css" /><category term="serialization" /><summary type="html">Email Generation - Tipsrundan - At AFRY IT South I’m co-responsible with Hassan Ftouni at driving the competence. One of my initiatives that we both now drive is to have a biweekly, every second week for all you picky readers out there, newsletter called &quot;Tipsrundan&quot;.</summary></entry></feed>
+ Hampus Londögård&lt;/p&gt;</content><author><name>Hampus Londögård</name></author><category term="faq" /><category term="nlp" /><category term="machine-learning" /><summary type="html">CoViD-19 Swedish QA I decided to scratch a small itch I’ve had for a while now - creating a search engine using an unsupervised approach. The final product, or the first iteration rather, ended up pretty good and I wanted to share what I’ve done so far.</summary></entry></feed>
