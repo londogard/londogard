@@ -183,7 +183,8 @@ For me the results looks really good and close to what I expected, I had hoped t
 |SUC 3.0 (PER, LOC, ORG, TME, MSR, ...) w/ BERT ([KungBib](https://github.com/Kungbib/swedish-bert-models#bert-base-fine-tuned-for-swedish-ner))|480MB|**0.928**|
 |SUC 3.0 (PER, LOC, ORG, TME, MSR, ...) w/ BERT Quantized|120MB|**0.928**|
 
-I believe it's important to note that Quantized models are also much faster running ~ 4 times faster (avg 360ms went to 80ms on a CPU for flair).
+I believe it's important to note that Quantized models are also much faster running ~ 4 times faster (avg 360ms went to 80ms on a CPU for flair).  
+Quantization updates the f32 into int8 which allows the model to more efficiently utilize CPU and the ONNX-runtime also makes the whole model better at using CPU-instructions.
 
 
 ## Deploying on streamlit.io/sharing
