@@ -1,4 +1,283 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.1.1">Jekyll</generator><link href="https://blog.londogard.com/feed.xml" rel="self" type="application/atom+xml" /><link href="https://blog.londogard.com/" rel="alternate" type="text/html" /><updated>2021-03-17T12:52:44-05:00</updated><id>https://blog.londogard.com/feed.xml</id><title type="html">Londogard</title><subtitle>A blog with a focus on Deep Learning, JVM and Performance.</subtitle><entry><title type="html">When to use what - RegExp, String Replace &amp;amp; Character Replace (JVM/Kotlin)</title><link href="https://blog.londogard.com/jvm/regex/2021/03/17/replace-in-string.html" rel="alternate" type="text/html" title="When to use what - RegExp, String Replace &amp;amp; Character Replace (JVM/Kotlin)" /><published>2021-03-17T00:00:00-05:00</published><updated>2021-03-17T00:00:00-05:00</updated><id>https://blog.londogard.com/jvm/regex/2021/03/17/replace-in-string</id><content type="html" xml:base="https://blog.londogard.com/jvm/regex/2021/03/17/replace-in-string.html">&lt;h1 id=&quot;when-to-use-what---regexp-string-replace--character-replace&quot;&gt;When to use what - RegExp, String Replace &amp;amp; Character Replace&lt;/h1&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.1.1">Jekyll</generator><link href="https://blog.londogard.com/feed.xml" rel="self" type="application/atom+xml" /><link href="https://blog.londogard.com/" rel="alternate" type="text/html" /><updated>2021-03-29T09:21:57-05:00</updated><id>https://blog.londogard.com/feed.xml</id><title type="html">Londogard</title><subtitle>A blog with a focus on Deep Learning, JVM and Performance.</subtitle><entry><title type="html">Building a Swedish Named Entity Recognition (NER) model (Flair/Huggingface)</title><link href="https://blog.londogard.com/nlp/deep-learning/2021/03/29/swedish-named-entity-recognition.html" rel="alternate" type="text/html" title="Building a Swedish Named Entity Recognition (NER) model (Flair/Huggingface)" /><published>2021-03-29T00:00:00-05:00</published><updated>2021-03-29T00:00:00-05:00</updated><id>https://blog.londogard.com/nlp/deep-learning/2021/03/29/swedish-named-entity-recognition</id><content type="html" xml:base="https://blog.londogard.com/nlp/deep-learning/2021/03/29/swedish-named-entity-recognition.html">&lt;h1 id=&quot;building-a-swedish-named-entity-recognition-ner-model&quot;&gt;Building a Swedish Named Entity Recognition (NER) model&lt;/h1&gt;
+&lt;p&gt;At &lt;em&gt;Londogard&lt;/em&gt; we aim to employ Natural Language Processing (NLP) in a practical manner. The goal is not to create the models of OpenAI or Google, but rather something that is usable from the get-go and performant leading to a simple to use product.&lt;br /&gt;
+In this post I’ll cover how we at Londogard developed a State-of-the-Art (SotA) Named Entity Recognition (NER) model for Swedish using Flair &amp;amp; huggingface. :tada:&lt;/p&gt;
+
+&lt;p&gt;It all started last weekend when I was allowed into the &lt;a href=&quot;https://streamlit.io/&quot;&gt;streamlit.io&lt;/a&gt;’s &lt;em&gt;sharing&lt;/em&gt; beta. &lt;br /&gt;
+If you don’t know what streamlit, here’s an excerpt from their frontpage:&lt;/p&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;&lt;strong&gt;The fastest way to build and share data apps&lt;/strong&gt;
+Streamlit turns data scripts into shareable web apps in minutes.&lt;br /&gt;
+All in Python. All for free. No front‑end experience required.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;Essentially streamlit is a way to combine backend &amp;amp; frontend into a unified script-like experience where the default UI looks pretty good. On top of this script-like experience streamlit has built a powerful yet simple to use cache system.&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;In my opinion creating demos has never been simpler than with streamlit.io&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;Back to the problem at hands, I wished to deploy a model through streamlit that actually was a meaningful experience where efficiency and performance are combined, according to the Londogard motto.  &lt;br /&gt;
+As such I embarked on the journey that was to deploy a NER model for &lt;em&gt;Swedish&lt;/em&gt; where Swedish actually isn’t all to common in NLP. Lately &lt;em&gt;Kungliga Biblioteket&lt;/em&gt; has been trying to improve this through their &lt;a href=&quot;https://github.com/Kungbib/swedish-spacy&quot;&gt;spaCy-contribution&lt;/a&gt;, which yet has to be included in spaCy, and their &lt;a href=&quot;https://huggingface.co/KB/&quot;&gt;HuggingFace-contributions&lt;/a&gt; where we can find BERT, Electra &amp;amp; Albert pre-trained.&lt;br /&gt;
+My first idea was to take one of these and fine-tune to finally deploy, but the size of BERT is too large as is.&lt;/p&gt;
+
+&lt;p&gt;What choices are left to allow deploy of these models?&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;Distilling ⚗️&lt;/li&gt;
+  &lt;li&gt;Quantizing&lt;/li&gt;
+  &lt;li&gt;Fine-tuning ALBERT on NER
+    &lt;ul&gt;
+      &lt;li&gt;Performance has been shown to be quite a bit below BERT (7% units) in a paper by KTH, for Swedish.&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;em&gt;So what did I do?&lt;/em&gt; I did as any other professional and google’d. &lt;br /&gt;
+A library I hadn’t heard the name of in a year popped up at the top of the results, I was intrigued.&lt;br /&gt;
+Flair, a library that was created by Zalando Research, now under the flag &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/flairnlp&lt;/code&gt; which in practice means that the core contributor-group has been changed to Humbold-University of Berlin.&lt;br /&gt;
+Flair contains the so-called &lt;em&gt;Flair Embeddings&lt;/em&gt; which are contextual embeddings of high quality. Flair retains SotA for NER in multiple languages through these and the performance is pretty damn good over all.&lt;/p&gt;
+
+&lt;p&gt;Before I dive into the details on how I trained my own model you can find a demo on &lt;a href=&quot;https://londogard.com/ner&quot;&gt;londogard.com/ner&lt;/a&gt;, where the model is deployed through &lt;a href=&quot;https://streamlit.io/&quot;&gt;streamlit.io&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h2 id=&quot;named-entity-recognition-and-how-it-can-do-your-bidding&quot;&gt;Named Entity Recognition and how it can do your bidding&lt;/h2&gt;
+&lt;p&gt;As the name suggests NER is the task to recognize entities in text. Entities can be a lot of different things such as the obvious &lt;em&gt;Person&lt;/em&gt; but also &lt;em&gt;Location&lt;/em&gt;, &lt;em&gt;Organisation&lt;/em&gt; &amp;amp; &lt;em&gt;Time&lt;/em&gt;. More entities exists and they can really become whatever your data allows (&lt;em&gt;Brand&lt;/em&gt;, &lt;em&gt;Medicine&lt;/em&gt; or &lt;em&gt;Dosage&lt;/em&gt;? You got it!)&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Practical use-cases of NER&lt;/strong&gt;&lt;/p&gt;
+&lt;ol&gt;
+  &lt;li&gt;Automatic anonymization of data&lt;/li&gt;
+  &lt;li&gt;Medical prescription&lt;/li&gt;
+  &lt;li&gt;Automatically tag data
+    &lt;ul&gt;
+      &lt;li&gt;e.g. News tagged by Organisations, Persons &amp;amp; Locations included&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;… &amp;amp; much more&lt;/p&gt;
+
+&lt;p&gt;In my case I’m simply aiming for the traditional NER model which categorize things like &lt;em&gt;Location&lt;/em&gt;, &lt;em&gt;Person&lt;/em&gt; &amp;amp; &lt;em&gt;Organisation&lt;/em&gt;.&lt;/p&gt;
+
+&lt;h2 id=&quot;flairing-the-way-to-success&quot;&gt;Flair(ing) the way to success&lt;/h2&gt;
+&lt;p&gt;Flair is a SotA NLP library developed by &lt;a href=&quot;https://www.informatik.hu-berlin.de/en/forschung-en/gebiete/ml-en/&quot;&gt;Humboldt University of Berlin&lt;/a&gt; and friends. As mentioned its core contributors are from Humboldt University of Berlin and the whole idea is to provide contextual embeddings. Some of the things provided through Flair:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Flair Embeddings&lt;/li&gt;
+  &lt;li&gt;(Easily) Stacked Embeddings
+    &lt;ul&gt;
+      &lt;li&gt;e.g. combine Transformer, Flair &amp;amp; GloVe for your end-model&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;Easy access to multiple embeddings
+    &lt;ul&gt;
+      &lt;li&gt;GloVe, Transformer, ELMo &amp;amp; many more&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;Simple training of high-performant NER (Token Classifier) Model and a Text Classifier model&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;As mentioned Flair retain SotA in multiple languages for NER, but they do the same for POS.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;The Language Model&lt;/strong&gt;&lt;br /&gt;
+If you’re curious the simplest Flair embeddings are essentially a Language Model built on Dropout, LSTM &amp;amp; a Linear Layer. Pretty simple.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;The Token Classifier (NER/POS)&lt;/strong&gt;&lt;br /&gt;
+It’s based on a small LSTM-network with a CRF on top. The LSTM exists to create features for the CRF to learn and tag from. This is a very common approach which yields high accuracy. If you’re aware of what features you wish to use a pure CRF can be very strong, Stanford NLP library was actually for very long based on a CRF and had SotA, but the manual feature engineering can be expensive &amp;amp; hard.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;The Text Classifier&lt;/strong&gt;
+Simply a linear layer on top of the embeddings.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;More Models&lt;/strong&gt;&lt;br /&gt;
+Flair actually supports two other tasks, &lt;em&gt;Text Regression&lt;/em&gt; &amp;amp; &lt;em&gt;Similarity&lt;/em&gt; but I won’t go in to those.&lt;/p&gt;
+
+&lt;p&gt;More about how I trained my NER will come a bit further down.
+To read more about Flair and how they work please check out their &lt;a href=&quot;https://github.com/flairNLP/flair&quot;&gt;GitHub&lt;/a&gt; which also links to the papers.&lt;/p&gt;
+
+&lt;h2 id=&quot;swedish-data&quot;&gt;Swedish data&lt;/h2&gt;
+&lt;p&gt;First of all I had to go find some data and I found crème de la crème in &lt;a href=&quot;https://spraakbanken.gu.se/en/resources/suc3&quot;&gt;SUC 3.0&lt;/a&gt;, because we really do sentence by sentence training in NER it’s not the end of the world that the ‘free’ variant that doesn’t require a research licence is scrambled. Unscrambled data would lead to a better model but it’s still doable.&lt;/p&gt;
+
+&lt;p&gt;But as Jeremy Howard proposes, start with small and simple data then expand into your full task. SUC 3.0 is pretty large and slow to train. With some fast googling I found a saviour, &lt;em&gt;klintan&lt;/em&gt;. Klintan has created a open Swedish NER dataset based on Webbnyheter 2020 from Språkbanken, it’s semi-manually annotated. This means that he first based it on &lt;em&gt;Gazetters&lt;/em&gt;, essentially dataset(s) of entities, and then manually reviewed the data with two different native Swedish Speakers. More people have later added some improvements on top of that, find the full dataset &lt;a href=&quot;https://github.com/klintan/swedish-ner-corpus&quot;&gt;here&lt;/a&gt;, but please note that &lt;em&gt;it’s much smaller&lt;/em&gt; than SUC 3.0. &lt;br /&gt;
+After finding this dataset I read more into Flair and I found out that they actually provide this dataset through their API and in this dataset we have 4 categories PER, ORG, LOC and MISC.&lt;/p&gt;
+
+&lt;p&gt;With these two datasets in mind I went ahead to train.&lt;/p&gt;
+
+&lt;h2 id=&quot;training-the-flair&quot;&gt;Training the flair&lt;/h2&gt;
+&lt;p&gt;First let me say the &lt;a href=&quot;https://github.com/flairNLP/flair/tree/master/resources/docs&quot;&gt;documentation&lt;/a&gt; is actually pretty good!
+First part is to set up the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Corpus&lt;/code&gt;.&lt;/p&gt;
+
+&lt;h3 id=&quot;setting-up-the-corpus--dataset&quot;&gt;Setting up the Corpus / Dataset&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;The built-in &lt;em&gt;klintan/ner-swedish-corpus&lt;/em&gt;&lt;/strong&gt;&lt;/p&gt;
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;# 1. get the corpus
+&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;corpus&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Corpus&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;NER_SWEDISH&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;corpus&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;# 2. what tag do we want to predict?
+&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;tag_type&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'ner'&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;# 3. make the tag dictionary from the corpus
+&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;tag_dictionary&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;corpus&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;make_tag_dictionary&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;tag_type&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;tag_type&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;tag_dictionary&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;&lt;strong&gt;Custom dataset (SUC 3.0, in my case scrambled)&lt;/strong&gt;&lt;br /&gt;
+Remember to convert the SUC tags into a IOB format before training. Emil Stenström has kindly created a simple Python-script for this available through &lt;a href=&quot;https://github.com/EmilStenstrom/suc_to_iob&quot;&gt;github.com/EmilStenstrom/suc_to_iob&lt;/a&gt;. First transform the data and later you can run the following code&lt;/p&gt;
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;columns&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'text'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'ner'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;# this is the folder in which train, test and dev files reside
+&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;data_folder&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'path/to/data/suc'&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;# init a corpus using column format, data folder and the names of the train, dev and test files
+&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;corpus&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Corpus&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ColumnCorpus&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;data_folder&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;columns&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;train_file&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'train.txt'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;test_file&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'test.txt'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;dev_file&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'dev.txt'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;# 2. what tag do we want to predict?
+&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;tag_type&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'ner'&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;# 3. make the tag dictionary from the corpus
+&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;tag_dictionary&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;corpus&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;make_tag_dictionary&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;tag_type&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;tag_type&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;tag_dictionary&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;With this in mind we’re ready to set up our model for training.&lt;/p&gt;
+
+&lt;h3 id=&quot;model-setup&quot;&gt;Model Setup&lt;/h3&gt;
+&lt;p&gt;Our model will build on &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;FlairEmbeddings&lt;/code&gt; (e.g. contextual embeddings) and &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;BytePairEmbeddings&lt;/code&gt; which are a bit like classic &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;WordEmbeddings&lt;/code&gt; but done on BPE-tokenized text. This is a really interesting approach which achieves similar performance as &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;fastText&lt;/code&gt; using ~ 0.2 % of the total size (11mb vs 6gb). &lt;br /&gt;
+The model itself will use a LSTM with a hidden size of 256 and a CRF classifier on top.&lt;/p&gt;
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;# 4. initialize embeddings
+&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;embedding_types&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;
+	&lt;span class=&quot;c1&quot;&gt;# WordEmbeddings('sv'), # uncomment to add WordEmb
+&lt;/span&gt;	&lt;span class=&quot;n&quot;&gt;BytePairEmbeddings&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'sv'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt;
+	&lt;span class=&quot;n&quot;&gt;FlairEmbeddings&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;sv-forward&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt;
+	&lt;span class=&quot;n&quot;&gt;FlairEmbeddings&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;sv-backward&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;embeddings&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;StackedEmbeddings&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;StackedEmbeddings&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;embeddings&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;embedding_types&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;# 5. initialize sequence tagger
+&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;tagger&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;SequenceTagger&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;SequenceTagger&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;hidden_size&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;256&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+										&lt;span class=&quot;n&quot;&gt;embeddings&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;embeddings&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+										&lt;span class=&quot;n&quot;&gt;tag_dictionary&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;tag_dictionary&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+										&lt;span class=&quot;n&quot;&gt;tag_type&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;tag_type&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+										&lt;span class=&quot;n&quot;&gt;use_crf&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;True&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;training-the-model&quot;&gt;Training the model&lt;/h3&gt;
+&lt;p&gt;Because I run through google colab and the machine can be terminated any second I run using &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;checkpoint=True&lt;/code&gt; which means you can continue training where you left off. My models are saved to my Google Drive, real handy!&lt;/p&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;Pro-tip: use &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;checkpoint=True&lt;/code&gt; in combination with Google Drive on your Google Colab.&lt;/p&gt;
+  &lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;# 7. start training
+&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;trainer&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;train&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'drive/MyDrive/path/to/model/save/'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+				&lt;span class=&quot;n&quot;&gt;learning_rate&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;mf&quot;&gt;0.1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+				&lt;span class=&quot;c1&quot;&gt;# set chunk size to lower memory requirements
+&lt;/span&gt;				&lt;span class=&quot;c1&quot;&gt;#mini_batch_chunk_size=16,
+&lt;/span&gt;				&lt;span class=&quot;n&quot;&gt;mini_batch_size&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;32&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+				&lt;span class=&quot;n&quot;&gt;checkpoint&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;True&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+				&lt;span class=&quot;n&quot;&gt;embeddings_storage_mode&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'none'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;# only required for SUC 3.0 which grows too large
+&lt;/span&gt;				&lt;span class=&quot;c1&quot;&gt;#batch_growth_annealing=True,
+&lt;/span&gt;				&lt;span class=&quot;c1&quot;&gt;#anneal_with_restarts=True,
+&lt;/span&gt;				&lt;span class=&quot;n&quot;&gt;max_epochs&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;150&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;  &lt;/div&gt;
+  &lt;h3 id=&quot;loading-model-from-checkpoint&quot;&gt;Loading model from checkpoint&lt;/h3&gt;
+  &lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;trainer&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ModelTrainer&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;load_checkpoint&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'drive/MyDrive/path/to/model/save/checkpoint.pt'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;corpus&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;  &lt;/div&gt;
+  &lt;p&gt;And that’s it!&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h2 id=&quot;result&quot;&gt;Result&lt;/h2&gt;
+&lt;p&gt;For me the results looks really good and close to what I expected, I had hoped that Flair would achieve at least 0.88+ F1 but 0.855 isn’t too bad. The size, speed and simplicity of Flair makes it a great contender!&lt;/p&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt;Dataset&lt;/th&gt;
+      &lt;th&gt;Size&lt;/th&gt;
+      &lt;th&gt;Avg F1&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;klintan/swedish-ner-corpus&lt;/td&gt;
+      &lt;td&gt;320MB&lt;/td&gt;
+      &lt;td&gt;~&lt;strong&gt;0.89&lt;/strong&gt;&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;SUC 3.0 (PER, LOC &amp;amp; ORG)&lt;/td&gt;
+      &lt;td&gt;320MB&lt;/td&gt;
+      &lt;td&gt;~&lt;strong&gt;0.89&lt;/strong&gt;&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;SUC 3.0 (PER, LOC, ORG, TME, MSR, …)&lt;/td&gt;
+      &lt;td&gt;320MB&lt;/td&gt;
+      &lt;td&gt;&lt;strong&gt;0.855&lt;/strong&gt;&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;SUC 3.0 (PER, LOC, ORG, TME, MSR, …) Quantized&lt;/td&gt;
+      &lt;td&gt;80MB&lt;/td&gt;
+      &lt;td&gt;&lt;strong&gt;0.853&lt;/strong&gt;&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;SUC 3.0 (PER, LOC, ORG, TME, MSR, …) w/ ALBERT&lt;/td&gt;
+      &lt;td&gt;50MB&lt;/td&gt;
+      &lt;td&gt;&lt;strong&gt;0.85&lt;/strong&gt; (via &lt;a href=&quot;http://kth.diva-portal.org/smash/get/diva2:1451804/FULLTEXT01.pdf&quot;&gt;KTH&lt;/a&gt;)&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;SUC 3.0 (PER, LOC, ORG, TME, MSR, …) w/ BERT (&lt;a href=&quot;https://github.com/Kungbib/swedish-bert-models#bert-base-fine-tuned-for-swedish-ner&quot;&gt;KungBib&lt;/a&gt;)&lt;/td&gt;
+      &lt;td&gt;480MB&lt;/td&gt;
+      &lt;td&gt;&lt;strong&gt;0.928&lt;/strong&gt;&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;SUC 3.0 (PER, LOC, ORG, TME, MSR, …) w/ BERT Quantized&lt;/td&gt;
+      &lt;td&gt;120MB&lt;/td&gt;
+      &lt;td&gt;&lt;strong&gt;0.928&lt;/strong&gt;&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;I believe it’s important to note that Quantized models are also much faster running ~ 4 times faster (avg 360ms went to 80ms on a CPU for flair).&lt;/p&gt;
+
+&lt;h2 id=&quot;deploying-on-streamlitiosharing&quot;&gt;Deploying on streamlit.io/sharing&lt;/h2&gt;
+&lt;p&gt;And for the final part! :tada:
+First you need a new public repository on GitHub with the streamlit &amp;amp; model code. This requires to set up a &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;requirements.txt&lt;/code&gt; with all necessary dependencies.&lt;/p&gt;
+
+&lt;p&gt;Then you need to figure out how you’ll host your model if it’s too large. I found GitHub LFS to work out decently, but the cap was pretty small (1GB / Month) and I broke the limit on my 3rd model. I went ahead and registered on &lt;a href=&quot;backblaze.com&quot;&gt;Backblaze&lt;/a&gt; which has great reviews, but I think the best solution in my shoes would be to host it through HuggingFace Model storage (free if public!).
+&lt;strong&gt;edit:&lt;/strong&gt; I actually ended up storing the flair model on &lt;a href=&quot;https://huggingface.co/londogard/flair-swe-ner&quot;&gt;huggingface.co/londogard/flair-swe-ner&lt;/a&gt; 🤗.&lt;/p&gt;
+
+&lt;p&gt;Setting up the script itself was quite easy for Flair.&lt;/p&gt;
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;# load tagger for POS and
+&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;@&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;st&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;cache&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;allow_output_mutation&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;True&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;load_model&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;():&lt;/span&gt;
+	&lt;span class=&quot;n&quot;&gt;tagger&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;SequenceTagger&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;load&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'best-model-large-data.pt'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+	&lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;tagger&lt;/span&gt;
+
+&lt;span class=&quot;o&quot;&gt;@&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;st&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;cache&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;allow_output_mutation&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;True&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;hash_funcs&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;SequenceTagger&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;lambda&lt;/span&gt;  &lt;span class=&quot;n&quot;&gt;_&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;bp&quot;&gt;None&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;})&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;predict&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;model&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;text&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+	&lt;span class=&quot;n&quot;&gt;manual_sentence&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Sentence&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;manual_user_input&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+	&lt;span class=&quot;n&quot;&gt;model&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;predict&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;manual_sentence&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+	&lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;render_ner_html&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;manual_sentence&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;wrap_page&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;False&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;tagger&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;load_model&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;st&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;title&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Swedish Named Entity Recognition (NER) tagger&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;st&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;subheader&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Created by [Londogard](https://londogard.com) (Hampus Londögård)&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;st&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;title&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Please type something in the box below&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;manual_user_input&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;st&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;text_area&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;len&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;manual_user_input&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
+	&lt;span class=&quot;n&quot;&gt;sentence&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;predict&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;tagger&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;manual_user_input&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+	&lt;span class=&quot;n&quot;&gt;st&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;success&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Below is your tagged string.&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+	&lt;span class=&quot;n&quot;&gt;st&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;write&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sentence&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;unsafe_allow_html&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;True&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;It’s important to note how I’ve placed the caching solution. I both cache the model loading &amp;amp; predictions to keep it as speedy as possible.&lt;/p&gt;
+
+&lt;p&gt;The &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;allow_output_mutation&lt;/code&gt; option skips hashing the output to validate that the cache is correct, we don’t care if output has been modified really.&lt;/p&gt;
+
+&lt;p&gt;The &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;hash_funcs={SequenceTagger: lambda  _: None}&lt;/code&gt; is &lt;strong&gt;incredibly important&lt;/strong&gt;. &lt;br /&gt;
+The flair model are pretty slow to hash, especially if quantized. It’s possible to use &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;id&lt;/code&gt; which is a unique ID for the python object that lasts the full lifetime, but because I know that the model wont change I simply use &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;lambda _: None&lt;/code&gt; to not do any lookup at all.&lt;br /&gt;
+If the model input would change in-between using &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;id&lt;/code&gt; is the best approach. Note that neither of this approaches are any good if you wanna compare an object to another (e.g. two string inputs), there we should just keep standard hashing.&lt;/p&gt;
+
+&lt;h2 id=&quot;outro&quot;&gt;Outro&lt;/h2&gt;
+&lt;p&gt;I trained Flair embeddings which is a much simpler approach than Transformers and achieved almost SotA while having a much smaller &amp;amp; simpler model (~2/3rd of the size). But in the end I was very impressed by how well quantization applies for CPU utilization so I also applied the same approach for BERT-ner by KB, where I even did a ONNX Quantization which has been shown to be even more effective than PyTorch own quantization, but then again it requires the ONNX runtime.&lt;/p&gt;
+
+&lt;p&gt;Both models are available on the same device / streamlit configuration, find them on &lt;a href=&quot;https://londogard.com/ner&quot;&gt;londogard.com/ner&lt;/a&gt;.&lt;br /&gt;
+The flair model is available through HuggingFace 🤗 through the following: &lt;a href=&quot;https://huggingface.co/londogard&quot;&gt;londogard (huggingface.co)&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;Thanks for this time,
+Hampus Londögård @ Londogard&lt;/p&gt;</content><author><name>Hampus Londögård</name></author><category term="nlp" /><category term="deep-learning" /><summary type="html">Building a Swedish Named Entity Recognition (NER) model At Londogard we aim to employ Natural Language Processing (NLP) in a practical manner. The goal is not to create the models of OpenAI or Google, but rather something that is usable from the get-go and performant leading to a simple to use product. In this post I’ll cover how we at Londogard developed a State-of-the-Art (SotA) Named Entity Recognition (NER) model for Swedish using Flair &amp;amp; huggingface. :tada:</summary></entry><entry><title type="html">When to use what - RegExp, String Replace &amp;amp; Character Replace (JVM/Kotlin)</title><link href="https://blog.londogard.com/jvm/regex/2021/03/17/replace-in-string.html" rel="alternate" type="text/html" title="When to use what - RegExp, String Replace &amp;amp; Character Replace (JVM/Kotlin)" /><published>2021-03-17T00:00:00-05:00</published><updated>2021-03-17T00:00:00-05:00</updated><id>https://blog.londogard.com/jvm/regex/2021/03/17/replace-in-string</id><content type="html" xml:base="https://blog.londogard.com/jvm/regex/2021/03/17/replace-in-string.html">&lt;h1 id=&quot;when-to-use-what---regexp-string-replace--character-replace&quot;&gt;When to use what - RegExp, String Replace &amp;amp; Character Replace&lt;/h1&gt;
 &lt;p&gt;Sometimes it’s hard to know what to use, and why to use it even.&lt;/p&gt;
 
 &lt;h3 id=&quot;what&quot;&gt;What&lt;/h3&gt;
@@ -8813,118 +9092,4 @@ We build the project, while building the project the code is generated to our bu
 
 &lt;p&gt;Anyhow, I hope this was interesting and perhaps someone learned about a new abstraction-level for databases or was inspired to pick up their own.&lt;/p&gt;
 
-&lt;p&gt;~Hampus&lt;/p&gt;</content><author><name>Hampus Londögård</name></author><category term="jvm" /><category term="kotlin" /><category term="sql" /><category term="multiplatform" /><summary type="html">SQL - different abstraction levels and how I came to love SQLDelight</summary></entry><entry><title type="html">A simple FAQ search engine in Swedish using fastText &amp;amp; Smooth Inverse Frequency</title><link href="https://blog.londogard.com/faq/nlp/machine-learning/2020/05/13/faq-search-covid-1.html" rel="alternate" type="text/html" title="A simple FAQ search engine in Swedish using fastText &amp;amp; Smooth Inverse Frequency" /><published>2020-05-13T00:00:00-05:00</published><updated>2020-05-13T00:00:00-05:00</updated><id>https://blog.londogard.com/faq/nlp/machine-learning/2020/05/13/faq-search-covid-1</id><content type="html" xml:base="https://blog.londogard.com/faq/nlp/machine-learning/2020/05/13/faq-search-covid-1.html">&lt;h1 id=&quot;covid-19-swedish-qa&quot;&gt;CoViD-19 Swedish QA&lt;/h1&gt;
-&lt;p&gt;I decided to scratch a small itch I’ve had for a while now - creating a search engine using an unsupervised approach. The final product, or the first iteration rather, ended up pretty good and I wanted to share what I’ve done so far.&lt;/p&gt;
-
-&lt;h3 id=&quot;introduction-to-the-problem-and-requirements&quot;&gt;Introduction to the problem and requirements&lt;/h3&gt;
-&lt;p&gt;An unsupervised approach where we never edit the data nor supply any manually annotated data? Every Data Scientist dream I suppose. There’s a reason as of why supervised approaches generally result in better performance but there is some light at the end of the tunnel for unsupervised approaches too.&lt;/p&gt;
-
-&lt;p&gt;Let’s begin with my own requirements, which are mainly created to only keep the fun problem-solving left.&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;The end-product must be unsupervised
-    &lt;ul&gt;
-      &lt;li&gt;No manually annotated data&lt;/li&gt;
-      &lt;li&gt;No heuristic applied (at least in first iteration)&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;It should be light enough to run on a Raspberry Pi later on (hopefully on the JVM to keep it simple with my back-end)&lt;/li&gt;
-  &lt;li&gt;Must be Swedish all the way through - no translations (English models you can transfer knowledge from tends to be stronger, but I want to keep this fun!)&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;With this in mind I set out to build my own FAQ search engine.&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;What is required to answer questions using a FAQ?&lt;/strong&gt; We need to find the most relevant Q/A to the question posed.&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;How do we do this?&lt;/strong&gt; There is numerous types of ways to do this unsupervised. I’ll account for a few here:&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;Latent Dirichlet Allocation (LDA) which is a way to find topics through clever statistical analysis (basically soft clusters of documents)&lt;/li&gt;
-  &lt;li&gt;Embedding and &lt;a href=&quot;https://en.wikipedia.org/wiki/Cosine_similarity&quot;&gt;Cosine Similarity&lt;/a&gt;, find the distance between the two arrays of numbers in the embedded space. One can also apply Euclidean Distance which isn’t especially good because of &lt;a href=&quot;https://en.wikipedia.org/wiki/Curse_of_dimensionality&quot;&gt;Curse of Dimensionality&lt;/a&gt;. Other possible approaches includes &lt;a href=&quot;https://arxiv.org/pdf/1912.00509.pdf&quot;&gt;Word Mover Distance&lt;/a&gt;.&lt;/li&gt;
-  &lt;li&gt;Simple word counting and Bag of Words&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h3 id=&quot;tools-chosen&quot;&gt;Tools Chosen&lt;/h3&gt;
-&lt;p&gt;After a little research I found a few tools which fit my need.&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;fastText&lt;/strong&gt;&lt;/p&gt;
-
-&lt;p&gt;fastText that came out of Facebook AI Research (FAIR) and &lt;a href=&quot;https://arxiv.org/abs/1607.04606&quot;&gt;this&lt;/a&gt; paper. It’s a type of Word Embeddings where also subwords are embedded through ngrams of characters, this means that we are able to embedd words that are out of vocabulary, which can be the reason because of either misspelling or just a missing word.
-On their &lt;a href=&quot;https://fasttext.cc/&quot;&gt;homepage&lt;/a&gt; they have a plethora of models including a Swedish one that has been derived from Wikipedia, pretty awesome!&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;Smooth Inverse Frequency&lt;/strong&gt;&lt;/p&gt;
-
-&lt;p&gt;Smooth Inverse Frequency (SIF) is an algorithm to embed sentences which was proposed in &lt;a href=&quot;https://openreview.net/pdf?id=SyK00v5xx&quot;&gt;&quot;A Simple but Tough-To-Beat Baseline for Sentence Embeddings&quot;&lt;/a&gt; in 2017. In its essence they propose to embed the sentence using a weighted average and thereafter modify them a bit using PCA/SVD.&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;Folkhälsomyndigheten FAQ&lt;/strong&gt;&lt;/p&gt;
-
-&lt;p&gt;Finally I need the FAQ to use, in my case it’s Covid-19 FAQ from Folkhälsomyndigheten. It was parsed into pandas dataframes using requests &amp;amp; BeautifulSoup4 (bs4).&lt;/p&gt;
-
-&lt;h3 id=&quot;final-result&quot;&gt;Final Result&lt;/h3&gt;
-&lt;p&gt;So after all this was figured out I sat down an afternoon and cooked some code together, the result ended up more impressive than I had imagined. The questions posed are being responded with pretty good results. I’m especially impressed by question about &lt;em&gt;astma&lt;/em&gt;, &lt;em&gt;son&lt;/em&gt; and &lt;em&gt;regler&lt;/em&gt;. Here’s a few of them:&lt;/p&gt;
-
-&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&amp;gt; Hur sjuk blir jag?
-
-Hur sjuk blir man av covid-19? - 0.98
-Hur länge är man sjuk av covid-19? - 0.97
-Hur lång är inkubationstiden? - 0.81
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&amp;gt; Hur vet jag om det är astma?
-
-Hur vet jag om mina symtom beror på pollenallergi eller på covid-19? - 0.63
-Hur sjuk blir man av covid-19? - 0.53
-Hur länge är man sjuk av covid-19? - 0.53
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&amp;gt; Hur förklarar jag corona för min son?
-
-Hur pratar man med barn om det nya coronaviruset? - 0.58
-Hur lång är inkubationstiden? - 0.53
-Hur sjuk blir man av covid-19? - 0.49
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&amp;gt; Hur minskar vi spridningen i sverige?
-
-Hur gör ni för att mäta förekomsten av covid-19 i samhället? - 0.65
-Hur övervakar ni på Folkhälsomyndigheten spridningen av covid-19? - 0.57
-Hur stor är dödligheten till följd av covid-19? - 0.56
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&amp;gt; Vad för regler finns?
-
-Vad gäller för olika verksamheter? - 0.76
-Vad gäller för handeln? - 0.75
-Vad är covid-19? - 0.71
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;One can directly note the correlation of the beginning. It seems like the first word has a high correlation with the most similar question. Weird. Removing stop words could probably improve this, but that’d be for the second implementation.&lt;/p&gt;
-
-&lt;h3 id=&quot;further-improvements-for-iteration-2-3-and-beyond&quot;&gt;Further improvements for iteration 2, 3 and beyond!&lt;/h3&gt;
-&lt;p&gt;&lt;strong&gt;Pre-processing&lt;/strong&gt;&lt;/p&gt;
-
-&lt;p&gt;As mentioned right above we can apply some basic pre-processing  such as removing stop words. In reality this should be handled by SIF but looking at our similarity scores there’s a 1-1 relation between the first word of the sentence.&lt;/p&gt;
-
-&lt;p&gt;Other improvements worth trying out is lemmatizing or stemming the words (&quot;cutting them to the root&quot; in simple terms) and further using a better tokenization is worth trying out (currently splitting on whitespace). &lt;em&gt;spaCy&lt;/em&gt; offers a strong tokenizer, but I haven’t tried it out for Swedish yet. Once again &lt;em&gt;fastText&lt;/em&gt; should handle this but it’s worth trying out if it improves or keep the result at the same level.&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;Different Embedding Techniques&lt;/strong&gt;&lt;/p&gt;
-
-&lt;p&gt;There exist a certain Sentence Embedding that’s basically made for this task - MULE (Multimodal Universal Language Embeddings). MULE is even multilingual but unfortunately they’re not able to embed Swedish so we’d require a translation from Swedish to one of the 16 languages supported by MULE. This means that it is out of the question because of my requirements, but could still be fun to check out.&lt;/p&gt;
-
-&lt;p&gt;Other embeddings such as FLAIR (by Zalando), BERT (using BERT-as-a-service) or even training my own embeddings (perhaps using StarSpace) could prove interesting also.&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;Completely other technique&lt;/strong&gt;&lt;/p&gt;
-
-&lt;p&gt;I mentioned first of all LDA, and I think LDA could be interesting. Most often LDA is applied to larger documents but as with everything it is never wrong to try out and verify the results.&lt;/p&gt;
-
-&lt;p&gt;Supervised approaches would certainly be able to show us some good performance but that requires annotating data in one way or another which is a boring task - but very important. Perhaps I’ll revisit and label some data, with todays Transfer Learning we can achieve higher accuracy with less data using other pre-trained  Language Models such as BERT or Multifit (from Ulmfit).&lt;/p&gt;
-
-&lt;h3 id=&quot;ending-words&quot;&gt;Ending words&lt;/h3&gt;
-&lt;p&gt;This was a really fun task and I’m happy that I tried it out. I’m sure I’ll revisit and improve it further by applying some of the possible improvements. Further I think I might actually try to do this for all FAQs available by our authorities to create a &quot;Multi FAQ&quot; which could prove pretty cool. With more data the results should also be better.&lt;/p&gt;
-
-&lt;p&gt;And as an ending note my model ended up using 2.5-3 GB of memory during run-time which means it’s possible to run on my Raspberry Pi 4! Further reduction of size can be done by removing the most uncommon words in the vocabulary (vocab is 2M words, which is very large). I applied a dimension reduction using the built in version of &lt;em&gt;fastText&lt;/em&gt; (ending up using d=100 and still achieving good search results).&lt;/p&gt;
-
-&lt;p&gt;The implementation is available at my &lt;a href=&quot;https://github.com/londogard/nlp-projects/blob/master/python/CoViD_19_QA.ipynb&quot;&gt;GitHub (Londogard)&lt;/a&gt; or directly launched in &lt;a href=&quot;https://colab.research.google.com/github/londogard/nlp-projects/blob/master/python/CoViD_19_QA.ipynb&quot;&gt;Google Colaboratory&lt;/a&gt;.&lt;/p&gt;
-
-&lt;p&gt;Thanks for this time, I’ll be back with more!&lt;br /&gt;
- Hampus Londögård&lt;/p&gt;</content><author><name>Hampus Londögård</name></author><category term="faq" /><category term="nlp" /><category term="machine-learning" /><summary type="html">CoViD-19 Swedish QA I decided to scratch a small itch I’ve had for a while now - creating a search engine using an unsupervised approach. The final product, or the first iteration rather, ended up pretty good and I wanted to share what I’ve done so far.</summary></entry></feed>
+&lt;p&gt;~Hampus&lt;/p&gt;</content><author><name>Hampus Londögård</name></author><category term="jvm" /><category term="kotlin" /><category term="sql" /><category term="multiplatform" /><summary type="html">SQL - different abstraction levels and how I came to love SQLDelight</summary></entry></feed>
