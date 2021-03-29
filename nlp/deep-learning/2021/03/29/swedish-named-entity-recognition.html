@@ -387,7 +387,8 @@ The model itself will use a LSTM with a hidden size of 256 and a CRF classifier 
   </tbody>
 </table>
 
-<p>I believe it’s important to note that Quantized models are also much faster running ~ 4 times faster (avg 360ms went to 80ms on a CPU for flair).</p>
+<p>I believe it’s important to note that Quantized models are also much faster running ~ 4 times faster (avg 360ms went to 80ms on a CPU for flair).<br>
+Quantization updates the f32 into int8 which allows the model to more efficiently utilize CPU and the ONNX-runtime also makes the whole model better at using CPU-instructions.</p>
 
 <h2 id="deploying-on-streamlitiosharing">
 <a class="anchor" href="#deploying-on-streamlitiosharing" aria-hidden="true"><span class="octicon octicon-link"></span></a>Deploying on streamlit.io/sharing</h2>
