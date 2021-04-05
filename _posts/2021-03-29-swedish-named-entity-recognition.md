@@ -8,6 +8,10 @@ comments: true
 author: Hampus Londögård
 ---
 
+Not interested in reading the whole article and just wanna play around with the model(s)? Head over to [londogard.com/ner](https://londogard.com/ner).
+![image](https://user-images.githubusercontent.com/7490199/113611097-543f9280-964e-11eb-9e59-bd030c32ad0c.png)
+**P.S.** The Flair model is available for simple installation through [huggingface.co's model hub](https://huggingface.co/londogard/flair-swe-ner)
+
 
 # Building a Swedish Named Entity Recognition (NER) model
 At _Londogard_ we aim to employ Natural Language Processing (NLP) in a practical manner. The goal is not to create the models of OpenAI or Google, but rather something that is usable from the get-go and performant leading to a simple to use product.  
