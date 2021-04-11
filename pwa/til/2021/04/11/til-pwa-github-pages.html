@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="twitter:card" content="summary_large_image" /><!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>TIL: GitHub Pages + Progressive Web App (PWA) = ❤️ | Londogard</title>
+<meta name="generator" content="Jekyll v4.1.1" />
+<meta property="og:title" content="TIL: GitHub Pages + Progressive Web App (PWA) = ❤️" />
+<meta name="author" content="Hampus Londögård" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="What are PWAs? How do I create or transform my web app into one? How can I deploy them (freely) via GitHub Pages?" />
+<meta property="og:description" content="What are PWAs? How do I create or transform my web app into one? How can I deploy them (freely) via GitHub Pages?" />
+<link rel="canonical" href="https://blog.londogard.com/pwa/til/2021/04/11/til-pwa-github-pages.html" />
+<meta property="og:url" content="https://blog.londogard.com/pwa/til/2021/04/11/til-pwa-github-pages.html" />
+<meta property="og:site_name" content="Londogard" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2021-04-11T00:00:00-05:00" />
+<script type="application/ld+json">
+{"description":"What are PWAs? How do I create or transform my web app into one? How can I deploy them (freely) via GitHub Pages?","url":"https://blog.londogard.com/pwa/til/2021/04/11/til-pwa-github-pages.html","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"https://blog.londogard.com/pwa/til/2021/04/11/til-pwa-github-pages.html"},"headline":"TIL: GitHub Pages + Progressive Web App (PWA) = ❤️","dateModified":"2021-04-11T00:00:00-05:00","datePublished":"2021-04-11T00:00:00-05:00","author":{"@type":"Person","name":"Hampus Londögård"},"@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/assets/css/style.css"><link type="application/atom+xml" rel="alternate" href="https://blog.londogard.com/feed.xml" title="Londogard" /><link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico"><link href="https://unpkg.com/@primer/css/dist/primer.css" rel="stylesheet" />
+<link rel="stylesheet" href="//use.fontawesome.com/releases/v5.0.7/css/all.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.css" integrity="sha384-zB1R0rpPzHqg7Kpt0Aljp8JPLqbXI3bhnPWROx27a9N0Ll6ZP/+DiW/UqRcLbRjq" crossorigin="anonymous">
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"> </script>
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.js" integrity="sha384-y23I5Q6l+B6vatafAwxRu/0oK/79VlbSz7Q9aiSZUvyWYIYsd+qj+o24G5ZU2zJz" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/contrib/auto-render.min.js" integrity="sha384-kWPLUVMOks5AQFrykwIup5lo0m3iMkkHrD0uJ4H5cjeGihAutqP0yW0J6dpFiVkI" crossorigin="anonymous"></script>
+    <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        renderMathInElement( document.body, {
+        delimiters: [
+            {left: "$$", right: "$$", display: true},
+            {left: "[%", right: "%]", display: true},
+            {left: "$", right: "$", display: false}
+        ]}
+        );
+    });
+    </script>
+
+
+<script>
+function wrap_img(fn) {
+    if (document.attachEvent ? document.readyState === "complete" : document.readyState !== "loading") {
+        var elements = document.querySelectorAll(".post img");
+        Array.prototype.forEach.call(elements, function(el, i) {
+            if (el.getAttribute("title") && (el.className != "emoji")) {
+                const caption = document.createElement('figcaption');
+                var node = document.createTextNode(el.getAttribute("title"));
+                caption.appendChild(node);
+                const wrapper = document.createElement('figure');
+                wrapper.className = 'image';
+                el.parentNode.insertBefore(wrapper, el);
+                el.parentNode.removeChild(el);
+                wrapper.appendChild(el);
+                wrapper.appendChild(caption);
+            }
+        });
+    } else { document.addEventListener('DOMContentLoaded', fn); }
+}
+window.onload = wrap_img;
+</script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function(){
+    // add link icon to anchor tags
+    var elem = document.querySelectorAll(".anchor-link")
+    elem.forEach(e => (e.innerHTML = '<i class="fas fa-link fa-xs"></i>'));
+    });
+</script>
+</head>
+<body><header class="site-header" role="banner">
+
+    <div class="wrapper"><a class="site-title" rel="author" href="/">Londogard</a><nav class="site-nav">
+          <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+          <label for="nav-trigger">
+            <span class="menu-icon">
+              <svg viewBox="0 0 18 15" width="18px" height="15px">
+                <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+              </svg>
+            </span>
+          </label>
+  
+          <div class="trigger"><a class="page-link" href="/about">About↗</a><a class="page-link" href="/londogard">Londogard↗</a><a class="page-link" href="/search/">Search</a><a class="page-link" href="/categories/">Tags</a></div>
+        </nav></div>
+  </header><main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">TIL: GitHub Pages + Progressive Web App (PWA) = ❤️</h1><p class="page-description">What are PWAs? How do I create or transform my web app into one? How can I deploy them (freely) via GitHub Pages?</p><p class="post-meta post-meta-title"><time class="dt-published" datetime="2021-04-11T00:00:00-05:00" itemprop="datePublished">
+        Apr 11, 2021
+      </time>• 
+          <span itemprop="author" itemscope itemtype="http://schema.org/Person">
+            <span class="p-author h-card" itemprop="name">Hampus Londögård</span></span>
+       • <span class="read-time" title="Estimated read time">
+    
+    
+      3 min read
+    
+</span></p>
+
+    
+      <p class="category-tags"><i class="fas fa-tags category-tags-icon"></i></i> 
+      
+        <a class="category-tags-link" href="/categories/#pwa">pwa</a>
+        &nbsp;
+      
+        <a class="category-tags-link" href="/categories/#til">til</a>
+        
+      
+      </p>
+    
+
+    </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <ul class="section-nav">
+<li class="toc-entry toc-h3"><a href="#what">What</a></li>
+<li class="toc-entry toc-h3"><a href="#how">How</a>
+<ul>
+<li class="toc-entry toc-h4"><a href="#serviceworkerjs">ServiceWorker.js</a></li>
+<li class="toc-entry toc-h4"><a href="#webmanifest">Webmanifest</a></li>
+<li class="toc-entry toc-h4"><a href="#deploying-to-github-pages">Deploying to GitHub Pages</a></li>
+</ul>
+</li>
+<li class="toc-entry toc-h3"><a href="#alternatives">Alternatives</a></li>
+</ul><h3 id="what">
+<a class="anchor" href="#what" aria-hidden="true"><span class="octicon octicon-link"></span></a>What</h3>
+<p>Progressive Web Apps (PWAs) are web applications that are deployed on the Web and available on essentially every platform directly (Android, iOS, Linux, Windows, … you name it).<br>
+They’re coded just as regular Web Apps with the extension of a separate <code class="language-plaintext highlighter-rouge">.js</code>-file which runs a <code class="language-plaintext highlighter-rouge">serviceWorker</code> which handles caching among other things, and the <code class="language-plaintext highlighter-rouge">serviceWorker</code> is really the core of a PWA.</p>
+
+<p>PWAs allows you to:</p>
+<ul>
+  <li>Share logic between all OS:s</li>
+  <li>Not have a heavy runtime associated as it’s using the browser
+    <ul>
+      <li>On Windows/MacOS/Android/iOS the browser is included as part of OS. On Linux not as much, but who has Linux without a browser?</li>
+    </ul>
+  </li>
+  <li>Use your existing knowledge AND technologies of regular webapps</li>
+</ul>
+
+<p>The performance is good enough for most apps and you can easily cache content to make the app offline-first. Of course native apps are, and will always be, better but this is a good step in the right direction for simple developer to share their work on multiple platforms.</p>
+
+<blockquote>
+  <p>A really good example of PWAs is <a href="http://mobile.twitter.com/">twitter</a> which I’d call perhaps even better than the native version</p>
+</blockquote>
+
+<p>You can test my PWA that is done in Kotlin with fritz2 targeting JS on <a href="https://colorkidz.londogard.com/">colorkidz.londogard.com</a>. This is a very simple app to create colouring pages out of images. I think it show-case the possibility of creating a MVP fast &amp; easy while being deployed instantly to all platforms.</p>
+
+<blockquote>
+  <p>A bonus is that PWAs can be added to Android/Google &amp; Windows App Store, just like a regular app</p>
+</blockquote>
+
+<p>Please note that it’s not OK according to the TOS to deploy a commercial app through GitHub pages. If you wish to do that take a look at the <a href="#alternatives">alternative section</a>.</p>
+
+<h3 id="how">
+<a class="anchor" href="#how" aria-hidden="true"><span class="octicon octicon-link"></span></a>How</h3>
+<p>Building, or transforming, a Web App into a PWA is really easy and has few requirements (depending on browser). The requirements follows:</p>
+<ol>
+  <li>A <em>web manifest</em> file</li>
+  <li>Serve app using HTTPS</li>
+  <li>A Service Worker with a <code class="language-plaintext highlighter-rouge">fetch event</code> handler
+    <ul>
+      <li>Allowing the app to work offline (!)</li>
+    </ul>
+  </li>
+  <li>(not for all browser) a <code class="language-plaintext highlighter-rouge">favicon</code>/icon</li>
+</ol>
+
+<p>And adding more data makes your PWA even better, like safari/iOS specific icons etc and some further metadata.</p>
+
+<p>This is actually pretty easy requirements to fill and I’ll show the two most important, <code class="language-plaintext highlighter-rouge">serviceWorker</code> and <code class="language-plaintext highlighter-rouge">webmanifest</code>.</p>
+
+<h4 id="serviceworkerjs">
+<a class="anchor" href="#serviceworkerjs" aria-hidden="true"><span class="octicon octicon-link"></span></a>ServiceWorker.js</h4>
+<p>As mentioned the <code class="language-plaintext highlighter-rouge">serviceWorker</code> allows to app to work cached and handles the installation of the PWA among other things. <br>
+An example of this can be found on my <a href="https://github.com/londogard/colorkidz/blob/main/serviceWorker.js">GitHub</a>, find the code a little bit below.<br>
+A really good guide that goes deeper on the <code class="language-plaintext highlighter-rouge">serviceWorker</code> and what more they can achieve can be found on both <a href="https://developer.mozilla.org/en-US/docs/Web/Progressive_web_apps/Offline_Service_workers">Mozilla</a> &amp; <a href="https://developers.google.com/web/ilt/pwa/introduction-to-service-worker">Google</a>.</p>
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">CACHE_NAME</span> <span class="o">=</span> <span class="dl">'</span><span class="s1">londogard-colorkidz</span><span class="dl">'</span><span class="p">;</span>
+<span class="kd">var</span> <span class="nx">urlsToCache</span> <span class="o">=</span> <span class="p">[</span>
+  <span class="dl">"</span><span class="s2">/index.html</span><span class="dl">"</span><span class="p">,</span>
+  <span class="dl">"</span><span class="s2">/NEW.js</span><span class="dl">"</span><span class="p">,</span>
+  <span class="dl">"</span><span class="s2">/android-chrome-192x192.png</span><span class="dl">"</span><span class="p">,</span>
+  <span class="p">...</span>
+<span class="p">];</span>
+
+<span class="nb">self</span><span class="p">.</span><span class="nx">addEventListener</span><span class="p">(</span><span class="dl">'</span><span class="s1">install</span><span class="dl">'</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">event</span><span class="p">)</span> <span class="p">{</span>
+  <span class="c1">// Perform install steps</span>
+  <span class="nx">event</span><span class="p">.</span><span class="nx">waitUntil</span><span class="p">(</span>
+    <span class="nx">caches</span><span class="p">.</span><span class="nx">open</span><span class="p">(</span><span class="nx">CACHE_NAME</span><span class="p">)</span>
+      <span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">cache</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="dl">'</span><span class="s1">Opened cache</span><span class="dl">'</span><span class="p">);</span>
+        <span class="k">return</span> <span class="nx">cache</span><span class="p">.</span><span class="nx">addAll</span><span class="p">(</span><span class="nx">urlsToCache</span><span class="p">);</span>
+      <span class="p">})</span>
+    <span class="p">);</span>
+  <span class="p">});</span>
+<span class="nb">self</span><span class="p">.</span><span class="nx">addEventListener</span><span class="p">(</span><span class="dl">'</span><span class="s1">fetch</span><span class="dl">'</span><span class="p">,()</span> <span class="o">=&gt;</span> <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="dl">"</span><span class="s2">fetch</span><span class="dl">"</span><span class="p">));</span>
+</code></pre></div></div>
+<h4 id="webmanifest">
+<a class="anchor" href="#webmanifest" aria-hidden="true"><span class="octicon octicon-link"></span></a>Webmanifest</h4>
+
+<p>Further you need to supply a few more things, a <code class="language-plaintext highlighter-rouge">manifest.webmanifest</code> which looks like the following:</p>
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+  </span><span class="nl">"short_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ColorKidz"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ColorKidz"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Turn your images into Colouring Pages"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"icons"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+      </span><span class="nl">"src"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/android-chrome-192x192.png"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"sizes"</span><span class="p">:</span><span class="w"> </span><span class="s2">"192x192"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"image/png"</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="err">...</span><span class="w">
+  </span><span class="p">],</span><span class="w">
+  </span><span class="nl">"start_url"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"orientation"</span><span class="p">:</span><span class="w"> </span><span class="s2">"portrait"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"background_color"</span><span class="p">:</span><span class="w"> </span><span class="s2">"#FFFFFF"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"display"</span><span class="p">:</span><span class="w"> </span><span class="s2">"standalone"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"scope"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"theme_color"</span><span class="p">:</span><span class="w"> </span><span class="s2">"#FFFFFF"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<h4 id="deploying-to-github-pages">
+<a class="anchor" href="#deploying-to-github-pages" aria-hidden="true"><span class="octicon octicon-link"></span></a>Deploying to GitHub Pages</h4>
+<p>First off place all your files in root folder of your GitHub repo. Remember to also have a <code class="language-plaintext highlighter-rouge">index.html</code> which contains both your JS app &amp; your <code class="language-plaintext highlighter-rouge">serviceWorker.js</code> and reference those scripts in <code class="language-plaintext highlighter-rouge">body</code>, e.g.</p>
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;body&gt;</span>
+...
+<span class="nt">&lt;script </span><span class="na">src=</span><span class="s">"NEW.js"</span><span class="nt">&gt;&lt;/script&gt;</span>
+<span class="nt">&lt;script </span><span class="na">src=</span><span class="s">"serviceWorker.js"</span><span class="nt">&gt;&lt;/script&gt;</span>
+<span class="nt">&lt;/body&gt;</span>
+</code></pre></div></div>
+
+<p>Then you need to activate GitHub Pages, whereas the <a href="https://pages.github.com/">official documentation</a> is great! 
+GitHub pages recently got their own tab in settings and all you need to do now is to head over there, <code class="language-plaintext highlighter-rouge">https://github.com/&lt;USERNAME&gt;/&lt;REPO_NAME&gt;/settings/pages</code> and activate GitHub pages. Make sure to also activate <code class="language-plaintext highlighter-rouge">https</code>-only if possible!</p>
+
+<p><strong>And that’s it</strong>, simple as that. Now you’ve your PWA deployed through GitHub pages. The PWA should be available @ <code class="language-plaintext highlighter-rouge">&lt;repo&gt;.github.io</code>, but better check it in settings to be sure that it’s set up that way.</p>
+
+<h3 id="alternatives">
+<a class="anchor" href="#alternatives" aria-hidden="true"><span class="octicon octicon-link"></span></a>Alternatives</h3>
+<p>There exists a few alternatives that I’m aware off</p>
+<ul>
+  <li><a href="https://www.heroku.com/">Heroku</a></li>
+  <li><a href="https://pages.cloudflare.com/">Cloudflare Pages</a></li>
+  <li><a href="https://www.netlify.com/">Netlify</a></li>
+</ul>
+
+<p>All which are supposed to be great and simple to use. The free versions of everyone is pretty darn good too!</p>
+
+<p><strong>OBS</strong> Please remember that it’s not allowed to put up applications on GitHub Pages that are commercial according to the ToS.</p>
+
+  </div><!-- from https://github.com/utterance/utterances -->
+<script src="https://utteranc.es/client.js"
+        repo="londogard/londogard"
+        issue-term="title"
+        label="blogpost-comment"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+</script><a class="u-url" href="/pwa/til/2021/04/11/til-pwa-github-pages.html" hidden></a>
+</article>
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/"></data>
+
+  <div class="wrapper">
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col">
+        <p class="feed-subscribe">
+          <a href="/feed.xml">
+            <svg class="svg-icon orange">
+              <use xlink:href="/assets/minima-social-icons.svg#rss"></use>
+            </svg><span>Subscribe</span>
+          </a>
+        </p>
+      </div>
+      <div class="footer-col">
+        <p>A blog with a focus on Deep Learning, JVM and Performance.</p>
+      </div>
+    </div>
+
+    <div class="social-links"><ul class="social-media-list"><li><a rel="me" href="https://github.com/londogard" title="londogard"><svg class="svg-icon grey"><use xlink:href="/assets/minima-social-icons.svg#github"></use></svg></a></li></ul>
+</div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>

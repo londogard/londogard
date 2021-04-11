@@ -1,4 +1,122 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.1.1">Jekyll</generator><link href="https://blog.londogard.com/feed.xml" rel="self" type="application/atom+xml" /><link href="https://blog.londogard.com/" rel="alternate" type="text/html" /><updated>2021-04-05T13:38:17-05:00</updated><id>https://blog.londogard.com/feed.xml</id><title type="html">Londogard</title><subtitle>A blog with a focus on Deep Learning, JVM and Performance.</subtitle><entry><title type="html">Building a Swedish Named Entity Recognition (NER) model (Flair/Huggingface)</title><link href="https://blog.londogard.com/nlp/deep-learning/2021/03/29/swedish-named-entity-recognition.html" rel="alternate" type="text/html" title="Building a Swedish Named Entity Recognition (NER) model (Flair/Huggingface)" /><published>2021-03-29T00:00:00-05:00</published><updated>2021-03-29T00:00:00-05:00</updated><id>https://blog.londogard.com/nlp/deep-learning/2021/03/29/swedish-named-entity-recognition</id><content type="html" xml:base="https://blog.londogard.com/nlp/deep-learning/2021/03/29/swedish-named-entity-recognition.html">&lt;p&gt;Not interested in reading the whole article and just wanna play around with the model(s)? Head over to &lt;a href=&quot;https://londogard.com/ner&quot;&gt;londogard.com/ner&lt;/a&gt;.
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.1.1">Jekyll</generator><link href="https://blog.londogard.com/feed.xml" rel="self" type="application/atom+xml" /><link href="https://blog.londogard.com/" rel="alternate" type="text/html" /><updated>2021-04-11T14:20:19-05:00</updated><id>https://blog.londogard.com/feed.xml</id><title type="html">Londogard</title><subtitle>A blog with a focus on Deep Learning, JVM and Performance.</subtitle><entry><title type="html">TIL: GitHub Pages + Progressive Web App (PWA) = ❤️</title><link href="https://blog.londogard.com/pwa/til/2021/04/11/til-pwa-github-pages.html" rel="alternate" type="text/html" title="TIL: GitHub Pages + Progressive Web App (PWA) = ❤️" /><published>2021-04-11T00:00:00-05:00</published><updated>2021-04-11T00:00:00-05:00</updated><id>https://blog.londogard.com/pwa/til/2021/04/11/til-pwa-github-pages</id><content type="html" xml:base="https://blog.londogard.com/pwa/til/2021/04/11/til-pwa-github-pages.html">&lt;h3 id=&quot;what&quot;&gt;What&lt;/h3&gt;
+&lt;p&gt;Progressive Web Apps (PWAs) are web applications that are deployed on the Web and available on essentially every platform directly (Android, iOS, Linux, Windows, … you name it).&lt;br /&gt;
+They’re coded just as regular Web Apps with the extension of a separate &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;.js&lt;/code&gt;-file which runs a &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;serviceWorker&lt;/code&gt; which handles caching among other things, and the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;serviceWorker&lt;/code&gt; is really the core of a PWA.&lt;/p&gt;
+
+&lt;p&gt;PWAs allows you to:&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;Share logic between all OS:s&lt;/li&gt;
+  &lt;li&gt;Not have a heavy runtime associated as it’s using the browser
+    &lt;ul&gt;
+      &lt;li&gt;On Windows/MacOS/Android/iOS the browser is included as part of OS. On Linux not as much, but who has Linux without a browser?&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;Use your existing knowledge AND technologies of regular webapps&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;The performance is good enough for most apps and you can easily cache content to make the app offline-first. Of course native apps are, and will always be, better but this is a good step in the right direction for simple developer to share their work on multiple platforms.&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;A really good example of PWAs is &lt;a href=&quot;http://mobile.twitter.com/&quot;&gt;twitter&lt;/a&gt; which I’d call perhaps even better than the native version&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;You can test my PWA that is done in Kotlin with fritz2 targeting JS on &lt;a href=&quot;https://colorkidz.londogard.com/&quot;&gt;colorkidz.londogard.com&lt;/a&gt;. This is a very simple app to create colouring pages out of images. I think it show-case the possibility of creating a MVP fast &amp;amp; easy while being deployed instantly to all platforms.&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;A bonus is that PWAs can be added to Android/Google &amp;amp; Windows App Store, just like a regular app&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;Please note that it’s not OK according to the TOS to deploy a commercial app through GitHub pages. If you wish to do that take a look at the &lt;a href=&quot;#alternatives&quot;&gt;alternative section&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h3 id=&quot;how&quot;&gt;How&lt;/h3&gt;
+&lt;p&gt;Building, or transforming, a Web App into a PWA is really easy and has few requirements (depending on browser). The requirements follows:&lt;/p&gt;
+&lt;ol&gt;
+  &lt;li&gt;A &lt;em&gt;web manifest&lt;/em&gt; file&lt;/li&gt;
+  &lt;li&gt;Serve app using HTTPS&lt;/li&gt;
+  &lt;li&gt;A Service Worker with a &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;fetch event&lt;/code&gt; handler
+    &lt;ul&gt;
+      &lt;li&gt;Allowing the app to work offline (!)&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;(not for all browser) a &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;favicon&lt;/code&gt;/icon&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;And adding more data makes your PWA even better, like safari/iOS specific icons etc and some further metadata.&lt;/p&gt;
+
+&lt;p&gt;This is actually pretty easy requirements to fill and I’ll show the two most important, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;serviceWorker&lt;/code&gt; and &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;webmanifest&lt;/code&gt;.&lt;/p&gt;
+
+&lt;h4 id=&quot;serviceworkerjs&quot;&gt;ServiceWorker.js&lt;/h4&gt;
+&lt;p&gt;As mentioned the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;serviceWorker&lt;/code&gt; allows to app to work cached and handles the installation of the PWA among other things. &lt;br /&gt;
+An example of this can be found on my &lt;a href=&quot;https://github.com/londogard/colorkidz/blob/main/serviceWorker.js&quot;&gt;GitHub&lt;/a&gt;, find the code a little bit below.&lt;br /&gt;
+A really good guide that goes deeper on the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;serviceWorker&lt;/code&gt; and what more they can achieve can be found on both &lt;a href=&quot;https://developer.mozilla.org/en-US/docs/Web/Progressive_web_apps/Offline_Service_workers&quot;&gt;Mozilla&lt;/a&gt; &amp;amp; &lt;a href=&quot;https://developers.google.com/web/ilt/pwa/introduction-to-service-worker&quot;&gt;Google&lt;/a&gt;.&lt;/p&gt;
+&lt;div class=&quot;language-js highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;CACHE_NAME&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;londogard-colorkidz&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;urlsToCache&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;
+  &lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;/index.html&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+  &lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;/NEW.js&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+  &lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;/android-chrome-192x192.png&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;...&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;];&lt;/span&gt;
+
+&lt;span class=&quot;nb&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;addEventListener&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;install&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;event&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;c1&quot;&gt;// Perform install steps&lt;/span&gt;
+  &lt;span class=&quot;nx&quot;&gt;event&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;waitUntil&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;
+    &lt;span class=&quot;nx&quot;&gt;caches&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;open&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;CACHE_NAME&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+      &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;then&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;cache&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;nx&quot;&gt;console&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;log&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;Opened cache&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;cache&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;addAll&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;urlsToCache&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+      &lt;span class=&quot;p&quot;&gt;})&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;addEventListener&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;fetch&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,()&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;console&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;log&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;fetch&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;));&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;h4 id=&quot;webmanifest&quot;&gt;Webmanifest&lt;/h4&gt;
+
+&lt;p&gt;Further you need to supply a few more things, a &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;manifest.webmanifest&lt;/code&gt; which looks like the following:&lt;/p&gt;
+&lt;div class=&quot;language-json highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+  &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;short_name&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;ColorKidz&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+  &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;name&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;ColorKidz&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+  &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;description&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;Turn your images into Colouring Pages&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+  &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;icons&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+      &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;src&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;/android-chrome-192x192.png&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+      &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;sizes&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;192x192&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+      &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;type&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;image/png&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;},&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;...&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+  &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;],&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+  &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;start_url&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;/&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+  &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;orientation&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;portrait&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+  &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;background_color&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;#FFFFFF&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+  &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;display&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;standalone&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+  &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;scope&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;/&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+  &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;theme_color&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;#FFFFFF&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h4 id=&quot;deploying-to-github-pages&quot;&gt;Deploying to GitHub Pages&lt;/h4&gt;
+&lt;p&gt;First off place all your files in root folder of your GitHub repo. Remember to also have a &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;index.html&lt;/code&gt; which contains both your JS app &amp;amp; your &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;serviceWorker.js&lt;/code&gt; and reference those scripts in &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;body&lt;/code&gt;, e.g.&lt;/p&gt;
+&lt;div class=&quot;language-html highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nt&quot;&gt;&amp;lt;body&amp;gt;&lt;/span&gt;
+...
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;script &lt;/span&gt;&lt;span class=&quot;na&quot;&gt;src=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;NEW.js&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&amp;lt;/script&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;script &lt;/span&gt;&lt;span class=&quot;na&quot;&gt;src=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;serviceWorker.js&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&amp;lt;/script&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;/body&amp;gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Then you need to activate GitHub Pages, whereas the &lt;a href=&quot;https://pages.github.com/&quot;&gt;official documentation&lt;/a&gt; is great! 
+GitHub pages recently got their own tab in settings and all you need to do now is to head over there, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;https://github.com/&amp;lt;USERNAME&amp;gt;/&amp;lt;REPO_NAME&amp;gt;/settings/pages&lt;/code&gt; and activate GitHub pages. Make sure to also activate &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;https&lt;/code&gt;-only if possible!&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;And that’s it&lt;/strong&gt;, simple as that. Now you’ve your PWA deployed through GitHub pages. The PWA should be available @ &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;&amp;lt;repo&amp;gt;.github.io&lt;/code&gt;, but better check it in settings to be sure that it’s set up that way.&lt;/p&gt;
+
+&lt;h3 id=&quot;alternatives&quot;&gt;Alternatives&lt;/h3&gt;
+&lt;p&gt;There exists a few alternatives that I’m aware off&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://www.heroku.com/&quot;&gt;Heroku&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://pages.cloudflare.com/&quot;&gt;Cloudflare Pages&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://www.netlify.com/&quot;&gt;Netlify&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;All which are supposed to be great and simple to use. The free versions of everyone is pretty darn good too!&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;OBS&lt;/strong&gt; Please remember that it’s not allowed to put up applications on GitHub Pages that are commercial according to the ToS.&lt;/p&gt;</content><author><name>Hampus Londögård</name></author><category term="pwa" /><category term="til" /><summary type="html">What Progressive Web Apps (PWAs) are web applications that are deployed on the Web and available on essentially every platform directly (Android, iOS, Linux, Windows, … you name it). They’re coded just as regular Web Apps with the extension of a separate .js-file which runs a serviceWorker which handles caching among other things, and the serviceWorker is really the core of a PWA.</summary></entry><entry><title type="html">Building a Swedish Named Entity Recognition (NER) model (Flair/Huggingface)</title><link href="https://blog.londogard.com/nlp/deep-learning/2021/03/29/swedish-named-entity-recognition.html" rel="alternate" type="text/html" title="Building a Swedish Named Entity Recognition (NER) model (Flair/Huggingface)" /><published>2021-03-29T00:00:00-05:00</published><updated>2021-03-29T00:00:00-05:00</updated><id>https://blog.londogard.com/nlp/deep-learning/2021/03/29/swedish-named-entity-recognition</id><content type="html" xml:base="https://blog.londogard.com/nlp/deep-learning/2021/03/29/swedish-named-entity-recognition.html">&lt;p&gt;Not interested in reading the whole article and just wanna play around with the model(s)? Head over to &lt;a href=&quot;https://londogard.com/ner&quot;&gt;londogard.com/ner&lt;/a&gt;.
 &lt;img src=&quot;https://user-images.githubusercontent.com/7490199/113611097-543f9280-964e-11eb-9e59-bd030c32ad0c.png&quot; alt=&quot;image&quot; /&gt;
 &lt;strong&gt;P.S.&lt;/strong&gt; The Flair model is available for simple installation through &lt;a href=&quot;https://huggingface.co/londogard/flair-swe-ner&quot;&gt;huggingface.co’s model hub&lt;/a&gt;&lt;/p&gt;
 
@@ -3674,7 +3792,78 @@ Looking at GitHub one can clearly see that SDKMan is more popular, both by stars
 
 &lt;p&gt;One thing I’ve learned both through work and my personal projects is that often it’s better to make an non-optimal decision rather than trying to find the perfect solution, because diving into the pile of research to perfection will take much more time than just getting started.&lt;/p&gt;
 
-&lt;p&gt;-Hampus Londögård&lt;/p&gt;</content><author><name>Hampus Londögård</name></author><category term="jvm" /><category term="jdk" /><category term="til" /><summary type="html">SDKMan - Swapping JDK made simple I’ve decided to not only write blogs but also small snippets, here comes the first one.</summary></entry><entry><title type="html">TIL: ‘The Badass Runtime Plugin’, jpackage &amp;amp; jlink - create a ‘native’ installable executable from your JVM-app that isn’t huge</title><link href="https://blog.londogard.com/jvm/jdk/til/jpackage/jlink/2020/09/03/til-badass-runtime.html" rel="alternate" type="text/html" title="TIL: ‘The Badass Runtime Plugin’, jpackage &amp;amp; jlink - create a ‘native’ installable executable from your JVM-app that isn’t huge" /><published>2020-09-03T00:00:00-05:00</published><updated>2020-09-03T00:00:00-05:00</updated><id>https://blog.londogard.com/jvm/jdk/til/jpackage/jlink/2020/09/03/til-badass-runtime</id><content type="html" xml:base="https://blog.londogard.com/jvm/jdk/til/jpackage/jlink/2020/09/03/til-badass-runtime.html">&lt;h1 id=&quot;jpackage-jlink-and-how-to-pack-a-modern-java-app&quot;&gt;JPackage, JLink and how to pack a modern Java App&lt;/h1&gt;
+&lt;p&gt;-Hampus Londögård&lt;/p&gt;</content><author><name>Hampus Londögård</name></author><category term="jvm" /><category term="jdk" /><category term="til" /><summary type="html">SDKMan - Swapping JDK made simple I’ve decided to not only write blogs but also small snippets, here comes the first one.</summary></entry><entry><title type="html">TIL: fastutil - fast &amp;amp; compact type-speciic collections for JVM (no autobox!)</title><link href="https://blog.londogard.com/jvm/til/optimization/2020/09/03/til-fastutil-primitive-structures.html" rel="alternate" type="text/html" title="TIL: fastutil - fast &amp;amp; compact type-speciic collections for JVM (no autobox!)" /><published>2020-09-03T00:00:00-05:00</published><updated>2020-09-03T00:00:00-05:00</updated><id>https://blog.londogard.com/jvm/til/optimization/2020/09/03/til-fastutil-primitive-structures</id><content type="html" xml:base="https://blog.londogard.com/jvm/til/optimization/2020/09/03/til-fastutil-primitive-structures.html">&lt;h1 id=&quot;fastutil---how-to-optimize-your-collections-by-primitives&quot;&gt;fastutil - how to optimize your collections by primitives&lt;/h1&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;fastutil extends the Java™ Collections Framework by providing type-specific maps, sets, lists and queues with a small memory footprint and fast access and insertion&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;&lt;a href=&quot;http://fastutil.di.unimi.it/&quot;&gt;Homepage&lt;/a&gt; of fastutil&lt;/p&gt;
+
+&lt;h3 id=&quot;what&quot;&gt;What&lt;/h3&gt;
+&lt;p&gt;So what does the quote above actually mean?&lt;br /&gt;
+First we need to dive into, what is a Java Collection, and why are they &quot;bad&quot; for performance and memory requirements?&lt;/p&gt;
+
+&lt;p&gt;Java Collections (&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Collection&amp;lt;E&amp;gt;&lt;/code&gt;) only works with objects, meaning that if we have a &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;List&amp;lt;E&amp;gt;&lt;/code&gt; which we populate with &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;int&lt;/code&gt; it’ll actually &quot;autobox&quot; the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;int&lt;/code&gt; into a &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Integer&lt;/code&gt;, i.e. the class, rather than the primitive type.&lt;br /&gt;
+What does this mean for you as a user?&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;It’s done through &quot;autoboxing&quot; which means automatic casting to the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Integer&lt;/code&gt;-type, so nothing required for you&lt;/li&gt;
+  &lt;li&gt;It allocates more memory than the primitive &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;int&lt;/code&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;So how do you create an effective &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;List&lt;/code&gt; that contains primitives, such as &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;int, boolean&lt;/code&gt; and &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;float&lt;/code&gt;? You can’t.&lt;br /&gt;
+What you can do is to create an array, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;int[]&lt;/code&gt;, which will contain the actual primitives, no autoboxing applied.&lt;/p&gt;
+
+&lt;p&gt;But what if you want to have the methods from &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;List&lt;/code&gt;, such as &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;find&lt;/code&gt; and &quot;auto-resizing&quot;?
+Then you’ll have to research and find a library, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;fastutil&lt;/code&gt; to the rescue!&lt;/p&gt;
+
+&lt;h3 id=&quot;how&quot;&gt;How&lt;/h3&gt;
+&lt;p&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;fastutil&lt;/code&gt; implements their own versions of &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;List&lt;/code&gt;, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;HashMap&lt;/code&gt; and so on which actually use the raw primitives, thereby increasing throughput while lowering memory used (as we’re not allocating as many objects anymore, when using primitives).&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;These types of libraries are only required once you hit an enormous amount of data or very strict requirement.&lt;/em&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;installation&quot;&gt;Installation&lt;/h4&gt;
+
+&lt;p&gt;Using gradle&lt;/p&gt;
+
+&lt;p&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;implementation: 'it.unimi.dsi:fastutil:8.4.1'&lt;/code&gt; (latest version as of Aug 2020, &lt;a href=&quot;https://mvnrepository.com/artifact/it.unimi.dsi/fastutil&quot;&gt;mvnrepository&lt;/a&gt;)&lt;/p&gt;
+
+&lt;h4 id=&quot;usage&quot;&gt;Usage&lt;/h4&gt;
+
+&lt;p&gt;&lt;em&gt;DoubleToDoubleMap&lt;/em&gt;&lt;/p&gt;
+
+&lt;div class=&quot;language-kotlin highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kd&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;py&quot;&gt;d2dMap&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Double2DoubleMap&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Double2DoubleOpenHashMap&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;().&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;apply&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;nf&quot;&gt;put&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mf&quot;&gt;2.0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mf&quot;&gt;5.5&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;nf&quot;&gt;put&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mf&quot;&gt;3.0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mf&quot;&gt;6.6&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;nf&quot;&gt;assertEquals&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mf&quot;&gt;5.5&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;d2dMap&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;get&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mf&quot;&gt;2.0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;This map is not only less memory-hungry (because using &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;double&lt;/code&gt; rather than &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Double&lt;/code&gt;) but is also faster with insertions &amp;amp; get, than the Java Collections counterpart.&lt;/p&gt;
+
+&lt;h3 id=&quot;why&quot;&gt;Why&lt;/h3&gt;
+
+&lt;p&gt;&lt;strong&gt;Less space used &amp;amp; faster&lt;/strong&gt; - it is as simple as that!&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;No &quot;AutoBoxing&quot;&lt;/li&gt;
+  &lt;li&gt;No Object allocations for primitives&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;em&gt;Side-note&lt;/em&gt;
+Something I noticed while working on my Language Model in Kotlin, with some strict requirements and a lot of data, was that even when using &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;fastutil&lt;/code&gt; I wasn’t gaining that much as I was  mainly using &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;views&lt;/code&gt; of my Lists, further optimizing memory. Views are what the name implies, a view of the List. It never creates a copy but just the indices and make use of the original structure. 
+Using immutable data this is very effective, but if you’d been using mutable data it could prove dangerous as someone can change the structure and data of your view (even if your view is immutable the underlying List might not be).&lt;/p&gt;
+
+&lt;h3 id=&quot;alternatives&quot;&gt;Alternatives&lt;/h3&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://www.eclipse.org/collections/&quot;&gt;Goldman Sachs Collection - now Eclipse Collections&lt;/a&gt; - Probably the best alternative, in my opinion.
+&lt;a href=&quot;http://labs.carrotsearch.com/hppc.html&quot;&gt;HPPC - Carrot Search Labs&lt;/a&gt;
+&lt;a href=&quot;https://bitbucket.org/trove4j/trove/src/master/&quot;&gt;Trove4j&lt;/a&gt; - Not as active as other alternatives, but who cares when it’s performant and &quot;done&quot;?&lt;/p&gt;
+
+&lt;p&gt;Find a 2015 benchmark of the libraries &lt;a href=&quot;http://java-performance.info/hashmap-overview-jdk-fastutil-goldman-sachs-hppc-koloboke-trove-january-2015/&quot;&gt;here&lt;/a&gt;
+At least both &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;fastutil&lt;/code&gt;&amp;amp; &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Eclipse Collections&lt;/code&gt; are updated for Java 8 streams!&lt;/p&gt;
+
+&lt;p&gt;-Hampus Londögård&lt;/p&gt;</content><author><name>Hampus Londögård</name></author><category term="jvm" /><category term="til" /><category term="optimization" /><summary type="html">fastutil - how to optimize your collections by primitives fastutil extends the Java™ Collections Framework by providing type-specific maps, sets, lists and queues with a small memory footprint and fast access and insertion</summary></entry><entry><title type="html">TIL: ‘The Badass Runtime Plugin’, jpackage &amp;amp; jlink - create a ‘native’ installable executable from your JVM-app that isn’t huge</title><link href="https://blog.londogard.com/jvm/jdk/til/jpackage/jlink/2020/09/03/til-badass-runtime.html" rel="alternate" type="text/html" title="TIL: ‘The Badass Runtime Plugin’, jpackage &amp;amp; jlink - create a ‘native’ installable executable from your JVM-app that isn’t huge" /><published>2020-09-03T00:00:00-05:00</published><updated>2020-09-03T00:00:00-05:00</updated><id>https://blog.londogard.com/jvm/jdk/til/jpackage/jlink/2020/09/03/til-badass-runtime</id><content type="html" xml:base="https://blog.londogard.com/jvm/jdk/til/jpackage/jlink/2020/09/03/til-badass-runtime.html">&lt;h1 id=&quot;jpackage-jlink-and-how-to-pack-a-modern-java-app&quot;&gt;JPackage, JLink and how to pack a modern Java App&lt;/h1&gt;
 &lt;p&gt;JPackage is a way to package a modern JVM-program as a installable binary, in a small format.&lt;/p&gt;
 
 &lt;h3 id=&quot;what&quot;&gt;What&lt;/h3&gt;
@@ -3768,78 +3957,7 @@ It’s pretty small in size, even though called FAT, as it doesn’t include a J
 
 &lt;p&gt;&lt;em&gt;I’ll write more about GraalVM and its SubstrateVM which is used to create the native binaries in a new TIL.&lt;/em&gt;&lt;/p&gt;
 
-&lt;p&gt;-Hampus Londögård&lt;/p&gt;</content><author><name>Hampus Londögård</name></author><category term="jvm" /><category term="jdk" /><category term="til" /><category term="jpackage" /><category term="jlink" /><summary type="html">JPackage, JLink and how to pack a modern Java App JPackage is a way to package a modern JVM-program as a installable binary, in a small format.</summary></entry><entry><title type="html">TIL: fastutil - fast &amp;amp; compact type-speciic collections for JVM (no autobox!)</title><link href="https://blog.londogard.com/jvm/til/optimization/2020/09/03/til-fastutil-primitive-structures.html" rel="alternate" type="text/html" title="TIL: fastutil - fast &amp;amp; compact type-speciic collections for JVM (no autobox!)" /><published>2020-09-03T00:00:00-05:00</published><updated>2020-09-03T00:00:00-05:00</updated><id>https://blog.londogard.com/jvm/til/optimization/2020/09/03/til-fastutil-primitive-structures</id><content type="html" xml:base="https://blog.londogard.com/jvm/til/optimization/2020/09/03/til-fastutil-primitive-structures.html">&lt;h1 id=&quot;fastutil---how-to-optimize-your-collections-by-primitives&quot;&gt;fastutil - how to optimize your collections by primitives&lt;/h1&gt;
-&lt;blockquote&gt;
-  &lt;p&gt;fastutil extends the Java™ Collections Framework by providing type-specific maps, sets, lists and queues with a small memory footprint and fast access and insertion&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;&lt;a href=&quot;http://fastutil.di.unimi.it/&quot;&gt;Homepage&lt;/a&gt; of fastutil&lt;/p&gt;
-
-&lt;h3 id=&quot;what&quot;&gt;What&lt;/h3&gt;
-&lt;p&gt;So what does the quote above actually mean?&lt;br /&gt;
-First we need to dive into, what is a Java Collection, and why are they &quot;bad&quot; for performance and memory requirements?&lt;/p&gt;
-
-&lt;p&gt;Java Collections (&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Collection&amp;lt;E&amp;gt;&lt;/code&gt;) only works with objects, meaning that if we have a &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;List&amp;lt;E&amp;gt;&lt;/code&gt; which we populate with &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;int&lt;/code&gt; it’ll actually &quot;autobox&quot; the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;int&lt;/code&gt; into a &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Integer&lt;/code&gt;, i.e. the class, rather than the primitive type.&lt;br /&gt;
-What does this mean for you as a user?&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;It’s done through &quot;autoboxing&quot; which means automatic casting to the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Integer&lt;/code&gt;-type, so nothing required for you&lt;/li&gt;
-  &lt;li&gt;It allocates more memory than the primitive &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;int&lt;/code&gt;.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;So how do you create an effective &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;List&lt;/code&gt; that contains primitives, such as &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;int, boolean&lt;/code&gt; and &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;float&lt;/code&gt;? You can’t.&lt;br /&gt;
-What you can do is to create an array, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;int[]&lt;/code&gt;, which will contain the actual primitives, no autoboxing applied.&lt;/p&gt;
-
-&lt;p&gt;But what if you want to have the methods from &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;List&lt;/code&gt;, such as &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;find&lt;/code&gt; and &quot;auto-resizing&quot;?
-Then you’ll have to research and find a library, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;fastutil&lt;/code&gt; to the rescue!&lt;/p&gt;
-
-&lt;h3 id=&quot;how&quot;&gt;How&lt;/h3&gt;
-&lt;p&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;fastutil&lt;/code&gt; implements their own versions of &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;List&lt;/code&gt;, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;HashMap&lt;/code&gt; and so on which actually use the raw primitives, thereby increasing throughput while lowering memory used (as we’re not allocating as many objects anymore, when using primitives).&lt;/p&gt;
-
-&lt;p&gt;&lt;em&gt;These types of libraries are only required once you hit an enormous amount of data or very strict requirement.&lt;/em&gt;&lt;/p&gt;
-
-&lt;h4 id=&quot;installation&quot;&gt;Installation&lt;/h4&gt;
-
-&lt;p&gt;Using gradle&lt;/p&gt;
-
-&lt;p&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;implementation: 'it.unimi.dsi:fastutil:8.4.1'&lt;/code&gt; (latest version as of Aug 2020, &lt;a href=&quot;https://mvnrepository.com/artifact/it.unimi.dsi/fastutil&quot;&gt;mvnrepository&lt;/a&gt;)&lt;/p&gt;
-
-&lt;h4 id=&quot;usage&quot;&gt;Usage&lt;/h4&gt;
-
-&lt;p&gt;&lt;em&gt;DoubleToDoubleMap&lt;/em&gt;&lt;/p&gt;
-
-&lt;div class=&quot;language-kotlin highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kd&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;py&quot;&gt;d2dMap&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Double2DoubleMap&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Double2DoubleOpenHashMap&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;().&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;apply&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-    &lt;span class=&quot;nf&quot;&gt;put&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mf&quot;&gt;2.0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mf&quot;&gt;5.5&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-    &lt;span class=&quot;nf&quot;&gt;put&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mf&quot;&gt;3.0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mf&quot;&gt;6.6&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-&lt;span class=&quot;nf&quot;&gt;assertEquals&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mf&quot;&gt;5.5&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;d2dMap&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;get&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mf&quot;&gt;2.0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;This map is not only less memory-hungry (because using &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;double&lt;/code&gt; rather than &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Double&lt;/code&gt;) but is also faster with insertions &amp;amp; get, than the Java Collections counterpart.&lt;/p&gt;
-
-&lt;h3 id=&quot;why&quot;&gt;Why&lt;/h3&gt;
-
-&lt;p&gt;&lt;strong&gt;Less space used &amp;amp; faster&lt;/strong&gt; - it is as simple as that!&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;No &quot;AutoBoxing&quot;&lt;/li&gt;
-  &lt;li&gt;No Object allocations for primitives&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;&lt;em&gt;Side-note&lt;/em&gt;
-Something I noticed while working on my Language Model in Kotlin, with some strict requirements and a lot of data, was that even when using &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;fastutil&lt;/code&gt; I wasn’t gaining that much as I was  mainly using &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;views&lt;/code&gt; of my Lists, further optimizing memory. Views are what the name implies, a view of the List. It never creates a copy but just the indices and make use of the original structure. 
-Using immutable data this is very effective, but if you’d been using mutable data it could prove dangerous as someone can change the structure and data of your view (even if your view is immutable the underlying List might not be).&lt;/p&gt;
-
-&lt;h3 id=&quot;alternatives&quot;&gt;Alternatives&lt;/h3&gt;
-
-&lt;p&gt;&lt;a href=&quot;https://www.eclipse.org/collections/&quot;&gt;Goldman Sachs Collection - now Eclipse Collections&lt;/a&gt; - Probably the best alternative, in my opinion.
-&lt;a href=&quot;http://labs.carrotsearch.com/hppc.html&quot;&gt;HPPC - Carrot Search Labs&lt;/a&gt;
-&lt;a href=&quot;https://bitbucket.org/trove4j/trove/src/master/&quot;&gt;Trove4j&lt;/a&gt; - Not as active as other alternatives, but who cares when it’s performant and &quot;done&quot;?&lt;/p&gt;
-
-&lt;p&gt;Find a 2015 benchmark of the libraries &lt;a href=&quot;http://java-performance.info/hashmap-overview-jdk-fastutil-goldman-sachs-hppc-koloboke-trove-january-2015/&quot;&gt;here&lt;/a&gt;
-At least both &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;fastutil&lt;/code&gt;&amp;amp; &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Eclipse Collections&lt;/code&gt; are updated for Java 8 streams!&lt;/p&gt;
-
-&lt;p&gt;-Hampus Londögård&lt;/p&gt;</content><author><name>Hampus Londögård</name></author><category term="jvm" /><category term="til" /><category term="optimization" /><summary type="html">fastutil - how to optimize your collections by primitives fastutil extends the Java™ Collections Framework by providing type-specific maps, sets, lists and queues with a small memory footprint and fast access and insertion</summary></entry><entry><title type="html">CoViD-19 FAQ Search Engine 2.0</title><link href="https://blog.londogard.com/jupyter/nlp/machine-learning/deep-learning/2020/08/01/faq-search-covid-2.html" rel="alternate" type="text/html" title="CoViD-19 FAQ Search Engine 2.0" /><published>2020-08-01T00:00:00-05:00</published><updated>2020-08-01T00:00:00-05:00</updated><id>https://blog.londogard.com/jupyter/nlp/machine-learning/deep-learning/2020/08/01/faq-search-covid-2</id><content type="html" xml:base="https://blog.londogard.com/jupyter/nlp/machine-learning/deep-learning/2020/08/01/faq-search-covid-2.html">&lt;!--
+&lt;p&gt;-Hampus Londögård&lt;/p&gt;</content><author><name>Hampus Londögård</name></author><category term="jvm" /><category term="jdk" /><category term="til" /><category term="jpackage" /><category term="jlink" /><summary type="html">JPackage, JLink and how to pack a modern Java App JPackage is a way to package a modern JVM-program as a installable binary, in a small format.</summary></entry><entry><title type="html">CoViD-19 FAQ Search Engine 2.0</title><link href="https://blog.londogard.com/jupyter/nlp/machine-learning/deep-learning/2020/08/01/faq-search-covid-2.html" rel="alternate" type="text/html" title="CoViD-19 FAQ Search Engine 2.0" /><published>2020-08-01T00:00:00-05:00</published><updated>2020-08-01T00:00:00-05:00</updated><id>https://blog.londogard.com/jupyter/nlp/machine-learning/deep-learning/2020/08/01/faq-search-covid-2</id><content type="html" xml:base="https://blog.londogard.com/jupyter/nlp/machine-learning/deep-learning/2020/08/01/faq-search-covid-2.html">&lt;!--
 #################################################
 ### THIS FILE WAS AUTOGENERATED! DO NOT EDIT! ###
 #################################################
@@ -8827,274 +8945,4 @@ Let's figure out which words we should remove using the following steps (which c
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;/div&gt;</content><author><name>Hampus Londögård</name></author><category term="jupyter" /><category term="nlp" /><category term="machine-learning" /><category term="deep-learning" /><summary type="html"></summary></entry><entry><title type="html">SQL - Different Abstraction Levels (&amp;amp; how I came to love SQLDelight)</title><link href="https://blog.londogard.com/jvm/kotlin/sql/multiplatform/2020/06/01/sqldelight-kotlin.html" rel="alternate" type="text/html" title="SQL - Different Abstraction Levels (&amp;amp; how I came to love SQLDelight)" /><published>2020-06-01T00:00:00-05:00</published><updated>2020-06-01T00:00:00-05:00</updated><id>https://blog.londogard.com/jvm/kotlin/sql/multiplatform/2020/06/01/sqldelight-kotlin</id><content type="html" xml:base="https://blog.londogard.com/jvm/kotlin/sql/multiplatform/2020/06/01/sqldelight-kotlin.html">&lt;h1 id=&quot;sql---different-abstraction-levels-and-how-i-came-to-love-sqldelight&quot;&gt;SQL - different abstraction levels and how I came to love SQLDelight&lt;/h1&gt;
-
-&lt;p&gt;In this blog I’ll cover a few different abstraction levels of database access, focusing purely on SQL and not NoSQL / Reddis or anything like that. The purpose is to share the knowledge that there exist these types of abstractions and they do exist in all or at least most of the popular languages.&lt;/p&gt;
-
-&lt;p&gt;I’ll try to move from &quot;raw SQL&quot; to the modern &quot;Object-Relational Mapping&quot;-style, a.k.a ORM.&lt;/p&gt;
-
-&lt;p&gt;In the end I wish to make a short piece leaving out a lot of details but maintaining a feel of each style and some pros/cons. I bet you already guessed my preferred approach straight from the title :wink:.&lt;/p&gt;
-
-&lt;h3 id=&quot;how-to-interact-with-a-sql-database-from-a-programming-language&quot;&gt;How to interact with a SQL Database from a programming language&lt;/h3&gt;
-
-&lt;p&gt;Structured Query Language (SQL) is as the name, once spelled out, a Domain Specific Language (DSL) just like regex. It’s basically a programming language written to facilitate and simplify the experience with the underlying engine. By using a DSL you gain capabilities that would be natural to integrate with most languages, and it also makes the engine do the same with the same code across languages.&lt;/p&gt;
-
-&lt;p&gt;I think that Regex and SQL are the most famous DSLs and for good reason, having regex work (almost) the same across languages simplifies the guides and the same applies to SQL.&lt;/p&gt;
-
-&lt;p&gt;Going forward let’s see how we communicate with a SQL-db from a programming language like Java using their famous jdbc (Java Database Connectivity) which is the driver that communicates with the db.&lt;/p&gt;
-
-&lt;div class=&quot;language-kotlin highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;try&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-      &lt;span class=&quot;nc&quot;&gt;System&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;out&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;println&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;\&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Connecting to database...\&quot;);
-&lt;/span&gt;      &lt;span class=&quot;n&quot;&gt;conn&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;DriverManager&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;getConnection&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;DB_URL&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;USER&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;PASS&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-
-      &lt;span class=&quot;c1&quot;&gt;//STEP 4: Execute a query&lt;/span&gt;
-      &lt;span class=&quot;nc&quot;&gt;System&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;out&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;println&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;\&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Creating statement...\&quot;);
-&lt;/span&gt;      &lt;span class=&quot;n&quot;&gt;stmt&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;conn&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;createStatement&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
-      &lt;span class=&quot;nc&quot;&gt;String&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sql&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-      &lt;span class=&quot;n&quot;&gt;sql&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;\&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;SELECT id, first, last, age FROM Employees\&quot;;
-&lt;/span&gt;      &lt;span class=&quot;nc&quot;&gt;ResultSet&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;rs&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;stmt&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;executeQuery&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sql&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-
-      &lt;span class=&quot;c1&quot;&gt;//STEP 5: Extract data from result set&lt;/span&gt;
-      &lt;span class=&quot;k&quot;&gt;while&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;rs&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;next&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()){&lt;/span&gt;
-         &lt;span class=&quot;c1&quot;&gt;//Retrieve by column name&lt;/span&gt;
-         &lt;span class=&quot;n&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;id&lt;/span&gt;  &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;rs&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;getInt&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;\&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;id\&quot;);
-&lt;/span&gt;         &lt;span class=&quot;n&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;age&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;rs&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;getInt&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;\&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;age\&quot;);
-&lt;/span&gt;         &lt;span class=&quot;nc&quot;&gt;String&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;first&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;rs&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;getString&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;\&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;first\&quot;);
-&lt;/span&gt;         &lt;span class=&quot;nc&quot;&gt;String&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;last&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;rs&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;getString&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;\&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;last\&quot;);
-&lt;/span&gt;
-         &lt;span class=&quot;c1&quot;&gt;//Display values&lt;/span&gt;
-         &lt;span class=&quot;nc&quot;&gt;System&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;out&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;\&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;ID: \&quot; + id);
-&lt;/span&gt;         &lt;span class=&quot;nc&quot;&gt;System&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;out&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;\&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;, Age: \&quot; + age);
-&lt;/span&gt;         &lt;span class=&quot;nc&quot;&gt;System&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;out&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;\&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;, First: \&quot; + first);
-&lt;/span&gt;         &lt;span class=&quot;nc&quot;&gt;System&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;out&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;println&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;\&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;, Last: \&quot; + last);
-&lt;/span&gt;      &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-      &lt;span class=&quot;c1&quot;&gt;//STEP 6: Clean-up environment&lt;/span&gt;
-      &lt;span class=&quot;n&quot;&gt;rs&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;close&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
-      &lt;span class=&quot;n&quot;&gt;stmt&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;close&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
-      &lt;span class=&quot;n&quot;&gt;conn&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;close&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
-   &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;catch&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;SQLException&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;se&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-    &lt;span class=&quot;o&quot;&gt;....&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Not very convenient right? Personally I think this looks horrible, it’s filled with horrible getters &amp;amp; setters like we’re stuck in the Middle Ages or something.
-Personally my mind directly flows to serialization and how that must work somehow with databases, and that’s right - we can move into the future today!&lt;/p&gt;
-
-&lt;h3 id=&quot;moving-one-abstraction-level-up&quot;&gt;Moving one abstraction level up&lt;/h3&gt;
-
-&lt;p&gt;Welcome &lt;a href=&quot;https://developer.android.com/topic/libraries/architecture/room&quot;&gt;Room&lt;/a&gt; &amp;amp; &lt;a href=&quot;http://scala-slick.org/&quot;&gt;slick&lt;/a&gt; (two libraries I’ve experience with) to the room!
-Both of these libraries provide a type of serialization to classes and more convenient syntax to write the code. The first one heavily leans on annotation to make it work while the other one uses a more slick approach of &quot;copying&quot; the way you work with the standard Scala Collections (&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;filter, map, flatMap, reduce&lt;/code&gt; etc).&lt;/p&gt;
-
-&lt;p&gt;I’d say that both do count as ORMs but they’re still not as abstract as other solutions such as &lt;em&gt;peewee&lt;/em&gt; which we’ll discuss later. Let’s get into Room and how it works. First you define entities like a class with the added annotation &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;@Entity&lt;/code&gt; and then you define a &lt;em&gt;Data Access Object&lt;/em&gt; (DAO) to interact with the table / object. The DAO is where you define your queries, let’s take a look.&lt;/p&gt;
-
-&lt;div class=&quot;language-kotlin highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nd&quot;&gt;@Dao&lt;/span&gt;
-&lt;span class=&quot;kd&quot;&gt;interface&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;UserDao&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-    &lt;span class=&quot;nd&quot;&gt;@Query&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;\&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;SELECT * FROM user\&quot;)
-&lt;/span&gt;    &lt;span class=&quot;k&quot;&gt;fun&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;getAll&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;():&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;List&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;User&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;&amp;gt;&lt;/span&gt;
-
-    &lt;span class=&quot;nd&quot;&gt;@Query&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;\&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;SELECT * FROM user WHERE uid IN (:userIds)\&quot;)
-&lt;/span&gt;    &lt;span class=&quot;k&quot;&gt;fun&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;loadAllByIds&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;userIds&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;IntArray&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;List&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;User&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;&amp;gt;&lt;/span&gt;
-&lt;span class=&quot;o&quot;&gt;..&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;In my opinion this approach strikes a really good balance between simple-to-use but still powerful and very configurable because you still use SQL, a bonus here is that it’s safe from SQL-injection as you’re making use of so-called &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;prepared-statements&lt;/code&gt; (&lt;a href=&quot;https://en.wikipedia.org/wiki/Prepared_statement&quot;&gt;wikipedia&lt;/a&gt;). The biggest drawback is that it’s hard to write easy-to-read SQL in the annotation and for the annotation-haters we’ve a lot of annotations (which often slows down the compile-time noticeably among other things).&lt;/p&gt;
-
-&lt;p&gt;Moving on we’ve &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;slick&lt;/code&gt; which is also a really cool approach! &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;slick&lt;/code&gt; allows you to this but instead you write your queries in something that feels like using the normal Scala Collection library. This allows you to use &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;map&lt;/code&gt;, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;filter&lt;/code&gt;, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;reduce&lt;/code&gt; etc to create queries, and even &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;for-comprehension&lt;/code&gt;. Let’s see!&lt;/p&gt;
-
-&lt;div class=&quot;language-scala highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;// Read all coffees and print them to the console&lt;/span&gt;
-&lt;span class=&quot;nf&quot;&gt;println&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(\&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Coffees:\&quot;)
-db.run(coffees.result).map(_.foreach {
-  case (name, supID, price, sales, total) =&amp;gt;
-    println(\&quot;  \&quot; + name + \&quot;\\t\&quot; + supID + \&quot;\\t\&quot; + price + \&quot;\\t\&quot; + sales + \&quot;\\t\&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;total&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;o&quot;&gt;})&lt;/span&gt;
-
-&lt;span class=&quot;c1&quot;&gt;// Read coffee with price lower than 9 and join with matching supplier using for-comprehension&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;q2&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-  &lt;span class=&quot;n&quot;&gt;c&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;&amp;lt;-&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;coffees&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;c&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;py&quot;&gt;price&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;mf&quot;&gt;9.0&lt;/span&gt;
-  &lt;span class=&quot;n&quot;&gt;s&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;&amp;lt;-&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;suppliers&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;py&quot;&gt;id&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;===&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;c&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;py&quot;&gt;supID&lt;/span&gt;
-&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;yield&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;c&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;py&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;py&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-
-&lt;span class=&quot;c1&quot;&gt;// A find using filter&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;find&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;id&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;Int&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;db&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;py&quot;&gt;run&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;
-  &lt;span class=&quot;n&quot;&gt;users&lt;/span&gt;
-    &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;py&quot;&gt;filter&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;_&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;py&quot;&gt;id&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;===&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;id&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-    &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;py&quot;&gt;result&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;py&quot;&gt;headOption&lt;/span&gt;
-  &lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Pretty slick right?&lt;/p&gt;
-
-&lt;h3 id=&quot;moving-another-level-up-python--peewee&quot;&gt;Moving another level up (Python + Peewee)&lt;/h3&gt;
-
-&lt;p&gt;Ok, maybe it’s not actually moving one level up from &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;slick&lt;/code&gt; but I’d say it’s still a little bit further away from raw SQL as we make more use of objects, in the case of &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;slick&lt;/code&gt; you can more easily see the generated SQL-code. Let’s take a look at &lt;a href=&quot;http://docs.peewee-orm.com/en/latest/index.html&quot;&gt;peewee&lt;/a&gt; which supports most databases (sqlite, mysql, postgresql and cockroachdb).&lt;/p&gt;
-
-&lt;p&gt;So where do we begin? Create the database and tables! 
-It’s done by initiating a database and then creating different classes which each maps to their own tables automatically.&lt;/p&gt;
-
-&lt;div class=&quot;language-kotlin highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;db&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;SqliteDatabase&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;people&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;db&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;#&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;create&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;the&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;db&lt;/span&gt;
-
-&lt;span class=&quot;kd&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Person&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;Model&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;name&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;CharField&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;birthday&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;DateField&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
-
-    &lt;span class=&quot;kd&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Meta&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
-        &lt;span class=&quot;n&quot;&gt;database&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;db&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;#&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;This&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;model&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;uses&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;the&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;\&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;people.db\&quot; database.
-&lt;/span&gt;
-&lt;span class=&quot;kd&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Pet&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;Model&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;owner&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;ForeignKeyField&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;Person&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;backref&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;pets&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;name&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;CharField&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;animal_type&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;CharField&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
-
-    &lt;span class=&quot;kd&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Meta&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
-        &lt;span class=&quot;n&quot;&gt;database&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;db&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;#&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;this&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;model&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;uses&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;the&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;\&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;people.db\&quot; database
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;And how would one create entries and then query them? It’s simply done through object creation as in the following examples.&lt;/p&gt;
-
-&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;uncle_bob&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Person&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'Bob'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;birthday&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;date&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1960&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;15&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;uncle_bob&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;save&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
-&lt;span class=&quot;c1&quot;&gt;# Sometimes the class already has a \&quot;create method\&quot; as in
-&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Person&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;create&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'Sarah'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;birthday&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;date&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1980&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;10&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;20&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
-
-&lt;span class=&quot;c1&quot;&gt;# And create a pet which belongs to uncle_bob
-&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;bob_dog&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Pet&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;create&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;owner&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;uncle_bob&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'Doggy'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;animal_type&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'dog'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;And to query the tables we also make use of the object fully, as in the following small example.&lt;/p&gt;
-
-&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;bobby&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Person&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;select&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;().&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;where&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Person&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;name&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'Bob'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;get&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
-&lt;span class=&quot;c1&quot;&gt;# or all persons!
-&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;person&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Person&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;select&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;():&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;person&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Now we’ve gone through the different abstraction layers that you usually see available in most languages. Going forward I’d like to show SQLDelight which turns the abstraction a little bit upside down.&lt;/p&gt;
-
-&lt;h3 id=&quot;sqldelight-abstraction-level-left-to-the-right&quot;&gt;SQLDelight: Abstraction level left to the right&lt;/h3&gt;
-
-&lt;p&gt;In SQLDelight I’d say we get the ideal balance of abstraction and configurability. We deal with raw SQL which is both a pro &amp;amp; con, people will need to know SQL unlike in a abstracted ORM but you also get the full potential and it’s really simple to do complex joins (which is really messy in ORMs).&lt;/p&gt;
-
-&lt;p&gt;I was delighted at how simple it was to use from my Kotlin code while also providing a simple way to write my DB-interactions. No confusion and there’s a million guides out there showing how you write SQL code for complex joins if you ever need a hand.&lt;/p&gt;
-
-&lt;p&gt;Let’s begin with how you define a table and queries, through a so-called &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;.sq&lt;/code&gt;-file.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&quot;language-sqlite&quot;&gt;-- .sq-file
-
-CREATE TABLE person (
-  name TEXT NOT NULL,
-  birthday DATE NOT NULL
-);
--- You can actually also insert a Person directly in this file if you'd like using the normal SQL insert statement.
-
-selectAll:
-SELECT *
-FROM person;
-
-insert:
-INSERT INTO person(name, birthday)
-VALUES (?, ?);
-
-insertPerson:
-INSERT INTO person(name, birthday)
-VALUES ?;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;For those that don’t know SQL this does the following&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;Define the table&lt;/li&gt;
-  &lt;li&gt;Create queries on the table
-    &lt;ol&gt;
-      &lt;li&gt;These queries makes use of the custom format &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;methodName:&lt;/code&gt; and then define the method using the SQL code beneath until it hits end &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;; &lt;/code&gt;.&lt;/li&gt;
-    &lt;/ol&gt;
-  &lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;Now we have some SQL code defined in a  &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;.sq&lt;/code&gt;-file, how do we actually use this from our Kotlin-code?
-We build the project, while building the project the code is generated to our build project with the Kotlin-code. It’ll provide&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;Data Classes (like structs / objects / case classes)&lt;/li&gt;
-  &lt;li&gt;Queries for each table&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;And on top of this you’ll have &lt;em&gt;full&lt;/em&gt; typing, which is pretty damn awesome! Let’s take a look at how we’d use this from Kotlin.&lt;/p&gt;
-
-&lt;div class=&quot;language-kotlin highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;// Not optimal code, should use injection or something in reality for the db.&lt;/span&gt;
-&lt;span class=&quot;kd&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;py&quot;&gt;database&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Database&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;driver&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-
-&lt;span class=&quot;kd&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;py&quot;&gt;personQueries&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;PersonQueries&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;database&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;personQueries&lt;/span&gt;
-
-&lt;span class=&quot;nf&quot;&gt;println&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;personQueries&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;selectAll&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;().&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;executeAsList&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;())&lt;/span&gt;
-&lt;span class=&quot;c1&quot;&gt;// Prints []&lt;/span&gt;
-
-&lt;span class=&quot;n&quot;&gt;personQueries&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;insert&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;name&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;\&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Bob\&quot;, birthday = Date(2010, 1, 10))
-&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;println&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;personQueries&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;selectAll&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;().&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;executeAsList&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;())&lt;/span&gt;
-&lt;span class=&quot;c1&quot;&gt;// Prints [Person.Impl(\&quot;Bob\&quot;, Date(2010, 1, 10))]&lt;/span&gt;
-
-&lt;span class=&quot;kd&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;py&quot;&gt;person&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Person&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;\&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Ronald McDonald\&quot;, Date(2020, 1, 5))
-&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;personQueries&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;insertPerson&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;person&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;nf&quot;&gt;println&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;personQueries&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;selectAll&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;().&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;executeAsList&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;())&lt;/span&gt;
-&lt;span class=&quot;c1&quot;&gt;// Prints [Person.Impl(\&quot;Bob\&quot;, Date(2010, 1, 10)), Person.Impl(\&quot;Ronald McDonald\&quot;, Date(2020, 1, 5))]&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Let me just say, I’m amazed about this kind of reverse thinking of generating code from SQL. It gives us the convenience of a ORM but the flexibility of raw SQL :happy:.&lt;/p&gt;
-
-&lt;h3 id=&quot;comparison-table&quot;&gt;Comparison Table&lt;/h3&gt;
-
-&lt;table&gt;
-  &lt;thead&gt;
-    &lt;tr&gt;
-      &lt;th&gt;Database&lt;/th&gt;
-      &lt;th&gt;Simplicity&lt;/th&gt;
-      &lt;th&gt;Requires SQL knowledge&lt;/th&gt;
-      &lt;th&gt;Configurability (complex queries etc)&lt;/th&gt;
-      &lt;th&gt;Score (5)&lt;/th&gt;
-      &lt;th&gt;Comment&lt;/th&gt;
-    &lt;/tr&gt;
-  &lt;/thead&gt;
-  &lt;tbody&gt;
-    &lt;tr&gt;
-      &lt;td&gt;JDBC&lt;/td&gt;
-      &lt;td&gt;I&lt;/td&gt;
-      &lt;td&gt;III&lt;/td&gt;
-      &lt;td&gt;III&lt;/td&gt;
-      &lt;td&gt;2&lt;/td&gt;
-      &lt;td&gt;To much overhead&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;Room / Slick&lt;/td&gt;
-      &lt;td&gt;II&lt;/td&gt;
-      &lt;td&gt;II&lt;/td&gt;
-      &lt;td&gt;II&lt;/td&gt;
-      &lt;td&gt;4&lt;/td&gt;
-      &lt;td&gt;Strikes a good balance between natural in normal code while configurable*&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;Peewee&lt;/td&gt;
-      &lt;td&gt;III&lt;/td&gt;
-      &lt;td&gt;I&lt;/td&gt;
-      &lt;td&gt;I&lt;/td&gt;
-      &lt;td&gt;3&lt;/td&gt;
-      &lt;td&gt;Really easy and fits into code great, but the complex queries becomes really hard and feels forced&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;SQLDelight&lt;/td&gt;
-      &lt;td&gt;II&lt;/td&gt;
-      &lt;td&gt;III&lt;/td&gt;
-      &lt;td&gt;III&lt;/td&gt;
-      &lt;td&gt;5&lt;/td&gt;
-      &lt;td&gt;Natural to use in the code, great customability &amp;amp; little overhead*&lt;/td&gt;
-    &lt;/tr&gt;
-  &lt;/tbody&gt;
-&lt;/table&gt;
-
-&lt;p&gt;Both Room &amp;amp; SQLDelight are enforcing SQLite right now which is a major con for those that needs postgresql etc. Personally I only use SQLite as was discussed in &lt;a href=&quot;https://blog.expensify.com/2018/01/08/scaling-sqlite-to-4m-qps-on-a-single-server/&quot;&gt;expensify’s blog&lt;/a&gt; SQLite can be squeezed to the extreme - expensify managed to handle up to 4 million queries per second!&lt;/p&gt;
-
-&lt;h3 id=&quot;outro&quot;&gt;Outro&lt;/h3&gt;
-
-&lt;p&gt;In its essence today there’s a great variety of different kinds of wrappers for databases in almost all languages and it is all about finding one that strikes your balance of perfect. For a really simple database perhaps an ORM such as &lt;em&gt;peewee&lt;/em&gt; where no SQL knowledge is really required could be enough. But be sure to know the trade-offs, once your database grows complex so does peewee grow complex fast, same applies to slick and others. Raw SQL as a fall-back is always good to have and a lot of the libraries are starting to add it (e.g. slick), but it never feels natural and always is a bit like a bandaid, ugly right?&lt;/p&gt;
-
-&lt;p&gt;Anyhow, I hope this was interesting and perhaps someone learned about a new abstraction-level for databases or was inspired to pick up their own.&lt;/p&gt;
-
-&lt;p&gt;~Hampus&lt;/p&gt;</content><author><name>Hampus Londögård</name></author><category term="jvm" /><category term="kotlin" /><category term="sql" /><category term="multiplatform" /><summary type="html">SQL - different abstraction levels and how I came to love SQLDelight</summary></entry></feed>
+&lt;/div&gt;</content><author><name>Hampus Londögård</name></author><category term="jupyter" /><category term="nlp" /><category term="machine-learning" /><category term="deep-learning" /><summary type="html"></summary></entry></feed>
