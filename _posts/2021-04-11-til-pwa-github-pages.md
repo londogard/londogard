@@ -10,23 +10,23 @@ author: Hampus Londögård
 
 ### What
 Progressive Web Apps (PWAs) are web applications that are deployed on the Web and available on essentially every platform directly (Android, iOS, Linux, Windows, ... you name it).  
-They're coded just as regular Web Apps with the extension of a separate `.js`-file which runs a `serviceWorker` which handles caching among other things, and the `serviceWorker` is really the core of a PWA. 
+They're created the same way regular Web Apps are, with minor modifications like a new separate `.js`-file that runs a `serviceWorker`. This `serviceWorker` is the core of the PWA and handle things like _caching_ & _installation_. 
 
 PWAs allows you to:
 - Share logic between all OS:s
-- Not have a heavy runtime associated as it's using the browser
+- Not have a heavy runtime associated (it uses the bundled browser engine)
 	- On Windows/MacOS/Android/iOS the browser is included as part of OS. On Linux not as much, but who has Linux without a browser?
 - Use your existing knowledge AND technologies of regular webapps
 
 The performance is good enough for most apps and you can easily cache content to make the app offline-first. Of course native apps are, and will always be, better but this is a good step in the right direction for simple developer to share their work on multiple platforms. 
 
-> A really good example of PWAs is [twitter](http://mobile.twitter.com/) which I'd call perhaps even better than the native version
+> The best example of an PWA I know of is [twitter](http://mobile.twitter.com/), a PWA I prefer to the native app
 
-You can test my PWA that is done in Kotlin with fritz2 targeting JS on [colorkidz.londogard.com](https://colorkidz.londogard.com/). This is a very simple app to create colouring pages out of images. I think it show-case the possibility of creating a MVP fast & easy while being deployed instantly to all platforms.  
+You can test my PWA that's written in Kotlin (targeting JS) with fritz2 on [colorkidz.londogard.com](https://colorkidz.londogard.com/). ColorKidz is a simple app that creates colouring pages out of regular images and I believe it really showcases the possibilities of PWA. ColorKidz is a MVP that was fast & easy and now shared across ALL platforms!  
 
-> A bonus is that PWAs can be added to Android/Google & Windows App Store, just like a regular app
+> **Bonus:** PWAs can be deployed to Android/Google & Windows App Store, just like a regular app
 
-Please note that it's not OK according to the TOS to deploy a commercial app through GitHub pages. If you wish to do that take a look at the [alternative section](#alternatives).
+Please note that GitHub TOS prohibits deployment of commercial apps through GitHub pages. If you wish to do that take a look at the [alternative section](#alternatives) for better alternatives that are free/cheap.
 
 ### How
 Building, or transforming, a Web App into a PWA is really easy and has few requirements (depending on browser). The requirements follows:
@@ -36,14 +36,18 @@ Building, or transforming, a Web App into a PWA is really easy and has few requi
 	- Allowing the app to work offline (!) 
 4. (not for all browser) a `favicon`/icon
 
-And adding more data makes your PWA even better, like safari/iOS specific icons etc and some further metadata.
+Adding more data makes your PWA even better, like safari/iOS specific icons to improve interoperability.
 
-This is actually pretty easy requirements to fill and I'll show the two most important, `serviceWorker` and `webmanifest`.
+These requirements are pretty easy to achieve and I'll show the two most important, `serviceWorker` and `webmanifest`.
 
 #### ServiceWorker.js
-As mentioned the `serviceWorker` allows to app to work cached and handles the installation of the PWA among other things.   
+The `serviceWorker` handles the app caching, installation and
+potentially some other things if you ask it too. From the docs:
+
+> Service workers essentially act as proxy servers that sit between web applications, and the browser and network (when available). They are intended to (amongst other things) enable the creation of effective offline experiences, intercepting network requests and taking appropriate action based on whether the network is available and updated assets reside on the server. They will also allow access to push notifications and background sync APIs.
+
 An example of this can be found on my [GitHub](https://github.com/londogard/colorkidz/blob/main/serviceWorker.js), find the code a little bit below.  
-A really good guide that goes deeper on the `serviceWorker` and what more they can achieve can be found on both [Mozilla](https://developer.mozilla.org/en-US/docs/Web/Progressive_web_apps/Offline_Service_workers) & [Google](https://developers.google.com/web/ilt/pwa/introduction-to-service-worker).
+If you wish to deep dive into `serviceWorker`'s then head over to the (awesome) documentation at [Mozilla](https://developer.mozilla.org/en-US/docs/Web/Progressive_web_apps/Offline_Service_workers) & [Google](https://developers.google.com/web/ilt/pwa/introduction-to-service-worker).
 ```js
 var CACHE_NAME = 'londogard-colorkidz';
 var urlsToCache = [
@@ -67,7 +71,8 @@ self.addEventListener('fetch',() => console.log("fetch"));
 ```
 #### Webmanifest
 
-Further you need to supply a few more things, a `manifest.webmanifest` which looks like the following:
+The next step is to create your `webmanifest` which is the "metadata" of the app. What name should it have once installed? Which icon? Is the orientation locked? There's a few knobs to tweak and turn.  
+My `webmanifest` ended up something like this:
 ```json
 {
   "short_name": "ColorKidz",
@@ -91,6 +96,8 @@ Further you need to supply a few more things, a `manifest.webmanifest` which loo
 ```
 
 #### Deploying to GitHub Pages
+For the final step we're to deploy the PWA!
+
 First off place all your files in root folder of your GitHub repo. Remember to also have a `index.html` which contains both your JS app & your `serviceWorker.js` and reference those scripts in `body`, e.g.
 ```html
 <body>
@@ -100,7 +107,7 @@ First off place all your files in root folder of your GitHub repo. Remember to a
 </body>
 ```
 
-Then you need to activate GitHub Pages, whereas the [official documentation](https://pages.github.com/) is great! 
+Then you need to activate GitHub Pages for the repository, whereas the [official documentation](https://pages.github.com/) is great!  
 GitHub pages recently got their own tab in settings and all you need to do now is to head over there, `https://github.com/<USERNAME>/<REPO_NAME>/settings/pages` and activate GitHub pages. Make sure to also activate `https`-only if possible!
 
 **And that's it**, simple as that. Now you've your PWA deployed through GitHub pages. The PWA should be available @ `<repo>.github.io`, but better check it in settings to be sure that it's set up that way.
