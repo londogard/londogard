@@ -1,11 +1,11 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.1.1">Jekyll</generator><link href="https://blog.londogard.com/feed.xml" rel="self" type="application/atom+xml" /><link href="https://blog.londogard.com/" rel="alternate" type="text/html" /><updated>2021-04-11T14:20:19-05:00</updated><id>https://blog.londogard.com/feed.xml</id><title type="html">Londogard</title><subtitle>A blog with a focus on Deep Learning, JVM and Performance.</subtitle><entry><title type="html">TIL: GitHub Pages + Progressive Web App (PWA) = ❤️</title><link href="https://blog.londogard.com/pwa/til/2021/04/11/til-pwa-github-pages.html" rel="alternate" type="text/html" title="TIL: GitHub Pages + Progressive Web App (PWA) = ❤️" /><published>2021-04-11T00:00:00-05:00</published><updated>2021-04-11T00:00:00-05:00</updated><id>https://blog.londogard.com/pwa/til/2021/04/11/til-pwa-github-pages</id><content type="html" xml:base="https://blog.londogard.com/pwa/til/2021/04/11/til-pwa-github-pages.html">&lt;h3 id=&quot;what&quot;&gt;What&lt;/h3&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.1.1">Jekyll</generator><link href="https://blog.londogard.com/feed.xml" rel="self" type="application/atom+xml" /><link href="https://blog.londogard.com/" rel="alternate" type="text/html" /><updated>2021-04-12T02:37:41-05:00</updated><id>https://blog.londogard.com/feed.xml</id><title type="html">Londogard</title><subtitle>A blog with a focus on Deep Learning, JVM and Performance.</subtitle><entry><title type="html">TIL: GitHub Pages + Progressive Web App (PWA) = ❤️</title><link href="https://blog.londogard.com/pwa/til/2021/04/11/til-pwa-github-pages.html" rel="alternate" type="text/html" title="TIL: GitHub Pages + Progressive Web App (PWA) = ❤️" /><published>2021-04-11T00:00:00-05:00</published><updated>2021-04-11T00:00:00-05:00</updated><id>https://blog.londogard.com/pwa/til/2021/04/11/til-pwa-github-pages</id><content type="html" xml:base="https://blog.londogard.com/pwa/til/2021/04/11/til-pwa-github-pages.html">&lt;h3 id=&quot;what&quot;&gt;What&lt;/h3&gt;
 &lt;p&gt;Progressive Web Apps (PWAs) are web applications that are deployed on the Web and available on essentially every platform directly (Android, iOS, Linux, Windows, … you name it).&lt;br /&gt;
-They’re coded just as regular Web Apps with the extension of a separate &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;.js&lt;/code&gt;-file which runs a &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;serviceWorker&lt;/code&gt; which handles caching among other things, and the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;serviceWorker&lt;/code&gt; is really the core of a PWA.&lt;/p&gt;
+They’re created the same way regular Web Apps are, with minor modifications like a new separate &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;.js&lt;/code&gt;-file that runs a &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;serviceWorker&lt;/code&gt;. This &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;serviceWorker&lt;/code&gt; is the core of the PWA and handle things like &lt;em&gt;caching&lt;/em&gt; &amp;amp; &lt;em&gt;installation&lt;/em&gt;.&lt;/p&gt;
 
 &lt;p&gt;PWAs allows you to:&lt;/p&gt;
 &lt;ul&gt;
   &lt;li&gt;Share logic between all OS:s&lt;/li&gt;
-  &lt;li&gt;Not have a heavy runtime associated as it’s using the browser
+  &lt;li&gt;Not have a heavy runtime associated (it uses the bundled browser engine)
     &lt;ul&gt;
       &lt;li&gt;On Windows/MacOS/Android/iOS the browser is included as part of OS. On Linux not as much, but who has Linux without a browser?&lt;/li&gt;
     &lt;/ul&gt;
@@ -16,16 +16,16 @@ They’re coded just as regular Web Apps with the extension of a separate &lt;co
 &lt;p&gt;The performance is good enough for most apps and you can easily cache content to make the app offline-first. Of course native apps are, and will always be, better but this is a good step in the right direction for simple developer to share their work on multiple platforms.&lt;/p&gt;
 
 &lt;blockquote&gt;
-  &lt;p&gt;A really good example of PWAs is &lt;a href=&quot;http://mobile.twitter.com/&quot;&gt;twitter&lt;/a&gt; which I’d call perhaps even better than the native version&lt;/p&gt;
+  &lt;p&gt;The best example of an PWA I know of is &lt;a href=&quot;http://mobile.twitter.com/&quot;&gt;twitter&lt;/a&gt;, a PWA I prefer to the native app&lt;/p&gt;
 &lt;/blockquote&gt;
 
-&lt;p&gt;You can test my PWA that is done in Kotlin with fritz2 targeting JS on &lt;a href=&quot;https://colorkidz.londogard.com/&quot;&gt;colorkidz.londogard.com&lt;/a&gt;. This is a very simple app to create colouring pages out of images. I think it show-case the possibility of creating a MVP fast &amp;amp; easy while being deployed instantly to all platforms.&lt;/p&gt;
+&lt;p&gt;You can test my PWA that’s written in Kotlin (targeting JS) with fritz2 on &lt;a href=&quot;https://colorkidz.londogard.com/&quot;&gt;colorkidz.londogard.com&lt;/a&gt;. ColorKidz is a simple app that creates colouring pages out of regular images and I believe it really showcases the possibilities of PWA. ColorKidz is a MVP that was fast &amp;amp; easy and now shared across ALL platforms!&lt;/p&gt;
 
 &lt;blockquote&gt;
-  &lt;p&gt;A bonus is that PWAs can be added to Android/Google &amp;amp; Windows App Store, just like a regular app&lt;/p&gt;
+  &lt;p&gt;&lt;strong&gt;Bonus:&lt;/strong&gt; PWAs can be deployed to Android/Google &amp;amp; Windows App Store, just like a regular app&lt;/p&gt;
 &lt;/blockquote&gt;
 
-&lt;p&gt;Please note that it’s not OK according to the TOS to deploy a commercial app through GitHub pages. If you wish to do that take a look at the &lt;a href=&quot;#alternatives&quot;&gt;alternative section&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;Please note that GitHub TOS prohibits deployment of commercial apps through GitHub pages. If you wish to do that take a look at the &lt;a href=&quot;#alternatives&quot;&gt;alternative section&lt;/a&gt; for better alternatives that are free/cheap.&lt;/p&gt;
 
 &lt;h3 id=&quot;how&quot;&gt;How&lt;/h3&gt;
 &lt;p&gt;Building, or transforming, a Web App into a PWA is really easy and has few requirements (depending on browser). The requirements follows:&lt;/p&gt;
@@ -40,14 +40,20 @@ They’re coded just as regular Web Apps with the extension of a separate &lt;co
   &lt;li&gt;(not for all browser) a &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;favicon&lt;/code&gt;/icon&lt;/li&gt;
 &lt;/ol&gt;
 
-&lt;p&gt;And adding more data makes your PWA even better, like safari/iOS specific icons etc and some further metadata.&lt;/p&gt;
+&lt;p&gt;Adding more data makes your PWA even better, like safari/iOS specific icons to improve interoperability.&lt;/p&gt;
 
-&lt;p&gt;This is actually pretty easy requirements to fill and I’ll show the two most important, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;serviceWorker&lt;/code&gt; and &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;webmanifest&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;These requirements are pretty easy to achieve and I’ll show the two most important, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;serviceWorker&lt;/code&gt; and &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;webmanifest&lt;/code&gt;.&lt;/p&gt;
 
 &lt;h4 id=&quot;serviceworkerjs&quot;&gt;ServiceWorker.js&lt;/h4&gt;
-&lt;p&gt;As mentioned the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;serviceWorker&lt;/code&gt; allows to app to work cached and handles the installation of the PWA among other things. &lt;br /&gt;
-An example of this can be found on my &lt;a href=&quot;https://github.com/londogard/colorkidz/blob/main/serviceWorker.js&quot;&gt;GitHub&lt;/a&gt;, find the code a little bit below.&lt;br /&gt;
-A really good guide that goes deeper on the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;serviceWorker&lt;/code&gt; and what more they can achieve can be found on both &lt;a href=&quot;https://developer.mozilla.org/en-US/docs/Web/Progressive_web_apps/Offline_Service_workers&quot;&gt;Mozilla&lt;/a&gt; &amp;amp; &lt;a href=&quot;https://developers.google.com/web/ilt/pwa/introduction-to-service-worker&quot;&gt;Google&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;The &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;serviceWorker&lt;/code&gt; handles the app caching, installation and
+potentially some other things if you ask it too. From the docs:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Service workers essentially act as proxy servers that sit between web applications, and the browser and network (when available). They are intended to (amongst other things) enable the creation of effective offline experiences, intercepting network requests and taking appropriate action based on whether the network is available and updated assets reside on the server. They will also allow access to push notifications and background sync APIs.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;An example of this can be found on my &lt;a href=&quot;https://github.com/londogard/colorkidz/blob/main/serviceWorker.js&quot;&gt;GitHub&lt;/a&gt;, find the code a little bit below.&lt;br /&gt;
+If you wish to deep dive into &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;serviceWorker&lt;/code&gt;’s then head over to the (awesome) documentation at &lt;a href=&quot;https://developer.mozilla.org/en-US/docs/Web/Progressive_web_apps/Offline_Service_workers&quot;&gt;Mozilla&lt;/a&gt; &amp;amp; &lt;a href=&quot;https://developers.google.com/web/ilt/pwa/introduction-to-service-worker&quot;&gt;Google&lt;/a&gt;.&lt;/p&gt;
 &lt;div class=&quot;language-js highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;CACHE_NAME&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;londogard-colorkidz&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
 &lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;urlsToCache&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;
   &lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;/index.html&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
@@ -70,7 +76,8 @@ A really good guide that goes deeper on the &lt;code class=&quot;language-plaint
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 &lt;h4 id=&quot;webmanifest&quot;&gt;Webmanifest&lt;/h4&gt;
 
-&lt;p&gt;Further you need to supply a few more things, a &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;manifest.webmanifest&lt;/code&gt; which looks like the following:&lt;/p&gt;
+&lt;p&gt;The next step is to create your &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;webmanifest&lt;/code&gt; which is the “metadata” of the app. What name should it have once installed? Which icon? Is the orientation locked? There’s a few knobs to tweak and turn.&lt;br /&gt;
+My &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;webmanifest&lt;/code&gt; ended up something like this:&lt;/p&gt;
 &lt;div class=&quot;language-json highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
   &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;short_name&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;ColorKidz&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
   &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;name&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;ColorKidz&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
@@ -93,6 +100,8 @@ A really good guide that goes deeper on the &lt;code class=&quot;language-plaint
 &lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;h4 id=&quot;deploying-to-github-pages&quot;&gt;Deploying to GitHub Pages&lt;/h4&gt;
+&lt;p&gt;For the final step we’re to deploy the PWA!&lt;/p&gt;
+
 &lt;p&gt;First off place all your files in root folder of your GitHub repo. Remember to also have a &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;index.html&lt;/code&gt; which contains both your JS app &amp;amp; your &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;serviceWorker.js&lt;/code&gt; and reference those scripts in &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;body&lt;/code&gt;, e.g.&lt;/p&gt;
 &lt;div class=&quot;language-html highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nt&quot;&gt;&amp;lt;body&amp;gt;&lt;/span&gt;
 ...
@@ -101,7 +110,7 @@ A really good guide that goes deeper on the &lt;code class=&quot;language-plaint
 &lt;span class=&quot;nt&quot;&gt;&amp;lt;/body&amp;gt;&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-&lt;p&gt;Then you need to activate GitHub Pages, whereas the &lt;a href=&quot;https://pages.github.com/&quot;&gt;official documentation&lt;/a&gt; is great! 
+&lt;p&gt;Then you need to activate GitHub Pages for the repository, whereas the &lt;a href=&quot;https://pages.github.com/&quot;&gt;official documentation&lt;/a&gt; is great!&lt;br /&gt;
 GitHub pages recently got their own tab in settings and all you need to do now is to head over there, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;https://github.com/&amp;lt;USERNAME&amp;gt;/&amp;lt;REPO_NAME&amp;gt;/settings/pages&lt;/code&gt; and activate GitHub pages. Make sure to also activate &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;https&lt;/code&gt;-only if possible!&lt;/p&gt;
 
 &lt;p&gt;&lt;strong&gt;And that’s it&lt;/strong&gt;, simple as that. Now you’ve your PWA deployed through GitHub pages. The PWA should be available @ &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;&amp;lt;repo&amp;gt;.github.io&lt;/code&gt;, but better check it in settings to be sure that it’s set up that way.&lt;/p&gt;
@@ -116,7 +125,7 @@ GitHub pages recently got their own tab in settings and all you need to do now i
 
 &lt;p&gt;All which are supposed to be great and simple to use. The free versions of everyone is pretty darn good too!&lt;/p&gt;
 
-&lt;p&gt;&lt;strong&gt;OBS&lt;/strong&gt; Please remember that it’s not allowed to put up applications on GitHub Pages that are commercial according to the ToS.&lt;/p&gt;</content><author><name>Hampus Londögård</name></author><category term="pwa" /><category term="til" /><summary type="html">What Progressive Web Apps (PWAs) are web applications that are deployed on the Web and available on essentially every platform directly (Android, iOS, Linux, Windows, … you name it). They’re coded just as regular Web Apps with the extension of a separate .js-file which runs a serviceWorker which handles caching among other things, and the serviceWorker is really the core of a PWA.</summary></entry><entry><title type="html">Building a Swedish Named Entity Recognition (NER) model (Flair/Huggingface)</title><link href="https://blog.londogard.com/nlp/deep-learning/2021/03/29/swedish-named-entity-recognition.html" rel="alternate" type="text/html" title="Building a Swedish Named Entity Recognition (NER) model (Flair/Huggingface)" /><published>2021-03-29T00:00:00-05:00</published><updated>2021-03-29T00:00:00-05:00</updated><id>https://blog.londogard.com/nlp/deep-learning/2021/03/29/swedish-named-entity-recognition</id><content type="html" xml:base="https://blog.londogard.com/nlp/deep-learning/2021/03/29/swedish-named-entity-recognition.html">&lt;p&gt;Not interested in reading the whole article and just wanna play around with the model(s)? Head over to &lt;a href=&quot;https://londogard.com/ner&quot;&gt;londogard.com/ner&lt;/a&gt;.
+&lt;p&gt;&lt;strong&gt;OBS&lt;/strong&gt; Please remember that it’s not allowed to put up applications on GitHub Pages that are commercial according to the ToS.&lt;/p&gt;</content><author><name>Hampus Londögård</name></author><category term="pwa" /><category term="til" /><summary type="html">What Progressive Web Apps (PWAs) are web applications that are deployed on the Web and available on essentially every platform directly (Android, iOS, Linux, Windows, … you name it). They’re created the same way regular Web Apps are, with minor modifications like a new separate .js-file that runs a serviceWorker. This serviceWorker is the core of the PWA and handle things like caching &amp;amp; installation.</summary></entry><entry><title type="html">Building a Swedish Named Entity Recognition (NER) model (Flair/Huggingface)</title><link href="https://blog.londogard.com/nlp/deep-learning/2021/03/29/swedish-named-entity-recognition.html" rel="alternate" type="text/html" title="Building a Swedish Named Entity Recognition (NER) model (Flair/Huggingface)" /><published>2021-03-29T00:00:00-05:00</published><updated>2021-03-29T00:00:00-05:00</updated><id>https://blog.londogard.com/nlp/deep-learning/2021/03/29/swedish-named-entity-recognition</id><content type="html" xml:base="https://blog.londogard.com/nlp/deep-learning/2021/03/29/swedish-named-entity-recognition.html">&lt;p&gt;Not interested in reading the whole article and just wanna play around with the model(s)? Head over to &lt;a href=&quot;https://londogard.com/ner&quot;&gt;londogard.com/ner&lt;/a&gt;.
 &lt;img src=&quot;https://user-images.githubusercontent.com/7490199/113611097-543f9280-964e-11eb-9e59-bd030c32ad0c.png&quot; alt=&quot;image&quot; /&gt;
 &lt;strong&gt;P.S.&lt;/strong&gt; The Flair model is available for simple installation through &lt;a href=&quot;https://huggingface.co/londogard/flair-swe-ner&quot;&gt;huggingface.co’s model hub&lt;/a&gt;&lt;/p&gt;
 
