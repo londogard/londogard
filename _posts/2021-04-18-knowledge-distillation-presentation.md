@@ -12,4 +12,4 @@ Just a week ago I did a presentation on Knowledge Distillation and how it can he
 
 I simply thought I would share the slides with the world. :)
 
-<embed src="https://github.com/londogard/londogard/raw/master/assets/Knowledge%20Distillation.pdf" width="70%" type="application/pdf">
+<embed src="https://blog.londogard.com/assets/Knowledge%20Distillation.pdf" width="100%" height="720px" type="application/pdf"/>
