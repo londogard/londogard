@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="twitter:card" content="summary_large_image" /><!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>TIL: fastutil - fast &amp; compact type-speciic collections for JVM (no autobox!) | Londogard</title>
+<meta name="generator" content="Jekyll v4.1.1" />
+<meta property="og:title" content="TIL: fastutil - fast &amp; compact type-speciic collections for JVM (no autobox!)" />
+<meta name="author" content="Hampus Londögård" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Discusses what autoboxing is, why it might hit your performance (and memory). Finally some alternatives are also provided. Learn how to use effective data collections today!" />
+<meta property="og:description" content="Discusses what autoboxing is, why it might hit your performance (and memory). Finally some alternatives are also provided. Learn how to use effective data collections today!" />
+<link rel="canonical" href="https://blog.londogard.com/jvm/til/2020/09/03/til-fastutil-primitive-structures.html" />
+<meta property="og:url" content="https://blog.londogard.com/jvm/til/2020/09/03/til-fastutil-primitive-structures.html" />
+<meta property="og:site_name" content="Londogard" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2020-09-03T00:00:00-05:00" />
+<script type="application/ld+json">
+{"url":"https://blog.londogard.com/jvm/til/2020/09/03/til-fastutil-primitive-structures.html","@type":"BlogPosting","headline":"TIL: fastutil - fast &amp; compact type-speciic collections for JVM (no autobox!)","dateModified":"2020-09-03T00:00:00-05:00","datePublished":"2020-09-03T00:00:00-05:00","author":{"@type":"Person","name":"Hampus Londögård"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://blog.londogard.com/jvm/til/2020/09/03/til-fastutil-primitive-structures.html"},"description":"Discusses what autoboxing is, why it might hit your performance (and memory). Finally some alternatives are also provided. Learn how to use effective data collections today!","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/assets/css/style.css"><link type="application/atom+xml" rel="alternate" href="https://blog.londogard.com/feed.xml" title="Londogard" /><link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Primer/15.2.0/primer.css" integrity="sha512-xTz2ys4coGAOz8vuV1NcQBkgVmKhsSEtjbqyMJbBHRplFuvKIUo6xhLHpAyPt9mfR6twHJgn9OgVLuqOvjeBhg==" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css" integrity="sha512-1PKOgIY59xJ8Co8+NE6FZ+LOAZKjy+KY8iq0G4B3CyeY6wYHN3yt9PW0XpSriVlkMXe40PTKnXrLnZ9+fkDaog==" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.12.0/katex.min.css" integrity="sha512-h7nl+xz8wgDlNM4NqKEM4F1NkIRS17M9+uJwIGwuo8vGqIl4BhuCKdxjWEINm+xyrUjNCnK5dCrhM0sj+wTIXw==" crossorigin="anonymous" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.12.0/katex.min.js" integrity="sha512-/CMIhXiDA3m2c9kzRyd97MTb3MC6OVnx4TElQ7fkkoRghwDf6gi41gaT1PwF270W6+J60uTmwgeRpNpJdRV6sg==" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.12.0/contrib/auto-render.min.js" integrity="sha512-Do7uJAaHZm5OLrIv/yN4w0iG1dbu01kzdMNnFfu/mAqgUk6Nniv2JYHcwH+cNwjqgLcqcuBBk+JRvprLVI8azg==" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha512-0doc9hKxR3PYwso42RD1p5ySZpzzuDiOwMrdCEh2WdJZCjcmFKc/wEnL+z8fBQrnHoiNWbo+3fiGkOYXBdQp4A==" crossorigin="anonymous"></script>
+    <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        renderMathInElement( document.body, {
+        delimiters: [
+            {left: "$$", right: "$$", display: true},
+            {left: "[%", right: "%]", display: true},
+            {left: "$", right: "$", display: false}
+        ]}
+        );
+    });
+    </script>
+
+
+<script>
+function wrap_img(fn) {
+    if (document.attachEvent ? document.readyState === "complete" : document.readyState !== "loading") {
+        var elements = document.querySelectorAll(".post img");
+        Array.prototype.forEach.call(elements, function(el, i) {
+            if (el.getAttribute("title") && (el.className != "emoji")) {
+                const caption = document.createElement('figcaption');
+                var node = document.createTextNode(el.getAttribute("title"));
+                caption.appendChild(node);
+                const wrapper = document.createElement('figure');
+                wrapper.className = 'image';
+                el.parentNode.insertBefore(wrapper, el);
+                el.parentNode.removeChild(el);
+                wrapper.appendChild(el);
+                wrapper.appendChild(caption);
+            }
+        });
+    } else { document.addEventListener('DOMContentLoaded', fn); }
+}
+window.onload = wrap_img;
+</script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function(){
+    // add link icon to anchor tags
+    var elem = document.querySelectorAll(".anchor-link")
+    elem.forEach(e => (e.innerHTML = '<i class="fas fa-link fa-xs"></i>'));
+    });
+</script>
+</head>
+<body><header class="site-header" role="banner">
+
+    <div class="wrapper"><a class="site-title" rel="author" href="/">Londogard</a><nav class="site-nav">
+          <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+          <label for="nav-trigger">
+            <span class="menu-icon">
+              <svg viewBox="0 0 18 15" width="18px" height="15px">
+                <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+              </svg>
+            </span>
+          </label>
+  
+          <div class="trigger"><a class="page-link" href="/education/">Education: Presentations &amp; Workshops</a><a class="page-link" href="/londogard">Londogard↗</a><a class="page-link" href="/search/">Search</a><a class="page-link" href="/categories/">Tags</a></div>
+        </nav></div>
+  </header><main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">TIL: fastutil - fast &amp; compact type-speciic collections for JVM (no autobox!)</h1><p class="page-description">Discusses what autoboxing is, why it might hit your performance (and memory). Finally some alternatives are also provided. Learn how to use effective data collections today!</p><p class="post-meta post-meta-title"><time class="dt-published" datetime="2020-09-03T00:00:00-05:00" itemprop="datePublished">
+        Sep 3, 2020
+      </time>• 
+          <span itemprop="author" itemscope itemtype="http://schema.org/Person">
+            <span class="p-author h-card" itemprop="name">Hampus Londögård</span></span>
+       • <span class="read-time" title="Estimated read time">
+    
+    
+      2 min read
+    
+</span></p>
+
+    
+      <p class="category-tags"><i class="fas fa-tags category-tags-icon"></i></i> 
+      
+        <a class="category-tags-link" href="/categories/#jvm">jvm</a>
+        &nbsp;
+      
+        <a class="category-tags-link" href="/categories/#til">til</a>
+        
+      
+      </p>
+    
+
+    </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <ul class="section-nav">
+<li class="toc-entry toc-h1"><a href="#fastutil---how-to-optimize-your-collections-by-primitives">fastutil - how to optimize your collections by primitives</a>
+<ul>
+<li class="toc-entry toc-h3"><a href="#what">What</a></li>
+<li class="toc-entry toc-h3"><a href="#how">How</a>
+<ul>
+<li class="toc-entry toc-h4"><a href="#installation">Installation</a></li>
+<li class="toc-entry toc-h4"><a href="#usage">Usage</a></li>
+</ul>
+</li>
+<li class="toc-entry toc-h3"><a href="#why">Why</a></li>
+<li class="toc-entry toc-h3"><a href="#alternatives">Alternatives</a></li>
+</ul>
+</li>
+</ul><h1 id="fastutil---how-to-optimize-your-collections-by-primitives">
+<a class="anchor" href="#fastutil---how-to-optimize-your-collections-by-primitives" aria-hidden="true"><span class="octicon octicon-link"></span></a>fastutil - how to optimize your collections by primitives</h1>
+<blockquote>
+  <p>fastutil extends the Java™ Collections Framework by providing type-specific maps, sets, lists and queues with a small memory footprint and fast access and insertion</p>
+</blockquote>
+
+<p><a href="http://fastutil.di.unimi.it/">Homepage</a> of fastutil</p>
+
+<h3 id="what">
+<a class="anchor" href="#what" aria-hidden="true"><span class="octicon octicon-link"></span></a>What</h3>
+<p>So what does the quote above actually mean?<br>
+First we need to dive into, what is a Java Collection, and why are they "bad" for performance and memory requirements?</p>
+
+<p>Java Collections (<code class="language-plaintext highlighter-rouge">Collection&lt;E&gt;</code>) only works with objects, meaning that if we have a <code class="language-plaintext highlighter-rouge">List&lt;E&gt;</code> which we populate with <code class="language-plaintext highlighter-rouge">int</code> it’ll actually "autobox" the <code class="language-plaintext highlighter-rouge">int</code> into a <code class="language-plaintext highlighter-rouge">Integer</code>, i.e. the class, rather than the primitive type.<br>
+What does this mean for you as a user?</p>
+
+<ul>
+  <li>It’s done through "autoboxing" which means automatic casting to the <code class="language-plaintext highlighter-rouge">Integer</code>-type, so nothing required for you</li>
+  <li>It allocates more memory than the primitive <code class="language-plaintext highlighter-rouge">int</code>.</li>
+</ul>
+
+<p>So how do you create an effective <code class="language-plaintext highlighter-rouge">List</code> that contains primitives, such as <code class="language-plaintext highlighter-rouge">int, boolean</code> and <code class="language-plaintext highlighter-rouge">float</code>? You can’t.<br>
+What you can do is to create an array, <code class="language-plaintext highlighter-rouge">int[]</code>, which will contain the actual primitives, no autoboxing applied.</p>
+
+<p>But what if you want to have the methods from <code class="language-plaintext highlighter-rouge">List</code>, such as <code class="language-plaintext highlighter-rouge">find</code> and "auto-resizing"?
+Then you’ll have to research and find a library, <code class="language-plaintext highlighter-rouge">fastutil</code> to the rescue!</p>
+
+<h3 id="how">
+<a class="anchor" href="#how" aria-hidden="true"><span class="octicon octicon-link"></span></a>How</h3>
+<p><code class="language-plaintext highlighter-rouge">fastutil</code> implements their own versions of <code class="language-plaintext highlighter-rouge">List</code>, <code class="language-plaintext highlighter-rouge">HashMap</code> and so on which actually use the raw primitives, thereby increasing throughput while lowering memory used (as we’re not allocating as many objects anymore, when using primitives).</p>
+
+<p><em>These types of libraries are only required once you hit an enormous amount of data or very strict requirement.</em></p>
+
+<h4 id="installation">
+<a class="anchor" href="#installation" aria-hidden="true"><span class="octicon octicon-link"></span></a>Installation</h4>
+
+<p>Using gradle</p>
+
+<p><code class="language-plaintext highlighter-rouge">implementation: 'it.unimi.dsi:fastutil:8.4.1'</code> (latest version as of Aug 2020, <a href="https://mvnrepository.com/artifact/it.unimi.dsi/fastutil">mvnrepository</a>)</p>
+
+<h4 id="usage">
+<a class="anchor" href="#usage" aria-hidden="true"><span class="octicon octicon-link"></span></a>Usage</h4>
+
+<p><em>DoubleToDoubleMap</em></p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">val</span> <span class="py">d2dMap</span><span class="p">:</span> <span class="nc">Double2DoubleMap</span> <span class="p">=</span> <span class="nc">Double2DoubleOpenHashMap</span><span class="p">().</span><span class="nf">apply</span> <span class="p">{</span>
+    <span class="nf">put</span><span class="p">(</span><span class="mf">2.0</span><span class="p">,</span> <span class="mf">5.5</span><span class="p">)</span>
+    <span class="nf">put</span><span class="p">(</span><span class="mf">3.0</span><span class="p">,</span> <span class="mf">6.6</span><span class="p">)</span>
+<span class="p">}</span>
+<span class="nf">assertEquals</span><span class="p">(</span><span class="mf">5.5</span><span class="p">,</span> <span class="n">d2dMap</span><span class="p">.</span><span class="k">get</span><span class="p">(</span><span class="mf">2.0</span><span class="p">))</span>
+</code></pre></div></div>
+
+<p>This map is not only less memory-hungry (because using <code class="language-plaintext highlighter-rouge">double</code> rather than <code class="language-plaintext highlighter-rouge">Double</code>) but is also faster with insertions &amp; get, than the Java Collections counterpart.</p>
+
+<h3 id="why">
+<a class="anchor" href="#why" aria-hidden="true"><span class="octicon octicon-link"></span></a>Why</h3>
+
+<p><strong>Less space used &amp; faster</strong> - it is as simple as that!</p>
+
+<ul>
+  <li>No "AutoBoxing"</li>
+  <li>No Object allocations for primitives</li>
+</ul>
+
+<p><em>Side-note</em>
+Something I noticed while working on my Language Model in Kotlin, with some strict requirements and a lot of data, was that even when using <code class="language-plaintext highlighter-rouge">fastutil</code> I wasn’t gaining that much as I was  mainly using <code class="language-plaintext highlighter-rouge">views</code> of my Lists, further optimizing memory. Views are what the name implies, a view of the List. It never creates a copy but just the indices and make use of the original structure. 
+Using immutable data this is very effective, but if you’d been using mutable data it could prove dangerous as someone can change the structure and data of your view (even if your view is immutable the underlying List might not be).</p>
+
+<h3 id="alternatives">
+<a class="anchor" href="#alternatives" aria-hidden="true"><span class="octicon octicon-link"></span></a>Alternatives</h3>
+
+<p><a href="https://www.eclipse.org/collections/">Goldman Sachs Collection - now Eclipse Collections</a> - Probably the best alternative, in my opinion.
+<a href="http://labs.carrotsearch.com/hppc.html">HPPC - Carrot Search Labs</a>
+<a href="https://bitbucket.org/trove4j/trove/src/master/">Trove4j</a> - Not as active as other alternatives, but who cares when it’s performant and "done"?</p>
+
+<p>Find a 2015 benchmark of the libraries <a href="http://java-performance.info/hashmap-overview-jdk-fastutil-goldman-sachs-hppc-koloboke-trove-january-2015/">here</a>
+At least both <code class="language-plaintext highlighter-rouge">fastutil</code>&amp; <code class="language-plaintext highlighter-rouge">Eclipse Collections</code> are updated for Java 8 streams!</p>
+
+<p>-Hampus Londögård</p>
+
+  </div><!-- from https://github.com/utterance/utterances -->
+<script src="https://utteranc.es/client.js"
+        repo="londogard/londogard"
+        issue-term="title"
+        label="blogpost-comment"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+</script><a class="u-url" href="/jvm/til/2020/09/03/til-fastutil-primitive-structures.html" hidden></a>
+</article>
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/"></data>
+
+  <div class="wrapper">
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col">
+        <p class="feed-subscribe">
+          <a href="/feed.xml">
+            <svg class="svg-icon orange">
+              <use xlink:href="/assets/minima-social-icons.svg#rss"></use>
+            </svg><span>Subscribe</span>
+          </a>
+        </p>
+      </div>
+      <div class="footer-col">
+        <p>A blog with a focus on Deep Learning, JVM and Performance.</p>
+      </div>
+    </div>
+
+    <div class="social-links"><ul class="social-media-list"><li><a rel="me" href="https://github.com/londogard" title="londogard"><svg class="svg-icon grey"><use xlink:href="/assets/minima-social-icons.svg#github"></use></svg></a></li></ul>
+</div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>

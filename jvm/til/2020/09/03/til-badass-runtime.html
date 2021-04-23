@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="twitter:card" content="summary_large_image" /><!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>TIL: ‘The Badass Runtime Plugin’, jpackage &amp; jlink - create a ‘native’ installable executable from your JVM-app that isn’t huge | Londogard</title>
+<meta name="generator" content="Jekyll v4.1.1" />
+<meta property="og:title" content="TIL: ‘The Badass Runtime Plugin’, jpackage &amp; jlink - create a ‘native’ installable executable from your JVM-app that isn’t huge" />
+<meta name="author" content="Hampus Londögård" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="‘The Badass Runtime Plugin’ is a plugin that allows you to package a stripped down JRE and modules from your program into a ‘native’ installable program which doesn’t require the user to have Java installed. It takes help of JPackage &amp; JLink to achieve this, my own small program ended up at 35 MB including JRE, which is pretty crazy. This is like Electron, but better! ;)" />
+<meta property="og:description" content="‘The Badass Runtime Plugin’ is a plugin that allows you to package a stripped down JRE and modules from your program into a ‘native’ installable program which doesn’t require the user to have Java installed. It takes help of JPackage &amp; JLink to achieve this, my own small program ended up at 35 MB including JRE, which is pretty crazy. This is like Electron, but better! ;)" />
+<link rel="canonical" href="https://blog.londogard.com/jvm/til/2020/09/03/til-badass-runtime.html" />
+<meta property="og:url" content="https://blog.londogard.com/jvm/til/2020/09/03/til-badass-runtime.html" />
+<meta property="og:site_name" content="Londogard" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2020-09-03T00:00:00-05:00" />
+<script type="application/ld+json">
+{"url":"https://blog.londogard.com/jvm/til/2020/09/03/til-badass-runtime.html","@type":"BlogPosting","headline":"TIL: ‘The Badass Runtime Plugin’, jpackage &amp; jlink - create a ‘native’ installable executable from your JVM-app that isn’t huge","dateModified":"2020-09-03T00:00:00-05:00","datePublished":"2020-09-03T00:00:00-05:00","author":{"@type":"Person","name":"Hampus Londögård"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://blog.londogard.com/jvm/til/2020/09/03/til-badass-runtime.html"},"description":"‘The Badass Runtime Plugin’ is a plugin that allows you to package a stripped down JRE and modules from your program into a ‘native’ installable program which doesn’t require the user to have Java installed. It takes help of JPackage &amp; JLink to achieve this, my own small program ended up at 35 MB including JRE, which is pretty crazy. This is like Electron, but better! ;)","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/assets/css/style.css"><link type="application/atom+xml" rel="alternate" href="https://blog.londogard.com/feed.xml" title="Londogard" /><link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Primer/15.2.0/primer.css" integrity="sha512-xTz2ys4coGAOz8vuV1NcQBkgVmKhsSEtjbqyMJbBHRplFuvKIUo6xhLHpAyPt9mfR6twHJgn9OgVLuqOvjeBhg==" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css" integrity="sha512-1PKOgIY59xJ8Co8+NE6FZ+LOAZKjy+KY8iq0G4B3CyeY6wYHN3yt9PW0XpSriVlkMXe40PTKnXrLnZ9+fkDaog==" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.12.0/katex.min.css" integrity="sha512-h7nl+xz8wgDlNM4NqKEM4F1NkIRS17M9+uJwIGwuo8vGqIl4BhuCKdxjWEINm+xyrUjNCnK5dCrhM0sj+wTIXw==" crossorigin="anonymous" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.12.0/katex.min.js" integrity="sha512-/CMIhXiDA3m2c9kzRyd97MTb3MC6OVnx4TElQ7fkkoRghwDf6gi41gaT1PwF270W6+J60uTmwgeRpNpJdRV6sg==" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.12.0/contrib/auto-render.min.js" integrity="sha512-Do7uJAaHZm5OLrIv/yN4w0iG1dbu01kzdMNnFfu/mAqgUk6Nniv2JYHcwH+cNwjqgLcqcuBBk+JRvprLVI8azg==" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha512-0doc9hKxR3PYwso42RD1p5ySZpzzuDiOwMrdCEh2WdJZCjcmFKc/wEnL+z8fBQrnHoiNWbo+3fiGkOYXBdQp4A==" crossorigin="anonymous"></script>
+    <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        renderMathInElement( document.body, {
+        delimiters: [
+            {left: "$$", right: "$$", display: true},
+            {left: "[%", right: "%]", display: true},
+            {left: "$", right: "$", display: false}
+        ]}
+        );
+    });
+    </script>
+
+
+<script>
+function wrap_img(fn) {
+    if (document.attachEvent ? document.readyState === "complete" : document.readyState !== "loading") {
+        var elements = document.querySelectorAll(".post img");
+        Array.prototype.forEach.call(elements, function(el, i) {
+            if (el.getAttribute("title") && (el.className != "emoji")) {
+                const caption = document.createElement('figcaption');
+                var node = document.createTextNode(el.getAttribute("title"));
+                caption.appendChild(node);
+                const wrapper = document.createElement('figure');
+                wrapper.className = 'image';
+                el.parentNode.insertBefore(wrapper, el);
+                el.parentNode.removeChild(el);
+                wrapper.appendChild(el);
+                wrapper.appendChild(caption);
+            }
+        });
+    } else { document.addEventListener('DOMContentLoaded', fn); }
+}
+window.onload = wrap_img;
+</script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function(){
+    // add link icon to anchor tags
+    var elem = document.querySelectorAll(".anchor-link")
+    elem.forEach(e => (e.innerHTML = '<i class="fas fa-link fa-xs"></i>'));
+    });
+</script>
+</head>
+<body><header class="site-header" role="banner">
+
+    <div class="wrapper">
+<a class="site-title" rel="author" href="/">Londogard</a><nav class="site-nav">
+          <input type="checkbox" id="nav-trigger" class="nav-trigger">
+          <label for="nav-trigger">
+            <span class="menu-icon">
+              <svg viewbox="0 0 18 15" width="18px" height="15px">
+                <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"></path>
+              </svg>
+            </span>
+          </label>
+  
+          <div class="trigger">
+<a class="page-link" href="/education/">Education: Presentations &amp; Workshops</a><a class="page-link" href="/londogard">Londogard↗</a><a class="page-link" href="/search/">Search</a><a class="page-link" href="/categories/">Tags</a>
+</div>
+        </nav>
+</div>
+  </header><main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">TIL: 'The Badass Runtime Plugin', jpackage &amp; jlink - create a 'native' installable executable from your JVM-app that isn't huge</h1>
+<p class="page-description">'The Badass Runtime Plugin' is a plugin that allows you to package a stripped down JRE and modules from your program into a 'native' installable program which doesn't require the user to have Java installed. It takes help of JPackage &amp; JLink to achieve this, my own small program ended up at 35 MB including JRE, which is pretty crazy. This is like Electron, but better! ;)</p>
+<p class="post-meta post-meta-title"><time class="dt-published" datetime="2020-09-03T00:00:00-05:00" itemprop="datePublished">
+        Sep 3, 2020
+      </time>• 
+          <span itemprop="author" itemscope itemtype="http://schema.org/Person">
+            <span class="p-author h-card" itemprop="name">Hampus Londögård</span></span>
+       • <span class="read-time" title="Estimated read time">
+    
+    
+      4 min read
+    
+</span></p>
+
+    
+      <p class="category-tags"><i class="fas fa-tags category-tags-icon"></i> 
+      
+        <a class="category-tags-link" href="/categories/#jvm">jvm</a>
+         
+      
+        <a class="category-tags-link" href="/categories/#til">til</a>
+        
+      
+      </p>
+    
+
+    </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <ul class="section-nav">
+<li class="toc-entry toc-h1">
+<a href="#jpackage-jlink-and-how-to-pack-a-modern-java-app">JPackage, JLink and how to pack a modern Java App</a>
+<ul>
+<li class="toc-entry toc-h3">
+<a href="#what">What</a>
+<ul>
+<li class="toc-entry toc-h4"><a href="#what-is-jlink">What is JLink?</a></li>
+<li class="toc-entry toc-h4"><a href="#what-is-jpackage">What is JPackage</a></li>
+</ul>
+</li>
+<li class="toc-entry toc-h3">
+<a href="#how">How</a>
+<ul>
+<li class="toc-entry toc-h4"><a href="#installation">Installation</a></li>
+<li class="toc-entry toc-h4"><a href="#usage">Usage</a></li>
+</ul>
+</li>
+<li class="toc-entry toc-h3"><a href="#why">Why</a></li>
+<li class="toc-entry toc-h3">
+<a href="#alternatives">Alternatives</a>
+<ul>
+<li class="toc-entry toc-h4"><a href="#fat-jar">"Fat-JAR"</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h1 id="jpackage-jlink-and-how-to-pack-a-modern-java-app">
+<a class="anchor" href="#jpackage-jlink-and-how-to-pack-a-modern-java-app" aria-hidden="true"><span class="octicon octicon-link"></span></a>JPackage, JLink and how to pack a modern Java App</h1>
+<p>JPackage is a way to package a modern JVM-program as a installable binary, in a small format.</p>
+
+<h3 id="what">
+<a class="anchor" href="#what" aria-hidden="true"><span class="octicon octicon-link"></span></a>What</h3>
+<p>JPackage was finally included in the JDK by JDK-14, originally from the JavaFX-world (to bundle your desktop apps).
+JPackage combines itself with JLink, which builds upon ‘<a href="https://openjdk.java.net/projects/jigsaw/">project jigsaw</a>’, and together they form a way to create "native" binaries for JVM-projects.</p>
+
+<h4 id="what-is-jlink">
+<a class="anchor" href="#what-is-jlink" aria-hidden="true"><span class="octicon octicon-link"></span></a>What is JLink?</h4>
+
+<p><a href="https://docs.oracle.com/javase/9/tools/jlink.htm">JLink</a> is a way to assemble and optimize a set of modules and their dependencies into a custom runtime image (JRE). 
+In other words we can take a ordinary JRE, ~200 MB, and chop it down to a total size of 25-40 MB for smaller project.</p>
+
+<p>JLink is only possible thanks to ‘project jigsaw’ which introduced modules and modularized the whole JRE starting from JDK-9. The Java standard library (stdlib) was modularized into 75 modules.
+As you might guess it is even better if your own code is also modularized, but not enforced.</p>
+
+<h4 id="what-is-jpackage">
+<a class="anchor" href="#what-is-jpackage" aria-hidden="true"><span class="octicon octicon-link"></span></a>What is JPackage</h4>
+
+<p>JPackage is the packaging suite that allows you to package your code, dependencies and the JLink-created JRE. I ended up with installation files, with a natively executable file on 60 MB for one of my smaller projects, which is really good in comparison to Electron!
+In comparison to a C-program this might not be amazing, but you’ve to remember that this is completely cross-platform!</p>
+
+<p><em>Side-note</em> all sized discussed is without any major optimizations - and there exists a lot! Finally, if you exclude the JRE you can reach sizes of KB rather than MB! But excluding the JRE enforces the user to have it locally, which might not be good UX.</p>
+
+<h3 id="how">
+<a class="anchor" href="#how" aria-hidden="true"><span class="octicon octicon-link"></span></a>How</h3>
+<p>JPackage &amp; JLink is made easy thanks to <a href="https://badass-runtime-plugin.beryx.org/releases/latest/">The Badass Runtime Plugin</a> or <a href="https://badass-jlink-plugin.beryx.org/releases/latest/">The Badass JLink Plugin</a> where the latter require a modular project and the former works with any project! :happy:</p>
+
+<h4 id="installation">
+<a class="anchor" href="#installation" aria-hidden="true"><span class="octicon octicon-link"></span></a>Installation</h4>
+
+<p>Make sure you use &amp; target JDK 14 or higher, JPackage was first included in this version. I recommend SDKMan to install &amp; swap JDKs.</p>
+
+<p>Then to add the <code class="language-plaintext highlighter-rouge">Badass Runtime Plugin</code> I recommend using <code class="language-plaintext highlighter-rouge">gradle</code>, which makes it as simple as the following.</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nf">plugins</span> <span class="p">{</span>
+    <span class="o">..</span><span class="p">.</span>
+    <span class="nf">id</span><span class="p">(</span><span class="err">\</span><span class="s">"org.beryx.runtime\") version \"1.11.3\" // latest version August 2020
+</span>    <span class="o">..</span><span class="p">.</span>
+<span class="p">}</span>
+<span class="nf">runtime</span> <span class="p">{</span>
+    <span class="n">options</span><span class="p">.</span><span class="k">set</span><span class="p">(</span><span class="nf">listOf</span><span class="p">(</span><span class="err">\</span><span class="s">"--strip-debug\", \"--compress\", \"2\", \"--no-header-files\", \"--no-man-pages\"))
+</span>    <span class="nf">jpackage</span> <span class="p">{</span>
+        <span class="n">installerType</span> <span class="p">=</span> <span class="err">\</span><span class="s">"deb\" // https://badass-runtime-plugin.beryx.org/releases/latest/
+</span>    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>This addition now creates the tasks required to build &amp; bundle your app. The options added make sure that you reduce the total size by <em>a lot</em>.
+I highly recommend reading the documentation, there’s so many incredibly useful options - I only provide the minimum!</p>
+
+<h4 id="usage">
+<a class="anchor" href="#usage" aria-hidden="true"><span class="octicon octicon-link"></span></a>Usage</h4>
+
+<p>By editing our <code class="language-plaintext highlighter-rouge">building.gradle.kts</code> to include everything from the <a href="#Installation">Installation</a> we can run the <code class="language-plaintext highlighter-rouge">./gradlew jpackage</code> task to build our installer!</p>
+
+<p>I want to note again, please make sure to read the homepage - a ton of optimizations and customization exist. There exists a lot of low hanging fruit for sure, so make sure to grab it! <img class="emoji" title=":wink:" alt=":wink:" src="https://github.githubassets.com/images/icons/emoji/unicode/1f609.png" height="20" width="20"></p>
+
+<h3 id="why">
+<a class="anchor" href="#why" aria-hidden="true"><span class="octicon octicon-link"></span></a>Why</h3>
+<p>It’s really cool to see your JVM application installable using a <code class="language-plaintext highlighter-rouge">.msi</code>, <code class="language-plaintext highlighter-rouge">.deb</code> or even a <code class="language-plaintext highlighter-rouge">.dmg</code> while retaining a decent enough size.
+By using JPackage rather than GraalVM you make sure that you don’t loose anything in the form of performance or functionality. As a cherry on the top, it’s not just a executable file, but also includes a installer which is much better UX in my opinion. GraalVM will be discussed a bit more in <a href="#Alternatives">Alternatives</a>.</p>
+
+<p>I want to re-iterate about the UX and size, which are the two main points of this.</p>
+
+<ol>
+  <li>We bundle a JRE with the JVM-app, allowing executables without requiring Java, of your version, to be installed on the user computer already.</li>
+  <li>The JRE is minified to only contain required modules, about 30-40 MB on a smaller project.</li>
+  <li>All required dependencies are bundled also</li>
+  <li>Installer which makes the whole JVM program really like any program on the computer</li>
+  <li>Basically a download, install run program that isn’t huge in size!</li>
+</ol>
+
+<h3 id="alternatives">
+<a class="anchor" href="#alternatives" aria-hidden="true"><span class="octicon octicon-link"></span></a>Alternatives</h3>
+<p>I see two alternatives that are worth mentioning</p>
+
+<ol>
+  <li>FAT-JAR / Uber-JAR / Shadow-JAR</li>
+  <li>GraalVM Native Image</li>
+</ol>
+
+<h4 id="fat-jar">
+<a class="anchor" href="#fat-jar" aria-hidden="true"><span class="octicon octicon-link"></span></a>"Fat-JAR"</h4>
+<p>A FAT-jar is a jar that bundles all dependencies and also includes a shell script, or <code class="language-plaintext highlighter-rouge">.bat</code> if Windows, to run the whole JVM-application. 
+It’s pretty small in size, even though called FAT, as it doesn’t include a JRE to run the JVM.</p>
+
+<p>This means that if your JVM-app requires Java 11 but the user only has Java 8 you need to have them download the JRE required, which sucks.</p>
+
+<p>#### GraalVM
+ The probably best alternative, it’s even smaller in size as SubstrateVM (their runtime) is really small and GraalVM allows AOT compile.</p>
+
+<p>GraalVM has <em>much</em> faster startup-times than a JPackage program, but GraalVM is not as good when running for a long duration as there isn’t the incredibly good JIT from JVM.</p>
+
+<p>I’d say something along the following - for long running apps choose JPackage, for lambda etc certainly choose GraalVM.</p>
+
+<p>But GraalVM has further negatives, you can’t just code as you usually do. Reflection etc is not supported as usual, meaning there comes a lot of caveats using GraalVM.</p>
+
+<p><em>Extra:</em> I managed to end up with, after some minor trial-and-error, a binary file on ~ 12 MB for my file-sending program - pretty darn amazing!</p>
+
+<p><em>I’ll write more about GraalVM and its SubstrateVM which is used to create the native binaries in a new TIL.</em></p>
+
+<p>-Hampus Londögård</p>
+
+  </div>
+<!-- from https://github.com/utterance/utterances -->
+<script src="https://utteranc.es/client.js" repo="londogard/londogard" issue-term="title" label="blogpost-comment" theme="github-light" crossorigin="anonymous" async>
+</script><a class="u-url" href="/jvm/til/2020/09/03/til-badass-runtime.html" hidden></a>
+</article>
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/"></data>
+
+  <div class="wrapper">
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col">
+        <p class="feed-subscribe">
+          <a href="/feed.xml">
+            <svg class="svg-icon orange">
+              <use xlink:href="/assets/minima-social-icons.svg#rss"></use>
+            </svg><span>Subscribe</span>
+          </a>
+        </p>
+      </div>
+      <div class="footer-col">
+        <p>A blog with a focus on Deep Learning, JVM and Performance.</p>
+      </div>
+    </div>
+
+    <div class="social-links">
+<ul class="social-media-list"><li><a rel="me" href="https://github.com/londogard" title="londogard"><svg class="svg-icon grey"><use xlink:href="/assets/minima-social-icons.svg#github"></use></svg></a></li></ul>
+</div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>
