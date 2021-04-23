@@ -2,7 +2,7 @@
 toc: true
 layout: post
 description: What is Knowledge Distillation? How can this allow us to further utilize models and increase efficiency manifold?
-categories: [presentation, machinelearning]
+categories: [presentation, machine-learning]
 title: "Knowledge Distillation (Presentation)"
 comments: true
 author: Hampus Londögård

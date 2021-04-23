@@ -2,7 +2,7 @@
 toc: true
 layout: post
 description: "This blog contains my first Competence Meeting where basic NLP concepts where taught and an classifier with good performance was implemented (on IMDB sentiment)."
-categories: [python, competence, machine-learning, nlp, text-classification]
+categories: [machine-learning, nlp, workshop]
 title: "[2019-02-04] AFRY NLP Competence Meeting: Text Classification IMDB"
 comments: true
 author: Hampus Londögård

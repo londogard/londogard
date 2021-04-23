@@ -2,7 +2,7 @@
 toc: true
 layout: post
 description: "A search engine for FAQs in Swedish. Completely unsupervised and making use of Word Embeddings & Smooth Inverse Frequency to embed sentences. Basically scratched an itch I've had for a while"
-categories: [faq, nlp, machine-learning]
+categories: [nlp, machine-learning]
 title: "A simple FAQ search engine in Swedish using fastText & Smooth Inverse Frequency"
 comments: true
 author: Hampus Londögård

@@ -2,7 +2,7 @@
 toc: true
 layout: post
 description: "In this post different abstraction levels of SQL is discussed with the final SQLDelight which turns the abstraction into the reverse."
-categories: [jvm, kotlin, sql, multiplatform]
+categories: [jvm, kotlin, db, multiplatform]
 title: "SQL - Different Abstraction Levels (& how I came to love SQLDelight)"
 comments: true
 author: Hampus Londögård

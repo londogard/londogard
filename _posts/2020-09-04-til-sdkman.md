@@ -2,7 +2,7 @@
 toc: true
 layout: post
 description: SDKMan is a tool to make JDK swapping, and installation, simple. It's really good!
-categories: [jvm, jdk, til]
+categories: [jvm, til]
 title: "TIL: SDKMan - The Software Development Kit Manager"
 comments: true
 author: Hampus Londögård

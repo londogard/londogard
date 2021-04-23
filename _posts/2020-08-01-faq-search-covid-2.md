@@ -5,7 +5,7 @@ title: CoViD-19 FAQ Search Engine 2.0
 toc: true
 badges: true
 comments: true
-categories: [jupyter, nlp, machine-learning, deep-learning]
+categories: [nlp, machine-learning, workshop]
 branch: master
 author: Hampus Londögård
 nb_path: _notebooks/2020-08-01-faq-search-covid-2.ipynb

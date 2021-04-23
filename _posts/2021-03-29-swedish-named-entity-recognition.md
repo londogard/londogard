@@ -2,7 +2,7 @@
 toc: true
 layout: post
 description: "Learn how to fine-tune a Flair NER model and quantize a BERT model from Huggingface to achieve SotA performance & a much more efficient model."
-categories: [nlp, deep-learning]
+categories: [nlp, machine-learning, workshop]
 title: "Building a Swedish Named Entity Recognition (NER) model (Flair/Huggingface)"
 comments: true
 author: Hampus Londögård

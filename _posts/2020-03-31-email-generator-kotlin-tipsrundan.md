@@ -2,7 +2,7 @@
 toc: true
 layout: post
 description: "This blog goes through how to use Kotlin to generate good looking responsive emails. It'll handle CSS, kotlin html DSL & kotlin serialization."
-categories: [email, kotlin, html, css, serialization]
+categories: [kotlin, html]
 title: "How I created a email generator in Kotlin (for Afry Tipsrundan)"
 comments: true
 author: Hampus Londögård

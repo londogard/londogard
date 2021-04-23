@@ -2,7 +2,7 @@
 toc: true
 layout: post
 description: "A simple quick comparison on which method to use and in what case when replacing characters or strings in strings."
-categories: [jvm, regex]
+categories: [jvm]
 title: "When to use what - RegExp, String Replace & Character Replace (JVM/Kotlin)"
 comments: true
 author: Hampus Londögård

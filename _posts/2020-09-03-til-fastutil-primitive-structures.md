@@ -2,7 +2,7 @@
 toc: true
 layout: post
 description: "Discusses what autoboxing is, why it might hit your performance (and memory). Finally some alternatives are also provided. Learn how to use effective data collections today!"
-categories: [jvm, til, optimization]
+categories: [jvm, til]
 title: "TIL: fastutil - fast & compact type-speciic collections for JVM (no autobox!)"
 comments: true
 author: Hampus Londögård
