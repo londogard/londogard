@@ -2,7 +2,7 @@
 toc: true
 layout: post
 description: "A simple show-case on how to publish libraries to both _GitHub Packages_ & _JitPack_ with a one-button release using gradle & GitHub Actions."
-categories: [gradle, jvm, library]
+categories: [gradle, jvm]
 title: "Gradle, JVM and GitHub Packages"
 comments: true
 author: Hampus Londögård

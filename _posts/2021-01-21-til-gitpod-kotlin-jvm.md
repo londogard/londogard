@@ -2,7 +2,7 @@
 toc: true
 layout: post
 description: "GitPod is a Cloud IDE where you can run everything from Kotlin to Python/JS. In this TIL how to launch native programs and more is shown in the GitPod IDE."
-categories: [jvm, kotlin]
+categories: [jvm, kotlin, TIL]
 title: "TIL: GitPod - your editor in the cloud"
 comments: true
 author: Hampus Londögård
