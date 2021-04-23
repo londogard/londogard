@@ -20,27 +20,42 @@ title: "Education: Presentations & Workshops"
 <ul class="post-list">
 {%- assign date_format = site.minima.date_format | default: "%b %-d, %Y" -%}
 {%- for post in site.categories.workshop -%}
-<li>
-    {%- if site.show_image -%}
-        {%- include post_list_image_card.html -%}
+    {% assign counter = forloop.index %}
+    {% if counter < 4 %}
+        <li>
+            {%- if site.show_image -%}
+                {%- include post_list_image_card.html -%}
+            {% else %}
+                {%- include post_list.html -%}
+            {%- endif -%}
+        </li>
     {% else %}
-        {%- include post_list.html -%}
+        {%- assign date_format = site.minima.date_format | default: "%b %-d, %Y" -%}
+        <article class="archive-item">
+        <p class="post-meta post-meta-title"><a class="page-meta" href="{{ site.baseurl }}{{ post.url }}">{{post.title}}</a>  • {{ post.date | date: date_format }}</p>
+        </article>
     {%- endif -%}
-</li>
 {%- endfor -%}
 </ul>
 
 <h2>Presentations</h2>
-
 <ul class="post-list">
     {%- assign date_format = site.minima.date_format | default: "%b %-d, %Y" -%}
     {%- for post in site.categories.presentation -%}
-    <li>
-        {%- if site.show_image -%}
-            {%- include post_list_image_card.html -%}
+        {% assign counter = forloop.index %}
+        {% if counter < 4 %}
+            <li>
+                {%- if site.show_image -%}
+                    {%- include post_list_image_card.html -%}
+                {% else %}
+                    {%- include post_list.html -%}
+                {%- endif -%}
+            </li>
         {% else %}
-            {%- include post_list.html -%}
+            {%- assign date_format = site.minima.date_format | default: "%b %-d, %Y" -%}
+            <article class="archive-item">
+            <p class="post-meta post-meta-title"><a class="page-meta" href="{{ site.baseurl }}{{ post.url }}">{{post.title}}</a>  • {{ post.date | date: date_format }}</p>
+            </article>
         {%- endif -%}
-    </li>
     {%- endfor -%}
-    </ul>
+</ul>
