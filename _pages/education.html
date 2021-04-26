@@ -4,19 +4,7 @@ permalink: /education/
 title: "Educational"
 ---
 
-{% assign rawposts = paginator.posts %}
-
-<!-- Hide posts if front matter flag hide:true -->
-{% assign posts = ''|split:'' %}
-{% for post in rawposts %}
-  {% if post.hide != true %}
-    {% assign posts = posts|push:post%}
-  {% endif %}
-{% endfor %}
-
- <!-- Assemble final sorted posts array -->
-<h1>Presentations & Workshops</h1>
-<p>Here I've aggregated all my presentations & workshops into one singular page. Hopefully something interesting in the form of a workshop or presentation exists here!</p>
+<p>Here I've aggregated all my <b>presentations</b> & <b>workshops</b> into one singular page. Hopefully something interesting in the form of a workshop or presentation exists here!</p>
 
 <h2>Workshops</h2>
 <ul class="post-list">
