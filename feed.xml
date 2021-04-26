@@ -1,6 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.1.1">Jekyll</generator><link href="https://blog.londogard.com/feed.xml" rel="self" type="application/atom+xml" /><link href="https://blog.londogard.com/" rel="alternate" type="text/html" /><updated>2021-04-23T10:31:45-05:00</updated><id>https://blog.londogard.com/feed.xml</id><title type="html">Londogard</title><subtitle>A blog with a focus on Deep Learning, JVM and Performance.</subtitle><entry><title type="html">Knowledge Distillation (Presentation)</title><link href="https://blog.londogard.com/presentation/machine-learning/2021/04/18/knowledge-distillation-presentation.html" rel="alternate" type="text/html" title="Knowledge Distillation (Presentation)" /><published>2021-04-18T00:00:00-05:00</published><updated>2021-04-18T00:00:00-05:00</updated><id>https://blog.londogard.com/presentation/machine-learning/2021/04/18/knowledge-distillation-presentation</id><content type="html" xml:base="https://blog.londogard.com/presentation/machine-learning/2021/04/18/knowledge-distillation-presentation.html">&lt;p&gt;Just a week ago I did a presentation on Knowledge Distillation and how it can help improve efficiency of models.&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.1.1">Jekyll</generator><link href="https://blog.londogard.com/feed.xml" rel="self" type="application/atom+xml" /><link href="https://blog.londogard.com/" rel="alternate" type="text/html" /><updated>2021-04-26T10:52:19-05:00</updated><id>https://blog.londogard.com/feed.xml</id><title type="html">Londogard</title><subtitle>A blog with a focus on Deep Learning, JVM and Performance.</subtitle><entry><title type="html">Knowledge Distillation (Presentation)</title><link href="https://blog.londogard.com/presentation/machine-learning/2021/04/18/knowledge-distillation-presentation-copy.html" rel="alternate" type="text/html" title="Knowledge Distillation (Presentation)" /><published>2021-04-18T00:00:00-05:00</published><updated>2021-04-18T00:00:00-05:00</updated><id>https://blog.londogard.com/presentation/machine-learning/2021/04/18/knowledge-distillation-presentation%20copy</id><content type="html" xml:base="https://blog.londogard.com/presentation/machine-learning/2021/04/18/knowledge-distillation-presentation-copy.html">&lt;p&gt;Just a week ago I did a presentation on Knowledge Distillation and how it can help improve efficiency of models.&lt;/p&gt;
 
 &lt;p&gt;I simply thought I would share the slides with the world. :)&lt;/p&gt;
+
+&lt;p&gt;(OBS: Presentation in Swedish)&lt;/p&gt;
+&lt;iframe width=&quot;1520&quot; height=&quot;586&quot; src=&quot;https://www.youtube.com/embed/FUtuAHqPk6o&quot; title=&quot;YouTube video player&quot; frameborder=&quot;0&quot; allow=&quot;accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture&quot; allowfullscreen=&quot;&quot;&gt;&lt;/iframe&gt;
 
 &lt;embed src=&quot;https://blog.londogard.com/assets/Knowledge%20Distillation.pdf&quot; width=&quot;100%&quot; height=&quot;720px&quot; type=&quot;application/pdf&quot; /&gt;</content><author><name>Hampus Londögård</name></author><category term="presentation" /><category term="machine-learning" /><summary type="html">Just a week ago I did a presentation on Knowledge Distillation and how it can help improve efficiency of models.</summary></entry><entry><title type="html">TIL: GitHub Pages + Progressive Web App (PWA) = ❤️</title><link href="https://blog.londogard.com/pwa/til/2021/04/11/til-pwa-github-pages.html" rel="alternate" type="text/html" title="TIL: GitHub Pages + Progressive Web App (PWA) = ❤️" /><published>2021-04-11T00:00:00-05:00</published><updated>2021-04-11T00:00:00-05:00</updated><id>https://blog.londogard.com/pwa/til/2021/04/11/til-pwa-github-pages</id><content type="html" xml:base="https://blog.londogard.com/pwa/til/2021/04/11/til-pwa-github-pages.html">&lt;h3 id=&quot;what&quot;&gt;What&lt;/h3&gt;
 &lt;p&gt;Progressive Web Apps (PWAs) are web applications that are deployed on the Web and available on essentially every platform directly (Android, iOS, Linux, Windows, … you name it).&lt;br /&gt;
@@ -612,6 +615,7 @@ As an example &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt
 &lt;div class=&quot;cell border-box-sizing text_cell rendered&quot;&gt;&lt;div class=&quot;inner_cell&quot;&gt;
 &lt;div class=&quot;text_cell_render border-box-sizing rendered_html&quot;&gt;
 &lt;h1 id=&quot;Transformers-From-Scratch&quot;&gt;Transformers From Scratch&lt;a class=&quot;anchor-link&quot; href=&quot;#Transformers-From-Scratch&quot;&gt; &lt;/a&gt;&lt;/h1&gt;&lt;p&gt;(Open directly in Google Colab &lt;a href=&quot;https://colab.research.google.com/github/londogard/londogard/blob/master/_notebooks/2021-02-18-transformers-explained.ipynb&quot;&gt;here&lt;/a&gt;.)&lt;/p&gt;
+&lt;p&gt;The video from the workshop (in Swedish) can be found on &lt;a href=&quot;https://youtu.be/bHIU96D8SSQ&quot;&gt;YouTube&lt;/a&gt;.&lt;/p&gt;
 &lt;p&gt;Today I'm taking &lt;strong&gt;huge inspiration from Peter Bloem&lt;/strong&gt; 
 (Vrije Universiteit Amsterdam) which is a &lt;a href=&quot;http://peterbloem.nl/blog/transformers&quot;&gt;great blog post&lt;/a&gt; &amp;amp; &lt;a href=&quot;https://youtu.be/KmAISyVvE1Y?list=PLIXJ-Sacf8u60G1TwcznBmK6rEL3gmZmV&quot;&gt;video lecture&lt;/a&gt;. It's &lt;strong&gt;essentially a 80-90 % copy of the blog, with minor modifications and reworked code into TODOs&lt;/strong&gt; to make it more like a workshop using the Jupyter format (fitting nicely with Google Colab).&lt;br /&gt;
 &lt;em&gt;As demonstrations in the end I integrate PyTorch-code with fast.ai framework.&lt;/em&gt;&lt;br /&gt;
@@ -2988,7 +2992,19 @@ where they’re not allowed to install their own applications.&lt;/p&gt;
 &lt;p&gt;I think for now GitPod.io is the simplest and best out of them, unless you have your own computer to use as a server for VS Code Remote!&lt;/p&gt;
 
 &lt;p&gt;Thanks&lt;br /&gt;
-~Hampus&lt;/p&gt;</content><author><name>Hampus Londögård</name></author><category term="jvm" /><category term="kotlin" /><category term="TIL" /><summary type="html">TIL: GitPod - your editor in the cloud GitPod.io is a editor in the cloud based on Theia which is a IDE built for the cloud &amp;amp; desktop. It implements the same language servers and allow you to use the same extensions as in VS Code - which is great.</summary></entry><entry><title type="html">How to build and play Snake via Native Binary, JVM and JS/Browser (Kotlin)</title><link href="https://blog.londogard.com/gradle/kotlin/workshop/multiplatform/2020/11/07/snake-kotlin-multiplatform.html" rel="alternate" type="text/html" title="How to build and play Snake via Native Binary, JVM and JS/Browser (Kotlin)" /><published>2020-11-07T00:00:00-06:00</published><updated>2020-11-07T00:00:00-06:00</updated><id>https://blog.londogard.com/gradle/kotlin/workshop/multiplatform/2020/11/07/snake-kotlin-multiplatform</id><content type="html" xml:base="https://blog.londogard.com/gradle/kotlin/workshop/multiplatform/2020/11/07/snake-kotlin-multiplatform.html">&lt;p&gt;A three part blog (all included in this one) that goes through&lt;/p&gt;
+~Hampus&lt;/p&gt;</content><author><name>Hampus Londögård</name></author><category term="jvm" /><category term="kotlin" /><category term="TIL" /><summary type="html">TIL: GitPod - your editor in the cloud GitPod.io is a editor in the cloud based on Theia which is a IDE built for the cloud &amp;amp; desktop. It implements the same language servers and allow you to use the same extensions as in VS Code - which is great.</summary></entry><entry><title type="html">Object Detection (Workshop)</title><link href="https://blog.londogard.com/presentation/machine-learning/2020/12/16/object-detection-transformer.html" rel="alternate" type="text/html" title="Object Detection (Workshop)" /><published>2020-12-16T00:00:00-06:00</published><updated>2020-12-16T00:00:00-06:00</updated><id>https://blog.londogard.com/presentation/machine-learning/2020/12/16/object-detection-transformer</id><content type="html" xml:base="https://blog.londogard.com/presentation/machine-learning/2020/12/16/object-detection-transformer.html">&lt;p&gt;I did a presentation/workshop on Object Detection using Transformers. It’s a little bit confusing as the experience of the people that joined was very different, some even not knowing Python.&lt;/p&gt;
+
+&lt;p&gt;Thought it could make sense to share anyways. :)&lt;/p&gt;
+
+&lt;iframe width=&quot;1520&quot; height=&quot;586&quot; src=&quot;https://www.youtube.com/embed/RrodV266XDo&quot; title=&quot;YouTube video player&quot; frameborder=&quot;0&quot; allow=&quot;accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture&quot; allowfullscreen=&quot;&quot;&gt;&lt;/iframe&gt;</content><author><name>Hampus Londögård</name></author><category term="presentation" /><category term="machine-learning" /><summary type="html">I did a presentation/workshop on Object Detection using Transformers. It’s a little bit confusing as the experience of the people that joined was very different, some even not knowing Python.</summary></entry><entry><title type="html">Transfer Learning (Presentation)</title><link href="https://blog.londogard.com/presentation/machine-learning/2020/12/12/transfer-learning-presentation.html" rel="alternate" type="text/html" title="Transfer Learning (Presentation)" /><published>2020-12-12T00:00:00-06:00</published><updated>2020-12-12T00:00:00-06:00</updated><id>https://blog.londogard.com/presentation/machine-learning/2020/12/12/transfer-learning-presentation</id><content type="html" xml:base="https://blog.londogard.com/presentation/machine-learning/2020/12/12/transfer-learning-presentation.html">&lt;p&gt;This is a presentation I did on Transfer Learning.&lt;/p&gt;
+
+&lt;p&gt;Transfer Learning is the task to transfer knowledge from one task to another where we’ll end up with better performance using little data.&lt;/p&gt;
+
+&lt;p&gt;Sharing slides &amp;amp; presentation with the world. :)&lt;/p&gt;
+
+&lt;iframe width=&quot;1520&quot; height=&quot;586&quot; src=&quot;https://www.youtube.com/embed/vcQ5yr9ir8c&quot; title=&quot;YouTube video player&quot; frameborder=&quot;0&quot; allow=&quot;accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture&quot; allowfullscreen=&quot;&quot;&gt;&lt;/iframe&gt;
+
+&lt;embed src=&quot;https://blog.londogard.com/assets/Transfer%20Learning.pdf&quot; width=&quot;100%&quot; height=&quot;720px&quot; type=&quot;application/pdf&quot; /&gt;</content><author><name>Hampus Londögård</name></author><category term="presentation" /><category term="machine-learning" /><summary type="html">This is a presentation I did on Transfer Learning.</summary></entry><entry><title type="html">How to build and play Snake via Native Binary, JVM and JS/Browser (Kotlin)</title><link href="https://blog.londogard.com/gradle/kotlin/workshop/multiplatform/2020/11/07/snake-kotlin-multiplatform.html" rel="alternate" type="text/html" title="How to build and play Snake via Native Binary, JVM and JS/Browser (Kotlin)" /><published>2020-11-07T00:00:00-06:00</published><updated>2020-11-07T00:00:00-06:00</updated><id>https://blog.londogard.com/gradle/kotlin/workshop/multiplatform/2020/11/07/snake-kotlin-multiplatform</id><content type="html" xml:base="https://blog.londogard.com/gradle/kotlin/workshop/multiplatform/2020/11/07/snake-kotlin-multiplatform.html">&lt;p&gt;A three part blog (all included in this one) that goes through&lt;/p&gt;
 
 &lt;ol&gt;
   &lt;li&gt;How Kotlin Multiplatform works (compiler and everything)&lt;/li&gt;
@@ -3805,169 +3821,4 @@ Looking at GitHub one can clearly see that SDKMan is more popular, both by stars
 
 &lt;p&gt;One thing I’ve learned both through work and my personal projects is that often it’s better to make an non-optimal decision rather than trying to find the perfect solution, because diving into the pile of research to perfection will take much more time than just getting started.&lt;/p&gt;
 
-&lt;p&gt;-Hampus Londögård&lt;/p&gt;</content><author><name>Hampus Londögård</name></author><category term="jvm" /><category term="TIL" /><summary type="html">SDKMan - Swapping JDK made simple I’ve decided to not only write blogs but also small snippets, here comes the first one.</summary></entry><entry><title type="html">TIL: fastutil - fast &amp;amp; compact type-speciic collections for JVM (no autobox!)</title><link href="https://blog.londogard.com/jvm/til/2020/09/03/til-fastutil-primitive-structures.html" rel="alternate" type="text/html" title="TIL: fastutil - fast &amp;amp; compact type-speciic collections for JVM (no autobox!)" /><published>2020-09-03T00:00:00-05:00</published><updated>2020-09-03T00:00:00-05:00</updated><id>https://blog.londogard.com/jvm/til/2020/09/03/til-fastutil-primitive-structures</id><content type="html" xml:base="https://blog.londogard.com/jvm/til/2020/09/03/til-fastutil-primitive-structures.html">&lt;h1 id=&quot;fastutil---how-to-optimize-your-collections-by-primitives&quot;&gt;fastutil - how to optimize your collections by primitives&lt;/h1&gt;
-&lt;blockquote&gt;
-  &lt;p&gt;fastutil extends the Java™ Collections Framework by providing type-specific maps, sets, lists and queues with a small memory footprint and fast access and insertion&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;&lt;a href=&quot;http://fastutil.di.unimi.it/&quot;&gt;Homepage&lt;/a&gt; of fastutil&lt;/p&gt;
-
-&lt;h3 id=&quot;what&quot;&gt;What&lt;/h3&gt;
-&lt;p&gt;So what does the quote above actually mean?&lt;br /&gt;
-First we need to dive into, what is a Java Collection, and why are they &quot;bad&quot; for performance and memory requirements?&lt;/p&gt;
-
-&lt;p&gt;Java Collections (&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Collection&amp;lt;E&amp;gt;&lt;/code&gt;) only works with objects, meaning that if we have a &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;List&amp;lt;E&amp;gt;&lt;/code&gt; which we populate with &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;int&lt;/code&gt; it’ll actually &quot;autobox&quot; the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;int&lt;/code&gt; into a &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Integer&lt;/code&gt;, i.e. the class, rather than the primitive type.&lt;br /&gt;
-What does this mean for you as a user?&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;It’s done through &quot;autoboxing&quot; which means automatic casting to the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Integer&lt;/code&gt;-type, so nothing required for you&lt;/li&gt;
-  &lt;li&gt;It allocates more memory than the primitive &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;int&lt;/code&gt;.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;So how do you create an effective &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;List&lt;/code&gt; that contains primitives, such as &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;int, boolean&lt;/code&gt; and &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;float&lt;/code&gt;? You can’t.&lt;br /&gt;
-What you can do is to create an array, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;int[]&lt;/code&gt;, which will contain the actual primitives, no autoboxing applied.&lt;/p&gt;
-
-&lt;p&gt;But what if you want to have the methods from &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;List&lt;/code&gt;, such as &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;find&lt;/code&gt; and &quot;auto-resizing&quot;?
-Then you’ll have to research and find a library, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;fastutil&lt;/code&gt; to the rescue!&lt;/p&gt;
-
-&lt;h3 id=&quot;how&quot;&gt;How&lt;/h3&gt;
-&lt;p&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;fastutil&lt;/code&gt; implements their own versions of &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;List&lt;/code&gt;, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;HashMap&lt;/code&gt; and so on which actually use the raw primitives, thereby increasing throughput while lowering memory used (as we’re not allocating as many objects anymore, when using primitives).&lt;/p&gt;
-
-&lt;p&gt;&lt;em&gt;These types of libraries are only required once you hit an enormous amount of data or very strict requirement.&lt;/em&gt;&lt;/p&gt;
-
-&lt;h4 id=&quot;installation&quot;&gt;Installation&lt;/h4&gt;
-
-&lt;p&gt;Using gradle&lt;/p&gt;
-
-&lt;p&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;implementation: 'it.unimi.dsi:fastutil:8.4.1'&lt;/code&gt; (latest version as of Aug 2020, &lt;a href=&quot;https://mvnrepository.com/artifact/it.unimi.dsi/fastutil&quot;&gt;mvnrepository&lt;/a&gt;)&lt;/p&gt;
-
-&lt;h4 id=&quot;usage&quot;&gt;Usage&lt;/h4&gt;
-
-&lt;p&gt;&lt;em&gt;DoubleToDoubleMap&lt;/em&gt;&lt;/p&gt;
-
-&lt;div class=&quot;language-kotlin highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kd&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;py&quot;&gt;d2dMap&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Double2DoubleMap&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Double2DoubleOpenHashMap&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;().&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;apply&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-    &lt;span class=&quot;nf&quot;&gt;put&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mf&quot;&gt;2.0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mf&quot;&gt;5.5&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-    &lt;span class=&quot;nf&quot;&gt;put&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mf&quot;&gt;3.0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mf&quot;&gt;6.6&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-&lt;span class=&quot;nf&quot;&gt;assertEquals&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mf&quot;&gt;5.5&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;d2dMap&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;get&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mf&quot;&gt;2.0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;This map is not only less memory-hungry (because using &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;double&lt;/code&gt; rather than &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Double&lt;/code&gt;) but is also faster with insertions &amp;amp; get, than the Java Collections counterpart.&lt;/p&gt;
-
-&lt;h3 id=&quot;why&quot;&gt;Why&lt;/h3&gt;
-
-&lt;p&gt;&lt;strong&gt;Less space used &amp;amp; faster&lt;/strong&gt; - it is as simple as that!&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;No &quot;AutoBoxing&quot;&lt;/li&gt;
-  &lt;li&gt;No Object allocations for primitives&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;&lt;em&gt;Side-note&lt;/em&gt;
-Something I noticed while working on my Language Model in Kotlin, with some strict requirements and a lot of data, was that even when using &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;fastutil&lt;/code&gt; I wasn’t gaining that much as I was  mainly using &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;views&lt;/code&gt; of my Lists, further optimizing memory. Views are what the name implies, a view of the List. It never creates a copy but just the indices and make use of the original structure. 
-Using immutable data this is very effective, but if you’d been using mutable data it could prove dangerous as someone can change the structure and data of your view (even if your view is immutable the underlying List might not be).&lt;/p&gt;
-
-&lt;h3 id=&quot;alternatives&quot;&gt;Alternatives&lt;/h3&gt;
-
-&lt;p&gt;&lt;a href=&quot;https://www.eclipse.org/collections/&quot;&gt;Goldman Sachs Collection - now Eclipse Collections&lt;/a&gt; - Probably the best alternative, in my opinion.
-&lt;a href=&quot;http://labs.carrotsearch.com/hppc.html&quot;&gt;HPPC - Carrot Search Labs&lt;/a&gt;
-&lt;a href=&quot;https://bitbucket.org/trove4j/trove/src/master/&quot;&gt;Trove4j&lt;/a&gt; - Not as active as other alternatives, but who cares when it’s performant and &quot;done&quot;?&lt;/p&gt;
-
-&lt;p&gt;Find a 2015 benchmark of the libraries &lt;a href=&quot;http://java-performance.info/hashmap-overview-jdk-fastutil-goldman-sachs-hppc-koloboke-trove-january-2015/&quot;&gt;here&lt;/a&gt;
-At least both &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;fastutil&lt;/code&gt;&amp;amp; &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Eclipse Collections&lt;/code&gt; are updated for Java 8 streams!&lt;/p&gt;
-
-&lt;p&gt;-Hampus Londögård&lt;/p&gt;</content><author><name>Hampus Londögård</name></author><category term="jvm" /><category term="TIL" /><summary type="html">fastutil - how to optimize your collections by primitives fastutil extends the Java™ Collections Framework by providing type-specific maps, sets, lists and queues with a small memory footprint and fast access and insertion</summary></entry><entry><title type="html">TIL: ‘The Badass Runtime Plugin’, jpackage &amp;amp; jlink - create a ‘native’ installable executable from your JVM-app that isn’t huge</title><link href="https://blog.londogard.com/jvm/til/2020/09/03/til-badass-runtime.html" rel="alternate" type="text/html" title="TIL: ‘The Badass Runtime Plugin’, jpackage &amp;amp; jlink - create a ‘native’ installable executable from your JVM-app that isn’t huge" /><published>2020-09-03T00:00:00-05:00</published><updated>2020-09-03T00:00:00-05:00</updated><id>https://blog.londogard.com/jvm/til/2020/09/03/til-badass-runtime</id><content type="html" xml:base="https://blog.londogard.com/jvm/til/2020/09/03/til-badass-runtime.html">&lt;h1 id=&quot;jpackage-jlink-and-how-to-pack-a-modern-java-app&quot;&gt;JPackage, JLink and how to pack a modern Java App&lt;/h1&gt;
-&lt;p&gt;JPackage is a way to package a modern JVM-program as a installable binary, in a small format.&lt;/p&gt;
-
-&lt;h3 id=&quot;what&quot;&gt;What&lt;/h3&gt;
-&lt;p&gt;JPackage was finally included in the JDK by JDK-14, originally from the JavaFX-world (to bundle your desktop apps).
-JPackage combines itself with JLink, which builds upon ‘&lt;a href=&quot;https://openjdk.java.net/projects/jigsaw/&quot;&gt;project jigsaw&lt;/a&gt;’, and together they form a way to create &quot;native&quot; binaries for JVM-projects.&lt;/p&gt;
-
-&lt;h4 id=&quot;what-is-jlink&quot;&gt;What is JLink?&lt;/h4&gt;
-
-&lt;p&gt;&lt;a href=&quot;https://docs.oracle.com/javase/9/tools/jlink.htm&quot;&gt;JLink&lt;/a&gt; is a way to assemble and optimize a set of modules and their dependencies into a custom runtime image (JRE). 
-In other words we can take a ordinary JRE, ~200 MB, and chop it down to a total size of 25-40 MB for smaller project.&lt;/p&gt;
-
-&lt;p&gt;JLink is only possible thanks to ‘project jigsaw’ which introduced modules and modularized the whole JRE starting from JDK-9. The Java standard library (stdlib) was modularized into 75 modules.
-As you might guess it is even better if your own code is also modularized, but not enforced.&lt;/p&gt;
-
-&lt;h4 id=&quot;what-is-jpackage&quot;&gt;What is JPackage&lt;/h4&gt;
-
-&lt;p&gt;JPackage is the packaging suite that allows you to package your code, dependencies and the JLink-created JRE. I ended up with installation files, with a natively executable file on 60 MB for one of my smaller projects, which is really good in comparison to Electron!
-In comparison to a C-program this might not be amazing, but you’ve to remember that this is completely cross-platform!&lt;/p&gt;
-
-&lt;p&gt;&lt;em&gt;Side-note&lt;/em&gt; all sized discussed is without any major optimizations - and there exists a lot! Finally, if you exclude the JRE you can reach sizes of KB rather than MB! But excluding the JRE enforces the user to have it locally, which might not be good UX.&lt;/p&gt;
-
-&lt;h3 id=&quot;how&quot;&gt;How&lt;/h3&gt;
-&lt;p&gt;JPackage &amp;amp; JLink is made easy thanks to &lt;a href=&quot;https://badass-runtime-plugin.beryx.org/releases/latest/&quot;&gt;The Badass Runtime Plugin&lt;/a&gt; or &lt;a href=&quot;https://badass-jlink-plugin.beryx.org/releases/latest/&quot;&gt;The Badass JLink Plugin&lt;/a&gt; where the latter require a modular project and the former works with any project! :happy:&lt;/p&gt;
-
-&lt;h4 id=&quot;installation&quot;&gt;Installation&lt;/h4&gt;
-
-&lt;p&gt;Make sure you use &amp;amp; target JDK 14 or higher, JPackage was first included in this version. I recommend SDKMan to install &amp;amp; swap JDKs.&lt;/p&gt;
-
-&lt;p&gt;Then to add the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Badass Runtime Plugin&lt;/code&gt; I recommend using &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;gradle&lt;/code&gt;, which makes it as simple as the following.&lt;/p&gt;
-
-&lt;div class=&quot;language-kotlin highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nf&quot;&gt;plugins&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-    &lt;span class=&quot;o&quot;&gt;..&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;
-    &lt;span class=&quot;nf&quot;&gt;id&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;\&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;org.beryx.runtime\&quot;) version \&quot;1.11.3\&quot; // latest version August 2020
-&lt;/span&gt;    &lt;span class=&quot;o&quot;&gt;..&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-&lt;span class=&quot;nf&quot;&gt;runtime&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;options&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;set&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;listOf&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;\&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;--strip-debug\&quot;, \&quot;--compress\&quot;, \&quot;2\&quot;, \&quot;--no-header-files\&quot;, \&quot;--no-man-pages\&quot;))
-&lt;/span&gt;    &lt;span class=&quot;nf&quot;&gt;jpackage&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-        &lt;span class=&quot;n&quot;&gt;installerType&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;\&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;deb\&quot; // https://badass-runtime-plugin.beryx.org/releases/latest/
-&lt;/span&gt;    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;This addition now creates the tasks required to build &amp;amp; bundle your app. The options added make sure that you reduce the total size by &lt;em&gt;a lot&lt;/em&gt;.
-I highly recommend reading the documentation, there’s so many incredibly useful options - I only provide the minimum!&lt;/p&gt;
-
-&lt;h4 id=&quot;usage&quot;&gt;Usage&lt;/h4&gt;
-
-&lt;p&gt;By editing our &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;building.gradle.kts&lt;/code&gt; to include everything from the &lt;a href=&quot;#Installation&quot;&gt;Installation&lt;/a&gt; we can run the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;./gradlew jpackage&lt;/code&gt; task to build our installer!&lt;/p&gt;
-
-&lt;p&gt;I want to note again, please make sure to read the homepage - a ton of optimizations and customization exist. There exists a lot of low hanging fruit for sure, so make sure to grab it! :wink:&lt;/p&gt;
-
-&lt;h3 id=&quot;why&quot;&gt;Why&lt;/h3&gt;
-&lt;p&gt;It’s really cool to see your JVM application installable using a &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;.msi&lt;/code&gt;, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;.deb&lt;/code&gt; or even a &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;.dmg&lt;/code&gt; while retaining a decent enough size.
-By using JPackage rather than GraalVM you make sure that you don’t loose anything in the form of performance or functionality. As a cherry on the top, it’s not just a executable file, but also includes a installer which is much better UX in my opinion. GraalVM will be discussed a bit more in &lt;a href=&quot;#Alternatives&quot;&gt;Alternatives&lt;/a&gt;.&lt;/p&gt;
-
-&lt;p&gt;I want to re-iterate about the UX and size, which are the two main points of this.&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;We bundle a JRE with the JVM-app, allowing executables without requiring Java, of your version, to be installed on the user computer already.&lt;/li&gt;
-  &lt;li&gt;The JRE is minified to only contain required modules, about 30-40 MB on a smaller project.&lt;/li&gt;
-  &lt;li&gt;All required dependencies are bundled also&lt;/li&gt;
-  &lt;li&gt;Installer which makes the whole JVM program really like any program on the computer&lt;/li&gt;
-  &lt;li&gt;Basically a download, install run program that isn’t huge in size!&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h3 id=&quot;alternatives&quot;&gt;Alternatives&lt;/h3&gt;
-&lt;p&gt;I see two alternatives that are worth mentioning&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;FAT-JAR / Uber-JAR / Shadow-JAR&lt;/li&gt;
-  &lt;li&gt;GraalVM Native Image&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h4 id=&quot;fat-jar&quot;&gt;&quot;Fat-JAR&quot;&lt;/h4&gt;
-&lt;p&gt;A FAT-jar is a jar that bundles all dependencies and also includes a shell script, or &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;.bat&lt;/code&gt; if Windows, to run the whole JVM-application. 
-It’s pretty small in size, even though called FAT, as it doesn’t include a JRE to run the JVM.&lt;/p&gt;
-
-&lt;p&gt;This means that if your JVM-app requires Java 11 but the user only has Java 8 you need to have them download the JRE required, which sucks.&lt;/p&gt;
-
-&lt;p&gt;#### GraalVM
- The probably best alternative, it’s even smaller in size as SubstrateVM (their runtime) is really small and GraalVM allows AOT compile.&lt;/p&gt;
-
-&lt;p&gt;GraalVM has &lt;em&gt;much&lt;/em&gt; faster startup-times than a JPackage program, but GraalVM is not as good when running for a long duration as there isn’t the incredibly good JIT from JVM.&lt;/p&gt;
-
-&lt;p&gt;I’d say something along the following - for long running apps choose JPackage, for lambda etc certainly choose GraalVM.&lt;/p&gt;
-
-&lt;p&gt;But GraalVM has further negatives, you can’t just code as you usually do. Reflection etc is not supported as usual, meaning there comes a lot of caveats using GraalVM.&lt;/p&gt;
-
-&lt;p&gt;&lt;em&gt;Extra:&lt;/em&gt; I managed to end up with, after some minor trial-and-error, a binary file on ~ 12 MB for my file-sending program - pretty darn amazing!&lt;/p&gt;
-
-&lt;p&gt;&lt;em&gt;I’ll write more about GraalVM and its SubstrateVM which is used to create the native binaries in a new TIL.&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;-Hampus Londögård&lt;/p&gt;</content><author><name>Hampus Londögård</name></author><category term="jvm" /><category term="TIL" /><summary type="html">JPackage, JLink and how to pack a modern Java App JPackage is a way to package a modern JVM-program as a installable binary, in a small format.</summary></entry></feed>
+&lt;p&gt;-Hampus Londögård&lt;/p&gt;</content><author><name>Hampus Londögård</name></author><category term="jvm" /><category term="TIL" /><summary type="html">SDKMan - Swapping JDK made simple I’ve decided to not only write blogs but also small snippets, here comes the first one.</summary></entry></feed>
