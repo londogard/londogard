@@ -12,4 +12,4 @@ I did a presentation/workshop on Object Detection using Transformers. It's a lit
 
 Thought it could make sense to share anyways. :)
 
-<iframe width="1520" height="586" src="https://www.youtube.com/embed/RrodV266XDo" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+<iframe width="100%" height="586" src="https://www.youtube.com/embed/RrodV266XDo" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
