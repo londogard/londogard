@@ -1,3 +1,13 @@
+---
+toc: true
+layout: post
+description: "nlp (londogard-nlp-toolkit) has had it's 1.1.0 release recently with a lot of new functionality and multiple improvements to efficiency, dive in to understand more!"
+categories: [nlp, jvm, kotlin]
+title: "Release nlp (londogard-nlp-toolkit) 1.1.0"
+comments: true
+author: Hampus Londögård
+---
+
 # Release nlp 1.1.0
 
 The 1.1.0 release of nlp ([londogard-nlp-toolkit](https://github.com/londogard/londogard-nlp-toolkit)) by londogard is here!
