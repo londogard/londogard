@@ -1,0 +1,113 @@
+<h1 id="release-nlp-110">Release nlp 1.1.0</h1>
+
+<p>The 1.1.0 release of nlp (<a href="https://github.com/londogard/londogard-nlp-toolkit">londogard-nlp-toolkit</a>) by londogard is here!</p>
+
+<p>I’m writing this small blog-post mainly to showcase some of the new things possible now that we’re moving into classifer-space!</p>
+
+<p>Most of the examples are taken from <code class="language-plaintext highlighter-rouge">/src/test</code>.</p>
+
+<h1 id="vectorizers">Vectorizers</h1>
+
+<p>First out we have vectorizers that takes words and output vectors of numbers. Three different vectorizers was added, namely:</p>
+
+<ol>
+  <li>
+    <p><strong>Bag of Words</strong>, also called Count Vectorizer in <code class="language-plaintext highlighter-rouge">sklearn</code>.</p>
+
+    <ul>
+      <li>This vectorizer takes words and assign a unique number to each, which is then filled in the final vector</li>
+    </ul>
+  </li>
+  <li><strong>TF-IDF</strong>
+    <ul>
+      <li>This vectorizer assigns values to word based on their <em>term frequency &amp; inverse-document frequency.</em> Which is a <strong>incredible strong baseline.</strong> (<a href="https://en.wikipedia.org/wiki/Tf%E2%80%93idf">Wikipedia.org</a>)</li>
+    </ul>
+  </li>
+  <li><strong>BM-25</strong>
+    <ul>
+      <li>This vectorizer is a improvement on top of TF-IDF used by Elastic Search among others. The difference is that BM-25 also base the magnitude on the sentences length, in TF-IDF sometimes long sentences tend to get very high magnitude. (<a href="https://en.wikipedia.org/wiki/Okapi_BM25">Wikipedia</a>)</li>
+    </ul>
+  </li>
+</ol>
+
+<p>And yes, it’s possible to vectorize <strong>with ngrams</strong>! 🥳<br />
+And yes (x2), it’s using <strong>Sparse Matrices</strong> to keep performance at top!🤩</p>
+
+<h3 id="usage-of-vectorizers">Usage of Vectorizers</h3>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">val</span> <span class="py">simpleTok</span> <span class="p">=</span> <span class="nc">SimpleTokenizer</span><span class="p">()</span>  
+<span class="kd">val</span> <span class="py">simpleTexts</span> <span class="p">=</span> <span class="nf">listOf</span><span class="p">(</span><span class="s">"hello world!"</span><span class="p">,</span> <span class="s">"this is a few sentences"</span><span class="p">)</span>  
+    <span class="p">.</span><span class="nf">map</span><span class="p">(</span><span class="n">simpleTok</span><span class="o">::</span><span class="n">split</span><span class="p">)</span>  
+<span class="kd">val</span> <span class="py">tfidf</span> <span class="p">=</span> <span class="nc">TfIdfVectorizer</span><span class="p">&lt;</span><span class="nc">Float</span><span class="p">&gt;()</span> <span class="c1">// replace by CountVectorizer or Bm25Vectorizer  </span>
+  
+<span class="kd">val</span> <span class="py">lhs</span> <span class="p">=</span> <span class="n">tfidf</span><span class="p">.</span><span class="nf">fitTransform</span><span class="p">(</span><span class="n">simpleTexts</span><span class="p">)</span>  
+<span class="nf">println</span><span class="p">(</span><span class="s">"Vectorized: $lhs"</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h2 id="classifiers">Classifiers</h2>
+
+<p>Yes, we now have classifiers meaning we can classify sentences, documents and much more using our vectorized data!</p>
+
+<ul>
+  <li>Logistic Regression using Stochastic Gradient Descent as optimizer</li>
+  <li>Naïve Bayes classifier</li>
+  <li>Hidden Markov Model to classify sequences with a sequence output, e.g. <em>Part of Speech</em> (PoS) or <em>Named Entitiy Recognition</em> (NER).</li>
+</ul>
+
+<h3 id="usage-of-classifiers">Usage of Classifiers</h3>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+<span class="kd">val</span> <span class="py">tfidf</span> <span class="p">=</span> <span class="nc">TfIdfVectorizer</span><span class="p">&lt;</span><span class="nc">Float</span><span class="p">&gt;()</span>  
+<span class="kd">val</span> <span class="py">naiveBayes</span> <span class="p">=</span> <span class="nc">NaiveBayes</span><span class="p">()</span> <span class="c1">// replace by LogisticRegression if needed  </span>
+  
+<span class="kd">val</span> <span class="py">out</span> <span class="p">=</span> <span class="n">tfidf</span><span class="p">.</span><span class="nf">fitTransform</span><span class="p">(</span><span class="n">simpleTexts</span><span class="p">)</span>  
+<span class="n">naiveBayes</span><span class="p">.</span><span class="nf">fit</span><span class="p">(</span><span class="k">out</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>  
+  
+<span class="n">naiveBayes</span><span class="p">.</span><span class="nf">predict</span><span class="p">(</span><span class="k">out</span><span class="p">)</span> <span class="n">shouldBeEqualTo</span> <span class="n">y</span>
+</code></pre></div></div>
+
+<p>and for sequences:</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+<span class="kd">val</span> <span class="p">(</span><span class="py">tokensText</span><span class="p">,</span> <span class="py">tagsText</span><span class="p">)</span> <span class="p">=</span> <span class="n">text</span>  
+    <span class="p">.</span><span class="nf">split</span><span class="p">(</span><span class="err">'\\</span><span class="n">n</span><span class="err">'</span><span class="p">)</span>  
+    <span class="p">.</span><span class="nf">map</span> <span class="p">{</span>  
+        <span class="kd">val</span> <span class="p">(</span><span class="py">a</span><span class="p">,</span> <span class="py">b</span><span class="p">)</span> <span class="p">=</span> <span class="n">it</span><span class="p">.</span><span class="nf">split</span><span class="p">(</span><span class="err">'\\</span><span class="n">t</span><span class="err">'</span><span class="p">)</span>  
+        <span class="n">a</span> <span class="n">to</span> <span class="n">b</span>  
+    <span class="p">}.</span><span class="nf">unzip</span><span class="p">()</span>  
+<span class="kd">val</span> <span class="py">tokenMap</span> <span class="p">=</span> <span class="p">(</span><span class="n">tokensText</span><span class="p">).</span><span class="nf">toSet</span><span class="p">().</span><span class="nf">withIndex</span><span class="p">().</span><span class="nf">associate</span> <span class="p">{</span> <span class="n">elem</span> <span class="p">-&gt;</span> <span class="n">elem</span><span class="p">.</span><span class="n">value</span> <span class="n">to</span> <span class="n">elem</span><span class="p">.</span><span class="n">index</span> <span class="p">}</span>  
+<span class="kd">val</span> <span class="py">tagMap</span> <span class="p">=</span> <span class="p">(</span><span class="n">tagsText</span> <span class="p">+</span> <span class="s">"BOS"</span><span class="p">).</span><span class="nf">toSet</span><span class="p">().</span><span class="nf">withIndex</span><span class="p">().</span><span class="nf">associate</span> <span class="p">{</span> <span class="n">elem</span> <span class="p">-&gt;</span> <span class="n">elem</span><span class="p">.</span><span class="n">value</span> <span class="n">to</span> <span class="n">elem</span><span class="p">.</span><span class="n">index</span> <span class="p">}</span>  
+<span class="kd">val</span> <span class="py">reversetagMap</span> <span class="p">=</span> <span class="n">tagMap</span><span class="p">.</span><span class="nf">asIterable</span><span class="p">().</span><span class="nf">associate</span> <span class="p">{</span> <span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span> <span class="p">-&gt;</span> <span class="n">value</span> <span class="n">to</span> <span class="n">key</span> <span class="p">}</span>  
+<span class="kd">val</span> <span class="py">hmm</span> <span class="p">=</span> <span class="nc">HiddenMarkovModel</span><span class="p">(</span>  
+    <span class="n">tagMap</span><span class="p">.</span><span class="nf">asIterable</span><span class="p">().</span><span class="nf">associate</span> <span class="p">{</span> <span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span> <span class="p">-&gt;</span> <span class="n">value</span> <span class="n">to</span> <span class="n">key</span> <span class="p">},</span>  
+    <span class="n">tokenMap</span><span class="p">.</span><span class="nf">asIterable</span><span class="p">().</span><span class="nf">associate</span> <span class="p">{</span> <span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span> <span class="p">-&gt;</span> <span class="n">value</span> <span class="n">to</span> <span class="n">key</span> <span class="p">},</span>  
+    <span class="nc">BegginingOfSentence</span> <span class="p">=</span> <span class="n">tokenMap</span><span class="p">.</span><span class="nf">getOrDefault</span><span class="p">(</span><span class="s">"BOS"</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>  
+    <span class="p">)</span>  
+  
+<span class="kd">val</span> <span class="py">x</span> <span class="p">=</span> <span class="nf">listOf</span><span class="p">(</span><span class="n">mk</span><span class="p">.</span><span class="nf">ndarray</span><span class="p">(</span><span class="n">tokensText</span><span class="p">.</span><span class="nf">mapNotNull</span><span class="p">(</span><span class="n">tokenMap</span><span class="o">::</span><span class="k">get</span><span class="p">).</span><span class="nf">toIntArray</span><span class="p">()))</span>  
+<span class="kd">val</span> <span class="py">y</span> <span class="p">=</span> <span class="nf">listOf</span><span class="p">(</span><span class="n">mk</span><span class="p">.</span><span class="nf">ndarray</span><span class="p">(</span><span class="n">tagsText</span><span class="p">.</span><span class="nf">mapNotNull</span><span class="p">(</span><span class="n">tagMap</span><span class="o">::</span><span class="k">get</span><span class="p">).</span><span class="nf">toIntArray</span><span class="p">()))</span>  
+  
+  
+<span class="n">hmm</span><span class="p">.</span><span class="nf">fit</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>  
+<span class="c1">// predict.map { t -&gt; t.data.map { reversetagMap\[it\] } } to get the real labels!  </span>
+<span class="n">hmm</span><span class="p">.</span><span class="nf">predict</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="n">shouldBeEqualTo</span> <span class="n">y</span>
+</code></pre></div></div>
+
+<h2 id="unsupervised-keyword-extraction">Unsupervised Keyword Extraction</h2>
+
+<p>This is something that makes me very happy to include, automatic keyword extraction! This tool is very fast and efficient at doing what it’s doing and is based on a Co-Occurrence Statistical Information algorithm proposed by Y. Matsuo &amp; M. Ishizuka in the following <a href="https://www.researchgate.net/publication/2572200_Keyword_Extraction_from_a_Single_Document_using_Word_Co-occurrence_Statistical_Information">paper</a>.</p>
+
+<h3 id="usage-of-keyword-extraction">Usage of Keyword Extraction</h3>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">val</span> <span class="py">keywords</span> <span class="p">=</span> <span class="nc">CooccurrenceKeywords</span><span class="p">.</span><span class="nf">keywords</span><span class="p">(</span><span class="s">"Londogard NLP toolkit is works on multiple languages.\\nAn amazing piece of NLP tech.\\nThis is how to fetch keywords! "</span><span class="p">)</span>  
+  
+<span class="n">keywords</span> <span class="n">shouldBeEqualTo</span> <span class="nf">listOf</span><span class="p">(</span><span class="nf">listOf</span><span class="p">(</span><span class="s">"nlp"</span><span class="p">)</span> <span class="n">to</span> <span class="mi">2</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h2 id="embedding-improvements">Embedding Improvements</h2>
+
+<p><code class="language-plaintext highlighter-rouge">LightWordEmbeddings</code>  have had their cache updated into a optimal cache by <code class="language-plaintext highlighter-rouge">caffeine</code> , which instead of being randomly deleted from cache takes the least used and remove. This should improve performance!</p>
+
+<hr />
+
+<p>That’s it, I’m hoping to release a spaCy-like API during 2022, including Neural Networks. Here’s to the future! 🍾</p>
