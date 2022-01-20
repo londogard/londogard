@@ -10,16 +10,21 @@ author: Hampus Londögård
 
 # Release nlp 1.1.0
 
-The 1.1.0 release of nlp ([londogard-nlp-toolkit](https://github.com/londogard/londogard-nlp-toolkit)) by londogard is here!
-  
+The 1.1.0 release of nlp ([londogard-nlp-toolkit](https://github.com/londogard/londogard-nlp-toolkit)) by londogard is **finally** here!
 
-I’m writing this small blog-post mainly to showcase some of the new things possible now that we’re moving into classifer-space!  
 
+I’m writing this small blog-post mainly to showcase some of the new things possible now that we’re moving into classifer-space!   
+This release took some time to complete because there was some big restructuring and custom implementations required. One thing that I wasn't expecting was to implement my own Sparse Matrix on top of `multik` because there's currently no support. Without sparsity text features will make your memory dissapear before you take your second breath! 😅  
+Luckily I managed to get something up and running. The code is now cleaner and more efficient than previously on top of all the new features.
+
+
+**N.B.**  
 Most of the examples are taken from `/src/test`.
 
 # Vectorizers
 
-First out we have vectorizers that takes words and output vectors of numbers. Three different vectorizers was added, namely:
+The first part I'd like to present is the tooling that required sparse matrices, _vectorizers_. TF-IDF, Bag of Words & BM-25 requires huge matrices that are very sparse, having it all in memory would be crazy as > 90% is empty (=0.0).  
+Let's look at the vectorizers that now exists:
 
 1.  **Bag of Words**, also called Count Vectorizer in `sklearn`.
 
@@ -32,7 +37,9 @@ First out we have vectorizers that takes words and output vectors of numbers. Th
     *   This vectorizer is a improvement on top of TF-IDF used by Elastic Search among others. The difference is that BM-25 also base the magnitude on the sentences length, in TF-IDF sometimes long sentences tend to get very high magnitude. ([Wikipedia](https://en.wikipedia.org/wiki/Okapi_BM25))
 
 And yes, it’s possible to vectorize **with ngrams**! 🥳  
-And yes (x2), it’s using **Sparse Matrices** to keep performance at top!🤩
+And yes (x2), it’s using **Sparse Matrices** to keep performance at top! 🤩
+
+All in all this puts us very close to the famous **sklearn** in terms of versatility.
 
 ### Usage of Vectorizers
 
@@ -49,7 +56,9 @@ println("Vectorized: $lhs")
 
 ## Classifiers
 
-Yes, we now have classifiers meaning we can classify sentences, documents and much more using our vectorized data!
+And the first feature built on top of the new vectors... **classifiers**!  
+To be able to figure out if a tweet is negative or positive we need to classify the text, based on the vectorized data.  
+The following classifiers are added for now:
 
 *   Logistic Regression using Stochastic Gradient Descent as optimizer
 *   Naïve Bayes classifier
@@ -99,7 +108,8 @@ hmm.predict(x) shouldBeEqualTo y
 
 ## Unsupervised Keyword Extraction
 
-This is something that makes me very happy to include, automatic keyword extraction! This tool is very fast and efficient at doing what it’s doing and is based on a Co-Occurrence Statistical Information algorithm proposed by Y. Matsuo & M. Ishizuka in the following [paper](https://www.researchgate.net/publication/2572200_Keyword_Extraction_from_a_Single_Document_using_Word_Co-occurrence_Statistical_Information).
+I couldn't keep my release small enough... so I added a little gem, **automatic keyword extraction**! This tool is very fast and efficient at doing what it’s doing and is based on a Co-Occurrence Statistical Information algorithm proposed by Y. Matsuo & M. Ishizuka in the following [paper](https://www.researchgate.net/publication/2572200_Keyword_Extraction_from_a_Single_Document_using_Word_Co-occurrence_Statistical_Information).  
+I think this is incredibly useful when you need something fast, cheap and that takes you 90% of the way!
 
 
 ### Usage of Keyword Extraction
@@ -113,7 +123,7 @@ keywords shouldBeEqualTo listOf(listOf("nlp") to 2)
 
 ## Embedding Improvements
 
-`LightWordEmbeddings`  have had their cache updated into a optimal cache by `caffeine` , which instead of being randomly deleted from cache takes the least used and remove. This should improve performance!
+`LightWordEmbeddings`  have had their cache updated into a optimal cache by `caffeine` , which instead of being randomly deleted from cache takes the least used and remove. This will improve performance greatly!
 
   
 ---
