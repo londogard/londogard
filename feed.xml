@@ -1,14 +1,18 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.1.1">Jekyll</generator><link href="https://blog.londogard.com/feed.xml" rel="self" type="application/atom+xml" /><link href="https://blog.londogard.com/" rel="alternate" type="text/html" /><updated>2022-01-16T05:30:57-06:00</updated><id>https://blog.londogard.com/feed.xml</id><title type="html">Londogard</title><subtitle>A blog with a focus on Deep Learning, JVM and Performance.</subtitle><entry><title type="html">Release nlp (londogard-nlp-toolkit) 1.1.0</title><link href="https://blog.londogard.com/nlp/jvm/kotlin/2022/01/16/nlp-toolkit-release.html" rel="alternate" type="text/html" title="Release nlp (londogard-nlp-toolkit) 1.1.0" /><published>2022-01-16T00:00:00-06:00</published><updated>2022-01-16T00:00:00-06:00</updated><id>https://blog.londogard.com/nlp/jvm/kotlin/2022/01/16/nlp-toolkit-release</id><content type="html" xml:base="https://blog.londogard.com/nlp/jvm/kotlin/2022/01/16/nlp-toolkit-release.html">&lt;h1 id=&quot;release-nlp-110&quot;&gt;Release nlp 1.1.0&lt;/h1&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.1.1">Jekyll</generator><link href="https://blog.londogard.com/feed.xml" rel="self" type="application/atom+xml" /><link href="https://blog.londogard.com/" rel="alternate" type="text/html" /><updated>2022-01-20T09:19:50-06:00</updated><id>https://blog.londogard.com/feed.xml</id><title type="html">Londogard</title><subtitle>A blog with a focus on Deep Learning, JVM and Performance.</subtitle><entry><title type="html">Release nlp (londogard-nlp-toolkit) 1.1.0</title><link href="https://blog.londogard.com/nlp/jvm/kotlin/2022/01/16/nlp-toolkit-release.html" rel="alternate" type="text/html" title="Release nlp (londogard-nlp-toolkit) 1.1.0" /><published>2022-01-16T00:00:00-06:00</published><updated>2022-01-16T00:00:00-06:00</updated><id>https://blog.londogard.com/nlp/jvm/kotlin/2022/01/16/nlp-toolkit-release</id><content type="html" xml:base="https://blog.londogard.com/nlp/jvm/kotlin/2022/01/16/nlp-toolkit-release.html">&lt;h1 id=&quot;release-nlp-110&quot;&gt;Release nlp 1.1.0&lt;/h1&gt;
 
-&lt;p&gt;The 1.1.0 release of nlp (&lt;a href=&quot;https://github.com/londogard/londogard-nlp-toolkit&quot;&gt;londogard-nlp-toolkit&lt;/a&gt;) by londogard is here!&lt;/p&gt;
+&lt;p&gt;The 1.1.0 release of nlp (&lt;a href=&quot;https://github.com/londogard/londogard-nlp-toolkit&quot;&gt;londogard-nlp-toolkit&lt;/a&gt;) by londogard is &lt;strong&gt;finally&lt;/strong&gt; here!&lt;/p&gt;
 
-&lt;p&gt;I’m writing this small blog-post mainly to showcase some of the new things possible now that we’re moving into classifer-space!&lt;/p&gt;
+&lt;p&gt;I’m writing this small blog-post mainly to showcase some of the new things possible now that we’re moving into classifer-space! &lt;br /&gt;
+This release took some time to complete because there was some big restructuring and custom implementations required. One thing that I wasn’t expecting was to implement my own Sparse Matrix on top of &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;multik&lt;/code&gt; because there’s currently no support. Without sparsity text features will make your memory dissapear before you take your second breath! 😅&lt;br /&gt;
+Luckily I managed to get something up and running. The code is now cleaner and more efficient than previously on top of all the new features.&lt;/p&gt;
 
-&lt;p&gt;Most of the examples are taken from &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/src/test&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;N.B.&lt;/strong&gt;&lt;br /&gt;
+Most of the examples are taken from &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/src/test&lt;/code&gt;.&lt;/p&gt;
 
 &lt;h1 id=&quot;vectorizers&quot;&gt;Vectorizers&lt;/h1&gt;
 
-&lt;p&gt;First out we have vectorizers that takes words and output vectors of numbers. Three different vectorizers was added, namely:&lt;/p&gt;
+&lt;p&gt;The first part I’d like to present is the tooling that required sparse matrices, &lt;em&gt;vectorizers&lt;/em&gt;. TF-IDF, Bag of Words &amp;amp; BM-25 requires huge matrices that are very sparse, having it all in memory would be crazy as &amp;gt; 90% is empty (=0.0).&lt;br /&gt;
+Let’s look at the vectorizers that now exists:&lt;/p&gt;
 
 &lt;ol&gt;
   &lt;li&gt;
@@ -31,7 +35,9 @@
 &lt;/ol&gt;
 
 &lt;p&gt;And yes, it’s possible to vectorize &lt;strong&gt;with ngrams&lt;/strong&gt;! 🥳&lt;br /&gt;
-And yes (x2), it’s using &lt;strong&gt;Sparse Matrices&lt;/strong&gt; to keep performance at top!🤩&lt;/p&gt;
+And yes (x2), it’s using &lt;strong&gt;Sparse Matrices&lt;/strong&gt; to keep performance at top! 🤩&lt;/p&gt;
+
+&lt;p&gt;All in all this puts us very close to the famous &lt;strong&gt;sklearn&lt;/strong&gt; in terms of versatility.&lt;/p&gt;
 
 &lt;h3 id=&quot;usage-of-vectorizers&quot;&gt;Usage of Vectorizers&lt;/h3&gt;
 
@@ -46,7 +52,9 @@ And yes (x2), it’s using &lt;strong&gt;Sparse Matrices&lt;/strong&gt; to keep 
 
 &lt;h2 id=&quot;classifiers&quot;&gt;Classifiers&lt;/h2&gt;
 
-&lt;p&gt;Yes, we now have classifiers meaning we can classify sentences, documents and much more using our vectorized data!&lt;/p&gt;
+&lt;p&gt;And the first feature built on top of the new vectors… &lt;strong&gt;classifiers&lt;/strong&gt;!&lt;br /&gt;
+To be able to figure out if a tweet is negative or positive we need to classify the text, based on the vectorized data.&lt;br /&gt;
+The following classifiers are added for now:&lt;/p&gt;
 
 &lt;ul&gt;
   &lt;li&gt;Logistic Regression using Stochastic Gradient Descent as optimizer&lt;/li&gt;
@@ -95,7 +103,8 @@ And yes (x2), it’s using &lt;strong&gt;Sparse Matrices&lt;/strong&gt; to keep 
 
 &lt;h2 id=&quot;unsupervised-keyword-extraction&quot;&gt;Unsupervised Keyword Extraction&lt;/h2&gt;
 
-&lt;p&gt;This is something that makes me very happy to include, automatic keyword extraction! This tool is very fast and efficient at doing what it’s doing and is based on a Co-Occurrence Statistical Information algorithm proposed by Y. Matsuo &amp;amp; M. Ishizuka in the following &lt;a href=&quot;https://www.researchgate.net/publication/2572200_Keyword_Extraction_from_a_Single_Document_using_Word_Co-occurrence_Statistical_Information&quot;&gt;paper&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;I couldn’t keep my release small enough… so I added a little gem, &lt;strong&gt;automatic keyword extraction&lt;/strong&gt;! This tool is very fast and efficient at doing what it’s doing and is based on a Co-Occurrence Statistical Information algorithm proposed by Y. Matsuo &amp;amp; M. Ishizuka in the following &lt;a href=&quot;https://www.researchgate.net/publication/2572200_Keyword_Extraction_from_a_Single_Document_using_Word_Co-occurrence_Statistical_Information&quot;&gt;paper&lt;/a&gt;.&lt;br /&gt;
+I think this is incredibly useful when you need something fast, cheap and that takes you 90% of the way!&lt;/p&gt;
 
 &lt;h3 id=&quot;usage-of-keyword-extraction&quot;&gt;Usage of Keyword Extraction&lt;/h3&gt;
 
@@ -106,7 +115,7 @@ And yes (x2), it’s using &lt;strong&gt;Sparse Matrices&lt;/strong&gt; to keep 
 
 &lt;h2 id=&quot;embedding-improvements&quot;&gt;Embedding Improvements&lt;/h2&gt;
 
-&lt;p&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;LightWordEmbeddings&lt;/code&gt;  have had their cache updated into a optimal cache by &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;caffeine&lt;/code&gt; , which instead of being randomly deleted from cache takes the least used and remove. This should improve performance!&lt;/p&gt;
+&lt;p&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;LightWordEmbeddings&lt;/code&gt;  have had their cache updated into a optimal cache by &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;caffeine&lt;/code&gt; , which instead of being randomly deleted from cache takes the least used and remove. This will improve performance greatly!&lt;/p&gt;
 
 &lt;hr /&gt;
 
