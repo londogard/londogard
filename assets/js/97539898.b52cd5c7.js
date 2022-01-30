@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunklondogard=self.webpackChunklondogard||[]).push([[5320],{9544:function(l){l.exports=JSON.parse('{"allTagsPath":"/blog/tags","slug":"/blog/tags/kotlin","name":"kotlin","count":7,"permalink":"/blog/tags/kotlin"}')}}]);

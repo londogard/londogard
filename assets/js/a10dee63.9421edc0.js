@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunklondogard=self.webpackChunklondogard||[]).push([[1135],{8317:function(a){a.exports=JSON.parse('{"allTagsPath":"/blog/tags","slug":"/blog/tags/gradle","name":"gradle","count":2,"permalink":"/blog/tags/gradle"}')}}]);
