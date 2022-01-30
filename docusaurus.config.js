@@ -88,15 +88,17 @@ const config = {
       footer: {
         style: 'dark',
         links: [
-          /**{
-            title: 'Docs',
+          {
+            title: 'Support Londogard',
             items: [
               {
-                label: 'Tutorial',
-                to: '/docs/intro',
+                html: `<a href="https://www.buymeacoffee.com/hlondogard" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" style="height: 60px !important;width: 217px !important;" ></a>`,
+              },
+              {
+                html: `<div style="display: flex; align-items: center;"><iframe src="https://github.com/sponsors/Lundez/button" title="Sponsor Lundez" height="35" width="116" style="border: 0;"></iframe><div>&nbsp;on GitHub</div></div>`,
               },
             ],
-          },*/
+          },
           {
             title: 'More',
             items: [
@@ -110,13 +112,26 @@ const config = {
               },
             ],
           },
+          {
+            title: 'Feeds',
+            items: [
+              {
+                label: 'RSS',
+                href: 'https://blog.londogard.com/blog/rss.xml',
+              },
+              {
+                label: 'Atom',
+                href: 'https://blog.johnnyreilly.com/blog/atom.xml',
+              },
+            ],
+          },
         ],
-        copyright: `Copyright © ${new Date().getFullYear()} Londogard.`,
+        copyright: `Copyright © ${new Date().getFullYear()} Londogard. Built with Docusaurus.`,
       },
       prism: {
         theme: lightCodeTheme,
         darkTheme: darkCodeTheme,
-        additionalLanguages: ['kotlin', 'java', 'scala'],
+        additionalLanguages: ['kotlin', 'java', 'scala', 'docker'],
       },
     }),
 };
