@@ -1,0 +1,128 @@
+---
+description: "nlp (londogard-nlp-toolkit) has had it's 1.1.0 release recently with a lot of new functionality and multiple improvements to efficiency, dive in to understand more!"
+tags: [nlp, jvm, kotlin]
+title: "Release nlp (londogard-nlp-toolkit) 1.1.0"
+authors: hlondogard
+---
+
+# Release nlp 1.1.0
+
+The 1.1.0 release of nlp ([londogard-nlp-toolkit](https://github.com/londogard/londogard-nlp-toolkit)) by londogard is **finally** here!
+
+<!--truncate-->
+
+I’m writing this small blog-post mainly to showcase some of the new things possible now that we’re moving into classifer-space!   
+This release took some time to complete because there was some big restructuring and custom implementations required. One thing that I wasn't expecting was to implement my own Sparse Matrix on top of `multik` because there's currently no support. Without sparsity text features will make your memory dissapear before you take your second breath! 😅  
+Luckily I managed to get something up and running. The code is now cleaner and more efficient than previously on top of all the new features.
+
+
+**N.B.**  
+Most of the examples are taken from `/src/test`.
+
+# Vectorizers
+
+The first part I'd like to present is the tooling that required sparse matrices, _vectorizers_. TF-IDF, Bag of Words & BM-25 requires huge matrices that are very sparse, having it all in memory would be crazy as > 90% is empty (=0.0).  
+Let's look at the vectorizers that now exists:
+
+1.  **Bag of Words**, also called Count Vectorizer in `sklearn`.
+
+    *   This vectorizer takes words and assign a unique number to each, which is then filled in the final vector
+
+3.  **TF-IDF**
+    *   This vectorizer assigns values to word based on their _term frequency & inverse-document frequency._ Which is a **incredible strong baseline.** ([Wikipedia.org](https://en.wikipedia.org/wiki/Tf%E2%80%93idf))
+
+5.  **BM-25**
+    *   This vectorizer is a improvement on top of TF-IDF used by Elastic Search among others. The difference is that BM-25 also base the magnitude on the sentences length, in TF-IDF sometimes long sentences tend to get very high magnitude. ([Wikipedia](https://en.wikipedia.org/wiki/Okapi_BM25))
+
+And yes, it’s possible to vectorize **with ngrams**! 🥳  
+And yes (x2), it’s using **Sparse Matrices** to keep performance at top! 🤩
+
+All in all this puts us very close to the famous **sklearn** in terms of versatility.
+
+### Usage of Vectorizers
+
+```kotlin
+val simpleTok = SimpleTokenizer()  
+val simpleTexts = listOf("hello world!", "this is a few sentences")  
+    .map(simpleTok::split)  
+val tfidf = TfIdfVectorizer<Float>() // replace by CountVectorizer or Bm25Vectorizer  
+  
+val lhs = tfidf.fitTransform(simpleTexts)  
+println("Vectorized: $lhs")
+```
+  
+
+## Classifiers
+
+And the first feature built on top of the new vectors... **classifiers**!  
+To be able to figure out if a tweet is negative or positive we need to classify the text, based on the vectorized data.  
+The following classifiers are added for now:
+
+*   Logistic Regression using Stochastic Gradient Descent as optimizer
+*   Naïve Bayes classifier
+*   Hidden Markov Model to classify sequences with a sequence output, e.g. _Part of Speech_ (PoS) or _Named Entitiy Recognition_ (NER).
+
+### Usage of Classifiers
+
+```kotlin
+val tfidf = TfIdfVectorizer<Float>()  
+val naiveBayes = NaiveBayes() // replace by LogisticRegression if needed  
+  
+val out = tfidf.fitTransform(simpleTexts)  
+naiveBayes.fit(out, y)  
+  
+naiveBayes.predict(out) shouldBeEqualTo y
+```
+
+and for sequences:
+
+```kotlin
+val (tokensText, tagsText) = text  
+    .split('\\n')  
+    .map {  
+        val (a, b) = it.split('\\t')  
+        a to b  
+    }.unzip()  
+val tokenMap = (tokensText).toSet().withIndex().associate { elem -> elem.value to elem.index }  
+val tagMap = (tagsText + "BOS").toSet().withIndex().associate { elem -> elem.value to elem.index }  
+val reversetagMap = tagMap.asIterable().associate { (key, value) -> value to key }  
+val hmm = HiddenMarkovModel(  
+    tagMap.asIterable().associate { (key, value) -> value to key },  
+    tokenMap.asIterable().associate { (key, value) -> value to key },  
+    BegginingOfSentence = tokenMap.getOrDefault("BOS", 0)  
+    )  
+  
+val x = listOf(mk.ndarray(tokensText.mapNotNull(tokenMap::get).toIntArray()))  
+val y = listOf(mk.ndarray(tagsText.mapNotNull(tagMap::get).toIntArray()))  
+  
+  
+hmm.fit(x, y)  
+// predict.map { t -> t.data.map { reversetagMap\[it\] } } to get the real labels!  
+hmm.predict(x) shouldBeEqualTo y
+```
+
+
+## Unsupervised Keyword Extraction
+
+I couldn't keep my release small enough... so I added a little gem, **automatic keyword extraction**! This tool is very fast and efficient at doing what it’s doing and is based on a Co-Occurrence Statistical Information algorithm proposed by Y. Matsuo & M. Ishizuka in the following [paper](https://www.researchgate.net/publication/2572200_Keyword_Extraction_from_a_Single_Document_using_Word_Co-occurrence_Statistical_Information).  
+I think this is incredibly useful when you need something fast, cheap and that takes you 90% of the way!
+
+
+### Usage of Keyword Extraction
+
+```kotlin
+val keywords = CooccurrenceKeywords.keywords("Londogard NLP toolkit is works on multiple languages.\\nAn amazing piece of NLP tech.\\nThis is how to fetch keywords! ")  
+  
+keywords shouldBeEqualTo listOf(listOf("nlp") to 2)
+```
+  
+
+## Embedding Improvements
+
+`LightWordEmbeddings`  have had their cache updated into a optimal cache by `caffeine` , which instead of being randomly deleted from cache takes the least used and remove. This will improve performance greatly!
+
+  
+---
+
+
+That’s it, I’m hoping to release a spaCy-like API during 2022, including Neural Networks. Here’s to the future! 🍾
