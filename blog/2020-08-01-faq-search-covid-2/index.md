@@ -9,8 +9,10 @@ In this post I improve the previous FAQ search engine by some low hanging fruits
 
 <!--truncate-->
 
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/londogard/nlp-projects/blob/master/python/CoViD_19_QA_cont.ipynb])
+[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/londogard/nlp-projects/HEAD?labpath=python%2FCoViD_19_QA_cont.ipynb)
+
 # CoViD-19 FAQ Search Engine 2.0
-(Open in Google Colab [here](https://colab.research.google.com/github/londogard/nlp-projects/blob/master/python/CoViD_19_QA_cont.ipynb) to run the code)
 
 As promised here's a new improved (or is it?) _FAQ Search Engine_ with some minor NLP-lessons added as we go, be ready to learn new (or old) things!  
 Previously I added some requirements and I wish keep them, here they are as a refresher:

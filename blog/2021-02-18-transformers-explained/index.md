@@ -9,9 +9,10 @@ In this post I walk through Self-Attention Transformers from scratch with demos 
 
 <!--truncate-->
 
-# Transformers From Scratch
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/londogard/londogard/blob/master/blog/2021-02-18-transformers-explained/transformers-explained.ipynb])
+[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/londogard/londogard/HEAD?labpath=blog/2021-02-18-transformers-explained/transformers-explained.ipynb)
 
-(Open directly in Google Colab [here](https://colab.research.google.com/github/londogard/londogard/blob/master/_notebooks/2021-02-18-transformers-explained.ipynb).)
+# Transformers From Scratch
 
 The video from the workshop (in Swedish) can be found on [YouTube](https://youtu.be/bHIU96D8SSQ).
 
