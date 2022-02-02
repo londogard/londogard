@@ -57,6 +57,7 @@ const config = {
   themeConfig:
     /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
     ({
+      metadata: [{ name: 'keywords', content: 'nlp, kotlin, jvm, deep-learning, machine-learning, blog' }],
       navbar: {
         title: 'Londogard Blog',
         logo: {
@@ -71,8 +72,10 @@ const config = {
             label: 'Tutorial',
           },*/
           { to: '/blog', label: 'Blog', position: 'left' },
-          { to: '/blog/tags', label: 'Tags', position: 'left' },
-          { to: '/blog/archive', label: 'Archive', position: 'left' },
+          // { to: '/blog/tags', label: 'Tags', position: 'left' },
+          { to: '/blog/archive', label: 'Blog Archive', position: 'left' },
+          { to: '/presentations', label: 'Presentations', position: 'left' },
+          { href: 'https://londogard.com/about', label: 'About', position: 'right' },
           {
             href: 'https://londogard.com/projects',
             label: 'Londogard Projects',
