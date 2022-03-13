@@ -696,19 +696,6 @@ Let's validate the correlation, e.g. how our values correlate to each other!
 df.corr().style.background_gradient(cmap="Blues")
 ```
 
-
-
-
-<style type="text/css">
-#T_2b0c3_row0_col0, #T_2b0c3_row1_col1 {
-  background-color: #08306b;
-  color: #f1f1f1;
-}
-#T_2b0c3_row0_col1, #T_2b0c3_row1_col0 {
-  background-color: #f7fbff;
-  color: #000000;
-}
-</style>
 <table id="T_2b0c3_">
   <thead>
     <tr>

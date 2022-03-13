@@ -286,66 +286,6 @@ df['Adj Close'].corr().style.background_gradient(cmap="Blues")
 ```
 
 
-
-
-<style type="text/css">
-#T_ad2a9_row0_col0, #T_ad2a9_row1_col1, #T_ad2a9_row2_col2, #T_ad2a9_row3_col3, #T_ad2a9_row4_col4 {
-  background-color: #08306b;
-  color: #f1f1f1;
-}
-#T_ad2a9_row0_col1, #T_ad2a9_row2_col3 {
-  background-color: #083a7a;
-  color: #f1f1f1;
-}
-#T_ad2a9_row0_col2 {
-  background-color: #083b7c;
-  color: #f1f1f1;
-}
-#T_ad2a9_row0_col3, #T_ad2a9_row3_col0 {
-  background-color: #083471;
-  color: #f1f1f1;
-}
-#T_ad2a9_row0_col4 {
-  background-color: #dbe9f6;
-  color: #000000;
-}
-#T_ad2a9_row1_col0, #T_ad2a9_row3_col2 {
-  background-color: #083979;
-  color: #f1f1f1;
-}
-#T_ad2a9_row1_col2 {
-  background-color: #08478d;
-  color: #f1f1f1;
-}
-#T_ad2a9_row1_col3 {
-  background-color: #083776;
-  color: #f1f1f1;
-}
-#T_ad2a9_row1_col4 {
-  background-color: #cfe1f2;
-  color: #000000;
-}
-#T_ad2a9_row2_col0 {
-  background-color: #083c7d;
-  color: #f1f1f1;
-}
-#T_ad2a9_row2_col1 {
-  background-color: #084d96;
-  color: #f1f1f1;
-}
-#T_ad2a9_row2_col4, #T_ad2a9_row4_col0, #T_ad2a9_row4_col1, #T_ad2a9_row4_col2, #T_ad2a9_row4_col3 {
-  background-color: #f7fbff;
-  color: #000000;
-}
-#T_ad2a9_row3_col1 {
-  background-color: #083877;
-  color: #f1f1f1;
-}
-#T_ad2a9_row3_col4 {
-  background-color: #e7f0fa;
-  color: #000000;
-}
-</style>
 <table id="T_ad2a9_">
   <thead>
     <tr>
