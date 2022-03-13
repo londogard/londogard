@@ -16,7 +16,7 @@ authors: hlondogard
 
 `CA=Competence Afternoon`
 
-This CA is originally found on [kaggle.com/lundet/..](https://www.kaggle.com/lundet/kompetenseftermiddag-crypto-forecasting/), as we entered a competition to predict cryptocurrency prices - [G-Research Crypto Forecasting]().
+This CA is originally found on [kaggle.com/lundet/..](https://www.kaggle.com/lundet/kompetenseftermiddag-crypto-forecasting/), as we entered a competition to predict cryptocurrency prices - G-Research Crypto Forecasting.
 
 **N.B.** This blog/notebook is adapted into a Jupyter notebook that's easier to replicate, that is we don't use the Kaggle API + GBs of data that was required for said competition.
 
