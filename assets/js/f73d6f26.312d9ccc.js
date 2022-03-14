@@ -1,1 +1,0 @@
-"use strict";(self.webpackChunklondogard=self.webpackChunklondogard||[]).push([[4325],{8811:function(o){o.exports=JSON.parse('{"allTagsPath":"/blog/tags","slug":"/blog/tags/workshop","name":"workshop","count":6,"permalink":"/blog/tags/workshop"}')}}]);
