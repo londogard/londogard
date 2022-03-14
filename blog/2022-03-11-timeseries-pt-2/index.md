@@ -1,7 +1,7 @@
 ---
 title: "[CA]: Time Series #2 - Predicting Stock Prices (Time Series) using classical machine Learning"
 description: "In this post we'll look at stocks, forecasting and predictions using classical machine learning (sklearn) approaches."
-slug: "timeseries-pt-2"
+slug: timeseries-pt-2
 tags: [machine-learning, timeseries, workshop]
 authors: hlondogard
 ---
@@ -19,16 +19,16 @@ authors: hlondogard
 
 To learn more about Time Series and how one can analyze them please view the other parts,
 
-1. [Part One - Decomposing & Working with Time Series (theoretical)](https://blog.londogard/timeseries-pt-1)
-2. [Part Two - Predicting Stock Prices (Time Series) using classical Machine Learning](https://blog.londogard/timeseries-pt-2)
-3. [Part Three -Forecasting Cryptocurrency Prices (Time Series) using Deep Learning (PyTorch, Tensorflow/Keras & darts)](https://blog.londogard/timeseries-pt-3)
+1. [Part One - Decomposing & Working with Time Series (theoretical)](timeseries-pt-1)
+2. [Part Two - Predicting Stock Prices (Time Series) using classical Machine Learning](timeseries-pt-2)
+3. [Part Three -Forecasting Cryptocurrency Prices (Time Series) using Deep Learning (PyTorch, Tensorflow/Keras & darts)](timeseries-pt-3)
 
 ## Predicting Time Series 📈
 
 Today we will move from learning how to analyze Time Series to actually predicting them using simple models and data.
 
 We'll be predicting Stocks from the top tech companies like Apple & Google.  
-In [part #3](https://blog.londogard/timeseries-pt-3) we'll move back to the crypto world!
+In [part #3](timeseries-pt-3) we'll move back to the crypto world!
 
 To be able to predict the data we must understand it and we'll make a minor analysis.
 
@@ -68,9 +68,6 @@ from datetime import datetime
 df = pdr.get_data_yahoo(['AAPL', 'GOOGL', 'AMZN', 'MSFT', 'GE'])
 df.head()
 ```
-
-
-
 
 <div>
 <table border="1" class="dataframe">
@@ -368,13 +365,9 @@ sns.pairplot(df.drop_duplicates())
 ```
 
 
-
-
-    <seaborn.axisgrid.PairGrid at 0x7f1fbb4ef650>
-
-
-
-
+```
+<seaborn.axisgrid.PairGrid at 0x7f1fbb4ef650>
+```
     
 ![png](output_15_1.png)
     
@@ -687,7 +680,7 @@ log_return(df).head()
 <div>
 <table border="1" class="dataframe">
   <thead>
-    <tr style="text-align: right;">
+    <tr>
       <th>Symbols</th>
       <th>AAPL</th>
       <th>GOOGL</th>
@@ -786,7 +779,7 @@ df.head()
 
 <table border="1" class="dataframe">
   <thead>
-    <tr style="text-align: right;">
+    <tr>
       <th>Symbols</th>
       <th>AAPL</th>
       <th>GOOGL</th>
@@ -856,7 +849,7 @@ df.head()
 
 <table border="1" class="dataframe">
   <thead>
-    <tr style="text-align: right;">
+    <tr>
       <th>Symbols</th>
       <th>GOOGL</th>
     </tr>
@@ -915,7 +908,7 @@ build_history(df, 3).head()
 
 <table border="1" class="dataframe">
   <thead>
-    <tr style="text-align: right;">
+    <tr>
       <th>Symbols</th>
       <th>GOOGL</th>
       <th>t_0</th>
@@ -973,7 +966,7 @@ build_history(df, 3).head()
 
 
 Notice how $t_0$ is the previous value, $t_1$ two steps back, and so on.  
-This is actually _very_ memory intense as our data grows X times, one time per time step we build. In [part #3](INSERT) we'll go through how one can solve this issue.
+This is actually _very_ memory intense as our data grows X times, one time per time step we build. In [part #3](timeseries-pt-3) we'll go through how one can solve this issue.
 
 No we need to drop all places where we don't have any history. That is easily achieved by dropping `NaN`.
 
@@ -994,7 +987,7 @@ df.head()
 <div>
 <table border="1" class="dataframe">
   <thead>
-    <tr style="text-align: right;">
+    <tr>
       <th>Symbols</th>
       <th>GOOGL</th>
       <th>t_0</th>
@@ -1239,10 +1232,9 @@ Personally I'm very pleased with the results and can't wait to get started on **
 
 To learn more about Time Series and how one can analyze them please view the other parts,
 
-1. [Part One - Decomposing & Working with Time Series (theoretical)](https://blog.londogard/timeseries-pt-1)
-2. [Part Two - Predicting Stock Prices (Time Series) using classical Machine Learning](https://blog.londogard/timeseries-pt-2)
-3. [Part Three -Forecasting Cryptocurrency Prices (Time Series) using Deep Learning (PyTorch, Tensorflow/Keras & darts)](https://blog.londogard/timeseries-pt-3)
-
+1. [Part One - Decomposing & Working with Time Series (theoretical)](timeseries-pt-1)
+2. [Part Two - Predicting Stock Prices (Time Series) using classical Machine Learning](timeseries-pt-2)
+3. [Part Three -Forecasting Cryptocurrency Prices (Time Series) using Deep Learning (PyTorch, Tensorflow/Keras & darts)](timeseries-pt-3)
 
 ---
 

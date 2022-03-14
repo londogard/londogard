@@ -1,7 +1,7 @@
 ---
 title: "[CA]: Time Series #1 - Decomposing & Working with Time Series"
 description: "In this post we'll look at Time Series and theory surrounding them."
-slug: "timeseries-pt-1"
+slug: timeseries-pt-1
 tags: [machine-learning, timeseries, workshop]
 authors: hlondogard
 ---
@@ -20,9 +20,9 @@ This CA is originally found on [kaggle.com/lundet/..](https://www.kaggle.com/lun
 
 **N.B.** This blog/notebook is adapted into a Jupyter notebook that's easier to replicate, that is we don't use the Kaggle API + GBs of data that was required for said competition.
 
-1. [Part One - Decomposing & Working with Time Series (theoretical)](https://blog.londogard/timeseries-pt-1)
-2. [Part Two - Predicting Stock Prices (Time Series) using classical Machine Learning](https://blog.londogard/timeseries-pt-2)
-3. [Part Three -Forecasting Cryptocurrency Prices (Time Series) using Deep Learning (PyTorch, Tensorflow/Keras & darts)](https://blog.londogard/timeseries-pt-3)
+1. [Part One - Decomposing & Working with Time Series (theoretical)](timeseries-pt-1)
+2. [Part Two - Predicting Stock Prices (Time Series) using classical Machine Learning](timeseries-pt-2)
+3. [Part Three -Forecasting Cryptocurrency Prices (Time Series) using Deep Learning (PyTorch, Tensorflow/Keras & darts)](timeseries-pt-3)
 
 Moving on to the content! 🤓
 
@@ -124,7 +124,7 @@ df.head()
 <div>
 <table border="1" class="dataframe">
   <thead>
-    <tr style="text-align: right;">
+    <tr>
       <th></th>
       <th>High</th>
       <th>Low</th>
@@ -271,7 +271,7 @@ df.isna().head()
 <div>
 <table border="1" class="dataframe">
   <thead>
-    <tr style="text-align: right;">
+    <tr>
       <th></th>
       <th>High</th>
       <th>Low</th>
@@ -646,7 +646,7 @@ df.head()
 <div>
 <table border="1" class="dataframe">
   <thead>
-    <tr style="text-align: right;">
+    <tr>
       <th>Symbols</th>
       <th>BTC-USD</th>
       <th>ETH-USD</th>
@@ -838,6 +838,6 @@ That's it for this time. Make sure to view **part 2** if you want to start predi
 
 To learn more about Time Series and how one can analyze them please view the other parts,
 
-1. [Part One - Decomposing & Working with Time Series (theoretical)](https://blog.londogard/timeseries-pt-1)
-2. [Part Two - Predicting Stock Prices (Time Series) using classical Machine Learning](https://blog.londogard/timeseries-pt-2)
-3. [Part Three -Forecasting Cryptocurrency Prices (Time Series) using Deep Learning (PyTorch, Tensorflow/Keras & darts)](https://blog.londogard/timeseries-pt-3)
+1. [Part One - Decomposing & Working with Time Series (theoretical)](timeseries-pt-1)
+2. [Part Two - Predicting Stock Prices (Time Series) using classical Machine Learning](timeseries-pt-2)
+3. [Part Three -Forecasting Cryptocurrency Prices (Time Series) using Deep Learning (PyTorch, Tensorflow/Keras & darts)](timeseries-pt-3)

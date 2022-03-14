@@ -1,7 +1,7 @@
 ---
 title: "[CA]: Time Series #3 - Forecasting Cryptocurrency Prices (Time Series) using Deep Learning (PyTorch, Tensorflow/Keras & darts)"
 description: "In this post we'll look at Time Series and cryptocurrency-prices. We'll look at both simpler networks and more complex ones like NBEATs."
-slug: "timeseries-pt-3"
+slug: timeseries-pt-3
 tags: [machine-learning, timeseries, workshop]
 authors: hlondogard
 ---
@@ -17,11 +17,11 @@ authors: hlondogard
 
 `CA=Competence Afternoon`
 
-Series is 3 parts,
-1. [Part One - Decomposing & Working with Time Series (theoretical)](https://blog.londogard/timeseries-pt-1)
-2. [Part Two - Predicting Stock Prices (Time Series) using classical Machine Learning](https://blog.londogard/timeseries-pt-2)
-3. [Part Three -Forecasting Cryptocurrency Prices (Time Series) using Deep Learning (PyTorch, Tensorflow/Keras & darts)](https://blog.londogard/timeseries-pt-3)
+To learn more about Time Series and how one can analyze them please view the other parts,
 
+1. [Part One - Decomposing & Working with Time Series (theoretical)](timeseries-pt-1)
+2. [Part Two - Predicting Stock Prices (Time Series) using classical Machine Learning](timeseries-pt-2)
+3. [Part Three -Forecasting Cryptocurrency Prices (Time Series) using Deep Learning (PyTorch, Tensorflow/Keras & darts)](timeseries-pt-3)
 
 ## Predicting Time Series 📈
 
@@ -151,7 +151,7 @@ class TimeseriesDataset(torch.utils.data.Dataset):
 
 `self.X.__len__() - (self.seq_len - 1)` <-- _What is this sorcery?_
 
-Remember from [part #2](INSERT) where we built our history we had to use `pd.DataFrame.dropna`, the same has to be done here which means our final dataset is a little bit less than `len(X)`.
+Remember from [part #2](timeseries-pt-2) where we built our history we had to use `pd.DataFrame.dropna`, the same has to be done here which means our final dataset is a little bit less than `len(X)`.
 
 Now there's a single piece left, **`__getitem__(self, index)`** which fetches the element(s).  
 For our use-case we wish to window/slide the data, so we'll fetch a slice, `[a:b]`, as `X` and the future element as `y`.
@@ -1173,10 +1173,11 @@ Play around! Do what you wish to do! This is easy to improve upon, and real fun!
 
 To learn more about Time Series and how one can analyze them please view the other parts,
 
-1. [Part One - Decomposing & Working with Time Series (theoretical)](https://blog.londogard/timeseries-pt-1)
-2. [Part Two - Predicting Stock Prices (Time Series) using classical Machine Learning](https://blog.londogard/timeseries-pt-2)
-3. [Part Three -Forecasting Cryptocurrency Prices (Time Series) using Deep Learning (PyTorch, Tensorflow/Keras & darts)](https://blog.londogard/timeseries-pt-3)
+To learn more about Time Series and how one can analyze them please view the other parts,
 
+1. [Part One - Decomposing & Working with Time Series (theoretical)](timeseries-pt-1)
+2. [Part Two - Predicting Stock Prices (Time Series) using classical Machine Learning](timeseries-pt-2)
+3. [Part Three -Forecasting Cryptocurrency Prices (Time Series) using Deep Learning (PyTorch, Tensorflow/Keras & darts)](timeseries-pt-3)
 ---
 
 
