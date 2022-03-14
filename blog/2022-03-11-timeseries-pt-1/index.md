@@ -1,6 +1,6 @@
 ---
-title: "[CA]: Time Series #1 - Decomposing & Working with Time Series"
-description: "In this post we'll look at Time Series and theory surrounding them."
+title: "Decomposing & Working with Time Series (Time Series #1)"
+description: "In this post/Jupyter Notebook we'll look at Time Series and theory surrounding them."
 slug: timeseries-pt-1
 tags: [machine-learning, timeseries, workshop]
 authors: hlondogard
@@ -8,6 +8,7 @@ authors: hlondogard
 
 <a href="https://colab.research.google.com/github/londogard/londogard/blob/master/blog/2022-03-11-timeseries-pt-1/index.ipynb" target="_parent"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/></a>
 
+In this post/Jupyter Notebook we'll look at Time Series and theory surrounding them.
 <!--truncate-->
 
 ⚠️Please be aware that **this blog is much easier and nicer to read directly in `Colab` 👆 or through [GitHub](https://github.com/londogard/londogard/blob/master/blog/2022-03-11-timeseries-pt-1/index.ipynb)**!

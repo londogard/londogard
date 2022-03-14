@@ -1,6 +1,6 @@
 ---
-title: "[CA]: Time Series #3 - Forecasting Cryptocurrency Prices (Time Series) using Deep Learning (PyTorch, Tensorflow/Keras & darts)"
-description: "In this post we'll look at Time Series and cryptocurrency-prices. We'll look at both simpler networks and more complex ones like NBEATs."
+title: "Forecasting Crypto Prices using Deep Learning (Time Series #3)"
+description: "In this post/Jupyter Notebook we'll forecast Cryptocurrency prices using Deep Learning (PyTorch, TF/Keras & darts) and we'll use both both simpler networks and more complex ones like NBEATs."
 slug: timeseries-pt-3
 tags: [machine-learning, timeseries, workshop]
 authors: hlondogard
@@ -8,6 +8,7 @@ authors: hlondogard
 
 <a href="https://colab.research.google.com/github/londogard/londogard/blob/master/blog/2022-03-11-timeseries-pt-3/index.ipynb" target="_parent"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/></a>
 
+In this post/Jupyter Notebook we'll forecast Cryptocurrency prices using Deep Learning (PyTorch, TF/Keras & darts) and we'll use both both simpler networks and more complex ones like NBEATs.
 <!--truncate-->
 
 ⚠️Please be aware that **this blog is much easier and nicer to read directly in `Colab` 👆 or through [GitHub](https://github.com/londogard/londogard/blob/master/blog/2022-03-11-timeseries-pt-1/index.ipynb)**!

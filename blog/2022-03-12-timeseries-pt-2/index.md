@@ -1,6 +1,6 @@
 ---
-title: "[CA]: Time Series #2 - Predicting Stock Prices (Time Series) using classical machine Learning"
-description: "In this post we'll look at stocks, forecasting and predictions using classical machine learning (sklearn) approaches."
+title: "Predicting Stock Prices using classical machine Learning (Time Series #2)"
+description: "In this post/Jupyter Notebook we'll look at stocks, forecasting and predictions using classical machine learning (sklearn) approaches."
 slug: timeseries-pt-2
 tags: [machine-learning, timeseries, workshop]
 authors: hlondogard
@@ -8,6 +8,7 @@ authors: hlondogard
 
 <a href="https://colab.research.google.com/github/londogard/londogard/blob/master/blog/2022-03-11-timeseries-pt-2/index.ipynb" target="_parent"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/></a>
 
+In this post/Jupyter Notebook we'll look at stocks, forecasting and predictions using classical machine learning (sklearn) approaches.
 <!--truncate-->
 
 ⚠️Please be aware that **this blog is much easier and nicer to read directly in `Colab` 👆 or through [GitHub](https://github.com/londogard/londogard/blob/master/blog/2022-03-11-timeseries-pt-1/index.ipynb)**!
