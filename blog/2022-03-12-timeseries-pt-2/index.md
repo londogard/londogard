@@ -6,7 +6,7 @@ tags: [machine-learning, timeseries, workshop]
 authors: hlondogard
 ---
 
-<a href="https://colab.research.google.com/github/londogard/londogard/blob/master/blog/2022-03-11-timeseries-pt-2/index.ipynb" target="_parent"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/></a>
+<a href="https://colab.research.google.com/github/londogard/londogard/blob/master/blog/2022-03-12-timeseries-pt-2/index.ipynb" target="_parent"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/></a>
 
 In this post/Jupyter Notebook we'll look at stocks, forecasting and predictions using classical machine learning (sklearn) approaches.
 <!--truncate-->

@@ -6,7 +6,7 @@ tags: [machine-learning, timeseries, workshop]
 authors: hlondogard
 ---
 
-<a href="https://colab.research.google.com/github/londogard/londogard/blob/master/blog/2022-03-11-timeseries-pt-3/index.ipynb" target="_parent"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/></a>
+<a href="https://colab.research.google.com/github/londogard/londogard/blob/master/blog/2022-03-13-timeseries-pt-3/index.ipynb" target="_parent"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/></a>
 
 In this post/Jupyter Notebook we'll forecast Cryptocurrency prices using Deep Learning (PyTorch, TF/Keras & darts) and we'll use both both simpler networks and more complex ones like NBEATs.
 <!--truncate-->
