@@ -20,9 +20,9 @@ In this post/Jupyter Notebook we'll look at stocks, forecasting and predictions 
 
 To learn more about Time Series and how one can analyze them please view the other parts,
 
-1. [Part One - Decomposing & Working with Time Series (theoretical)](timeseries-pt-1)
-2. [Part Two - Predicting Stock Prices (Time Series) using classical Machine Learning](timeseries-pt-2)
-3. [Part Three -Forecasting Cryptocurrency Prices (Time Series) using Deep Learning (PyTorch, Tensorflow/Keras & darts)](timeseries-pt-3)
+1. [Part One - Decomposing & Working with Time Series (theoretical)](timeseries-pt-1) (<a href="https://colab.research.google.com/github/londogard/londogard/blob/master/blog/2022-03-11-timeseries-pt-1/index.ipynb" target="_parent"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/></a>)
+2. [Part Two - Predicting Stock Prices (Time Series) using classical Machine Learning](timeseries-pt-2)<a href="https://colab.research.google.com/github/londogard/londogard/blob/master/blog/2022-03-12-timeseries-pt-2/index.ipynb" target="_parent"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/></a>
+3. [Part Three -Forecasting Cryptocurrency Prices (Time Series) using Deep Learning (PyTorch, Tensorflow/Keras & darts)](timeseries-pt-3) (<a href="https://colab.research.google.com/github/londogard/londogard/blob/master/blog/2022-03-13-timeseries-pt-3/index.ipynb" target="_parent"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/></a>)
 
 ## Predicting Time Series 📈
 
@@ -1234,7 +1234,8 @@ Personally I'm very pleased with the results and can't wait to get started on **
 To learn more about Time Series and how one can analyze them please view the other parts,
 
 1. [Part One - Decomposing & Working with Time Series (theoretical)](timeseries-pt-1)
-2. [Part Two - Predicting Stock Prices (Time Series) using classical Machine Learning](timeseries-pt-2)
+2. [Part Two - Predicting Stock Prices (Time Series) using classical Machine Learning](timeseries-pt-2)<a href="https://colab.research.google.com/github/londogard/londogard/blob/master/blog/2022-03-12-timeseries-pt-2/index.ipynb" target="_parent"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/></a>
+
 3. [Part Three -Forecasting Cryptocurrency Prices (Time Series) using Deep Learning (PyTorch, Tensorflow/Keras & darts)](timeseries-pt-3)
 
 ---

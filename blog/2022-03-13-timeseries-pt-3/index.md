@@ -20,9 +20,9 @@ In this post/Jupyter Notebook we'll forecast Cryptocurrency prices using Deep Le
 
 To learn more about Time Series and how one can analyze them please view the other parts,
 
-1. [Part One - Decomposing & Working with Time Series (theoretical)](timeseries-pt-1)
-2. [Part Two - Predicting Stock Prices (Time Series) using classical Machine Learning](timeseries-pt-2)
-3. [Part Three -Forecasting Cryptocurrency Prices (Time Series) using Deep Learning (PyTorch, Tensorflow/Keras & darts)](timeseries-pt-3)
+1. [Part One - Decomposing & Working with Time Series (theoretical)](timeseries-pt-1) (<a href="https://colab.research.google.com/github/londogard/londogard/blob/master/blog/2022-03-11-timeseries-pt-1/index.ipynb" target="_parent"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/></a>)
+2. [Part Two - Predicting Stock Prices (Time Series) using classical Machine Learning](timeseries-pt-2) (<a href="https://colab.research.google.com/github/londogard/londogard/blob/master/blog/2022-03-12-timeseries-pt-2/index.ipynb" target="_parent"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/></a>)
+3. [Part Three -Forecasting Cryptocurrency Prices (Time Series) using Deep Learning (PyTorch, Tensorflow/Keras & darts)](timeseries-pt-3) (<a href="https://colab.research.google.com/github/londogard/londogard/blob/master/blog/2022-03-13-timeseries-pt-3/index.ipynb" target="_parent"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/></a>)
 
 ## Predicting Time Series 📈
 
@@ -152,7 +152,8 @@ class TimeseriesDataset(torch.utils.data.Dataset):
 
 `self.X.__len__() - (self.seq_len - 1)` <-- _What is this sorcery?_
 
-Remember from [part #2](timeseries-pt-2) where we built our history we had to use `pd.DataFrame.dropna`, the same has to be done here which means our final dataset is a little bit less than `len(X)`.
+Remember from [part #2](timeseries-pt-2)<a href="https://colab.research.google.com/github/londogard/londogard/blob/master/blog/2022-03-12-timeseries-pt-2/index.ipynb" target="_parent"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/></a>
+ where we built our history we had to use `pd.DataFrame.dropna`, the same has to be done here which means our final dataset is a little bit less than `len(X)`.
 
 Now there's a single piece left, **`__getitem__(self, index)`** which fetches the element(s).  
 For our use-case we wish to window/slide the data, so we'll fetch a slice, `[a:b]`, as `X` and the future element as `y`.
@@ -1177,7 +1178,8 @@ To learn more about Time Series and how one can analyze them please view the oth
 To learn more about Time Series and how one can analyze them please view the other parts,
 
 1. [Part One - Decomposing & Working with Time Series (theoretical)](timeseries-pt-1)
-2. [Part Two - Predicting Stock Prices (Time Series) using classical Machine Learning](timeseries-pt-2)
+2. [Part Two - Predicting Stock Prices (Time Series) using classical Machine Learning](timeseries-pt-2)<a href="https://colab.research.google.com/github/londogard/londogard/blob/master/blog/2022-03-12-timeseries-pt-2/index.ipynb" target="_parent"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/></a>
+
 3. [Part Three -Forecasting Cryptocurrency Prices (Time Series) using Deep Learning (PyTorch, Tensorflow/Keras & darts)](timeseries-pt-3)
 ---
 
