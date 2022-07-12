@@ -13,6 +13,8 @@ This midsummer my friends gave me the idea that I should generate Swedish Drinki
 
 To achieve the best results I'd need access to GPT-3, or equivalent model, alas I don’t and as such I needed  to do some extra work! Fun work though! 🤓
 
+First some examples:
+![](snapsvisor.png)
   
 
 Why GPT-3?
