@@ -16,6 +16,7 @@ To achieve the best results I'd need access to GPT-3, or equivalent model, alas 
 First some examples:
 ![](snapsvisor.png)
   
+<!--truncate-->
 
 Why GPT-3?
 
