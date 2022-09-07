@@ -14,4 +14,4 @@ I simply thought I would share the slides with the world. :)
 
 (OBS: Presentation in Swedish)
 
-<embed src="https://blog.londogard.com/assets/docker_afry_x.pdf" width="100%" height="720px" type="application/pdf"/>
+<embed src="/docker_afry_x.pdf" width="100%" height="720px" type="application/pdf"/>

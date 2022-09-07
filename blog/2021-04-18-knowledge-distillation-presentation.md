@@ -15,4 +15,4 @@ I simply thought I would share the slides with the world. :)
 (OBS: Presentation in Swedish)
 <iframe width="100%" height="586" src="https://www.youtube.com/embed/FUtuAHqPk6o" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
-<embed src="https://blog.londogard.com/assets/Knowledge%20Distillation.pdf" width="100%" height="720px" type="application/pdf"/>
+<embed src="/Knowledge%20Distillation.pdf" width="100%" height="720px" type="application/pdf"/>
