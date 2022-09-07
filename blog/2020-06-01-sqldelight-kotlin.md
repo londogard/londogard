@@ -7,7 +7,7 @@ authors: hlondogard
 # SQL - different abstraction levels and how I came to love SQLDelight
 
 In this blog I'll cover a few different abstraction levels of database access, focusing purely on SQL and not NoSQL / Reddis or anything like that. The purpose is to share the knowledge that there exist these types of abstractions and they do exist in all or at least most of the popular languages.
-
+<!--truncate-->
 I'll try to move from \"raw SQL\" to the modern \"Object-Relational Mapping\"-style, a.k.a ORM. 
 
 In the end I wish to make a short piece leaving out a lot of details but maintaining a feel of each style and some pros/cons. I bet you already guessed my preferred approach straight from the title :wink:.
