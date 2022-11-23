@@ -1,7 +1,7 @@
 ---
 title: "Timeseries Learnings at AFRY"
 description: "Sharing knowledge based on working a lot with timeseries"
-slug: timeseries-pt-3
+slug: timeseries-learnings
 tags: [machine-learning, timeseries]
 authors: hlondogard
 ---
@@ -100,30 +100,18 @@ Of course code reviews should, and is, mandatory. Based on our software engineer
 Our current set-up:
 
 - **[pre-commit](https://pre-commit.com/ "https://pre-commit.com/"):** local validation on each commit
-
     - `[flake8](https://github.com/pycqa/flake8 "https://github.com/pycqa/flake8")`: Code Style Checker
-
         - Validates that we don’t break code-styles such as unused imports, unused variables, too complicated functions etc
-
     - `[black](https://github.com/psf/black "https://github.com/psf/black")`: Code Formatter
-
         - It’s uncompromising and makes sure our repository has a standard stylistic with correct indenting and much more
-
     - `[mypy](https://github.com/python/mypy "https://github.com/python/mypy")`: Static Type Checker
-
         - Makes sure that our types are valid and we’re not simply lucky in the duck-typing 🦆 world of Python 🐍!
-
     - **^ All above also runs in CI/CD**
-
 - **CI/CD**
-
     - [**pytest**](https://docs.pytest.org/en/7.2.x/ "https://docs.pytest.org/en/7.2.x/")**:** unit tests
-
         - Test that your functions, neural networks etc works as expected
-
     - **pre-commit** - see above
     - **[cypress](https://cypress.io/ "https://cypress.io/"):** E2E frontend testing
-
         - Only for a user-facing analysis tool
 
 This is running on both GitHub Actions and GitLab Pipelines.
@@ -148,7 +136,7 @@ Interactive analysis gives the following: _Promote Explorability, Gives End-User
 
 **Interactive Validation:**
 
-**![](Files/interacite_validation.gif)  
+**![](Files/interactive_validation.gif)  
 **
 
 ## 3\. Additional Wisdom 🤓
@@ -170,16 +158,11 @@ In our case it's an oscillating behavior that builds amplitude over time, as we 
 This ended up being a big improvement, but what lessons did we learn?
 
 1. Always invert scale before calculating test-metrics
-
-- To not allow scaling functions to impact the final results
-
-3. Never optimize a loss function that you use as a metric
-
-- This will play the model
-
-5. Decide on validation metrics _before_  you start
-
-- A moving target is impossible to hit and compare against
+    - To not allow scaling functions to impact the final results
+2. Never optimize a loss function that you use as a metric
+    - This will play the model
+3. Decide on validation metrics _before_  you start
+    - A moving target is impossible to hit and compare against
 
 ## 4\. Unexpected Learnings 🤔
 
@@ -200,27 +183,17 @@ Make sure to validate that what you’re doing is actually required for your use
 ## Generally winning concepts
 
 - **Type hints**, Type Hints everywhere
-
     - It really assists you greatly. As a Scala/Kotlin and FP-enthusiast I’d like to talk even further about it, but I might grow boring.
-
 - **Plotly/Altair** rather than matplotlib – interactivity is king.
-
     - ![](Files/altair.gif)
     - I cannot emphasize how much is learnt by the kinder Garten style of panning, zooming and playing around
     - It gives data and model understanding
-
 - **Polars** **–** efficient speedy DataFrame’s with a _logical API_
-
     - I can't be alone thinking that whoever designed pandas API must've been a masochist
-
         - Polars makes sense, includes lazy and it's fast! 🏎️
         - Con: it's not lingua franca like pandas and thereby isn't supported automatically by all different libraries
-
             - Solved by using `to_pandas()`
-
-    - _
-    
-    ```python
+    - ```python
     >>> df.sort("fruits").select(
     ...     [
     ...         "cars",
@@ -232,44 +205,25 @@ Make sure to validate that what you’re doing is actually required for your use
     ...     ]
     ... )
     ```
-    
-      
-    
-    
-    _
-
     - ![](Files/image_2.png)  
-    
-
 - **Streamlit** quick interactive apps that makes a huge difference
-
     - This is how we build our interactive validation and analysis tools. 
-
 - **CI/CD** on all projects
-
 - **Quarto** reports
-
     - They're amazing, think markdown + code cells + all the goodies of LaTeX in a package 😍
-
 - **Use Path-lib from the get-go**
-
     - Don’t waste a full working day of headache to help that Windows-user to run your project
 
-  
 
 # Summarizing
 
 - Follow **KISS**
 - **Embrace the systems you’re working in,** it’ll pay off to not generalize too much
-
     - Whenever you change cloud-provider you’ll have to update a lot of code anyways because of auth and more
-
 - **Interactive Analysis** is incredible and open new doors
 - Always **be mindful**
-
     - Continuously evaluate, iterate and execute – be agile.
 
-  
 
 That’s it for now
 
