@@ -148,7 +148,7 @@ Interactive analysis gives the following: _Promote Explorability, Gives End-User
 
 **Interactive Validation:**
 
-**![](Files/Kapture%202022-11-10%20at%2013.55.21.gif)  
+**![](Files/interacite_validation.gif)  
 **
 
 ## 3\. Additional Wisdom 🤓
@@ -205,7 +205,7 @@ Make sure to validate that what you’re doing is actually required for your use
 
 - **Plotly/Altair** rather than matplotlib – interactivity is king.
 
-    - ![](Files/Kapture%202022-11-10%20at%2012.49.51.gif)
+    - ![](Files/altair.gif)
     - I cannot emphasize how much is learnt by the kinder Garten style of panning, zooming and playing around
     - It gives data and model understanding
 
@@ -238,7 +238,7 @@ Make sure to validate that what you’re doing is actually required for your use
     
     _
 
-    - ![](Files/image%202.png)  
+    - ![](Files/image_2.png)  
     
 
 - **Streamlit** quick interactive apps that makes a huge difference
