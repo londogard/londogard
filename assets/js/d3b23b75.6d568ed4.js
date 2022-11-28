@@ -1,1 +1,0 @@
-"use strict";(self.webpackChunklondogard=self.webpackChunklondogard||[]).push([[3759],{6129:function(e){e.exports=JSON.parse('{"allTagsPath":"/blog/tags","slug":"/blog/tags/timeseries","name":"timeseries","count":4,"permalink":"/blog/tags/timeseries"}')}}]);
