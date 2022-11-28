@@ -28,16 +28,23 @@ The model does not actually predict a value but a distribution, using `Gaussian`
 
 ## How to do probabilistic forecasting on any deep learning model  
 
-By combining the knowledge in _[Deep and Confident Prediction Time Series at Uber](https://arxiv.org/pdf/1709.01907.pdf "https://arxiv.org/pdf/1709.01907.pdf")_ by L. Zhi & N. Laptev (2017) with _[What Uncertainties Do We Need in Bayesian Deep Learning for Computer Vision?](https://arxiv.org/pdf/1703.04977.pdf "https://arxiv.org/pdf/1703.04977.pdf")_ by A. Kendall & Y. Gal (2017) one can conclude that it’s possible to model distributions using dropout during inference. In the Uber paper they use a special variant they call “Monte Carlo dropout”, which I don’t believe is required to achieve interesting results. Using the pure dropout-module which randomly zeroes some elements by a probability p  sampling from a Bernoulli Distribution.
+By combining the knowledge in _[Deep and Confident Prediction Time Series at Uber](https://arxiv.org/pdf/1709.01907.pdf "https://arxiv.org/pdf/1709.01907.pdf")_ by L. Zhi & N. Laptev (2017) with _[What Uncertainties Do We Need in Bayesian Deep Learning for Computer Vision?](https://arxiv.org/pdf/1703.04977.pdf "https://arxiv.org/pdf/1703.04977.pdf")_ by A. Kendall & Y. Gal (2017) one can conclude that it’s possible to model distributions using dropout during inference. In the Uber paper they use a special variant they call “Monte Carlo dropout”, which I don’t believe is required to achieve interesting results. Using the pure dropout-module which randomly zeroes some elements by a probability $$p$$  sampling from a Bernoulli Distribution.
 
 **How do we do this?**
 
 1. Activate Dropout during Inference.
-2. Do x  predictions with a dropout probability p.
+2. Do $$x$$  predictions with a dropout probability $$p$$.
 3. Based on these x predictions we have a distribution of data.
 4. Build a _confidence interval_ from the points.
+    - ```python
+        outs = torch.vstack([model.predict(in_data) for i in range(x)])
+        # Defined by confidence coefficients
+        Z_TABLE = {0.8: 1.28, 0.85: 1.44, 0.9: 1.65, 0.95: 1.96, 0.99: 2.58, 0.999: 3.29, 0.9999: 3.89}
 
-  
+        # Confidence Interval with mean as line
+        mean = outs.mean()
+        lower = mean - Z_TABLE[confidence] * outs.std()
+        upper = mean + Z_TABLE[confidence] * outs.std()```
 
 ## The possibilities
 
