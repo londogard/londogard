@@ -1,7 +1,7 @@
 ---
 title: "Probabilistic Forecasting Made Simple"
 description: "While researching probabilistic forecasting in a client project I managed to find a paper which opens the door to **any** neural network _with dropout_ - which is the majority. That is, we can do probabilistic forecasting with essentially any network!"
-slug: timeseries-learnings
+slug: probabilistic-forecasting
 tags: [machine-learning, timeseries]
 authors: hlondogard
 ---
