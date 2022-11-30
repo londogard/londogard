@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunklondogard=self.webpackChunklondogard||[]).push([[3691],{7498:function(a){a.exports=JSON.parse('{"allTagsPath":"/blog/tags","slug":"/blog/tags/data-engineering","name":"data-engineering","count":1,"permalink":"/blog/tags/data-engineering"}')}}]);

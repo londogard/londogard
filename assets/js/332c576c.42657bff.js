@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunklondogard=self.webpackChunklondogard||[]).push([[4974],{1145:function(a){a.exports=JSON.parse('{"allTagsPath":"/blog/tags","slug":"/blog/tags/data","name":"data","count":1,"permalink":"/blog/tags/data"}')}}]);
