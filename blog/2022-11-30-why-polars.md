@@ -70,13 +70,13 @@ Here's a list from [pola-rs.github.io](<https://pola-rs.github.io/polars-book/us
 
 I'm not sure this title makes sense, but `polars` sure do! 🤓
 
-Did you ever ask yourself why `numpy` and `pandas` requires an indexing array to filter a list? E.g. `x[x &gt; 10]` to return the list with all values &gt;10.
+Did you ever ask yourself why `numpy` and `pandas` requires an indexing array to filter a list? E.g. `x[x > 10]` to return the list with all values >10.
 
 I did, and the answer is *vectorization* which makes code incredibly fast. But we should be able to achieve this in a simpler and more efficient way right? Because it's ugly and stupid... so let's achieve it more efficiently!
 
-`polars` uses semantic more familiar to other languages, with it's `.filter(pl.col(x) &gt; 10)`.
+`polars` uses semantic more familiar to other languages, with it's `.filter(pl.col(x) > 10)`.
 
-> **Side-note**: `pl.col(x) &gt; 10` is a `pl.Expr` which is **not** executed until queried via `DataFrame` or `Series`!
+> **Side-note**: `pl.col(x) > 10` is a `pl.Expr` which is **not** executed until queried via `DataFrame` or `Series`!
 
 This way it's incredibly easy to combine filters and even more importantly, decouple code.
 
@@ -87,18 +87,14 @@ def filter_age(age: int) -> pl.Expr:
  df.filter(filter_age(13))
 ```
 
-To me this <u>is really cool!</u>
-
- 🤓
+To me this <u>is really cool!</u> 🤓
 
 ## In Production
 
 We use `polars` extensively in production and after evaluating we found:
 
 1. Pipelines to be 2x-20x faster, averaging about 7x
-
 2. Simpler pipelines
-
 3. Easier testing of pipelines
 
 Which is some pretty fantastic gains!
@@ -109,8 +105,7 @@ I see a bright future with `polars` as it enables workloads which previously req
 
 ## Bonus
 
-`polars` is more than a "simpler API" and "faster `pandas`" with its additional functionality.
-
+`polars` is more than a "simpler API" and "faster `pandas`" with its additional functionality.  
 Ever heard of `over`? Not? Let me tell you a cool story!
 
 ### `pl.Over`
@@ -157,6 +152,5 @@ out = df.filter(
 
 In this expression we filter that every coluumn is larger than 1.
 
-That's it for this small article
-
+That's it for this small article. 
 \~Hampus Londögård
