@@ -3,7 +3,7 @@ description: "Learn how to fine-tune a Flair NER model and quantize a BERT model
 tags: [nlp, machine-learning, workshop]
 title: "Building a Swedish Named Entity Recognition (NER) model (Flair/Huggingface)"
 date: "2021-03-29"
-authors: hlondogard
+author: Hampus Londögård
 ---
 
 Not interested in reading the whole article and just wanna play around with the model(s)? Head over to [londogard.com/ner](https://londogard.com/ner).
@@ -176,15 +176,15 @@ And that's it!
 ## Result
 For me the results looks really good and close to what I expected, I had hoped that Flair would achieve at least 0.88+ F1 but 0.855 isn't too bad. The size, speed and simplicity of Flair makes it a great contender!
 
-|Dataset|Size|Avg F1|
-|-|-|-|
-|klintan/swedish-ner-corpus|320MB|~**0.89**|
-|SUC 3.0 (PER, LOC & ORG)|320MB|~**0.89**|
-|SUC 3.0 (PER, LOC, ORG, TME, MSR, ...)|320MB|**0.855**|
-|SUC 3.0 (PER, LOC, ORG, TME, MSR, ...) Quantized|80MB|**0.853**|
-|SUC 3.0 (PER, LOC, ORG, TME, MSR, ...) w/ ALBERT|50MB|**0.85** (via [KTH](http://kth.diva-portal.org/smash/get/diva2:1451804/FULLTEXT01.pdf))|
-|SUC 3.0 (PER, LOC, ORG, TME, MSR, ...) w/ BERT ([KungBib](https://github.com/Kungbib/swedish-bert-models#bert-base-fine-tuned-for-swedish-ner))|480MB|**0.928**|
-|SUC 3.0 (PER, LOC, ORG, TME, MSR, ...) w/ BERT Quantized|120MB|**0.928**|
+| Dataset                                                                                                                                         | Size  | Avg F1                                                                                  |
+|-------------------------------------------------------------------------------------------------------------------------------------------------|-------|-----------------------------------------------------------------------------------------|
+| klintan/swedish-ner-corpus                                                                                                                      | 320MB | ~**0.89**                                                                               |
+| SUC 3.0 (PER, LOC & ORG)                                                                                                                        | 320MB | ~**0.89**                                                                               |
+| SUC 3.0 (PER, LOC, ORG, TME, MSR, ...)                                                                                                          | 320MB | **0.855**                                                                               |
+| SUC 3.0 (PER, LOC, ORG, TME, MSR, ...) Quantized                                                                                                | 80MB  | **0.853**                                                                               |
+| SUC 3.0 (PER, LOC, ORG, TME, MSR, ...) w/ ALBERT                                                                                                | 50MB  | **0.85** (via [KTH](http://kth.diva-portal.org/smash/get/diva2:1451804/FULLTEXT01.pdf)) |
+| SUC 3.0 (PER, LOC, ORG, TME, MSR, ...) w/ BERT ([KungBib](https://github.com/Kungbib/swedish-bert-models#bert-base-fine-tuned-for-swedish-ner)) | 480MB | **0.928**                                                                               |
+| SUC 3.0 (PER, LOC, ORG, TME, MSR, ...) w/ BERT Quantized                                                                                        | 120MB | **0.928**                                                                               |
 
 I believe it's important to note that Quantized models are also much faster running ~ 4 times faster (avg 360ms went to 80ms on a CPU for flair).  
 Quantization updates the f32 into int8 which allows the model to more efficiently utilize CPU and the ONNX-runtime also makes the whole model better at using CPU-instructions.

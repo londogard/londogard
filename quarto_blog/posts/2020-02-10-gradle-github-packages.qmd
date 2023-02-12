@@ -3,7 +3,7 @@ title: "Gradle, JVM and GitHub Packages"
 description: "A simple show-case on how to publish libraries to both _GitHub Packages_ & _JitPack_ with a one-button release using gradle & GitHub Actions."
 categories: [gradle, jvm]
 date: "2020-02-10"
-author: hlondogard
+author: Hampus Londögård
 ---
 
 # Gradle, JVM and GitHub Packages

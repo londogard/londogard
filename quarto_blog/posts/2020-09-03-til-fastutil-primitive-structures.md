@@ -3,7 +3,7 @@ description: "Discusses what autoboxing is, why it might hit your performance (a
 tags: [jvm, TIL]
 title: "TIL: fastutil - fast & compact type-speciic collections for JVM (no autobox!)"
 date: "2020-09-03"
-authors: hlondogard
+author: Hampus Londögård
 ---
 # fastutil - how to optimize your collections by primitives
 > fastutil extends the Java™ Collections Framework by providing type-specific maps, sets, lists and queues with a small memory footprint and fast access and insertion

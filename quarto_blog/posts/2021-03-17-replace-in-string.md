@@ -3,7 +3,7 @@ description: "A simple quick comparison on which method to use and in what case 
 tags: [jvm]
 title: "When to use what - RegExp, String Replace & Character Replace (JVM/Kotlin)"
 date: "2021-03-17"
-authors: hlondogard
+author: Hampus Londögård
 ---
 
 # When to use what - RegExp, String Replace & Character Replace
@@ -20,19 +20,19 @@ Performance sometimes matter, sometimes it doesn't. But if it does it's really g
 Replace "a", "b" & "c" to "d". It's simple, but good.
 As for data I'm using a few of shakespeares works which in total is 4.5 million characters, I've also added variants of these as shown in the table.
 
-|Type|Length (characters)|Iterations|Average (msg)|Normalized to RegExp|
-|---|---|---|---|---|
-|RegExp|1k|1 million|0.0049ms|1x|
-|Char|1k|1 million|0.0027ms|0.55x|
-|String|1k|1 million|0.0087ms|1.63x|
-|---|---|---|---|---|
-|RegExp|4.5 million|1k|29.67ms|1x|
-|Char|4.5 million|1k|11.84|0.39x|
-|String|4.5 million|1k|57.20|1.92x|
-|---|---|---|---|---|
-|RegExp|45 million|10|361.8ms|1x|
-|Char|45 million|10|117.0ms|0.32x|
-|String|45 million|10|588.1ms|1.54x|
+| Type   | Length (characters) | Iterations | Average (msg) | Normalized to RegExp |
+|--------|---------------------|------------|---------------|----------------------|
+| RegExp | 1k                  | 1 million  | 0.0049ms      | 1x                   |
+| Char   | 1k                  | 1 million  | 0.0027ms      | 0.55x                |
+| String | 1k                  | 1 million  | 0.0087ms      | 1.63x                |
+| ---    | ---                 | ---        | ---           | ---                  |
+| RegExp | 4.5 million         | 1k         | 29.67ms       | 1x                   |
+| Char   | 4.5 million         | 1k         | 11.84         | 0.39x                |
+| String | 4.5 million         | 1k         | 57.20         | 1.92x                |
+| ---    | ---                 | ---        | ---           | ---                  |
+| RegExp | 45 million          | 10         | 361.8ms       | 1x                   |
+| Char   | 45 million          | 10         | 117.0ms       | 0.32x                |
+| String | 45 million          | 10         | 588.1ms       | 1.54x                |
 
 As shown the Character-based replace is _much_ faster! It's only getting faster in comparison to the RegExp the bigger the file is.
 

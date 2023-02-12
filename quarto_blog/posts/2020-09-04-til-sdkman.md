@@ -3,7 +3,7 @@ description: SDKMan is a tool to make JDK swapping, and installation, simple. It
 tags: [jvm, TIL]
 title: "TIL: SDKMan - The Software Development Kit Manager"
 date: "2020-09-04"
-authors: hlondogard
+author: Hampus Londögård
 ---
 # SDKMan - Swapping JDK made simple
 I've decided to not only write blogs but also small snippets, here comes the first one.
@@ -35,11 +35,11 @@ If you need a more detailed guide go to [this](https://sdkman.io/install) page.
 `$sdk version` - should return something along `sdkman X.Y.Z`
 
 #### Usage
-|What|Command|Comment|
-|---|---|---|
-|Install JDK|`$sdk install java`|Installs the **latest stable** version of Java JDK|
-|Install specific version|`$sdk install scala 2.12.1`|Install scala 2.12.1|
-|Install local version|`$sdk install groovy 3.0.0-SNAPSHOT /path/to/groovy-3.0.0-SNAPSHOT`|Installs a JDK you have locally to the SDKMan. The version name **must** be unique!|
+| What                     | Command                                                             | Comment                                                                             |
+|--------------------------|---------------------------------------------------------------------|-------------------------------------------------------------------------------------|
+| Install JDK              | `$sdk install java`                                                 | Installs the **latest stable** version of Java JDK                                  |
+| Install specific version | `$sdk install scala 2.12.1`                                         | Install scala 2.12.1                                                                |
+| Install local version    | `$sdk install groovy 3.0.0-SNAPSHOT /path/to/groovy-3.0.0-SNAPSHOT` | Installs a JDK you have locally to the SDKMan. The version name **must** be unique! |
 |Remove version|`$sdk uninstall scala 2.11.6`
 |List candidates|`$sdk list java`|Lists all java candidates that are installable through SDKMan|
 |Use version|`$sdk use scala 2.12.1`|Use the version said, this **only changes the current shell**|

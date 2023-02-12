@@ -3,7 +3,7 @@ title: "Babymonitor #1"
 date: "2022-11-06"
 description: "I'm building a babymonitor!"
 tags: [python, raspberrypi]
-authors: hlondogard
+author: Hampus Londögård
 ---
 
 Hi 👋

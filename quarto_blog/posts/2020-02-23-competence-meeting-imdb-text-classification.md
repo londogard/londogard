@@ -2,7 +2,7 @@
 description: "This blog contains my first Competence Meeting where basic NLP concepts where taught and an classifier with good performance was implemented (on IMDB sentiment)."
 tags: [machine-learning, nlp, workshop]
 title: "AFRY NLP Competence Meeting: Text Classification IMDB"
-authors: hlondogard
+author: Hampus Londögård
 date: "2019-02-04"
 ---
 # 2019-02-04 AFRY NLP Competence Meeting: Text Classification IMDB

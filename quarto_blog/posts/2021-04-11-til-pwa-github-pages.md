@@ -3,7 +3,7 @@ description: What are PWAs? How do I create or transform my web app into one? Ho
 tags: [pwa, TIL]
 title: "TIL: GitHub Pages + Progressive Web App (PWA) = ❤️"
 date: "2021-04-11"
-authors: hlondogard
+author: Hampus Londögård
 ---
 
 ### What

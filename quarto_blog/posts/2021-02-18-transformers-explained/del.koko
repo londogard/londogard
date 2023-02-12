@@ -2,7 +2,7 @@
 title: "Transformers From Scratch"
 description: "In this post I walk through Self-Attention Transformers from scratch with demos at the end for Text Classification & Generation, where the PyTorch-code is wrapped by fast.ai to simplify end-2-end."
 tags: [nlp, machine-learning, deep-learning, workshop]
-authors: hlondogard
+author: Hampus Londögård
 ---
 
 In this post I walk through Self-Attention Transformers from scratch with demos at the end for Text Classification & Generation, where the PyTorch-code is wrapped by fast.ai to simplify end-2-end.

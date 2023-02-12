@@ -2,7 +2,7 @@
 description: "In this post different abstraction levels of SQL is discussed with the final SQLDelight which turns the abstraction into the reverse."
 tags: [jvm, kotlin, db, multiplatform]
 title: "SQL - Different Abstraction Levels (& how I came to love SQLDelight)"
-authors: hlondogard
+author: Hampus Londögård
 date: "2020-06-01"
 ---
 # SQL - different abstraction levels and how I came to love SQLDelight
@@ -221,12 +221,12 @@ Let me just say, I'm amazed about this kind of reverse thinking of generating co
 
 ### Comparison Table
 
-| Database     | Simplicity | Requires SQL knowledge | Configurability (complex queries etc) | Score (5) | Comment                                                      |
-| ------------ | ---------- | ---------------------- | ------------------------------------- | --------- | ------------------------------------------------------------ |
-| JDBC         | I          | III                    | III                                   | 2         | To much overhead                                             |
-| Room / Slick | II         | II                     | II                                    | 4         | Strikes a good balance between natural in normal code while configurable* |
+| Database     | Simplicity | Requires SQL knowledge | Configurability (complex queries etc) | Score (5) | Comment                                                                                            |
+|--------------|------------|------------------------|---------------------------------------|-----------|----------------------------------------------------------------------------------------------------|
+| JDBC         | I          | III                    | III                                   | 2         | To much overhead                                                                                   |
+| Room / Slick | II         | II                     | II                                    | 4         | Strikes a good balance between natural in normal code while configurable*                          |
 | Peewee       | III        | I                      | I                                     | 3         | Really easy and fits into code great, but the complex queries becomes really hard and feels forced |
-| SQLDelight   | II         | III                    | III                                   | 5         | Natural to use in the code, great customability & little overhead* |
+| SQLDelight   | II         | III                    | III                                   | 5         | Natural to use in the code, great customability & little overhead*                                 |
 
 Both Room & SQLDelight are enforcing SQLite right now which is a major con for those that needs postgresql etc. Personally I only use SQLite as was discussed in [expensify's blog](https://blog.expensify.com/2018/01/08/scaling-sqlite-to-4m-qps-on-a-single-server/) SQLite can be squeezed to the extreme - expensify managed to handle up to 4 million queries per second!
 

@@ -2,7 +2,7 @@
 description: "This blog goes through how to use Kotlin to generate good looking responsive emails. It'll handle CSS, kotlin html DSL & kotlin serialization."
 tags: [kotlin, html]
 title: "How I created a email generator in Kotlin (for Afry Tipsrundan)"
-authors: hlondogard
+author: Hampus Londögård
 date: "2020-03-31"
 ---
 # Email Generation - Tipsrundan -

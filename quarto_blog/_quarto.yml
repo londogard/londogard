@@ -3,6 +3,7 @@ project:
 
 website:
   title: "Londogard Blog"
+  favicon: favicon.ico
   site-url: https://blog.londogard.com/
   description: "A blog which majorly focuses on Data Science, Data Engineering and sometimes Kotlin / Scala."
   twitter-card:

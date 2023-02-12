@@ -3,7 +3,7 @@ description: How to do object detection using Transformers?
 tags: [presentation, machine-learning]
 title: "Object Detection (Workshop)"
 date: "2020-12-16"
-authors: hlondogard
+author: Hampus Londögård
 ---
 
 I did a presentation/workshop on Object Detection using Transformers. It's a little bit confusing as the experience of the people that joined was very different, some even not knowing Python.

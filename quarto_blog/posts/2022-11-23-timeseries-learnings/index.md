@@ -3,7 +3,7 @@ title: "Timeseries Learnings at AFRY"
 description: "Sharing knowledge based on working a lot with timeseries"
 slug: timeseries-learnings
 tags: [machine-learning, timeseries]
-authors: hlondogard
+author: Hampus Londögård
 date: "2022-11-23"
 ---
 ## Timeseries Learnings

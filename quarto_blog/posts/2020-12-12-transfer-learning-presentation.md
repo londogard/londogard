@@ -3,7 +3,7 @@ description: What is Transfer Learning? Can I have the cake and eat it too?
 tags: [presentation, machine-learning]
 title: "Transfer Learning (Presentation)"
 date: "2020-12-12"
-authors: hlondogard
+author: Hampus Londögård
 ---
 
 This is a presentation I did on Transfer Learning.
