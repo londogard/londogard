@@ -1,7 +1,7 @@
 ---
 title: "Polars - A Refreshingly Great DataFrame Library"
 description: "Polars is a DataFrame library written from ground-up to not only have a sensible API but also very efficient operations using multiple cores and clever optimizations such as predicate pushdown & much more!"
-tags: [data-engineering, pipeline, data]
+categories: [data-engineering, pipeline, data]
 authors: [hlondogard]
 date: "2022-11-30"
 no_comments: false

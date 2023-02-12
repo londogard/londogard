@@ -2,7 +2,7 @@
 title: "GPT2-snapsvisor - Generating Swedish Drinking Songs"
 description: "Snapsvisor is traditional Swedish Drinking Songs, sometimes they need some refreshing which I try to do through AI here! ;)"
 slug: gpt2-snapsvisor
-tags: [machine-learning, nlp, fun]
+categories: [machine-learning, nlp, fun]
 author: Hampus Londögård
 date: "2022-07-07"
 ---

@@ -1,6 +1,6 @@
 ---
 description: "'The Badass Runtime Plugin' is a plugin that allows you to package a stripped down JRE and modules from your program into a 'native' installable program which doesn't require the user to have Java installed. It takes help of JPackage & JLink to achieve this, my own small program ended up at 35 MB including JRE, which is pretty crazy. This is like Electron, but better! ;)"
-tags: [jvm, TIL]
+categories: [jvm, TIL]
 title: "TIL: 'The Badass Runtime Plugin', jpackage & jlink - create a 'native' installable executable from your JVM-app that isn't huge"
 author: Hampus Londögård
 date: "2020-09-03"

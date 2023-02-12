@@ -1,6 +1,6 @@
 ---
 description: "Seam Carving is the task to remove empty room in a image. Have you ever wished to do 'Content Aware Scaling'? Learn it now!"
-tags: [presentation, jvm, kotlin, workshop]
+categories: [presentation, jvm, kotlin, workshop]
 title: "Seam Carving (Presentation & Workshop)"
 date: "2021-05-17"
 authors: Hampus Londögård

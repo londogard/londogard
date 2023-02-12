@@ -1,6 +1,6 @@
 ---
 description: "I built a baby monitor! Built using Python, Svelte & Raspberry Pi."
-tags: [python]
+categories: [python]
 title: "Baby Monitor pt 2"
 author: Hampus Londögård
 date: "2023-02-06"

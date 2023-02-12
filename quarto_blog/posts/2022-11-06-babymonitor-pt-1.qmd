@@ -2,7 +2,7 @@
 title: "Babymonitor #1"
 date: "2022-11-06"
 description: "I'm building a babymonitor!"
-tags: [python, raspberrypi]
+categories: [python, raspberrypi]
 author: Hampus Londögård
 ---
 

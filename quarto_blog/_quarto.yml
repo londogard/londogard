@@ -9,7 +9,11 @@ website:
   twitter-card:
      creator: "@hlondogard"
   page-footer:
-    left: "Copyright 2023, Hampus Londögård" 
+    left:
+      - text: "Buy me a Coffee↗"
+        href: https://www.buymeacoffee.com/hlondogard
+      - text: "Support on GitHub↗"
+        href: https://github.com/sponsors/Lundez?o=esb
     center:
       - about.qmd
     right:
@@ -26,6 +30,10 @@ website:
         href: index.xml
         aria-label: Londogard Blog RSS  
   navbar:
+      left: 
+      - presentations.qmd
+      - text: "Londogard Projects↗"
+        href: https://londogard.com/projects
       right:
       - about.qmd
       - icon: linkedin

@@ -1,6 +1,6 @@
 ---
 description: "nlp (londogard-nlp-toolkit) has had it's 1.1.0 release recently with a lot of new functionality and multiple improvements to efficiency, dive in to understand more!"
-tags: [nlp, jvm, kotlin]
+categories: [nlp, jvm, kotlin]
 title: "Release nlp (londogard-nlp-toolkit) 1.1.0"
 author: Hampus Londögård
 date: "2022-01-16"

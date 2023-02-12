@@ -1,6 +1,6 @@
 ---
 description: How to do object detection using Transformers?
-tags: [presentation, machine-learning]
+categories: [presentation, machine-learning]
 title: "Object Detection (Workshop)"
 date: "2020-12-16"
 author: Hampus Londögård

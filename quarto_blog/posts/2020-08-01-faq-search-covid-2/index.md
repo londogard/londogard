@@ -1,7 +1,7 @@
 ---
 title: "CoViD-19 FAQ Search Engine 2.0"
 description: "In this post I improve the previous FAQ search engine by some low hanging fruits. The requirements stay the same thus SotA is not achieved but rather it's simply generic & easy on hardware (Raspberry Pi capable)."
-tags: [nlp, deep-learning, machine-learning, workshop]
+categories: [nlp, deep-learning, machine-learning, workshop]
 author: Hampus Londögård
 date: "2020-08-01"
 ---
