@@ -11,7 +11,7 @@ Please note that this requires the Kotlin kernel to run as it's Kotlin and **not
 <!--truncate-->
 
 
-<embed src="/Seam%20Carving.pdf" width="100%" height="720px" type="application/pdf"/>
+<embed src="/assets/Seam%20Carving.pdf" width="100%" height="720px" type="application/pdf"/>
 
 
 

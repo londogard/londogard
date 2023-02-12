@@ -2,11 +2,11 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://blog.londogard.com/index.html</loc>
-    <lastmod>2023-02-12T10:47:18.678Z</lastmod>
+    <lastmod>2023-02-12T12:34:40.629Z</lastmod>
   </url>
   <url>
     <loc>https://blog.londogard.com/posts/2022-09-07-docker-simplified-presentation.html</loc>
-    <lastmod>2023-02-12T09:33:24.760Z</lastmod>
+    <lastmod>2023-02-12T11:58:21.880Z</lastmod>
   </url>
   <url>
     <loc>https://blog.londogard.com/posts/2020-09-03-til-fastutil-primitive-structures.html</loc>
@@ -18,7 +18,7 @@
   </url>
   <url>
     <loc>https://blog.londogard.com/posts/2021-04-11-til-pwa-github-pages.html</loc>
-    <lastmod>2023-02-12T09:33:25.900Z</lastmod>
+    <lastmod>2023-02-12T11:58:21.470Z</lastmod>
   </url>
   <url>
     <loc>https://blog.londogard.com/posts/2021-03-29-swedish-named-entity-recognition.html</loc>
@@ -38,7 +38,7 @@
   </url>
   <url>
     <loc>https://blog.londogard.com/posts/2021-03-17-replace-in-string.html</loc>
-    <lastmod>2023-02-12T09:33:27.748Z</lastmod>
+    <lastmod>2023-02-12T11:58:18.810Z</lastmod>
   </url>
   <url>
     <loc>https://blog.londogard.com/posts/2020-12-16-object-detection-transformer.html</loc>
@@ -50,6 +50,22 @@
   </url>
   <url>
     <loc>https://blog.londogard.com/posts/2022-03-13-timeseries-pt-3/index.html</loc>
-    <lastmod>2023-02-12T10:49:08.809Z</lastmod>
+    <lastmod>2023-02-12T11:58:20.520Z</lastmod>
+  </url>
+  <url>
+    <loc>https://blog.londogard.com/posts/2023-02-06-baby-monitor-pt-p2/index.html</loc>
+    <lastmod>2023-02-12T12:34:12.369Z</lastmod>
+  </url>
+  <url>
+    <loc>https://blog.londogard.com/posts/2022-11-06-babymonitor-pt-1.html</loc>
+    <lastmod>2023-02-12T12:16:26.200Z</lastmod>
+  </url>
+  <url>
+    <loc>https://blog.londogard.com/posts/2022-01-16-nlp-toolkit-release.html</loc>
+    <lastmod>2023-02-12T12:28:20.719Z</lastmod>
+  </url>
+  <url>
+    <loc>https://blog.londogard.com/posts/2022-01-28-kotlinjs-onnx-deep-learning-in-browser/index.html</loc>
+    <lastmod>2023-02-12T12:28:21.229Z</lastmod>
   </url>
 </urlset>

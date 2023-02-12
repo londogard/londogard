@@ -181,7 +181,7 @@ ul.task-list li input[type="checkbox"] {
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
         
-    <h5 class="quarto-listing-category-title">Categories</h5><div class="quarto-listing-category category-default"><div class="category" data-category="">All <span class="quarto-category-count">(28)</span></div><div class="category" data-category="gradle">gradle <span class="quarto-category-count">(1)</span></div><div class="category" data-category="jvm">jvm <span class="quarto-category-count">(1)</span></div></div></div>
+    <h5 class="quarto-listing-category-title">Categories</h5><div class="quarto-listing-category category-default"><div class="category" data-category="">All <span class="quarto-category-count">(31)</span></div><div class="category" data-category="gradle">gradle <span class="quarto-category-count">(1)</span></div><div class="category" data-category="jvm">jvm <span class="quarto-category-count">(1)</span></div></div></div>
 <!-- main -->
 <main class="content quarto-banner-title-block column-page-left" id="quarto-document-content">
 
@@ -193,8 +193,33 @@ ul.task-list li input[type="checkbox"] {
 
 
 <div class="quarto-listing quarto-listing-container-default" id="listing-listing">
+<div class="listing-actions-group">
+   <div class="input-group input-group-sm quarto-listing-sort">
+     <span class="input-group-text"><i class="bi bi-sort-down"></i></span>
+     <select id="listing-listing-sort" class="form-select" aria-label="Order By" onchange="window['quarto-listings']['listing-listing'].sort(this.options[this.selectedIndex].value, { order: this.options[this.selectedIndex].getAttribute('data-direction')})">
+       <option value="" disabled="" selected="" hidden="">Order By</option>
+       <option value="index" data-direction="asc">Default</option>
+         <option value="listing-title" data-direction="asc">
+          Title
+        </option>
+         <option value="listing-date-sort" data-direction="asc">
+          Date - Oldest
+        </option>
+         <option value="listing-date-sort" data-direction="desc">
+          Date - Newest
+        </option>
+         <option value="listing-author" data-direction="asc">
+          Author
+        </option>
+     </select>
+  </div>
+    <div class="input-group input-group-sm quarto-listing-filter">
+      <span class="input-group-text"><i class="bi bi-search"></i></span>
+      <input type="text" class="search form-control" placeholder="Filter">
+    </div>
+</div>
 <div class="list quarto-listing-default">
-<div class="quarto-post image-right" data-index="0" data-listing-date-sort="1675641600000" data-listing-file-modified-sort="1676187929690" data-listing-reading-time-sort="17.07">
+<div class="quarto-post image-right" data-index="0" data-listing-date-sort="1675638000000" data-listing-file-modified-sort="1676205272919" data-listing-reading-time-sort="17.19">
 <div class="thumbnail">
 <p><a href="./posts/2023-02-06-baby-monitor-pt-p2/index.html"> <img src="./posts/2023-02-06-baby-monitor-pt-p2/20230206181407.png" class="thumnail-image"> </a></p>
 </div>
@@ -219,7 +244,7 @@ Feb 6, 2023
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="1" data-listing-date-sort="1669766400000" data-listing-file-modified-sort="1676187751338" data-listing-reading-time-sort="5.36">
+<div class="quarto-post image-right" data-index="1" data-listing-date-sort="1669762800000" data-listing-file-modified-sort="1676199759718" data-listing-reading-time-sort="5.36">
 <div class="thumbnail">
 <a href="./posts/2022-11-30-why-polars.html">
 <div class="thumbnail-image">
@@ -248,7 +273,7 @@ Nov 30, 2022
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="2" data-listing-date-sort="1669593600000" data-listing-file-modified-sort="1676187940230" data-listing-reading-time-sort="3.325">
+<div class="quarto-post image-right" data-index="2" data-listing-date-sort="1669590000000" data-listing-file-modified-sort="1676199759718" data-listing-reading-time-sort="3.325">
 <div class="thumbnail">
 <p><a href="./posts/2022-11-28-probabilistic-forecasting/index.html"> <img src="./posts/2022-11-28-probabilistic-forecasting/Files/image.png" class="thumnail-image"> </a></p>
 </div>
@@ -273,7 +298,7 @@ Nov 28, 2022
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="3" data-listing-date-sort="1669161600000" data-listing-file-modified-sort="1676187947358" data-listing-reading-time-sort="8.73">
+<div class="quarto-post image-right" data-index="3" data-listing-date-sort="1669158000000" data-listing-file-modified-sort="1676199759718" data-listing-reading-time-sort="8.73">
 <div class="thumbnail">
 <p><a href="./posts/2022-11-23-timeseries-learnings/index.html"> <img src="./posts/2022-11-23-timeseries-learnings/Files/image.png" class="thumnail-image"> </a></p>
 </div>
@@ -298,7 +323,36 @@ Nov 23, 2022
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="4" data-listing-date-sort="1662508800000" data-listing-file-modified-sort="1676189069715" data-listing-reading-time-sort="0.22">
+<div class="quarto-post image-right" data-index="4" data-listing-date-sort="1667689200000" data-listing-file-modified-sort="1676204184350" data-listing-reading-time-sort="8.985">
+<div class="thumbnail">
+<a href="./posts/2022-11-06-babymonitor-pt-1.html">
+<div class="thumbnail-image">
+
+</div>
+</a><p><a href="./posts/2022-11-06-babymonitor-pt-1.html"></a></p>
+</div>
+<div class="body">
+<a href="./posts/2022-11-06-babymonitor-pt-1.html">
+<h3 class="no-anchor listing-title">
+Babymonitor #1
+</h3>
+<div class="listing-subtitle">
+
+</div>
+<div class="listing-description">
+<p>I’m building a babymonitor!</p>
+</div>
+</a>
+</div>
+<div class="metadata">
+<a href="./posts/2022-11-06-babymonitor-pt-1.html">
+<div class="listing-date">
+Nov 6, 2022
+</div>
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="5" data-listing-date-sort="1662501600000" data-listing-file-modified-sort="1676199759378" data-listing-reading-time-sort="0.22">
 <div class="thumbnail">
 <a href="./posts/2022-09-07-docker-simplified-presentation.html">
 <div class="thumbnail-image">
@@ -327,7 +381,7 @@ Sep 7, 2022
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="5" data-listing-date-sort="1657152000000" data-listing-file-modified-sort="1676187955026" data-listing-reading-time-sort="8.73">
+<div class="quarto-post image-right" data-index="6" data-listing-date-sort="1657144800000" data-listing-file-modified-sort="1676199759378" data-listing-reading-time-sort="8.73">
 <div class="thumbnail">
 <p><a href="./posts/2022-07-07-snapsvisor-generated/2022-07-07-snapsvisor-generator.html"> <img src="./posts/2022-07-07-snapsvisor-generated/snapsvisor.png" class="thumnail-image"> </a></p>
 </div>
@@ -352,7 +406,7 @@ Jul 7, 2022
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="6" data-listing-date-sort="1647129600000" data-listing-file-modified-sort="1676188313677" data-listing-reading-time-sort="13.985">
+<div class="quarto-post image-right" data-index="7" data-listing-date-sort="1647126000000" data-listing-file-modified-sort="1676199759368" data-listing-reading-time-sort="13.985">
 <div class="thumbnail">
 <p><a href="./posts/2022-03-13-timeseries-pt-3/index.html"> <img src="./posts/2022-03-13-timeseries-pt-3/generators.jpg" class="thumnail-image"> </a></p>
 </div>
@@ -377,7 +431,7 @@ Mar 13, 2022
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="7" data-listing-date-sort="1647043200000" data-listing-file-modified-sort="1676188415345" data-listing-reading-time-sort="8.075">
+<div class="quarto-post image-right" data-index="8" data-listing-date-sort="1647039600000" data-listing-file-modified-sort="1676199759238" data-listing-reading-time-sort="8.075">
 <div class="thumbnail">
 <p><a href="./posts/2022-03-12-timeseries-pt-2/index.html"> <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3a/Linear_regression.svg/600px-Linear_regression.svg.png" class="thumnail-image"> </a></p>
 </div>
@@ -402,7 +456,7 @@ Mar 12, 2022
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="8" data-listing-date-sort="1646956800000" data-listing-file-modified-sort="1676188379961" data-listing-reading-time-sort="6.76">
+<div class="quarto-post image-right" data-index="9" data-listing-date-sort="1646953200000" data-listing-file-modified-sort="1676199759218" data-listing-reading-time-sort="6.76">
 <div class="thumbnail">
 <a href="./posts/2022-03-11-timeseries-pt-1/index.html">
 <div class="thumbnail-image">
@@ -431,7 +485,61 @@ Mar 11, 2022
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="9" data-listing-date-sort="1621209600000" data-listing-file-modified-sort="1676187806578" data-listing-reading-time-sort="7.73">
+<div class="quarto-post image-right" data-index="10" data-listing-date-sort="1643324400000" data-listing-file-modified-sort="1676204591340" data-listing-reading-time-sort="12.97">
+<div class="thumbnail">
+<p><a href="./posts/2022-01-28-kotlinjs-onnx-deep-learning-in-browser/index.html"> <img src="https://user-images.githubusercontent.com/7490199/151235880-2546faa6-5798-48b4-84b9-db71c20808d8.gif" class="thumnail-image"> </a></p>
+</div>
+<div class="body">
+<a href="./posts/2022-01-28-kotlinjs-onnx-deep-learning-in-browser/index.html">
+<h3 class="no-anchor listing-title">
+KotlinJS, ONNX and Deep Learning in the browser
+</h3>
+<div class="listing-subtitle">
+
+</div>
+<div class="listing-description">
+<p>Ever wanted to deploy State-of-the-Art Deep Learning models in the browser? In this blog you’ll learn about how to run inference through onnx webruntime directly inside the browser!</p>
+</div>
+</a>
+</div>
+<div class="metadata">
+<a href="./posts/2022-01-28-kotlinjs-onnx-deep-learning-in-browser/index.html">
+<div class="listing-date">
+Jan 28, 2022
+</div>
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="11" data-listing-date-sort="1642287600000" data-listing-file-modified-sort="1676204235220" data-listing-reading-time-sort="4.095">
+<div class="thumbnail">
+<a href="./posts/2022-01-16-nlp-toolkit-release.html">
+<div class="thumbnail-image">
+
+</div>
+</a><p><a href="./posts/2022-01-16-nlp-toolkit-release.html"></a></p>
+</div>
+<div class="body">
+<a href="./posts/2022-01-16-nlp-toolkit-release.html">
+<h3 class="no-anchor listing-title">
+Release nlp (londogard-nlp-toolkit) 1.1.0
+</h3>
+<div class="listing-subtitle">
+
+</div>
+<div class="listing-description">
+<p>nlp (londogard-nlp-toolkit) has had it’s 1.1.0 release recently with a lot of new functionality and multiple improvements to efficiency, dive in to understand more!</p>
+</div>
+</a>
+</div>
+<div class="metadata">
+<a href="./posts/2022-01-16-nlp-toolkit-release.html">
+<div class="listing-date">
+Jan 16, 2022
+</div>
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="12" data-listing-date-sort="1621202400000" data-listing-file-modified-sort="1676199759198" data-listing-reading-time-sort="7.73">
 <div class="thumbnail">
 <p><a href="./posts/2021-05-17-seam-carving.html"> <img src="https://homepages.inf.ed.ac.uk/rbf/HIPR2/figs/sobmasks.gif" class="thumnail-image"> </a></p>
 </div>
@@ -456,7 +564,7 @@ May 17, 2021
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="10" data-listing-date-sort="1618704000000" data-listing-file-modified-sort="1676189030232" data-listing-reading-time-sort="0.265">
+<div class="quarto-post image-right" data-index="13" data-listing-date-sort="1618696800000" data-listing-file-modified-sort="1676199759168" data-listing-reading-time-sort="0.265">
 <div class="thumbnail">
 <a href="./posts/2021-04-18-knowledge-distillation-presentation.html">
 <div class="thumbnail-image">
@@ -485,7 +593,7 @@ Apr 18, 2021
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="11" data-listing-date-sort="1618099200000" data-listing-file-modified-sort="1676188995716" data-listing-reading-time-sort="4.275">
+<div class="quarto-post image-right" data-index="14" data-listing-date-sort="1618092000000" data-listing-file-modified-sort="1676199759168" data-listing-reading-time-sort="4.275">
 <div class="thumbnail">
 <a href="./posts/2021-04-11-til-pwa-github-pages.html">
 <div class="thumbnail-image">
@@ -514,7 +622,7 @@ Apr 11, 2021
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="12" data-listing-date-sort="1616976000000" data-listing-file-modified-sort="1676189006188" data-listing-reading-time-sort="10">
+<div class="quarto-post image-right" data-index="15" data-listing-date-sort="1616968800000" data-listing-file-modified-sort="1676199759168" data-listing-reading-time-sort="10">
 <div class="thumbnail">
 <p><a href="./posts/2021-03-29-swedish-named-entity-recognition.html"> <img src="https://user-images.githubusercontent.com/7490199/113611097-543f9280-964e-11eb-9e59-bd030c32ad0c.png" class="thumnail-image"> </a></p>
 </div>
@@ -539,7 +647,7 @@ Mar 29, 2021
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="13" data-listing-date-sort="1615939200000" data-listing-file-modified-sort="1676189030232" data-listing-reading-time-sort="5.385">
+<div class="quarto-post image-right" data-index="16" data-listing-date-sort="1615935600000" data-listing-file-modified-sort="1676199759168" data-listing-reading-time-sort="5.385">
 <div class="thumbnail">
 <a href="./posts/2021-03-17-replace-in-string.html">
 <div class="thumbnail-image">
@@ -568,7 +676,7 @@ Mar 17, 2021
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="14" data-listing-date-sort="1613606400000" data-listing-file-modified-sort="1676194467781" data-listing-reading-time-sort="11.83">
+<div class="quarto-post image-right" data-index="17" data-listing-date-sort="1613602800000" data-listing-file-modified-sort="1676199759168" data-listing-reading-time-sort="11.83">
 <div class="thumbnail">
 <p><a href="./posts/2021-02-18-transformers-explained/transformers-explained.html"> <img src="https://user-images.githubusercontent.com/7490199/218255581-54624bd8-de0f-4340-a085-d6605b3d5310.png" class="thumnail-image"> </a></p>
 </div>
@@ -593,7 +701,7 @@ Feb 18, 2021
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="15" data-listing-date-sort="1611187200000" data-listing-file-modified-sort="1676187833302" data-listing-reading-time-sort="3.14">
+<div class="quarto-post image-right" data-index="18" data-listing-date-sort="1611183600000" data-listing-file-modified-sort="1676199759168" data-listing-reading-time-sort="3.14">
 <div class="thumbnail">
 <a href="./posts/2021-01-21-til-gitpod-kotlin-jvm.html">
 <div class="thumbnail-image">
@@ -622,7 +730,7 @@ Jan 21, 2021
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="16" data-listing-date-sort="1608076800000" data-listing-file-modified-sort="1676189030236" data-listing-reading-time-sort="0.26">
+<div class="quarto-post image-right" data-index="19" data-listing-date-sort="1608073200000" data-listing-file-modified-sort="1676199759158" data-listing-reading-time-sort="0.26">
 <div class="thumbnail">
 <a href="./posts/2020-12-16-object-detection-transformer.html">
 <div class="thumbnail-image">
@@ -651,7 +759,7 @@ Dec 16, 2020
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="17" data-listing-date-sort="1607731200000" data-listing-file-modified-sort="1676189030232" data-listing-reading-time-sort="0.28">
+<div class="quarto-post image-right" data-index="20" data-listing-date-sort="1607727600000" data-listing-file-modified-sort="1676199759158" data-listing-reading-time-sort="0.28">
 <div class="thumbnail">
 <a href="./posts/2020-12-12-transfer-learning-presentation.html">
 <div class="thumbnail-image">
@@ -680,7 +788,7 @@ Dec 12, 2020
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="18" data-listing-date-sort="1604707200000" data-listing-file-modified-sort="1676187859254" data-listing-reading-time-sort="27.95">
+<div class="quarto-post image-right" data-index="21" data-listing-date-sort="1604703600000" data-listing-file-modified-sort="1676199759158" data-listing-reading-time-sort="27.95">
 <div class="thumbnail">
 <p><a href="./posts/2020-11-07-snake-kotlin-multiplatform.html"> <img src="https://kotlinlang.org/" class="thumnail-image"> </a></p>
 </div>
@@ -708,7 +816,7 @@ Hampus Londögård
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="19" data-listing-date-sort="1599177600000" data-listing-file-modified-sort="1676189030320" data-listing-reading-time-sort="1.84">
+<div class="quarto-post image-right" data-index="22" data-listing-date-sort="1599170400000" data-listing-file-modified-sort="1676199759158" data-listing-reading-time-sort="1.84">
 <div class="thumbnail">
 <a href="./posts/2020-09-04-til-sdkman.html">
 <div class="thumbnail-image">
@@ -737,36 +845,7 @@ Sep 4, 2020
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="20" data-listing-date-sort="1599091200000" data-listing-file-modified-sort="1676188986420" data-listing-reading-time-sort="2.375">
-<div class="thumbnail">
-<a href="./posts/2020-09-03-til-fastutil-primitive-structures.html">
-<div class="thumbnail-image">
-
-</div>
-</a><p><a href="./posts/2020-09-03-til-fastutil-primitive-structures.html"></a></p>
-</div>
-<div class="body">
-<a href="./posts/2020-09-03-til-fastutil-primitive-structures.html">
-<h3 class="no-anchor listing-title">
-TIL: fastutil - fast &amp; compact type-speciic collections for JVM (no autobox!)
-</h3>
-<div class="listing-subtitle">
-
-</div>
-<div class="listing-description">
-<p>Discusses what autoboxing is, why it might hit your performance (and memory). Finally some alternatives are also provided. Learn how to use effective data collections today!</p>
-</div>
-</a>
-</div>
-<div class="metadata">
-<a href="./posts/2020-09-03-til-fastutil-primitive-structures.html">
-<div class="listing-date">
-Sep 3, 2020
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="21" data-listing-date-sort="1599091200000" data-listing-file-modified-sort="1676187875886" data-listing-reading-time-sort="4.425">
+<div class="quarto-post image-right" data-index="23" data-listing-date-sort="1599084000000" data-listing-file-modified-sort="1676199759158" data-listing-reading-time-sort="4.425">
 <div class="thumbnail">
 <a href="./posts/2020-09-03-til-badass-runtime.html">
 <div class="thumbnail-image">
@@ -795,9 +874,38 @@ Sep 3, 2020
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="22" data-listing-date-sort="1596240000000" data-listing-file-modified-sort="1676188028190" data-listing-reading-time-sort="15.925">
+<div class="quarto-post image-right" data-index="24" data-listing-date-sort="1599084000000" data-listing-file-modified-sort="1676199759158" data-listing-reading-time-sort="2.375">
 <div class="thumbnail">
-<p><a href="./posts/2020-08-01-faq-search-covid-2/index.html"> <img src="https://colab.research.google.com/assets/colab-badge.svg" class="thumnail-image"> </a></p>
+<a href="./posts/2020-09-03-til-fastutil-primitive-structures.html">
+<div class="thumbnail-image">
+
+</div>
+</a><p><a href="./posts/2020-09-03-til-fastutil-primitive-structures.html"></a></p>
+</div>
+<div class="body">
+<a href="./posts/2020-09-03-til-fastutil-primitive-structures.html">
+<h3 class="no-anchor listing-title">
+TIL: fastutil - fast &amp; compact type-speciic collections for JVM (no autobox!)
+</h3>
+<div class="listing-subtitle">
+
+</div>
+<div class="listing-description">
+<p>Discusses what autoboxing is, why it might hit your performance (and memory). Finally some alternatives are also provided. Learn how to use effective data collections today!</p>
+</div>
+</a>
+</div>
+<div class="metadata">
+<a href="./posts/2020-09-03-til-fastutil-primitive-structures.html">
+<div class="listing-date">
+Sep 3, 2020
+</div>
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="25" data-listing-date-sort="1596232800000" data-listing-file-modified-sort="1676199759158" data-listing-reading-time-sort="15.925">
+<div class="thumbnail">
+<p><a href="./posts/2020-08-01-faq-search-covid-2/index.html"> <img data-src="https://colab.research.google.com/assets/colab-badge.svg" class="thumnail-image"> </a></p>
 </div>
 <div class="body">
 <a href="./posts/2020-08-01-faq-search-covid-2/index.html">
@@ -820,7 +928,7 @@ Aug 1, 2020
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="23" data-listing-date-sort="1590969600000" data-listing-file-modified-sort="1676187881998" data-listing-reading-time-sort="11.6">
+<div class="quarto-post image-right" data-index="26" data-listing-date-sort="1590962400000" data-listing-file-modified-sort="1676199759158" data-listing-reading-time-sort="11.6">
 <div class="thumbnail">
 <a href="./posts/2020-06-01-sqldelight-kotlin.html">
 <div class="thumbnail-image">
@@ -849,7 +957,7 @@ Jun 1, 2020
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="24" data-listing-date-sort="1589328000000" data-listing-file-modified-sort="1676187888286" data-listing-reading-time-sort="5.87">
+<div class="quarto-post image-right" data-index="27" data-listing-date-sort="1589320800000" data-listing-file-modified-sort="1676199759158" data-listing-reading-time-sort="5.87">
 <div class="thumbnail">
 <a href="./posts/2020-05-13-faq-search-covid-1.html">
 <div class="thumbnail-image">
@@ -878,7 +986,7 @@ May 13, 2020
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="25" data-listing-date-sort="1585612800000" data-listing-file-modified-sort="1676188041370" data-listing-reading-time-sort="6.835">
+<div class="quarto-post image-right" data-index="28" data-listing-date-sort="1585605600000" data-listing-file-modified-sort="1676199759158" data-listing-reading-time-sort="6.835">
 <div class="thumbnail">
 <a href="./posts/2020-03-31-email-generator-kotlin-tipsrundan.html">
 <div class="thumbnail-image">
@@ -907,7 +1015,7 @@ Mar 31, 2020
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="26" data-categories="gradle,jvm" data-listing-date-sort="1581292800000" data-listing-file-modified-sort="1676187910582" data-listing-reading-time-sort="3.74">
+<div class="quarto-post image-right" data-index="29" data-categories="gradle,jvm" data-listing-date-sort="1581289200000" data-listing-file-modified-sort="1676199759158" data-listing-reading-time-sort="3.74">
 <div class="thumbnail">
 <a href="./posts/2020-02-10-gradle-github-packages.html">
 <div class="thumbnail-image">
@@ -949,7 +1057,7 @@ hlondogard
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="27" data-listing-date-sort="1549238400000" data-listing-file-modified-sort="1676187906002" data-listing-reading-time-sort="18.45">
+<div class="quarto-post image-right" data-index="30" data-listing-date-sort="1549234800000" data-listing-file-modified-sort="1676199759158" data-listing-reading-time-sort="18.45">
 <div class="thumbnail">
 <p><a href="./posts/2020-02-23-competence-meeting-imdb-text-classification.html"> <img data-src="https://cdn-images-1.medium.com/max/800/1*FgQgJYozG7colT9rys066w.png" class="thumnail-image"> </a></p>
 </div>
@@ -1119,6 +1227,13 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <footer class="footer">
   <div class="nav-footer">
     <div class="nav-footer-left">Copyright 2023, Hampus Londögård</div>   
+      <div class="nav-footer-center">
+        <ul class="footer-items list-unstyled">
+    <li class="nav-item">
+    <a class="nav-link" href="./about.html">About</a>
+  </li>  
+</ul>
+      </div>
     <div class="nav-footer-right">
       <ul class="footer-items list-unstyled">
     <li class="nav-item compact">
@@ -1133,9 +1248,11 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </i> 
     </a>
   </li>  
-    <li class="nav-item">
-      <i class="bi bi-github" role="img">
+    <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/lundez">
+      <i class="bi bi-github" role="img" aria-label="Lundez GitHub">
 </i> 
+    </a>
   </li>  
     <li class="nav-item compact">
     <a class="nav-link" href="./index.xml">

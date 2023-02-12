@@ -90,17 +90,36 @@ ul.task-list li input[type="checkbox"] {
  <span class="menu-text">About</span></a>
   </li>  
   <li class="nav-item compact">
-    <a class="nav-link" href="https://github.com/londogard"><i class="bi bi-github" role="img">
+    <a class="nav-link" href="https://www.linkedin.com/in/hampus-londögård/"><i class="bi bi-linkedin" role="img" aria-label="LinkedIn">
 </i> 
  <span class="menu-text"></span></a>
   </li>  
   <li class="nav-item compact">
-    <a class="nav-link" href="https://github.com/lundez"><i class="bi bi-github" role="img">
+    <a class="nav-link" href="https://twitter.com/hlondogard"><i class="bi bi-twitter" role="img" aria-label="Twitter">
 </i> 
  <span class="menu-text"></span></a>
   </li>  
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-bi-github" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+      <i class="bi bi-github" role="img">
+</i> 
+ <span class="menu-text"></span>
+    </a>
+    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="nav-menu-bi-github">    
+        <li>
+    <a class="dropdown-item" href="https://github.com/lundez"><i class="bi bi-github" role="img">
+</i> 
+ <span class="dropdown-text">Lundez</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="https://github.com/londogard"><i class="bi bi-github" role="img">
+</i> 
+ <span class="dropdown-text">Londogard</span></a>
+  </li>  
+    </ul>
+  </li>
   <li class="nav-item compact">
-    <a class="nav-link" href="https://twitter.com/hlondogard"><i class="bi bi-twitter" role="img">
+    <a class="nav-link" href="../../index.xml"><i class="bi bi-rss" role="img" aria-label="Londogard Blog RSS">
 </i> 
  <span class="menu-text"></span></a>
   </li>  
@@ -155,10 +174,15 @@ ul.task-list li input[type="checkbox"] {
 
 
 <p>Back in action and finalizing the baby monitor!👶</p>
-<p><strong>TL;DR</strong> Built a baby monitor that included the following features: 1. Bidirectional Audio &amp; Unidirectional Video (Night &amp; Day Vision!) 2. Temperature Sensor 3. Motor (Servo) to move left/right &amp; up/down</p>
-<p>The project was born the day I met an old friend and saw his expensive baby monitor that he had been gifted, I needed to match it! 🤓 <!--truncate--></p>
-<p><strong>Result:</strong> <img src="20230206181407.png" class="img-fluid" alt="300"> I’m very happy about the results, my wife asked me to draw a smile on the creepy monitor, hence the smile! 😜<br>
-Video of it running live can be found at the end!</p>
+<p><strong>TL;DR</strong> Built a baby monitor that included the following features:</p>
+<ol type="1">
+<li>Bidirectional Audio &amp; Unidirectional Video (Night &amp; Day Vision!)</li>
+<li>Temperature Sensor</li>
+<li>Motor (Servo) to move left/right &amp; up/down</li>
+</ol>
+<p>The project was born the day I met an old friend and saw his expensive baby monitor that he had been gifted, I needed to match it! 🤓</p>
+<!--truncate-->
+<p><strong>Result:</strong> <img src="20230206181407.png" class="img-fluid" alt="300"> I’m very happy about the results, my wife asked me to draw a smile on the creepy monitor, hence the smile! 😜 Video of it running live can be found at the end!</p>
 <section id="implementation-details" class="level2">
 <h2 class="anchored" data-anchor-id="implementation-details">Implementation Details</h2>
 <p>To implement and build this camera I had to combine both hardware and software into a package.</p>
@@ -237,15 +261,21 @@ Video of it running live can be found at the end!</p>
 </section>
 <section id="end-result" class="level2">
 <h2 class="anchored" data-anchor-id="end-result">End Result</h2>
-<p><img src="20230206181407.png" class="img-fluid" alt="350"> And a video to show how real-time it is! <video controls="" src="/video/Studio_Project.mp4" type="video/mp4" width="350"></video></p>
+<p><img src="20230206181407.png" class="img-fluid" alt="350"> And a video to show how real-time it is!</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><video src="Studio_Project.mp4" class="img-fluid" controls=""><a href="Studio_Project.mp4">Video</a></video></p>
+<p></p><figcaption class="figure-caption">Test Video</figcaption><p></p>
+</figure>
+</div>
 <p>I’m very happy about the results!</p>
 <section id="images-of-the-building-process" class="level3">
 <h3 class="anchored" data-anchor-id="images-of-the-building-process">Images of the Building Process</h3>
 <p>And some images of when I built the monitor!</p>
 <table class="table">
 <colgroup>
-<col style="width: 31%">
-<col style="width: 68%">
+<col style="width: 30%">
+<col style="width: 69%">
 </colgroup>
 <thead>
 <tr class="header">
@@ -276,7 +306,7 @@ Video of it running live can be found at the end!</p>
 </tr>
 <tr class="even">
 <td>Testing the Servo</td>
-<td><video controls="" src="/video/20220927_195156.mp4" type="video/mp4" width="350"></video></td>
+<td><video src="20220927_195156.mp4" class="img-fluid" controls=""><a href="20220927_195156.mp4">Testing the Servo</a></video></td>
 </tr>
 <tr class="odd">
 <td>Connecting all in a paper box</td>
@@ -299,8 +329,7 @@ Video of it running live can be found at the end!</p>
 <p>The servo motors showed to be too weak which interestingly means they’re too strong. As they try to move the housing it works slowly until it move everything at once which creates a force stronger than the pad that the monitor was standing on.</p>
 <p>The end result was… Sweet release of machine breakage 😢</p>
 <p><img src="20230120_185651.jpg" class="img-fluid" alt="350"> <img src="20230128_113031.jpg" class="img-fluid" alt="350"></p>
-<p>That’s it for this time! Now I look forward to become a father! 👨‍👩‍👧‍👦<br>
-~Hampus Londögård</p>
+<p>That’s it for this time! Now I look forward to become a father! 👨‍👩‍👧‍👦 ~Hampus Londögård</p>
 
 
 </section>
@@ -442,40 +471,42 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </div> <!-- /content -->
 <footer class="footer">
   <div class="nav-footer">
+    <div class="nav-footer-left">Copyright 2023, Hampus Londögård</div>   
       <div class="nav-footer-center">
         <ul class="footer-items list-unstyled">
+    <li class="nav-item">
+    <a class="nav-link" href="../../about.html">About</a>
+  </li>  
+</ul>
+      </div>
+    <div class="nav-footer-right">
+      <ul class="footer-items list-unstyled">
     <li class="nav-item compact">
     <a class="nav-link" href="https://www.linkedin.com/in/hampus-londögård/">
-      <i class="bi bi-linkedin" role="img">
+      <i class="bi bi-linkedin" role="img" aria-label="LinkedIn">
 </i> 
     </a>
   </li>  
     <li class="nav-item compact">
     <a class="nav-link" href="https://twitter.com/hlondogard">
-      <i class="bi bi-twitter" role="img">
-</i> 
-    </a>
-  </li>  
-    <li class="nav-item compact">
-    <a class="nav-link" href="https://github.com/londogard">
-      <i class="bi bi-github" role="img">
+      <i class="bi bi-twitter" role="img" aria-label="Twitter">
 </i> 
     </a>
   </li>  
     <li class="nav-item compact">
     <a class="nav-link" href="https://github.com/lundez">
-      <i class="bi bi-github" role="img">
+      <i class="bi bi-github" role="img" aria-label="Lundez GitHub">
 </i> 
     </a>
   </li>  
     <li class="nav-item compact">
     <a class="nav-link" href="../../index.xml">
-      <i class="bi bi-rss" role="img">
+      <i class="bi bi-rss" role="img" aria-label="Londogard Blog RSS">
 </i> 
     </a>
   </li>  
 </ul>
-      </div>
+    </div>
   </div>
 </footer>
 

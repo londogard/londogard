@@ -1,13 +1,10 @@
 ---
-description: I'm building a babymonitor!
-tags: [python, raspberrypi]
 title: "Babymonitor #1"
-
+date: "2022-11-06"
+description: "I'm building a babymonitor!"
+tags: [python, raspberrypi]
 authors: hlondogard
 ---
-
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
 
 Hi 👋
 
@@ -70,24 +67,31 @@ Some worthy mentions of other solutions is _Real Time Streaming Protocol (RTSP)
 
 Describing the protocol and how it's implemented, in a very general way.
 
-<Tabs groupId="stream">
-  <TabItem value="http" label="HTTP" default>
-    <p><b>H</b>yper<strong>t</strong>ext <strong>T</strong>ransfer <strong>P</strong>rotocol, <em>lingua franca</em> protocol of the internet, is a way to stream both video and audio. It&#39;s easy but not efficient.</p>
-    <p><b>How: </b> Stream chunks using HTTP messages and let your <code>&lt;video&gt;</code>  element handle the consumption of the stream.</p>
-  </TabItem>
-  <TabItem value="hls" label="HLS">
-    <p><strong>H</strong>TTP <strong>L</strong>ive <strong>S</strong>treaming is a simple and pretty efficient way to stream both video and audio over the internet.</p>
-    <p><b>How: </b> Stream chunks of video-/audio-files, <code>.m3u8</code>, which are then picked up by client. The chunks are built from a &quot;live&quot; stream, e.g. webcam, or a file.</p>
-  </TabItem>
-  <TabItem value="websocket" label="Websocket">
-    <p>Websockets is a communication protocol which allows much lower overhead than raw HTTP while providing bi-directional (duplex) communication. It's really optimal to stream things that move in real-time through HTTP, such as a video or audio stream.</p>
-    <p><b>How: </b> Stream your byte-array realtime through a websocket, like you'd a HTTP. There's less headers involved, but it's much harder to consume on the client. You need a special JS media player which can decode the websocket stream into video/audio. </p>
-  </TabItem>
-  <TabItem value="webrtc" label="WebRTC">
-    <p>WebRTC is a open framework that enables <em>Real-Time Communications (RTC)</em> inside the browser. From the get-go it supports bidirectional video/audio and also encrypted if required.<br/>    It&#39;s <em>the protocol to stream realtime</em> really. It&#39;s used in a lot of the tools you know today.</p>
-    <p><b>How: </b> set up a WebRTC server and then stream your bytearrays directly after connecting with a client.</p>
-  </TabItem>
-</Tabs>
+::: {.panel-tabset group="type"}
+## HTTP
+**H**yper**t**ext **T**ransfer **P**rotocol, _lingua franca_ protocol of the internet, is a way to stream both video and audio. It's easy, but not efficient.
+
+**How:** Stream chunks using HTTP messages and let your `<video>` element handle the consumption of stream.
+
+## HLS
+
+**H**TTP **L**ive **S**treaming is a simple and pretty efficient way to stream both video and audio over the internet.
+
+**How:** video-/audio-files, `.m3u8`, which are then picked up by client. The chunks are built from a "live" stream, e.g. webcam, or a file.
+
+## Websocket
+
+Websockets is a communication protocol which allows much lower overhead than raw HTTP while providing bi-directional (duplex) communication. It's really optimal to stream things that move in real-time through HTTP, such as a video or audio stream.
+
+**How:** Stream your byte-array realtime through a websocket, like you'd a HTTP. There's less headers involved, but it's much harder to consume on the client. You need a special JS media player which can decode the websocket stream into video/audio.
+
+## WebRTC
+WebRTC is a open framework that enables _Real-Time Communications (RTC)_ inside the browser. From the get-go it supports bidirectional video/audio and also encrypted if required.  
+It's _the protocol to stream realtime_ really. It's used in a lot of the tools you know today.
+
+**How:** set up a WebRTC server and then stream your bytearrays directly after connecting with a client.
+
+:::
 
 Each protocol comes with positives and negatives.
 
@@ -98,17 +102,15 @@ Each protocol comes with positives and negatives.
 
 ### Implementations
 
+::: {.panel-tabset group="type"}
 
-
-<Tabs groupId="stream">
-  <TabItem value="http" label="HTTP - MJPEG">
-
+## HTTP
+Using **MJPEG**.  
 The provided [MJPEG server](https://raw.githubusercontent.com/raspberrypi/picamera2/main/examples/mjpeg_server.py) from [`picamera2`](https://github.com/raspberrypi/picamera2) is excelent show-case on how to stream the video. It sets up a simple HTML with a `<img>` element which streams new frames using `MJPEG`  which is Motion-JPEG.
 
 The performance is pretty OK, considering it's Python & MJPEG. Compared to H264 which works much more effectively.   
 We see the CPU hovering around 130-150%, but the largest drawback is the network bandwidth, at ~50Mb/s compared to H.264 at ~3.5Mb/s.  
 This is because MJPEG sends the full frame each time, H.264 sends a frame and then some delta frame until it sends a full frame again. This has drawbacks and positives, the bandwidth is low but quality can suffer.
-
 
 <details>
 <summary>Code</summary>
@@ -214,19 +216,13 @@ finally:
 
 </details>
 
-
-  </TabItem>
-  <TabItem value="hls" label="HLS">
+## HLS
 
 Very simple using `ffmpeg` and `picamera2`  in conjunction. 
 
 The performance of HLS is great at ~40% CPU, but the latency is awful at 5-10s easily!
 
-<details>
-<summary>Code</summary>
-<Tabs>
-<TabItem value="python" label="Python">
-
+**Python**
 ```python
 import time
 from picamera2.outputs import FfmpegOutput
@@ -242,9 +238,7 @@ picam2.start_recording(encoder, output)
 time.sleep(9999999)
 ```
 
-</TabItem>
-<TabItem value="html" label="HTML">
-
+**HTML**
 ```html
 <video width="320" height="240" controls autoplay>
     <source src="stream.m3u8" type="application/x-mpegURL" />
@@ -252,27 +246,17 @@ time.sleep(9999999)
 </video>
 ```
 
-</TabItem>
-</Tabs>
-
-
-</details>
-
-  </TabItem>
-  <TabItem value="websocket" label="Websocket">
+## Websocket
 
 I've basically re-used [`go-h264-streamer`](https://github.com/bezineb5/go-h264-streamer) which is a very simple yet efficient golang-implementation of a websocket driven H264 streamer that streams through websocket to a client. The client has a JS script which is WebASM/emscripten compiled to use WebGL-accelerated graphics to decode the H264 into frames. 
 
 What's really cool about this implementation is that it only starts the video stream when people connect and shut it down when there's no connected websockets.
 
-  </TabItem>
-  <TabItem value="webrtc" label="WebRTC">
+## WebRTC
 
 I kept myself to KISS, unlike all this testing of approaches, and went with golangs `pion` ([https://github.com/pion/webrtc](https://github.com/pion/webrtc))  and their excellent `mediadevices` ([https://github.com/pion/mediadevices](https://github.com/pion/mediadevices)) which wraps the legacy pi camera stack (non-open source drivers, unlike the modern pi camera stack which builds on `libcamera`).
 
-  </TabItem>
-</Tabs>
-  
+:::
 
 ### Performance
 
@@ -289,7 +273,7 @@ Stats taken from `top`.
 This is what I have currently. **In the next blog I'll go through how we'll set up a backend which will allow us to use the sensors, move the servos and stream audio/video.**
 
 I think the bidirectional communication will require a third blog, and then manufacturing a 3D-printed case as a fourth!
-  
+
 
 Until next time,  
 Hampus Londögård

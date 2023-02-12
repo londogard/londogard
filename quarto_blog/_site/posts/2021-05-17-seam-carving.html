@@ -138,17 +138,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
  <span class="menu-text">About</span></a>
   </li>  
   <li class="nav-item compact">
-    <a class="nav-link" href="https://github.com/londogard"><i 
-  class="bi bi-github" 
+    <a class="nav-link" href="https://www.linkedin.com/in/hampus-londögård/"><i 
+  class="bi bi-linkedin" 
   role="img" 
->
-</i> 
- <span class="menu-text"></span></a>
-  </li>  
-  <li class="nav-item compact">
-    <a class="nav-link" href="https://github.com/lundez"><i 
-  class="bi bi-github" 
-  role="img" 
+  aria-label="LinkedIn" 
 >
 </i> 
  <span class="menu-text"></span></a>
@@ -157,6 +150,44 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
     <a class="nav-link" href="https://twitter.com/hlondogard"><i 
   class="bi bi-twitter" 
   role="img" 
+  aria-label="Twitter" 
+>
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-bi-github" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+      <i 
+  class="bi bi-github" 
+  role="img" 
+>
+</i> 
+ <span class="menu-text"></span>
+    </a>
+    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="nav-menu-bi-github">    
+        <li>
+    <a class="dropdown-item" href="https://github.com/lundez"><i 
+  class="bi bi-github" 
+  role="img" 
+>
+</i> 
+ <span class="dropdown-text">Lundez</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="https://github.com/londogard"><i 
+  class="bi bi-github" 
+  role="img" 
+>
+</i> 
+ <span class="dropdown-text">Londogard</span></a>
+  </li>  
+    </ul>
+  </li>
+  <li class="nav-item compact">
+    <a class="nav-link" href="/index.xml"><i 
+  class="bi bi-rss" 
+  role="img" 
+  aria-label="Londogard Blog RSS" 
 >
 </i> 
  <span class="menu-text"></span></a>
@@ -388,7 +419,7 @@ Trying all paths would prove expensive, but if we traverse the reverse we can sp
 <span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>Image<span class="op">(</span><span class="st">&quot;step_200.jpg&quot;</span><span class="op">)</span></span></code></pre></div>
 <p><img src="https://user-images.githubusercontent.com/7490199/118542607-836c1800-b753-11eb-8677-b98ad12ba069.png" class="img-fluid" alt="image" /> <img src="https://user-images.githubusercontent.com/7490199/118542621-89fa8f80-b753-11eb-98ee-274b0ea03c7c.png" class="img-fluid" alt="image" /></p>
 <div id="quarto-navigation-envelope" class="hidden">
-<p><span class="hidden" data-render-id="quarto-int-sidebar-title">Londogard Blog</span> <span class="hidden" data-render-id="quarto-int-navbar-title">Londogard Blog</span> <span class="hidden" data-render-id="quarto-int-navbar:About">About</span></p>
+<p><span class="hidden" data-render-id="quarto-int-sidebar-title">Londogard Blog</span> <span class="hidden" data-render-id="quarto-int-navbar-title">Londogard Blog</span> <span class="hidden" data-render-id="quarto-int-navbar:About">About</span> <span class="hidden" data-render-id="quarto-int-navbar:Lundez">Lundez</span> <span class="hidden" data-render-id="quarto-int-navbar:Londogard">Londogard</span> <span class="hidden" data-render-id="footer-left">Copyright 2023, Hampus Londögård</span> <span class="hidden" data-render-id="footer-center-/about.html">About</span></p>
 </div>
 <div id="quarto-meta-markdown" class="hidden">
 <p><span class="hidden" data-render-id="quarto-metatitle">Londogard Blog - Seam Carving (Presentation &amp; Workshop)</span> <span class="hidden" data-render-id="quarto-twittercardtitle">Londogard Blog - Seam Carving (Presentation &amp; Workshop)</span> <span class="hidden" data-render-id="quarto-ogcardtitle">Londogard Blog - Seam Carving (Presentation &amp; Workshop)</span> <span class="hidden" data-render-id="quarto-metasitename">Londogard Blog</span></p>
@@ -532,13 +563,26 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </div> <!-- /content -->
 <footer class="footer">
   <div class="nav-footer">
+    <div class="nav-footer-left">
+      <div class='footer-contents'>Copyright 2023, Hampus Londögård</div>  
+    </div>   
       <div class="nav-footer-center">
         <ul class="footer-items list-unstyled">
+    <li class="nav-item">
+    <a class="nav-link" href="/about.html">
+ About
+    </a>
+  </li>  
+</ul>
+      </div>
+    <div class="nav-footer-right">
+      <ul class="footer-items list-unstyled">
     <li class="nav-item compact">
     <a class="nav-link" href="https://www.linkedin.com/in/hampus-londögård/">
       <i 
   class="bi bi-linkedin" 
   role="img" 
+  aria-label="LinkedIn" 
 >
 </i> 
     </a>
@@ -548,15 +592,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       <i 
   class="bi bi-twitter" 
   role="img" 
->
-</i> 
-    </a>
-  </li>  
-    <li class="nav-item compact">
-    <a class="nav-link" href="https://github.com/londogard">
-      <i 
-  class="bi bi-github" 
-  role="img" 
+  aria-label="Twitter" 
 >
 </i> 
     </a>
@@ -566,6 +602,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       <i 
   class="bi bi-github" 
   role="img" 
+  aria-label="Lundez GitHub" 
 >
 </i> 
     </a>
@@ -575,12 +612,13 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       <i 
   class="bi bi-rss" 
   role="img" 
+  aria-label="Londogard Blog RSS" 
 >
 </i> 
     </a>
   </li>  
 </ul>
-      </div>
+    </div>
   </div>
 </footer>
 
