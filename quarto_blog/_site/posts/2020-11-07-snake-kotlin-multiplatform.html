@@ -1,0 +1,1008 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.2.335">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Hampus Londögård">
+<meta name="dcterms.date" content="2020-11-07">
+<meta name="description" content="A three part blog (all included in this one) that goes through 1) How Kotlin Multiplatform works, 2) How to build a game (Snake) and finally 3) how to make it multiplatform.">
+
+<title>Londogard Blog - How to build and play Snake via Native Binary, JVM and JS/Browser (Kotlin)</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<script src="../site_libs/quarto-html/quarto.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="../styles.css">
+<meta name="twitter:title" content="Londogard Blog - How to build and play Snake via Native Binary, JVM and JS/Browser (Kotlin)">
+<meta name="twitter:description" content="A three part blog (all included in this one) that goes through 1) How Kotlin Multiplatform works, 2) How to build a game (Snake) and finally 3) how to make it multiplatform.">
+<meta name="twitter:creator" content="@hlondogard">
+<meta name="twitter:card" content="summary">
+</head>
+
+<body class="nav-fixed fullcontent">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a class="navbar-brand" href="../index.html">
+    <span class="navbar-title">Londogard Blog</span>
+    </a>
+  </div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../about.html">
+ <span class="menu-text">About</span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/londogard"><i class="bi bi-github" role="img">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/lundez"><i class="bi bi-github" role="img">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://twitter.com/hlondogard"><i class="bi bi-twitter" role="img">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+</ul>
+              <div id="quarto-search" class="" title="Search"></div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<header id="title-block-header" class="quarto-title-block default page-columns page-full">
+  <div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-body">
+      <h1 class="title">How to build and play Snake via Native Binary, JVM and JS/Browser (Kotlin)</h1>
+                  <div>
+        <div class="description">
+          A three part blog (all included in this one) that goes through 1) How Kotlin Multiplatform works, 2) How to build a game (Snake) and finally 3) how to make it multiplatform.
+        </div>
+      </div>
+                </div>
+  </div>
+    
+  
+  <div class="quarto-title-meta">
+
+      <div>
+      <div class="quarto-title-meta-heading">Author</div>
+      <div class="quarto-title-meta-contents">
+               <p>Hampus Londögård </p>
+            </div>
+    </div>
+      
+      <div>
+      <div class="quarto-title-meta-heading">Published</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date">November 7, 2020</p>
+      </div>
+    </div>
+    
+      
+    </div>
+    
+  
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    
+<!-- main -->
+<main class="content quarto-banner-title-block" id="quarto-document-content">
+
+
+
+
+<p>A three part blog (all included in this one) that goes through</p>
+<ol type="1">
+<li>How Kotlin Multiplatform works (compiler and everything)</li>
+<li>How to build a game (Snake) and finally</li>
+<li>how to make it multiplatform. <!--truncate--></li>
+</ol>
+<p><strong>All the code is available <a href="https://github.com/londogard/snake-js-jvm-native">here</a>.</strong></p>
+<p>It’s highly recommended using IntelliJ, a free (community) edition can be downloaded from <a href="https://www.jetbrains.com/idea/download/#section=windows">jetbrains.com</a>.<br>
+It’s also required that your Kotlin version is above 1.4 (some huge Multiplatform changes was added in release 1.4).</p>
+<blockquote class="blockquote">
+<p><strong>Disclaimer:</strong> this post is pretty long and I recommend reading one part at a time (it’s 3 parts).</p>
+<p>Personally I hate unfinished blogs that are multiple parts, hence I uploaded all at once. So be assured, you’re getting all parts - right here, right now! :happy:</p>
+<p>Finally, the first part is purely informational about how everything works and the second part is how to actually code the game. The second part is interactive and contains a lot of TODOs. The third, and final, part covers how we are able to use the same code on JS/Browser &amp; Native</p>
+</blockquote>
+<p><strong>All the finished code is available <a href="https://github.com/londogard/snake-js-jvm-native/tree/completed_project">here</a></strong> (open <code>master</code> if you wish to have the unfinished code).</p>
+<section id="introduction" class="level1">
+<h1>Introduction</h1>
+<p>First off, what is Kotlin?</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://user-images.githubusercontent.com/7490199/218269627-e1ed024c-05f5-4755-a8d5-944f46bcbea8.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">Image from <a href="https://kotlinlang.org/">kotlinlang.org</a></figcaption><p></p>
+</figure>
+</div>
+<p>By my own account it’s a language that has learned from many mistakes done in the past and tries to extend and embrace the good ones!</p>
+<p>The most obvious one solved by Kotlin is “The Billion Dollar Mistake” as the inventor <a href="https://en.wikipedia.org/wiki/Tony_Hoare">Tony Hoare</a> calls it himself, namely <code>null</code>. Kotlin is not alone about this, but certainly off to a good start!</p>
+<p>Some mentionable features on top of this is</p>
+<ul>
+<li><a href="https://kotlinlang.org/docs/reference/coroutines-overview.html">Coroutines</a> - A more efficient (lightweight) threading model, also called “green threads” sometimes. Feels very natural and easy.</li>
+<li><a href="https://kotlinlang.org/docs/reference/data-science-overview.html">Data-Science &amp; Jupyter</a> support</li>
+<li><a href="https://kotlinlang.org/docs/reference/extensions.html#extensions">Extension functions</a> - Perhaps my favourite feature, do you feel a class is missing a function? No problem, you’re free to do so!</li>
+<li>Excellent <a href="https://kotlinlang.org/spec/type-inference.html">typing</a> - Perhaps not Scala, but still very good.</li>
+<li>&amp; more!</li>
+</ul>
+<p>All of this is available through Kotlins Multiplatform effort, where Multiplatform does not mean Mac/Windows/Linux but rather that we can compile into different platforms such as Java Bytecode (JVM), <a href="https://kotlinlang.org/docs/reference/native-overview.html">Native</a> and <a href="https://kotlinlang.org/docs/reference/js-overview.html">JS/Browser</a>.</p>
+<p>Enough praises, let’s get onto how the multiplatform solution actually works through <a href="#Part%201:%20How%20does%20Kotlin%20Multiplatform%20work"><strong>Part 1</strong></a>.</p>
+</section>
+<section id="part-1-how-does-kotlin-multiplatform-work" class="level1">
+<h1>Part 1: How does Kotlin Multiplatform work?</h1>
+<p>Let’s begin by understanding exactly what <strong>Native</strong> is? From the landing page of <a href="https://kotlinlang.org/docs/reference/native-overview.html">kotlinlang.org/native</a>.</p>
+<blockquote class="blockquote">
+<p>Kotlin/Native is a technology for compiling Kotlin code to native binaries, which can run without a virtual machine. It is an <a href="https://llvm.org/">LLVM</a> based backend for the Kotlin compiler and native implementation of the Kotlin standard library.</p>
+</blockquote>
+<p>This statement tells us a few things, such as <em>native</em> refering to binary executables that can run on a OS (natively) using no virtual machine or browser!<br>
+But in practice?</p>
+<p>✔️ Small file size<br>
+✔️ No overhead<br>
+✔️ Incredibly fast starting-time</p>
+<p>As usual it isn’t a win-win situation but you loose some</p>
+<p>❌Development speed</p>
+<section id="llvm" class="level2">
+<h2 class="anchored" data-anchor-id="llvm">LLVM</h2>
+<p>LLVM is probably the biggest project (compiler) that exists to build native binaries. Languages such as C, C++, Haskell, Rust &amp; Swift compile into native binaries through LLVM.</p>
+<p>From the info-box previously,</p>
+<blockquote class="blockquote">
+<p><strong>It is an <a href="https://llvm.org/">LLVM</a> based backend for the Kotlin compiler</strong> and native implementation of the Kotlin standard library.</p>
+</blockquote>
+<p>So… What is a backend? More specifically, what is a backend for a compiler?</p>
+</section>
+<section id="how-the-kotlin-compiler-works-frontend-to-backend" class="level2">
+<h2 class="anchored" data-anchor-id="how-the-kotlin-compiler-works-frontend-to-backend">How the Kotlin Compiler works, Frontend to Backend</h2>
+<p>A compiler is like a translator, just as you’d translate Swedish into English a compiler instead translates computer code written in one programming language into another one of lower level, e.g.&nbsp;assembly.</p>
+<p>In general all compilers follow the same pattern, and Kotlin is no different. Even though it’s a similar path it’s interesting to learn about, even more if you don’t know how it usually works!<br>
+The Kotlin Compiler first compiles Kotlin code into a <em>Intermediate Representation</em>, or <em>IR</em>, which it later turns into Java Bytecode, when targeting the <em>Java Virtual Machine</em> (<em>JVM</em>).</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://user-images.githubusercontent.com/7490199/97027300-d2095900-155a-11eb-9d18-6fb58a0a9699.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">Compiler Chain</figcaption><p></p>
+</figure>
+</div>
+<p>The first part is called the <strong>Compiler Frontend</strong></p>
+<section id="the-kotlin-compiler-frontend" class="level3">
+<h3 class="anchored" data-anchor-id="the-kotlin-compiler-frontend">The Kotlin Compiler Frontend</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://user-images.githubusercontent.com/7490199/97027463-1137aa00-155b-11eb-9c31-a60e3e25af87.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">Compiler Frontend</figcaption><p></p>
+</figure>
+</div>
+<p>The <em>Compiler Frontend</em> turns the Kotlin code into a <em>Intermediate Representation</em> of the code which is represented by a <a href="https://en.wikipedia.org/wiki/Abstract_syntax_tree">abstract syntax tree</a>. The <em>abstract syntax tree</em> in turn is built from concrete syntax, e.g.&nbsp;strings.<br>
+The process involves <a href="https://en.wikipedia.org/wiki/Lexical_analysis">lexical analysis</a> which creates tokens and pass it forward to the <a href="https://en.wikipedia.org/wiki/Parsing">parser</a> that finally builds the <em>abstract syntax tree</em>.<br>
+For those interested this could be a really fun challenge and learning lesson to implement yourself!</p>
+<p>Moving on, the second and final part is called the <strong>Compiler Backend</strong>.</p>
+</section>
+<section id="the-kotlin-compiler-backend" class="level3">
+<h3 class="anchored" data-anchor-id="the-kotlin-compiler-backend">The Kotlin Compiler Backend</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://user-images.githubusercontent.com/7490199/97077672-ddee2d00-15e5-11eb-9f71-916c5b2a0544.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">Compiler Backend</figcaption><p></p>
+</figure>
+</div>
+<p>The <em>Compiler Backend</em> turns this abstract syntax tree, or <em>IR</em>, into computer output language.<br>
+In the image that is Java Bytecode which is understood by the <em>JVM</em>. The backend is the part that actually optimize code to remove for-loops where applicable, exchange variables into constants and so on.<br>
+Just as with the frontend it’s a really good challenge to either implement a backend without optimizations, or focus on a existing one and adding a optimization yourself!</p>
+<p>What is interesting about Kotlin is that it has different compiler backends, which means that the <em>IR</em> compile not only into Java Bytecode but also JS/Browser &amp; Native binaries.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://user-images.githubusercontent.com/7490199/97077776-b8155800-15e6-11eb-8ae6-a83a77253087.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">Different Kotlin Compiler Backends</figcaption><p></p>
+</figure>
+</div>
+<blockquote class="blockquote">
+<p><strong>Side-note</strong>: For Native Backend there’s in fact two <em>Intermediate Representations</em>, first Kotlin <em>IR</em> which then compiles into LLVM <em>IR</em>. LLVM finally turns this into a native binary through its own Compiler Backend.<br>
+During the final step in LLVM all the optimizations applied to C, C++, Swift &amp; many more is also applied to Kotlin Native code!</p>
+</blockquote>
+</section>
+</section>
+<section id="how-kotlin-keeps-multiplatform-clean" class="level2">
+<h2 class="anchored" data-anchor-id="how-kotlin-keeps-multiplatform-clean">How Kotlin keeps multiplatform clean</h2>
+<p>It might sound messy to target multiple platforms like this, and how could it possibly end up clean?</p>
+<p>By using the standard libraries that are included with Kotlin, which includes almost everything you need, and multiplatform-developed community libraries, e.g.&nbsp;<a href="https://github.com/cashapp/sqldelight">SQLDelight</a>, you get code that looks the same and works the same irregardless of target (JS/Browser, Native or the JVM).</p>
+<p>To give an example of how Kotlin std-lib works, let’s take one of the most common types - <code>String</code>.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://user-images.githubusercontent.com/7490199/97077938-2dcdf380-15e8-11eb-8282-873d80f6178e.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">How Kotlin types are compiled</figcaption><p></p>
+</figure>
+</div>
+<p>By using <code>Kotlin.String</code> rather than the usual <code>Java.lang.String</code> you do when programming Java you get a type that works on multiple platforms, including some awesome convenience functions. Imagine, you can write native code using <code>.substring</code>, <code>.take(n)</code> &amp; <code>.replace</code> - amazing compared to <code>c</code> right? :happy:</p>
+<p>To put this in context of the compiler, this means that the <em>Compiler Backend</em> automatically maps the <em>IR</em> of a <code>Kotlin.String</code> into the correct type.</p>
+<p>You can take this concept and apply to anything such as IO , network &amp; more - all which are included in the std-lib!</p>
+</section>
+<section id="summarizing-how-multiplatform-works" class="level2">
+<h2 class="anchored" data-anchor-id="summarizing-how-multiplatform-works">Summarizing how Multiplatform works</h2>
+<p>Let’s recollect what we’ve gone through</p>
+<ol type="1">
+<li>Kotlin Compiler compiles Kotlin code into a <em>Intermediate Representation</em> (IR) through the <em>Compiler Frontend</em>.
+<ol type="1">
+<li><em>IR</em> is a abstract syntax tree.</li>
+</ol></li>
+<li>Kotlin Compiler then goes the <em>Compiler Backend</em> which turns the code into the lower level language, e.g.&nbsp;Java Bytecode, and applies multiple optimisations.</li>
+<li>Kotlin has a std-lib which has functionalities as <code>Kotlin.String</code>, <code>Kotlin.List</code>, networking and much more.
+<ol type="1">
+<li><code>Kotlin.String</code> turns into <code>KString</code> in the case of targeting <em>Native</em>. <code>KString</code> is Kotlins own native strings with some cool helper methods.</li>
+</ol></li>
+</ol>
+<p>Native is usually considered “dangerous” and “hard” because of all the quirks like pointers, address space and other.</p>
+<p>Kotlin Native deals with <em>memory allocation</em> in the same way as Swift, namely <a href="https://en.wikipedia.org/wiki/Reference_counting"><em>reference counting</em></a> which deallocates objects once they’ve got no references. There’s some advantages such as being really fast, but also downsides such as <em>reference cycles</em> which it handles poorly when compared to the JVM Garbace Collector (GC).</p>
+<p>Kotlin also has some really nice convenience syntax such as the <code>memScope</code>-block.</p>
+</section>
+<section id="outro-kotlin-multiplatform-and-why-it-matters" class="level2">
+<h2 class="anchored" data-anchor-id="outro-kotlin-multiplatform-and-why-it-matters">Outro: Kotlin Multiplatform and why it matters</h2>
+<p>✔️ One code-base for common logic<br>
+- Serialization logic, e.g.&nbsp;parsing JSON into a data class - Networking - Database</p>
+<p>✔️ Development speed<br>
+✔️ Required Knowledge</p>
+<p>❌ Still requires some code in said language<br>
+- Especially for UI</p>
+<p>So all in all we can share our code between platforms which improves development speed &amp; quality in multiple ways.</p>
+<p>The biggest “downside” is that even though we share the code we most likely will need some kind of specific code for the platform, for the GUI on iOS as an example. Perhaps <a href="https://www.jetbrains.com/lp/compose/">compose</a> can help us get closer to that reality soon - who knows.<br>
+The final, and perhaps obvious, one I’d like to mention straight away is that platform specific libraries of course are not usable on multiplatform. This includes libraries such as React (JS) &amp; <code>ncurses</code> (native).</p>
+<p>Personally I see Kotlin Multiplatform as a great way to <strong>share core logic</strong> between different targets, but one must use it with care and <strong>not try to force it</strong> into being used everywhere in every way.</p>
+</section>
+</section>
+<section id="part-2-how-to-set-up-multiplatform-and-build-snake" class="level1">
+<h1>Part 2: How to set up Multiplatform and build Snake</h1>
+<blockquote class="blockquote">
+<p><strong>OBS:</strong> Make sure to have Kotlin 1.4 or higher before starting the project. You can verify version &amp; update through File &gt; Settings &gt; Languages &amp; Frameworks &gt; Kotlin. There you see “current version” and if a newer one is available, make sure it’s at least 1.4 (any higher will work too)!</p>
+</blockquote>
+<p>First we’ll have to set up a Multiplatform project. The <a href="https://kotlinlang.org/docs/reference/mpp-create-lib.html">official guide</a> is actually really good, and if you’re using IntelliJ it’s a breeze to setup! Just as in the guide make sure to select <code>Library</code>.<br>
+<strong>OBS:</strong> For each target (JVM, JS &amp; Native) select “Template” and choose Application for each.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://kotlinlang.org/assets/images/reference/mpp/mpp-project-1.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">Select a project template</figcaption><p></p>
+</figure>
+</div>
+<p>Run the build.</p>
+<blockquote class="blockquote">
+<p><strong>Side-note:</strong> <code>gradle</code> is a really good build-tool that I’d like to discuss more. But for now let’s just enjoy the simplicity of how our whole project ‘automagically’ just works and builds as expected while targeting different platforms.</p>
+</blockquote>
+<section id="building-a-jvm-app-snake" class="level2">
+<h2 class="anchored" data-anchor-id="building-a-jvm-app-snake">Building a JVM App (Snake)</h2>
+<p>Let’s start simple, Keep It Simple Stupid (KISS) principle applied, and create a JVM app. JVM has multiple advantages while developing such as</p>
+<ol type="1">
+<li>Easy to run on all OS:es</li>
+<li><em>Great</em> debugging!</li>
+<li>A ton of resources</li>
+</ol>
+<p>First off, we need to draw something. This is easiest done through the Swing library which is included in the default jdk, some might call it old but hey - it does the job.Create a file called <code>main.kt</code> in <code>src/jvmMain/kotlin</code>.</p>
+<p>Swing has a built-in threading solution (almost too bad, because <code>Coroutines</code> are awesome in Kotlin!) and the best way to start the GUI is by using the existing <code>EventQueue</code> class and its <code>invokeLater</code> function. <code>invokeLater</code> makes sure the code runs last in the <code>EventQueue</code> if you add more methods, which makes sense - you want to draw the UI as the final thing.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode kotlin code-with-copy"><code class="sourceCode kotlin"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">fun</span> <span class="fu">main</span><span class="op">()</span> <span class="op">{</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>    EventQueue<span class="op">.</span>invokeLater <span class="op">{</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>        JFrame<span class="op">().</span>apply <span class="op">{</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>            title <span class="op">=</span> <span class="st">"Snake"</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>            isVisible <span class="op">=</span> <span class="kw">true</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Where the <code>apply</code> is a context wrapper that takes the object and uses it as context (<code>this</code>) inside of the block/scope (<code>{}</code>). See its signature:</p>
+<p><code>inline fun &lt;T&gt; T.apply(block: T.() -&gt; Unit): T</code></p>
+<p>This would equate to</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode kotlin code-with-copy"><code class="sourceCode kotlin"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">val</span> <span class="va">jframe</span> <span class="op">=</span> JFrame<span class="op">()</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>jframe<span class="op">.</span>title <span class="op">=</span> <span class="st">"Snake"</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>jframe<span class="op">.</span>isVisible <span class="op">=</span> <span class="kw">true</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>in more Java-like syntax. Why use <code>apply</code>? It allows us to achieve some interesting chaining concepts which I really enjoy.</p>
+<p>Now run the <code>main</code>-function, there should be a green “run”-button at the left, press that. Hopefully it compiles and a window will appear, with the title set to “Snake”.</p>
+<p>Awesome! We need to render something inside of the box, a game soon enough, let’s see how we can achieve that.</p>
+<p>Adding some minor refactoring and some new classes we can draw something</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode kotlin code-with-copy"><code class="sourceCode kotlin"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Board<span class="op">:</span> <span class="dt">JPanel</span><span class="op">()</span> <span class="op">{</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    init <span class="op">{</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>        TODO<span class="op">(</span><span class="st">"""</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="st">        - Set background to black</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="st">        - Allow focus</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="st">        - Set preferredSize to some 200x300</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="st">        """</span><span class="op">)</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> GUI<span class="op">:</span> <span class="dt">JFrame</span><span class="op">()</span> <span class="op">{</span></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>    init <span class="op">{</span></span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>        title <span class="op">=</span> <span class="st">"Snake"</span></span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>        isVisible <span class="op">=</span> <span class="kw">true</span></span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>        isResizable <span class="op">=</span> <span class="kw">false</span></span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>        setLocationRelativeTo<span class="op">(</span><span class="kw">null</span><span class="op">)</span></span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>        defaultCloseOperation <span class="op">=</span> EXIT_ON_CLOSE</span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>        TODO<span class="op">(</span><span class="st">"Add the Board to the JFrame, through add()"</span><span class="op">)</span></span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a><span class="kw">fun</span> <span class="fu">main</span><span class="op">()</span> <span class="op">{</span></span>
+<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a>    EventQueue<span class="op">.</span>invokeLater <span class="op">{</span></span>
+<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a>        GUI<span class="op">()</span></span>
+<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>What are we doing?<br>
+<code>JFrame</code> was refactored <code>GUI</code> which then is a subclass of <code>JFrame</code>, with a few extra attributes added such as <code>defaultCloseOperation = EXIT_ON_CLOSE</code> that makes sure the program exits if we close the window, feel free to test it out!<br>
+Further a <code>Board</code> was added which extends <code>JPanel</code>, it’s in the <code>Board</code> the game will be rendered.<br>
+Finally, <code>add(Board())</code> allows us to add our <code>Board</code> to the <code>JFrame</code>.</p>
+<p>Run!<br>
+Something is not right.. The background seems black enough, but the size is most likely not correct. We can’t even resize as <code>isResizable=false</code> was set.<br>
+Make sure to add <code>pack()</code> at the end, as in</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode kotlin code-with-copy"><code class="sourceCode kotlin"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> GUI<span class="op">:</span> <span class="dt">JFrame</span><span class="op">()</span> <span class="op">{</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    init <span class="op">{</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>        <span class="op">{</span> <span class="co">/** same code as before */</span> <span class="op">}</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>        add<span class="op">(</span>Board<span class="op">())</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>        pack<span class="op">()</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>What <code>pack()</code> does is that it packs and resizes the <code>JFrame</code> to include all its component(s) and their current size(s).</p>
+<p>Super! We’re now able to render our <code>Board</code> and see the whole board.</p>
+<section id="drawing-the-snake-apple" class="level3">
+<h3 class="anchored" data-anchor-id="drawing-the-snake-apple">Drawing the snake &amp; apple</h3>
+<p>We’ve got the canvas (Board), now we just need to get artsy and add a Snake and some Apples!<br>
+I’ll keep it simple and will make the Board exist of a few cells, all pretty large. On each cell you either have nothing, Snake or Apple - pretty simple right?<br>
+<code>JPanel</code> has some nice-to-have methods built-in, such as <code>repaint()</code> which simply repaints the component, which in turns calls <code>paintComponent(g: Graphics?)</code> to paint/render it.</p>
+<blockquote class="blockquote">
+<p><em>Disclaimer:</em> the code might not be the most idiomatic, but I try to introduce a few concepts.</p>
+</blockquote>
+<div class="sourceCode" id="cb5"><pre class="sourceCode kotlin code-with-copy"><code class="sourceCode kotlin"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Board<span class="op">:</span> <span class="dt">JPanel</span><span class="op">()</span> <span class="op">{</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    init <span class="op">{</span> <span class="co">/** same code as before */</span> <span class="op">}</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    <span class="kw">override</span> <span class="kw">fun</span> <span class="fu">paintComponent</span><span class="op">(</span><span class="va">g</span><span class="op">:</span> <span class="dt">Graphics</span><span class="op">?)</span> <span class="op">{</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>        <span class="kw">super</span><span class="op">.</span>paintComponent<span class="op">(</span>g<span class="op">)</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>        <span class="kw">val</span> <span class="va">g2d</span><span class="op">:</span> Graphics2D <span class="op">=</span> g <span class="kw">as</span><span class="op">?</span> Graphics2D <span class="op">?:</span> <span class="kw">return</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>        g2d<span class="op">.</span>scale<span class="op">(</span><span class="fl">20.0</span><span class="op">,</span> <span class="fl">20.0</span><span class="op">)</span></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>        g2d<span class="op">.</span>color <span class="op">=</span> Color<span class="op">.</span>GREEN</span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>        g2d<span class="op">.</span>fill<span class="op">(</span>Rectangle<span class="op">(</span><span class="dv">5</span><span class="op">,</span> <span class="dv">6</span><span class="op">,</span> <span class="dv">1</span><span class="op">,</span> <span class="dv">1</span><span class="op">))</span></span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>        g2d<span class="op">.</span>fill<span class="op">(</span>Rectangle<span class="op">(</span><span class="dv">5</span><span class="op">,</span> <span class="dv">7</span><span class="op">,</span> <span class="dv">1</span><span class="op">,</span> <span class="dv">1</span><span class="op">))</span></span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>        g2d<span class="op">.</span>fill<span class="op">(</span>Rectangle<span class="op">(</span><span class="dv">5</span><span class="op">,</span> <span class="dv">8</span><span class="op">,</span> <span class="dv">1</span><span class="op">,</span> <span class="dv">1</span><span class="op">))</span></span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Once again, let’s dive into what’s happening ‘under the hood’.</p>
+<p>First, we override the function <code>paintComponent</code> which renders <code>Board</code> layout. The input is a <strong>nullable <code>Graphics</code></strong>, which is shown by the type having a <code>?</code> at the end. This is a cool property of Kotlin, if something can be <code>null</code> it actually is a type. No <code>Option</code>/<code>Maybe</code>, just pure type.</p>
+<p>Then <code>Graphics?</code> is cast to non-null <code>Graphics2D</code> through a safe approach using <code>as?</code>, without <code>?</code> the cast can crash, with <code>?</code> the cast would return <code>null</code> if failing.</p>
+<p>Finally we use a <strong>elvis-expression <code>?:</code></strong> which is basically a wrapper for <code>if (null) doThis else doThat</code>, so if the left-hand-side is <code>null</code> it’ll give the right-hand-side. The right-hand-side in our case is a empty <code>return</code> statement, meaning that we just make a early-exit. If the value is <em>not</em> <code>null</code> it’ll give the non-null variant of the type!</p>
+<blockquote class="blockquote">
+<p>Example use-case of elvis-operator <code>?:</code><br>
+<code>val a: Int = 1 ?: 0 // a = 1</code><br>
+<code>val b: Int = null ?: 0 // b = 0</code></p>
+</blockquote>
+<p>Detailing the code further we now have <code>g2d: Graphics2D</code> where <code>Graphics2D</code> which gives us a few nice functions to draw components on the <code>Board</code>.</p>
+<ul>
+<li>We set the scale to 20
+<ul>
+<li>This simplifies the behaviour, we can now use 20x30 grid where each cell is size 1, but it’s scaled into the 200x300 grid.</li>
+</ul></li>
+<li>We use <code>fill</code> to draw <code>Rectangle</code>’s with set <code>Color</code>.</li>
+</ul>
+<blockquote class="blockquote">
+<p><strong>Side-note:</strong> For those wondering how you safely execute on <code>null</code>s by chaining, like you do with Monads (<code>Option</code>)</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode kotlin code-with-copy"><code class="sourceCode kotlin"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="kw">val</span> <span class="va">nullableGraphics</span><span class="op">:</span> Graphics<span class="op">?</span> <span class="op">=</span> <span class="kw">null</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>nullableGraphics<span class="op">?.</span>scale<span class="op">(</span><span class="fl">20.0</span><span class="op">,</span> <span class="fl">20.0</span><span class="op">)</span>   <span class="co">// This is safe! No operation executed if null</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</blockquote>
+<p>Summing up, we now know how to render stuff on the <code>Board</code> and it’s all very static.<br>
+The next step is to make the rendering less static and I believe the natural step from now is to create the data structures that’ll contain the game &amp; its state. Then we can make sure the data structures are able to update, so we can render new states.</p>
+</section>
+<section id="creating-the-data-structures" class="level3">
+<h3 class="anchored" data-anchor-id="creating-the-data-structures">Creating the data structures</h3>
+<p>Data structures are required to have a game state, that is the score and position of everything.</p>
+<p>The natural state is <code>Game</code> which contains everything, let’s begin by creating a <code>Game</code> structure which contains the size of the <code>Board</code>.</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode kotlin code-with-copy"><code class="sourceCode kotlin"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">data</span> <span class="kw">class</span> Game<span class="op">(</span><span class="kw">val</span> <span class="va">width</span><span class="op">:</span> <span class="dt">Int</span><span class="op">,</span> <span class="kw">val</span> <span class="va">height</span><span class="op">:</span> <span class="dt">Int</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<blockquote class="blockquote">
+<p><strong>Side-note:</strong> A <code>data class</code> is essentially the same as a <code>case class</code> from Scala. And for those who don’t know what a <code>case class</code> is it’s basically a <code>class</code> that simplifies a lot of stuff, mainly used as a data structure.<br>
+You get <code>equals</code>, getters &amp; setters, and much more for free.<br>
+Anyone from Java knows how awesome this is.</p>
+</blockquote>
+<p>Moving on we need to define the cells mentioned, something like</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode kotlin code-with-copy"><code class="sourceCode kotlin"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="kw">data</span> <span class="kw">class</span> Cell<span class="op">(</span><span class="kw">val</span> <span class="va">x</span><span class="op">:</span> <span class="dt">Int</span><span class="op">,</span> <span class="kw">val</span> <span class="va">y</span><span class="op">:</span> <span class="dt">Int</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Wrapping up our current state we got most of what we need, <code>Game</code> which contains our game state &amp; <code>Cell</code> which is our co-ordinates.<br>
+The next step is to actually draw the <code>Cell</code>’s and wrap the <code>Cell</code> in other classes such as <code>Apple</code> and <code>Snake</code>.</p>
+<p>Let’s add all the required code.</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode kotlin code-with-copy"><code class="sourceCode kotlin"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="kw">data</span> <span class="kw">class</span> Apples<span class="op">(</span><span class="kw">val</span> <span class="va">cells</span><span class="op">:</span> <span class="dt">Set</span>&lt;<span class="va">Cell</span>&gt; <span class="op">=</span> emptySet<span class="op">())</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="kw">data</span> <span class="kw">class</span> Snake<span class="op">(</span><span class="kw">val</span> <span class="va">cells</span><span class="op">:</span> <span class="dt">List</span>&lt;<span class="va">Cell</span>&gt;<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>    <span class="kw">val</span> <span class="va">head</span><span class="op">:</span> Cell <span class="op">=</span> TODO<span class="op">(</span><span class="st">"Take the first cell."</span><span class="op">)</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>    <span class="kw">val</span> <span class="va">tail</span><span class="op">:</span> List<span class="op">&lt;</span>Cell<span class="op">&gt;</span> <span class="op">=</span> TODO<span class="op">(</span><span class="st">"Drop one cell and return the rest."</span><span class="op">)</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a><span class="kw">data</span> <span class="kw">class</span> Game<span class="op">(</span></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>    <span class="kw">val</span> <span class="va">width</span><span class="op">:</span> <span class="dt">Int</span><span class="op">,</span></span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>    <span class="kw">val</span> <span class="va">height</span><span class="op">:</span> <span class="dt">Int</span><span class="op">,</span></span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>    <span class="kw">val</span> <span class="va">snake</span><span class="op">:</span> <span class="dt">Snake</span><span class="op">,</span>   // <span class="va">Adding</span> <span class="va">snake</span> <span class="va">and</span> <span class="va">apples</span></span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>    <span class="kw">val</span> <span class="va">apples</span><span class="op">:</span> <span class="dt">Apples</span></span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a><span class="op">)</span></span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Board<span class="op">:</span> <span class="dt">JPanel</span><span class="op">()</span> <span class="op">{</span></span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a>    <span class="kw">private</span> <span class="kw">val</span> <span class="va">game</span><span class="op">:</span> Game <span class="op">=</span> Game<span class="op">(</span></span>
+<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a>        <span class="dv">20</span><span class="op">,</span></span>
+<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a>        <span class="dv">30</span><span class="op">,</span></span>
+<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a>        Snake<span class="op">(</span>listOf<span class="op">(</span>Cell<span class="op">(</span><span class="dv">2</span><span class="op">,</span><span class="dv">3</span><span class="op">),</span>Cell<span class="op">(</span><span class="dv">2</span><span class="op">,</span><span class="dv">4</span><span class="op">),</span>Cell<span class="op">(</span><span class="dv">2</span><span class="op">,</span><span class="dv">5</span><span class="op">),)),</span></span>
+<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a>        Apples<span class="op">(</span>setOf<span class="op">(</span>Cell<span class="op">(</span><span class="dv">4</span><span class="op">,</span><span class="dv">5</span><span class="op">)))</span></span>
+<span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a>    <span class="op">)</span></span>
+<span id="cb9-22"><a href="#cb9-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-23"><a href="#cb9-23" aria-hidden="true" tabindex="-1"></a>    init <span class="op">{</span></span>
+<span id="cb9-24"><a href="#cb9-24" aria-hidden="true" tabindex="-1"></a>        background <span class="op">=</span> Color<span class="op">.</span>black</span>
+<span id="cb9-25"><a href="#cb9-25" aria-hidden="true" tabindex="-1"></a>        isFocusable <span class="op">=</span> <span class="kw">true</span></span>
+<span id="cb9-26"><a href="#cb9-26" aria-hidden="true" tabindex="-1"></a>        preferredSize <span class="op">=</span> Dimension<span class="op">(</span><span class="dv">200</span><span class="op">,</span> <span class="dv">300</span><span class="op">)</span></span>
+<span id="cb9-27"><a href="#cb9-27" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb9-28"><a href="#cb9-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-29"><a href="#cb9-29" aria-hidden="true" tabindex="-1"></a>    <span class="kw">override</span> <span class="kw">fun</span> <span class="fu">paintComponent</span><span class="op">(</span><span class="va">g</span><span class="op">:</span> <span class="dt">Graphics</span><span class="op">?)</span> <span class="op">{</span></span>
+<span id="cb9-30"><a href="#cb9-30" aria-hidden="true" tabindex="-1"></a>        <span class="kw">super</span><span class="op">.</span>paintComponent<span class="op">(</span>g<span class="op">)</span></span>
+<span id="cb9-31"><a href="#cb9-31" aria-hidden="true" tabindex="-1"></a>        <span class="kw">val</span> <span class="va">g2d</span> <span class="op">=</span> g <span class="kw">as</span><span class="op">?</span> Graphics2D <span class="op">?:</span> <span class="kw">return</span></span>
+<span id="cb9-32"><a href="#cb9-32" aria-hidden="true" tabindex="-1"></a>        g2d<span class="op">.</span>scale<span class="op">(</span><span class="fl">20.0</span><span class="op">,</span> <span class="fl">20.0</span><span class="op">)</span></span>
+<span id="cb9-33"><a href="#cb9-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-34"><a href="#cb9-34" aria-hidden="true" tabindex="-1"></a>        g2d<span class="op">.</span>color <span class="op">=</span> Color<span class="op">.</span>GREEN</span>
+<span id="cb9-35"><a href="#cb9-35" aria-hidden="true" tabindex="-1"></a>        game<span class="op">.</span>snake<span class="op">.</span>tail<span class="op">.</span>forEach <span class="op">{</span> cell <span class="op">-&gt;</span> TODO<span class="op">(</span><span class="st">"Render the cells using the previously used technique"</span><span class="op">)</span> <span class="op">}</span></span>
+<span id="cb9-36"><a href="#cb9-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-37"><a href="#cb9-37" aria-hidden="true" tabindex="-1"></a>        TODO<span class="op">(</span><span class="st">"Render the head using the color YELLOW"</span><span class="op">)</span></span>
+<span id="cb9-38"><a href="#cb9-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-39"><a href="#cb9-39" aria-hidden="true" tabindex="-1"></a>        TODO<span class="op">(</span><span class="st">"Render the apples using the color RED"</span><span class="op">)</span></span>
+<span id="cb9-40"><a href="#cb9-40" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb9-41"><a href="#cb9-41" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Fixing the added <code>TODO</code>s and keeping the same <code>GUI</code> &amp; <code>fun main</code> we can now run the code. You should be seeing something like</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://user-images.githubusercontent.com/7490199/97808473-5c427300-1c67-11eb-9fa9-9110f596533b.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">Snake Game</figcaption><p></p>
+</figure>
+</div>
+<p>Pretty cool right!? We’ve got<br>
+✔️ Rendering<br>
+✔️ Data Structures</p>
+<p>What’s left?</p>
+<ol type="1">
+<li>A game loop</li>
+<li>Ability to actually move the data structures ( <code>Snake</code>)</li>
+</ol>
+<section id="adding-a-direction" class="level4">
+<h4 class="anchored" data-anchor-id="adding-a-direction">Adding a Direction</h4>
+<p>To be able to move we need to know what directions to move in. In my humble opinion this is simplest done through a <code>Enum</code>.</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode kotlin code-with-copy"><code class="sourceCode kotlin"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="kw">enum</span> <span class="kw">class</span> Direction <span class="op">{</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>    UP<span class="op">,</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>    DOWN<span class="op">,</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>    LEFT<span class="op">,</span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>    RIGHT</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Simple enough. But let’s make it better, even though pre-optimization is the root of all evil it is sometimes fun :grinning:.<br>
+Enums in Kotlin are pretty awesome, they can both keep values and have methods! Let’s add <code>dx</code> and <code>dy</code>.</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode kotlin code-with-copy"><code class="sourceCode kotlin"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="kw">enum</span> <span class="kw">class</span> Direction<span class="op">(</span><span class="kw">val</span> <span class="va">dx</span><span class="op">:</span> <span class="dt">Int</span><span class="op">,</span> <span class="kw">val</span> <span class="va">dy</span><span class="op">:</span> <span class="dt">Int</span><span class="op">)</span> <span class="op">{</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">// --&gt;</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>    <span class="co">// |</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>    <span class="co">// v</span></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>    UP<span class="op">(</span><span class="dv">0</span><span class="op">,</span> <span class="op">-</span><span class="dv">1</span><span class="op">),</span></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>    DOWN<span class="op">(</span><span class="dv">0</span><span class="op">,</span> <span class="dv">1</span><span class="op">),</span></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>    LEFT<span class="op">(-</span><span class="dv">1</span><span class="op">,</span> <span class="dv">0</span><span class="op">),</span></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>    RIGHT<span class="op">(</span><span class="dv">1</span><span class="op">,</span> <span class="dv">0</span><span class="op">);</span></span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Through <code>dx</code> and <code>dy</code> we can add it to the current cell to move in the direction which <code>Direction</code> is!</p>
+<p>Updating <code>Snake.kt</code> &amp; <code>Cell.kt</code> to have <code>Cell</code> with <code>Direction</code> and some <code>turn</code>.</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode kotlin code-with-copy"><code class="sourceCode kotlin"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="kw">data</span> <span class="kw">class</span> Cell<span class="op">(</span><span class="kw">val</span> <span class="va">x</span><span class="op">:</span> <span class="dt">Int</span><span class="op">,</span> <span class="kw">val</span> <span class="va">y</span><span class="op">:</span> <span class="dt">Int</span><span class="op">)</span> <span class="op">{</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">fun</span> <span class="fu">move</span><span class="op">(</span><span class="va">direction</span><span class="op">:</span> <span class="dt">Direction</span><span class="op">)</span> <span class="op">=</span> TODO<span class="op">(</span><span class="st">"Create new cell which moves in direction. OBS: Remember Direction now has dx, dy!"</span><span class="op">)</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="kw">data</span> <span class="kw">class</span> Snake<span class="op">(</span></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>    <span class="kw">val</span> <span class="va">cells</span><span class="op">:</span> <span class="dt">List</span>&lt;<span class="va">Cell</span>&gt;<span class="op">,</span></span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>    <span class="kw">val</span> <span class="va">direction</span><span class="op">:</span> <span class="dt">Direction</span><span class="op">,</span> // <span class="va">new</span> <span class="va">attribute</span></span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>    <span class="kw">val</span> <span class="va">eatenApples</span><span class="op">:</span> <span class="dt">Int</span> <span class="op">=</span> <span class="dv">0</span> <span class="co">// new attribute</span></span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a><span class="op">)</span> <span class="op">{</span></span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>    <span class="kw">fun</span> <span class="fu">move</span><span class="op">():</span> <span class="dt">Snake</span> <span class="op">{</span></span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>        <span class="kw">val</span> <span class="va">newHead</span> <span class="op">=</span> TODO<span class="op">(</span><span class="st">"Move head"</span><span class="op">)</span></span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>        <span class="kw">val</span> <span class="va">newTail</span> <span class="op">=</span> TODO<span class="op">(</span><span class="st">"Move tail!"</span><span class="op">)</span></span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a>        <span class="kw">return</span> TODO<span class="op">(</span><span class="st">"Create a new Snake with the updated position!"</span><span class="op">)</span></span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a>    <span class="kw">fun</span> <span class="fu">turn</span><span class="op">(</span><span class="va">newDirection</span><span class="op">:</span> <span class="dt">Direction</span><span class="op">?)</span> <span class="op">=</span> TODO<span class="op">(</span><span class="st">"Make sure to turn correctly"</span><span class="op">)</span></span>
+<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>This is all fine &amp; dandy, but there is some improvements to be made that’ll clean up the code.<br>
+I mentioned that Kotlin <code>Enums</code> can have methods, which is awesome. We can simplify the <code>turn</code>-logic by adding a method to <code>Direction</code>, namely <code>isOppositeTo</code>. See the code below.</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode kotlin code-with-copy"><code class="sourceCode kotlin"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="kw">enum</span> <span class="kw">class</span> Direction<span class="op">(</span><span class="kw">val</span> <span class="va">dx</span><span class="op">:</span> <span class="dt">Int</span><span class="op">,</span> <span class="kw">val</span> <span class="va">dy</span><span class="op">:</span> <span class="dt">Int</span><span class="op">)</span> <span class="op">{</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">/** Same code as previously */</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>    <span class="kw">fun</span> <span class="fu">isOppositeTo</span><span class="op">(</span><span class="va">that</span><span class="op">:</span> <span class="dt">Direction</span><span class="op">)</span> <span class="op">=</span></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>        dx <span class="op">+</span> that<span class="op">.</span>dx <span class="op">==</span> <span class="dv">0</span> <span class="op">&amp;&amp;</span> dy <span class="op">+</span> that<span class="op">.</span>dy <span class="op">==</span> <span class="dv">0</span></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Right, we can now turn the snake and render the game. We need the <code>Game</code>-state to update to actually re-render the updated Snake, let’s add a <code>update</code>-function that does this.</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode kotlin code-with-copy"><code class="sourceCode kotlin"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="kw">fun</span> <span class="fu">update</span><span class="op">(</span><span class="va">direction</span><span class="op">:</span> <span class="dt">Direction</span><span class="op">?):</span> <span class="dt">Game</span> <span class="op">{</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">return</span> TODO<span class="op">(</span><span class="st">"""</span></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="st">    Make sure to</span></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="st">        1. Turn snake in direction</span></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a><span class="st">        2. Move</span></span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a><span class="st">        3. Update the game state by returning Game</span></span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a><span class="st">    """</span><span class="op">)</span></span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>And our GUI</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode kotlin code-with-copy"><code class="sourceCode kotlin"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Board<span class="op">:</span> <span class="dt">JPanel</span><span class="op">()</span> <span class="op">{</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">var</span> <span class="va">dir</span><span class="op">:</span> Direction <span class="op">=</span> Direction<span class="op">.</span>RIGHT</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>    <span class="kw">var</span> <span class="va">game</span><span class="op">:</span> Game <span class="op">=</span> Game<span class="op">(</span></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>        <span class="dv">20</span><span class="op">,</span></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>        <span class="dv">30</span><span class="op">,</span></span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>        Snake<span class="op">(</span>listOf<span class="op">(</span>Cell<span class="op">(</span><span class="dv">2</span><span class="op">,</span><span class="dv">3</span><span class="op">),</span>Cell<span class="op">(</span><span class="dv">2</span><span class="op">,</span><span class="dv">4</span><span class="op">),</span>Cell<span class="op">(</span><span class="dv">2</span><span class="op">,</span><span class="dv">5</span><span class="op">),),</span> dir<span class="op">),</span></span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>        Apples<span class="op">(</span>setOf<span class="op">(</span>Cell<span class="op">(</span><span class="dv">4</span><span class="op">,</span><span class="dv">5</span><span class="op">)))</span></span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>    <span class="op">)</span></span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a>    init <span class="op">{</span></span>
+<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a>        addKeyListener<span class="op">(</span><span class="kw">object</span> <span class="op">:</span> <span class="dt">KeyAdapter</span><span class="op">()</span> <span class="op">{</span></span>
+<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a>            <span class="kw">override</span> <span class="kw">fun</span> <span class="fu">keyPressed</span><span class="op">(</span><span class="va">e</span><span class="op">:</span> <span class="dt">KeyEvent</span><span class="op">?)</span> <span class="op">{</span></span>
+<span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a>                dir <span class="op">=</span> <span class="cf">when</span> <span class="op">(</span>e<span class="op">?.</span>keyCode<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb15-14"><a href="#cb15-14" aria-hidden="true" tabindex="-1"></a>                    VK_I<span class="op">,</span> VK_UP<span class="op">,</span> VK_W <span class="op">-&gt;</span> Direction<span class="op">.</span>UP</span>
+<span id="cb15-15"><a href="#cb15-15" aria-hidden="true" tabindex="-1"></a>                    <span class="cf">else</span> <span class="op">-&gt;</span> TODO<span class="op">(</span><span class="st">"Add the other key bindings. Reflect of how the object works and what is happening."</span><span class="op">)</span></span>
+<span id="cb15-16"><a href="#cb15-16" aria-hidden="true" tabindex="-1"></a>                <span class="op">}</span></span>
+<span id="cb15-17"><a href="#cb15-17" aria-hidden="true" tabindex="-1"></a>                game <span class="op">=</span> game<span class="op">.</span>update<span class="op">(</span>dir<span class="op">)</span></span>
+<span id="cb15-18"><a href="#cb15-18" aria-hidden="true" tabindex="-1"></a>                repaint<span class="op">()</span></span>
+<span id="cb15-19"><a href="#cb15-19" aria-hidden="true" tabindex="-1"></a>            <span class="op">}</span></span>
+<span id="cb15-20"><a href="#cb15-20" aria-hidden="true" tabindex="-1"></a>        <span class="op">})</span></span>
+<span id="cb15-21"><a href="#cb15-21" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb15-22"><a href="#cb15-22" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>In our <code>init</code> (equal to a constructor) we add a <code>keyListener</code> which will listen on whenever we move. We moved <code>game</code> to be a <code>var</code> which allows us to change the reference.</p>
+<blockquote class="blockquote">
+<p><strong>Side-note:</strong> The difference between a <code>val</code> and <code>var</code> is not about immutability of the value, but rather that you cannot change the pointer to the object. By using <code>val</code> the compiler don’t allow you to change the reference.</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode kotlin code-with-copy"><code class="sourceCode kotlin"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="kw">val</span> <span class="va">a</span> <span class="op">=</span> <span class="dv">1</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>a <span class="op">=</span> <span class="dv">3</span> <span class="co">// CRASH -- This is not allowed</span></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="kw">var</span> <span class="va">b</span> <span class="op">=</span> <span class="dv">1</span></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>b <span class="op">=</span> <span class="dv">3</span> <span class="co">// b = 3, this is allowed.</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Please note that this means that if your object is mutable, you can mutate the state of the object even though it’s a <code>val</code>.</p>
+</blockquote>
+<p>Why put <code>game</code> on a <code>var</code> you might ask? Otherwise how would we update our <code>Game</code> as the data structure itself is “immutable”, i.e.&nbsp;cannot be changed, which would mean that we’d need to add a new <code>Game</code> object each time and save it on the stack (never cleaning it up) and that’d pretty fast make the application crash because of <code>out of memory</code>.</p>
+<p>Finally, we update the game by calling our created <code>update</code>-method and then we use <code>repaint()</code> which draws the components!</p>
+<blockquote class="blockquote">
+<p><strong>Remember:</strong> <code>paintComponent</code> draws the canvas (game), so whenever <code>repaint</code> is called <code>paintComponent</code> draws the game again based on the <code>game</code> and <code>cell</code>’s in the game.</p>
+</blockquote>
+<p>In conclusion this gives us an incredibly simple game, the snake moves whenever we press a key as we <em>still don’t have a game loop</em> based on time. So how do we add a game loop based on time?</p>
+<p>The JVM got you covered! In the <code>keyListener</code> remove the update &amp; repaint, then add a <code>timer</code></p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode kotlin code-with-copy"><code class="sourceCode kotlin"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>fixedRateTimer<span class="op">(</span>TODO<span class="op">(</span><span class="st">"Explore options to use for the timer and how they work"</span><span class="op">))</span> <span class="op">{</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>    TODO<span class="op">(</span><span class="st">"Insert a game loop here, essentially the same as done in the keyListener previously!"</span><span class="op">)</span></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Run the game! …amazing right?</p>
+<p>We now move our snake, and it moves by itself if we don’t. But the game is still pretty boring… We never die, no apples can be eaten and finally no new apples appear. We have a few additions to make to make the game a bit challenging..</p>
+<p>Let’s start by fixing the apples. Update the <code>Apples.kt</code> to randomly add apples to the board when calling <code>grow()</code>.</p>
+<blockquote class="blockquote">
+<p>To simplify the logic we use a <code>set</code> which means that all apples added are unique.</p>
+</blockquote>
+<div class="sourceCode" id="cb18"><pre class="sourceCode kotlin code-with-copy"><code class="sourceCode kotlin"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="kw">data</span> <span class="kw">class</span> Apples<span class="op">(</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">val</span> <span class="va">width</span><span class="op">:</span> <span class="dt">Int</span><span class="op">,</span></span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>    <span class="kw">val</span> <span class="va">height</span><span class="op">:</span> <span class="dt">Int</span><span class="op">,</span></span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>    <span class="kw">val</span> <span class="va">cells</span><span class="op">:</span> <span class="dt">Set</span>&lt;<span class="va">Cell</span>&gt; <span class="op">=</span> emptySet<span class="op">(),</span></span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>    <span class="kw">val</span> <span class="va">growthSpeed</span><span class="op">:</span> <span class="dt">Int</span> <span class="op">=</span> <span class="dv">3</span><span class="op">,</span> // <span class="va">this</span> <span class="va">could</span> <span class="va">actually</span> <span class="va">be</span> <span class="va">to</span> <span class="va">only</span> <span class="va">spawn</span> <span class="va">apple</span> <span class="va">when</span> <span class="va">there</span> <span class="kw">is</span> <span class="va">no</span> <span class="va">other</span> <span class="va">apple</span>. <span class="va">Up</span> <span class="va">to</span> <span class="va">user</span></span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>    <span class="kw">val</span> <span class="va">random</span><span class="op">:</span> <span class="dt">Random</span> <span class="op">=</span> Random <span class="co">// Once again, Kotlin provides a superb class, in this case a Random wrapper that works on JVM, JS &amp; Native - cool right?</span></span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a><span class="op">)</span> <span class="op">{</span></span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a>    <span class="kw">fun</span> <span class="fu">grow</span><span class="op">():</span> <span class="dt">Apples</span> <span class="op">{</span></span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a>        <span class="kw">return</span> TODO<span class="op">(</span><span class="st">"""</span></span>
+<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a><span class="st">        If we have a random number greater than growthSpeed, return no update. </span></span>
+<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a><span class="st">        Otherwise add a new cell.</span></span>
+<span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a><span class="st">        """</span><span class="op">)</span></span>
+<span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb18-14"><a href="#cb18-14" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Then we should allow the Snake to eat them, make sure to add <code>eat(apples: Apples)</code> method and implement it for <code>Snake.kt</code>.</p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode kotlin code-with-copy"><code class="sourceCode kotlin"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="kw">fun</span> <span class="fu">eat</span><span class="op">(</span><span class="va">apples</span><span class="op">:</span> <span class="dt">Apples</span><span class="op">):</span> <span class="dt">Pair</span><span class="op">&lt;</span><span class="dt">Snake</span>, <span class="dt">Apples</span><span class="op">&gt;</span> <span class="op">{</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">return</span> TODO<span class="op">(</span><span class="st">"""</span></span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a><span class="st">    If our head is on a Apple location, return a pair of Snake and Apple untouched.</span></span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a><span class="st">    Otherwise make sure to remove the apple from apples and increase body size of snake!</span></span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a><span class="st">    """</span><span class="op">)</span></span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>At the end of all this we need the <code>Game.kt</code> to allow this logic to be used. This is done through updating <code>update</code> to allow the snake to <code>eat</code> apples and also <code>grow</code> apples to add new ones.</p>
+<p>Great! We can eat apples, add new apples and all. But we’re still pretty invincible and we’ll just keep going forever. We need to make sure that the end can be lost, let’s do it by adding a new attribute <code>isOver</code> to <code>Game.kt</code></p>
+<div class="sourceCode" id="cb20"><pre class="sourceCode kotlin code-with-copy"><code class="sourceCode kotlin"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="kw">val</span> <span class="va">score</span><span class="op">:</span> <span class="kw">Int</span> <span class="op">=</span> TODO<span class="op">(</span><span class="st">"Score based on snakes size, e.g. cell size"</span><span class="op">)</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="kw">val</span> <span class="va">isOver</span><span class="op">:</span> <span class="kw">Boolean</span> <span class="op">=</span> TODO<span class="op">(</span><span class="st">"Game is over if snake head in tail or snake head not on the map!"</span><span class="op">)</span></span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a><span class="kw">fun</span> <span class="fu">update</span><span class="op">(</span><span class="va">dir</span><span class="op">:</span> <span class="dt">Direction</span><span class="op">):</span> <span class="dt">Game</span> <span class="op">{</span></span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="op">(</span>isOver<span class="op">)</span> <span class="kw">return</span> <span class="kw">this</span></span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>    <span class="op">{</span> <span class="co">/** same code as was here before */</span> <span class="op">}</span></span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+</section>
+</section>
+<section id="wrapping-up-the-code-with-some-minor-refactoring-new-functionality" class="level2">
+<h2 class="anchored" data-anchor-id="wrapping-up-the-code-with-some-minor-refactoring-new-functionality">Wrapping up the code with some minor refactoring / new functionality</h2>
+<p>Kotlin has a wonderful concept of <strong>extension functions</strong>, which simply is incredible. An extension function extends a class with new functionality. Did you ever wish <code>Double</code> had a rounding to string? <code>fun Double.roundTo(n: Int): String = "%.${decimals}f".format(this)</code> solves this for you! Now your <code>Double</code>’s automatically gives you a hint to use <code>.roundTo</code> as one of <code>Double</code>’s built-in functions!</p>
+<p>With these we can update our main-method to be a tiny bit cleaner.</p>
+<div class="sourceCode" id="cb21"><pre class="sourceCode kotlin code-with-copy"><code class="sourceCode kotlin"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>g2d<span class="op">.</span>color <span class="op">=</span> Color<span class="op">.</span>GREEN</span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>game<span class="op">.</span>snake<span class="op">.</span>tail<span class="op">.</span>forEach <span class="op">{</span> cell <span class="op">-&gt;</span> g2d<span class="op">.</span>fill<span class="op">(</span>Rectangle<span class="op">(</span>cell<span class="op">.</span>x<span class="op">,</span> cell<span class="op">.</span>y<span class="op">,</span> <span class="dv">1</span><span class="op">,</span> <span class="dv">1</span><span class="op">))</span> <span class="op">}</span></span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a><span class="co">// Turns into --&gt;</span></span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a><span class="kw">fun</span> <span class="fu">Graphics2D</span><span class="op">.</span><span class="fu">renderCells</span><span class="op">(</span><span class="va">color</span><span class="op">:</span> <span class="dt">Color</span><span class="op">,</span> <span class="va">cells</span><span class="op">:</span> <span class="dt">Iterable</span>&lt;<span class="va">Cell</span>&gt;<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a>    <span class="kw">this</span><span class="op">.</span>color <span class="op">=</span> color</span>
+<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a>    cells<span class="op">.</span>forEach <span class="op">{</span> cell <span class="op">-&gt;</span> fill<span class="op">(</span>Rectangle<span class="op">(</span>cell<span class="op">.</span>x<span class="op">,</span> cell<span class="op">.</span>y<span class="op">,</span> <span class="dv">1</span><span class="op">,</span> <span class="dv">1</span><span class="op">))</span> <span class="op">}</span></span>
+<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-11"><a href="#cb21-11" aria-hidden="true" tabindex="-1"></a><span class="co">/**</span></span>
+<span id="cb21-12"><a href="#cb21-12" aria-hidden="true" tabindex="-1"></a><span class="co">    Which allows us to just call `g2d.renderCells(Color.GREEN, game.snake.tail)` etc.</span></span>
+<span id="cb21-13"><a href="#cb21-13" aria-hidden="true" tabindex="-1"></a><span class="co">*/</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><strong>What more improvements can be made?</strong></p>
+<p>Exercises left for the reader:</p>
+<ol type="1">
+<li>Add Score on the loosing screen</li>
+<li>Add a win-condition (basically impossible, but taking all apples)</li>
+<li>Reinforcement learning to train a bot (might be a future blog!)</li>
+<li>Better &amp; cleaner code!</li>
+</ol>
+</section>
+</section>
+<section id="part-3-true-multiplatform-moving-to-js-native" class="level1">
+<h1>Part 3: True multiplatform (moving to JS &amp; Native)</h1>
+<p>I’ll begin by saying that this part is more of a reader exercise. If you want the finished code please go to the <a href="https://github.com/londogard/snake-js-jvm-native/tree/completed_project">GitHub repository</a>.<br>
+The idea is that this part will be solved by yourself during the workshop this is intended for.</p>
+<p>All the snake-related code that isn’t in your <code>main.kt</code>-file should be moved into <code>src/commonMain/kotlin</code> which makes it <strong>multiplatform</strong>-code. This means that it can target JS, Native &amp; JVM instantly!</p>
+<blockquote class="blockquote">
+<p><strong>Side-note:</strong> because all the functionality for the Data Structures (e.g.&nbsp;<code>take</code>, <code>List</code>, <code>Random</code>) exists in Kotlin std-lib it’s automatically possible to use in multiplatform.</p>
+</blockquote>
+<p>This is not true all the time, if we use platform-specific code. Our platform-specific code, tied with the JVM, is the <code>timer</code> and <code>Swing</code> which means that our whole GUI is tied to the JVM.</p>
+<p>When the code has been migrated and import-paths are updated, run the JVM app again and validate that everything works.</p>
+<section id="jsbrowser-target" class="level2">
+<h2 class="anchored" data-anchor-id="jsbrowser-target">JS/Browser target</h2>
+<p>Now create <code>src/jsMain/kotlin/main.kt</code>.</p>
+<p>In this file we need to define how to draw the browser-based GUI. Some key methods, for the full code check out the git repository.</p>
+<p><strong>KeyListener</strong> <code>document.onkeydown = { event -&gt; onkeydown(event).also { keyDir -&gt; dir = keyDir } }</code> where <code>onkeydown</code> is your own method that handles key-events.</p>
+<p><strong>Timer</strong> <code>window.setInterval({ game = game.update(dir); render(canvas, game) }, 200)</code></p>
+<p><strong>Canvas</strong></p>
+<div class="sourceCode" id="cb22"><pre class="sourceCode kotlin code-with-copy"><code class="sourceCode kotlin"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="kw">val</span> <span class="va">canvas</span> <span class="op">=</span> document<span class="op">.</span>getElementById<span class="op">(</span><span class="st">"snake-canvas"</span><span class="op">)</span> <span class="kw">as</span> HTMLCanvasElement</span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="kw">val</span> <span class="va">ctx</span> <span class="op">=</span> canvas<span class="op">.</span>getContext<span class="op">(</span><span class="st">"2d"</span><span class="op">)</span> <span class="kw">as</span> CanvasRenderingContext2D</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>On this <code>ctx</code> from the canvas you can use <code>fillRect</code> to draw rectangles, and <code>fillStyle</code> to set color.</p>
+<p><strong>HTML-Canvas</strong><br>
+<code>&lt;canvas id="snake-canvas" width="400px" height="300px"&gt;&lt;/canvas&gt;</code> (put in <code>index.html</code>)</p>
+<p>The game is run through <code>./gradlew jsBrowserRun</code>, or selecting the gradle-icon at the top right (elephant) and typing <code>jsBrowserRun</code>.</p>
+<p>And the code for the GUI using these components is pretty much exactly the same as in Swing to be honest.</p>
+<p>Congratulations, you have now achieved creating a desktop game and a browser game!</p>
+</section>
+<section id="native-target" class="level2">
+<h2 class="anchored" data-anchor-id="native-target">Native target</h2>
+<p>And onto our final target, Native Binary, that runs completely without a browser or a virtual machine.</p>
+<p>For the Native target the GUI will be supported through the library <code>ncurses</code> which unfortunately is only supported on Linux &amp; MacOS. If you’ve windows you can solve this through <em>Windows Subsystem for Linux</em> (WSL).</p>
+<p>Begin by creating <code>src/nativeMain/kotlin/main.kt</code>.</p>
+<p>To begin, in the main-function do the following:</p>
+<div class="sourceCode" id="cb23"><pre class="sourceCode kotlin code-with-copy"><code class="sourceCode kotlin"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="kw">fun</span> <span class="fu">maint</span><span class="op">():</span> <span class="dt">Unit</span> <span class="op">=</span> memScoped <span class="op">{</span></span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">// insert code</span></span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>The <code>memScoped</code> part means that all memory allocated in the block is automatically disposed at the end, incredibly useful! :happy:</p>
+<p>Then reading how to use <code>ncurses</code> we can figure out how to init this. The final end-goal being</p>
+<div class="sourceCode" id="cb24"><pre class="sourceCode kotlin code-with-copy"><code class="sourceCode kotlin"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="kw">fun</span> <span class="fu">main</span><span class="op">():</span> <span class="dt">Unit</span> <span class="op">=</span> memScoped <span class="op">{</span></span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>    initscr<span class="op">()</span></span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>    defer <span class="op">{</span> endwin<span class="op">()</span> <span class="op">}</span></span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>    noecho<span class="op">()</span></span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a>    curs_set<span class="op">(</span><span class="dv">0</span><span class="op">)</span></span>
+<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a>    halfdelay<span class="op">(</span><span class="dv">2</span><span class="op">)</span></span>
+<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a>    <span class="kw">var</span> <span class="va">game</span><span class="op">:</span> Game <span class="op">=</span> TODO<span class="op">()</span></span>
+<span id="cb24-10"><a href="#cb24-10" aria-hidden="true" tabindex="-1"></a>    <span class="kw">val</span> <span class="va">window</span> <span class="op">=</span> newwin<span class="op">(</span>game<span class="op">.</span>height <span class="op">+</span> <span class="dv">2</span><span class="op">,</span> game<span class="op">.</span>width <span class="op">+</span> <span class="dv">2</span><span class="op">,</span> <span class="dv">0</span><span class="op">,</span> <span class="dv">0</span><span class="op">)!!</span></span>
+<span id="cb24-11"><a href="#cb24-11" aria-hidden="true" tabindex="-1"></a>    defer <span class="op">{</span> delwin<span class="op">(</span>window<span class="op">)</span> <span class="op">}</span></span>
+<span id="cb24-12"><a href="#cb24-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-13"><a href="#cb24-13" aria-hidden="true" tabindex="-1"></a>    <span class="kw">var</span> <span class="va">input</span> <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb24-14"><a href="#cb24-14" aria-hidden="true" tabindex="-1"></a>    <span class="cf">while</span> <span class="op">(</span>input<span class="op">.</span>toChar<span class="op">()</span> <span class="op">!=</span> <span class="ch">'q'</span><span class="op">)</span> <span class="op">{</span></span>
+<span id="cb24-15"><a href="#cb24-15" aria-hidden="true" tabindex="-1"></a>        window<span class="op">.</span>draw<span class="op">(</span>game<span class="op">)</span></span>
+<span id="cb24-16"><a href="#cb24-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-17"><a href="#cb24-17" aria-hidden="true" tabindex="-1"></a>        input <span class="op">=</span> wgetch<span class="op">(</span>window<span class="op">)</span></span>
+<span id="cb24-18"><a href="#cb24-18" aria-hidden="true" tabindex="-1"></a>        <span class="kw">val</span> <span class="va">direction</span> <span class="op">=</span> <span class="cf">when</span> <span class="op">(</span>input<span class="op">.</span>toChar<span class="op">())</span> <span class="op">{</span></span>
+<span id="cb24-19"><a href="#cb24-19" aria-hidden="true" tabindex="-1"></a>            <span class="ch">'i'</span> <span class="op">-&gt;</span> TODO<span class="op">(</span><span class="st">""</span><span class="op">)</span></span>
+<span id="cb24-20"><a href="#cb24-20" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span></span>
+<span id="cb24-21"><a href="#cb24-21" aria-hidden="true" tabindex="-1"></a>        game <span class="op">=</span> game<span class="op">.</span>update<span class="op">(</span>direction<span class="op">)</span></span>
+<span id="cb24-22"><a href="#cb24-22" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb24-23"><a href="#cb24-23" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb24-24"><a href="#cb24-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-25"><a href="#cb24-25" aria-hidden="true" tabindex="-1"></a><span class="kw">private</span> <span class="kw">fun</span> <span class="fu">CPointer</span><span class="op">&lt;</span><span class="dt">WINDOW</span><span class="op">&gt;.</span><span class="fu">draw</span><span class="op">(</span><span class="va">game</span><span class="op">:</span> <span class="dt">Game</span><span class="op">)</span> <span class="op">{</span></span>
+<span id="cb24-26"><a href="#cb24-26" aria-hidden="true" tabindex="-1"></a>    wclear<span class="op">(</span><span class="kw">this</span><span class="op">)</span></span>
+<span id="cb24-27"><a href="#cb24-27" aria-hidden="true" tabindex="-1"></a>    box<span class="op">(</span><span class="kw">this</span><span class="op">,</span> <span class="dv">0u</span><span class="op">,</span> <span class="dv">0u</span><span class="op">)</span></span>
+<span id="cb24-28"><a href="#cb24-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-29"><a href="#cb24-29" aria-hidden="true" tabindex="-1"></a>    game<span class="op">.</span>apples<span class="op">.</span>cells<span class="op">.</span>forEach <span class="op">{</span> mvwprintw<span class="op">(</span><span class="kw">this</span><span class="op">,</span> it<span class="op">.</span>y <span class="op">+</span> <span class="dv">1</span><span class="op">,</span> it<span class="op">.</span>x <span class="op">+</span> <span class="dv">1</span><span class="op">,</span> <span class="st">"."</span><span class="op">)</span> <span class="op">}</span></span>
+<span id="cb24-30"><a href="#cb24-30" aria-hidden="true" tabindex="-1"></a>    game<span class="op">.</span>snake<span class="op">.</span>tail<span class="op">.</span>forEach <span class="op">{</span> mvwprintw<span class="op">(</span><span class="kw">this</span><span class="op">,</span> it<span class="op">.</span>y <span class="op">+</span> <span class="dv">1</span><span class="op">,</span> it<span class="op">.</span>x <span class="op">+</span> <span class="dv">1</span><span class="op">,</span> <span class="st">"o"</span><span class="op">)</span> <span class="op">}</span></span>
+<span id="cb24-31"><a href="#cb24-31" aria-hidden="true" tabindex="-1"></a>    game<span class="op">.</span>snake<span class="op">.</span>head<span class="op">.</span>let <span class="op">{</span> mvwprintw<span class="op">(</span><span class="kw">this</span><span class="op">,</span> it<span class="op">.</span>y <span class="op">+</span> <span class="dv">1</span><span class="op">,</span> it<span class="op">.</span>x <span class="op">+</span> <span class="dv">1</span><span class="op">,</span> <span class="st">"Q"</span><span class="op">)</span> <span class="op">}</span></span>
+<span id="cb24-32"><a href="#cb24-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-33"><a href="#cb24-33" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="op">(</span>game<span class="op">.</span>isOver<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb24-34"><a href="#cb24-34" aria-hidden="true" tabindex="-1"></a>        mvwprintw<span class="op">(</span><span class="kw">this</span><span class="op">,</span> <span class="dv">0</span><span class="op">,</span> <span class="dv">6</span><span class="op">,</span> <span class="st">"Game Over"</span><span class="op">)</span></span>
+<span id="cb24-35"><a href="#cb24-35" aria-hidden="true" tabindex="-1"></a>        mvwprintw<span class="op">(</span><span class="kw">this</span><span class="op">,</span> <span class="dv">1</span><span class="op">,</span> <span class="dv">3</span><span class="op">,</span> <span class="st">"Your score is </span><span class="ss">${</span>game<span class="op">.</span>score<span class="ss">}</span><span class="st">"</span><span class="op">)</span></span>
+<span id="cb24-36"><a href="#cb24-36" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb24-37"><a href="#cb24-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-38"><a href="#cb24-38" aria-hidden="true" tabindex="-1"></a>    wrefresh<span class="op">(</span><span class="kw">this</span><span class="op">)</span></span>
+<span id="cb24-39"><a href="#cb24-39" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Try running it in the terminal.</p>
+<p>This blog was created as a companion to a workshop I’m gonna do at AFRY, it has a bit more content including a presentation in person.</p>
+<p>All the finished code is available <a href="https://github.com/londogard/snake-js-jvm-native/tree/completed_project">here</a>, if you prefer the unfinished code head to <a href="https://github.com/londogard/snake-js-jvm-native">master-branch</a>.</p>
+<p>Thanks!</p>
+<p>~Hampus</p>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+      <div class="nav-footer-center">
+        <ul class="footer-items list-unstyled">
+    <li class="nav-item compact">
+    <a class="nav-link" href="https://www.linkedin.com/in/hampus-londögård/">
+      <i class="bi bi-linkedin" role="img">
+</i> 
+    </a>
+  </li>  
+    <li class="nav-item compact">
+    <a class="nav-link" href="https://twitter.com/hlondogard">
+      <i class="bi bi-twitter" role="img">
+</i> 
+    </a>
+  </li>  
+    <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/londogard">
+      <i class="bi bi-github" role="img">
+</i> 
+    </a>
+  </li>  
+    <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/lundez">
+      <i class="bi bi-github" role="img">
+</i> 
+    </a>
+  </li>  
+    <li class="nav-item compact">
+    <a class="nav-link" href="../index.xml">
+      <i class="bi bi-rss" role="img">
+</i> 
+    </a>
+  </li>  
+</ul>
+      </div>
+  </div>
+</footer>
+
+
+
+</body></html>

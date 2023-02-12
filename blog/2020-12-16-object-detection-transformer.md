@@ -1,5 +1,4 @@
 ---
-
 description: How to do object detection using Transformers?
 tags: [presentation, machine-learning]
 title: "Object Detection (Workshop)"

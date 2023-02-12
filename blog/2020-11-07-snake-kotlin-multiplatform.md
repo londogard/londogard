@@ -1,5 +1,4 @@
 ---
-
 description: "A three part blog (all included in this one) that goes through 1) How Kotlin Multiplatform works, 2) How to build a game (Snake) and finally 3) how to make it multiplatform."
 tags: [gradle, kotlin, workshop, multiplatform]
 title: "How to build and play Snake via Native Binary, JVM and JS/Browser (Kotlin)"

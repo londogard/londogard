@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.2.335">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="dcterms.date" content="2022-11-30">
+<meta name="description" content="Polars is a DataFrame library written from ground-up to not only have a sensible API but also very efficient operations using multiple cores and clever optimizations such as predicate pushdown &amp; much more!">
+
+<title>Londogard Blog - Polars - A Refreshingly Great DataFrame Library</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<script src="../site_libs/quarto-html/quarto.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="../styles.css">
+<meta name="twitter:title" content="Londogard Blog - Polars - A Refreshingly Great DataFrame Library">
+<meta name="twitter:description" content="Polars is a DataFrame library written from ground-up to not only have a sensible API but also very efficient operations using multiple cores and clever optimizations such as predicate pushdown &amp;…">
+<meta name="twitter:creator" content="@hlondogard">
+<meta name="twitter:card" content="summary">
+</head>
+
+<body class="nav-fixed fullcontent">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a class="navbar-brand" href="../index.html">
+    <span class="navbar-title">Londogard Blog</span>
+    </a>
+  </div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../about.html">
+ <span class="menu-text">About</span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/londogard"><i class="bi bi-github" role="img">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/lundez"><i class="bi bi-github" role="img">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://twitter.com/hlondogard"><i class="bi bi-twitter" role="img">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+</ul>
+              <div id="quarto-search" class="" title="Search"></div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<header id="title-block-header" class="quarto-title-block default page-columns page-full">
+  <div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-body">
+      <h1 class="title">Polars - A Refreshingly Great DataFrame Library</h1>
+                  <div>
+        <div class="description">
+          Polars is a DataFrame library written from ground-up to not only have a sensible API but also very efficient operations using multiple cores and clever optimizations such as predicate pushdown &amp; much more!
+        </div>
+      </div>
+                </div>
+  </div>
+    
+  
+  <div class="quarto-title-meta">
+
+      <div>
+      <div class="quarto-title-meta-heading">Author</div>
+      <div class="quarto-title-meta-contents">
+               <p>hlondogard </p>
+            </div>
+    </div>
+      
+      <div>
+      <div class="quarto-title-meta-heading">Published</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date">November 30, 2022</p>
+      </div>
+    </div>
+    
+      
+    </div>
+    
+  
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    
+<!-- main -->
+<main class="content quarto-banner-title-block" id="quarto-document-content">
+
+
+
+
+<p>While working at AFRY we’ve noted that in performance intensive application that isn’t really <em>Big Data</em> ends up being slow when using <a href="https://pandas.pydata.org/"><code>pandas</code></a>.</p>
+<p>Coming from languages such as <em>Scala, Kotlin </em>&amp; <em>golang</em> we knew there had to be more to it. There was a lot of performance to be squeezed! 🏎️ <!--truncate--> Cherry on the top? The <code>pandas</code> API is a constant source of confusion and thereby not very satisfying. I end up having to read/search the documentation more times than I care to admit. All in all a cleaner and more efficient tool was needed to handle our data &amp; model training pipelines.</p>
+<p>One day I stumbled upon <a href="https://github.com/pola-rs/polars"><code>polars</code></a> - an <em>blazing fast</em> DataFrame-library written in Rust. Plenty of buzzwords, documentation and user-guide later I was ready to trial it in a personal project. 🤠</p>
+<p>It was a smooth addition because of the <code>pandas</code> integration, <code>pl.from_pandas</code> &amp; <code>df.to_pandas()</code>, which in turn made it a gradual adoption. The trial was an instant success, moving <code>DataFrame</code>’s to and from <code>polars</code> was diminished by the fact that <code>polars</code> sped up my pipeline so much. And the code was clean, the API more natural, only downgrade was a bit less reading options - otherwise <em>only upgrades</em>! 🤯</p>
+<p>I was ready to trial it work, and boy was I in for a wonderful journey!</p>
+<p>After gradually adopting it in one of our client project we saw huge speedups (some parts being &gt;3 magnitudes (!) faster) and our code became a lot simpler. Additionally something I didn’t expect: we decoupled our code in a more efficient way producing leaner code that’s more testable! 🦸‍♂️</p>
+<p>Then… what the actual fudge is <code>polars</code>?</p>
+<section id="polars" class="level1">
+<h1>Polars</h1>
+<p>Polars is a DataFrame library written purely in Rust, i.e.&nbsp;no runtime overhead, and uses <a href="https://arrow.apache.org/"><code>Arrow</code></a> as its foundation. The Python/JS bindings are simply a thin wrapper to be able to be able to use functionality in the core library. Very similar to <code>pandas</code> with a few major differences.</p>
+<p><strong>Why is it fast?</strong></p>
+<p><code>polars</code> achieves its speed by utilizing available cores <strong>and</strong> being smart. It goes to great lengths to:</p>
+<ul>
+<li>Reduce redundant copies</li>
+<li>Traverse memory cache efficiently</li>
+<li>Minimize contention in parallelism</li>
+</ul>
+<p><code>polars</code> has a <strong>lazy API</strong> with reminisence of SQL and Spark, this lazy API is automatically applied for certain operations such as <code>groupBy</code>. Using the lazy API <code>polars</code> enables <strong>query optimizations</strong> which improves performance and memory pressure. <code>polars</code> tracks your query in a <em>logical plan</em> which is optimized.</p>
+<p>Here’s a list from <a href="https://pola-rs.github.io/polars-book/user-guide/">pola-rs.github.io</a> on how it achieves its performance:</p>
+<ul>
+<li><a href="https://en.wikipedia.org/wiki/Copy-on-write">Copy-on-write</a> (COW) semantics
+<ul>
+<li>“Free” clones</li>
+<li>Cheap appends</li>
+</ul></li>
+<li>Appending without clones</li>
+<li>Column oriented data storage
+<ul>
+<li>No block manager (i.e.&nbsp;predictable performance)</li>
+</ul></li>
+<li>Missing values indicated with bitmask
+<ul>
+<li>NaN are different from missing</li>
+<li>Bitmask optimizations</li>
+</ul></li>
+<li>Efficient algorithms</li>
+<li>Very fast IO
+<ul>
+<li>Its csv and parquet readers are among the fastest in existence</li>
+</ul></li>
+<li><a href="https://pola-rs.github.io/polars-book/user-guide/optimizations/lazy/intro.html">Query optimizations</a>
+<ul>
+<li>Predicate pushdown
+<ul>
+<li>Filtering at scan level</li>
+</ul></li>
+<li>Projection pushdown
+<ul>
+<li>Projection at scan level</li>
+</ul></li>
+<li>Aggregate pushdown
+<ul>
+<li>Aggregations at scan level</li>
+</ul></li>
+<li>Simplify expressions</li>
+<li>Parallel execution of physical plan</li>
+<li>Cardinality based groupby dispatch
+<ul>
+<li>Different groupby strategies based on data cardinality</li>
+</ul></li>
+</ul></li>
+<li>SIMD vectorization</li>
+<li><a href="https://numpy.org/doc/stable/reference/ufuncs.html"><code>NumPy</code> universal functions</a></li>
+</ul>
+<blockquote class="blockquote">
+<p><strong>Side-note</strong>: one ugly hack I remember doing in <code>pandas</code> was to slice columns used in a <code>groupBy</code> aggregation before applying <code>groupBy</code> to make it faster. In <code>polars</code> this operation is lazy and automatically does this optimization in its query optimizer! Boy is it beautiful to see! 😍</p>
+</blockquote>
+<p><strong>Why does it make sense?</strong></p>
+<p>I’m not sure this title makes sense, but <code>polars</code> sure do! 🤓</p>
+<p>Did you ever ask yourself why <code>numpy</code> and <code>pandas</code> requires an indexing array to filter a list? E.g. <code>x[x &gt; 10]</code> to return the list with all values &gt;10.</p>
+<p>I did, and the answer is <em>vectorization</em> which makes code incredibly fast. But we should be able to achieve this in a simpler and more efficient way right? Because it’s ugly and stupid… so let’s achieve it more efficiently!</p>
+<p><code>polars</code> uses semantic more familiar to other languages, with it’s <code>.filter(pl.col(x) &gt; 10)</code>.</p>
+<blockquote class="blockquote">
+<p><strong>Side-note</strong>: <code>pl.col(x) &gt; 10</code> is a <code>pl.Expr</code> which is <strong>not</strong> executed until queried via <code>DataFrame</code> or <code>Series</code>!</p>
+</blockquote>
+<p>This way it’s incredibly easy to combine filters and even more importantly, decouple code.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> filter_age(age: <span class="bu">int</span>) <span class="op">-&gt;</span> pl.Expr:</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> pl.col(<span class="st">"age"</span>) <span class="op">&gt;</span> age</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a> df.<span class="bu">filter</span>(filter_age(<span class="dv">13</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>To me this <u>is really cool!</u> 🤓</p>
+<section id="in-production" class="level2">
+<h2 class="anchored" data-anchor-id="in-production">In Production</h2>
+<p>We use <code>polars</code> extensively in production and after evaluating we found:</p>
+<ol type="1">
+<li>Pipelines to be 2x-20x faster, averaging about 7x</li>
+<li>Simpler pipelines</li>
+<li>Easier testing of pipelines</li>
+</ol>
+<p>Which is some pretty fantastic gains!</p>
+</section>
+<section id="future" class="level2">
+<h2 class="anchored" data-anchor-id="future">Future</h2>
+<p>I see a bright future with <code>polars</code> as it enables workloads which previously required to run in the cloud to be able to run locally, because the efficiency is so high.</p>
+</section>
+<section id="bonus" class="level2">
+<h2 class="anchored" data-anchor-id="bonus">Bonus</h2>
+<p><code>polars</code> is more than a “simpler API” and “faster <code>pandas</code>” with its additional functionality.<br>
+Ever heard of <code>over</code>? Not? Let me tell you a cool story!</p>
+<section id="pl.over" class="level3">
+<h3 class="anchored" data-anchor-id="pl.over"><code>pl.Over</code></h3>
+<p><code>pl.col(age).mean().over(gender)</code> is like <code>pd.groupBy(gender).transform({age: "mean"})</code> but way more expressive and powerful!</p>
+<p>It can be used to build columns, filter DataFrame and anything really. We can combine multiple of them in the same select:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>df.select([</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  pl.col(age).mean().over(gender),</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  pl.col(height).mean().over(gender),</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>  pl.col([age, height]).over([gender, species])</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>The first and second row of the select uses the same grouper, query optimizer yay!</p>
+<p>The third line does it over multiple columns, combining all this into one single select is some pretty powerful stuff! 🦸‍♂️</p>
+</section>
+<section id="pl.fold" class="level3">
+<h3 class="anchored" data-anchor-id="pl.fold"><code>pl.Fold</code></h3>
+<p>Yet another incredibly powerful piece of operation is the <code>fold</code> which most <em>Scala-</em> or <em>FP-</em>programmers will know and love. <code>fold</code> is a more powerful <code>reduce</code> as it allows us to define what type we’d like to accumulate.</p>
+<p>The simplest example is using <code>fold</code> as a <code>reduce</code> to calculate the sum, e.g.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>out <span class="op">=</span> df.select(</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    pl.fold(acc<span class="op">=</span>pl.lit(<span class="dv">0</span>), f<span class="op">=</span><span class="kw">lambda</span> acc, x: acc <span class="op">+</span> x, exprs<span class="op">=</span>pl.col(<span class="st">"*"</span>)).alias(<span class="st">"sum"</span>),</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Which is an obvious overkill solution, but allowing to aggregate expressions with conditionals is an inredibly powerful concept which can yield the best types of expressions.</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>out <span class="op">=</span> df.<span class="bu">filter</span>(</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    pl.fold(</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>        acc<span class="op">=</span>pl.lit(<span class="va">True</span>),</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>        f<span class="op">=</span><span class="kw">lambda</span> acc, x: acc <span class="op">&amp;</span> x,</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>        exprs<span class="op">=</span>pl.<span class="bu">all</span>() <span class="op">&gt;</span> <span class="dv">1</span>,</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>In this expression we filter that every coluumn is larger than 1.</p>
+<p>That’s it for this small article. ~Hampus Londögård</p>
+
+
+</section>
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+      <div class="nav-footer-center">
+        <ul class="footer-items list-unstyled">
+    <li class="nav-item compact">
+    <a class="nav-link" href="https://www.linkedin.com/in/hampus-londögård/">
+      <i class="bi bi-linkedin" role="img">
+</i> 
+    </a>
+  </li>  
+    <li class="nav-item compact">
+    <a class="nav-link" href="https://twitter.com/hlondogard">
+      <i class="bi bi-twitter" role="img">
+</i> 
+    </a>
+  </li>  
+    <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/londogard">
+      <i class="bi bi-github" role="img">
+</i> 
+    </a>
+  </li>  
+    <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/lundez">
+      <i class="bi bi-github" role="img">
+</i> 
+    </a>
+  </li>  
+    <li class="nav-item compact">
+    <a class="nav-link" href="../index.xml">
+      <i class="bi bi-rss" role="img">
+</i> 
+    </a>
+  </li>  
+</ul>
+      </div>
+  </div>
+</footer>
+
+
+
+</body></html>

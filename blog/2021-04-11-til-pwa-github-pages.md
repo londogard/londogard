@@ -1,5 +1,4 @@
 ---
-
 description: What are PWAs? How do I create or transform my web app into one? How can I deploy them (freely) via GitHub Pages?
 tags: [pwa, TIL]
 title: "TIL: GitHub Pages + Progressive Web App (PWA) = ❤️"

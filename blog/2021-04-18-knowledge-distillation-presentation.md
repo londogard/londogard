@@ -1,5 +1,4 @@
 ---
-
 description: What is Knowledge Distillation? How can this allow us to further utilize models and increase efficiency manifold?
 tags: [presentation, machine-learning]
 title: "Knowledge Distillation (Presentation)"

@@ -1,0 +1,22 @@
+---
+title: "About"
+image: profile.jpg
+about:
+  template: jolla
+  links:
+    - icon: twitter
+      text: Twitter
+      href: https://twitter.com/hlondogard
+    - icon: linkedin
+      text: LinkedIn
+      href: https://www.linkedin.com/in/hampus-londögård/
+    - icon: github
+      text: Github [Lundez]
+      href: https://github.com/lundez
+    - icon: github
+      text: Github [Londogard]
+      href: https://github.com/londogard
+
+---
+
+About this blog

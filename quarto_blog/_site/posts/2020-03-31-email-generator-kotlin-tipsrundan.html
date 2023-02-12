@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.2.335">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="dcterms.date" content="2020-03-31">
+<meta name="description" content="This blog goes through how to use Kotlin to generate good looking responsive emails. It’ll handle CSS, kotlin html DSL &amp; kotlin serialization.">
+
+<title>Londogard Blog - How I created a email generator in Kotlin (for Afry Tipsrundan)</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<script src="../site_libs/quarto-html/quarto.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="../styles.css">
+<meta name="twitter:title" content="Londogard Blog - How I created a email generator in Kotlin (for Afry Tipsrundan)">
+<meta name="twitter:description" content="This blog goes through how to use Kotlin to generate good looking responsive emails. It'll handle CSS, kotlin html DSL &amp; kotlin serialization.">
+<meta name="twitter:creator" content="@hlondogard">
+<meta name="twitter:card" content="summary">
+</head>
+
+<body class="nav-fixed fullcontent">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a class="navbar-brand" href="../index.html">
+    <span class="navbar-title">Londogard Blog</span>
+    </a>
+  </div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../about.html">
+ <span class="menu-text">About</span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/londogard"><i class="bi bi-github" role="img">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/lundez"><i class="bi bi-github" role="img">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://twitter.com/hlondogard"><i class="bi bi-twitter" role="img">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+</ul>
+              <div id="quarto-search" class="" title="Search"></div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<header id="title-block-header" class="quarto-title-block default page-columns page-full">
+  <div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-body">
+      <h1 class="title">How I created a email generator in Kotlin (for Afry Tipsrundan)</h1>
+                  <div>
+        <div class="description">
+          This blog goes through how to use Kotlin to generate good looking responsive emails. It’ll handle CSS, kotlin html DSL &amp; kotlin serialization.
+        </div>
+      </div>
+                </div>
+  </div>
+    
+  
+  <div class="quarto-title-meta">
+
+      <div>
+      <div class="quarto-title-meta-heading">Author</div>
+      <div class="quarto-title-meta-contents">
+               <p>hlondogard </p>
+            </div>
+    </div>
+      
+      <div>
+      <div class="quarto-title-meta-heading">Published</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date">March 31, 2020</p>
+      </div>
+    </div>
+    
+      
+    </div>
+    
+  
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    
+<!-- main -->
+<main class="content quarto-banner-title-block" id="quarto-document-content">
+
+
+
+
+<section id="email-generation---tipsrundan--" class="level1">
+<h1>Email Generation - Tipsrundan -</h1>
+<p>At AFRY IT South I’m co-responsible with Hassan Ftouni at driving the competence. One of my initiatives that we both now drive is to have a biweekly, every second week for all you picky readers out there, newsletter called "Tipsrundan". <!--truncate--></p>
+<p>Tipsrundan has lately gathered some fuss around and Afry IT West now wants to join in. This means new challenges to somehow build an email together with more people, collaborating on what to have and what to keep regional. Let me say that this is a fun challenge!</p>
+<p>In this post I’ll go through how I built our completely new "Email Generator" in Kotlin that I built a Sunday afternoon. This includes a few things such as</p>
+<ul>
+<li>Learning how CSS works in emails (in comparison to browsers)</li>
+<li>Kotlin</li>
+</ul>
+<p>Let me start at how Tipsrundan has evolved since we initiated it in October (crazy how time flies).</p>
+<section id="the-evolution-of-tipsrundan" class="level2">
+<h2 class="anchored" data-anchor-id="the-evolution-of-tipsrundan">The evolution of Tipsrundan</h2>
+<p>When we sent the first Tipsrundan, called TL;DR back then, I used a "email templating language" called <a href="https://mjml.io/">MJML</a> and a pre-built template found on their homepage.<br>
+With this we got a responsive email using their "homemade" templating language. I enjoyed it at the same time as I hated it, there was way to much manual labour copying the sections and inserting my own code, the indentation in the web-editor wasn’t great and so on. I bet it’s a great tool but it didn’t cut it for me, after two or three issues and a ton of research I found a new tool I liked, with a good free variant, called <a href="https://stripo.email/">Stripo</a>. Stripo is a <em>really</em> good tool which has excellent support with its drag n’ drop editor where you can save modules and much more. We got a good looking &amp; responsive email that worked out great, everything good right?</p>
+<p>It was really good until I realized we had to share the template with new people and Stripo requires premium for this (can’t blame them, they need their cut) which honestly I was to lazy to fix through management.</p>
+<p>With this knowledge I set out to create a tool which we could use internally that is simple and keeps simple. Forward comes a solution I built over a Sunday afternoon where we generate emails from JSON.</p>
+</section>
+<section id="tipsrundan-generation" class="level2">
+<h2 class="anchored" data-anchor-id="tipsrundan-generation">Tipsrundan generation</h2>
+<p>I had some pretty simple requirement: 1. JSON or yaml as the filetype which we’d generate Tipsrundan-email from. 2. Have different sections and easily extendable 3. Decent looking &amp; responsive (i.e.&nbsp;work on a phone and desktop)</p>
+<p>By having these requirements I knew that it’ll be easy to sync over git or whatever tool we need and that we can potentially create themed Tipsrundan editions in the future.</p>
+<p>I also knew that I wanted to do this in Kotlin, mainly because I really enjoy coding in Kotlin.</p>
+<section id="step-1-defining-the-format" class="level3">
+<h3 class="anchored" data-anchor-id="step-1-defining-the-format">Step 1: Defining the format</h3>
+<p>The first step was to decide what format to use, or at least begin with. Both yaml and JSON was considered and in the end JSON felt like the best fit.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode json code-with-copy"><code class="sourceCode json"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  <span class="er">\</span><span class="dt">"title</span><span class="ch">\"</span><span class="dt">: string,</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="dt">  </span><span class="ch">\"</span><span class="dt">issue</span><span class="ch">\"</span><span class="dt">: number,</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="dt">  </span><span class="ch">\"</span><span class="dt">regional</span><span class="ch">\"</span><span class="dt">: [item],</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="dt">  .. more categories</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="dt">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>where <code>item</code> is</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode json code-with-copy"><code class="sourceCode json"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="er">\</span><span class="dt">"title</span><span class="ch">\"</span><span class="dt">: string,</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="dt">  </span><span class="ch">\"</span><span class="dt">description</span><span class="ch">\"</span><span class="dt">: string,</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="dt">  </span><span class="ch">\"</span><span class="dt">url</span><span class="ch">\"</span><span class="dt">: string</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="dt">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Pretty straight-forward, as I said I prefer to keep it simple.</p>
+</section>
+<section id="step-2-reading-the-data" class="level3">
+<h3 class="anchored" data-anchor-id="step-2-reading-the-data">Step 2: Reading the data</h3>
+<p>Now that we have a definition of the data we need to read it, this is really a solved problem in most languages through some kind of library. In my case I choose the serialization library provided by Kotlin in the <code>kotlinx</code>-library. As a FYI this library can serialize using CBOR (Concise Binary Object Representation) and other formats. The name of the library is <code>kotlinx-serialization</code> and can be found <a href="https://github.com/Kotlin/kotlinx.serialization">here</a>. It’s easiest installed through <code>gradle</code> (using the Kotlin DSL):</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode kotlin code-with-copy"><code class="sourceCode kotlin"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>plugins <span class="op">{</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  kotlin<span class="op">(</span>\<span class="st">"plugin.serialization</span><span class="sc">\"</span><span class="st">) version </span><span class="sc">\"</span><span class="st">1.3.70</span><span class="sc">\"</span><span class="st"> // same version as kotlin</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>dependencies <span class="op">{</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>  <span class="op">..</span> other dependencies</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>  implementation<span class="op">(</span>\<span class="st">"org.jetbrains.kotlinx:kotlinx-serialization-runtime:0.20.0</span><span class="sc">\"</span><span class="st">) // Requires jcenter() as a repository</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><code>kotlinx-serialization</code> is actually cross-platform compatible meaning that it exists for Kotlin targeting JVM, Native &amp; JS (yes we can target all these platforms through Kotlin!).</p>
+<p>Once installed it’s pretty easy to serialize &amp; deserialize, like any other library really. Create the <code>data class</code>es, which is the equivalent of a <code>case class</code> in Scala.</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode kotlin code-with-copy"><code class="sourceCode kotlin"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">data</span> <span class="kw">class</span> Item<span class="op">(</span><span class="kw">val</span> <span class="va">title</span><span class="op">:</span> <span class="dt">String</span><span class="op">,</span> <span class="kw">val</span> <span class="va">description</span><span class="op">:</span> <span class="dt">String</span><span class="op">,</span> <span class="kw">val</span> <span class="va">url</span><span class="op">:</span> <span class="dt">String</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Currently <code>kotlinx-serialization</code> can do the serialization through two different methods, either add an annotation to the class that we’ll use Reflection - this does not work for native. Or we mark the <code>data class</code> as Serializable, the latter being preferred as it’s truly cross-platform and is more performant. If anyone is wondering a <code>data class</code> is basically a class that provides setters, getters, equality, toString and more! It’s really awesome. Adding the annotation we end up with the following:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode kotlin code-with-copy"><code class="sourceCode kotlin"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="at">@Serializable</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="kw">data</span> <span class="kw">class</span> Item<span class="op">(</span><span class="kw">val</span> <span class="va">title</span><span class="op">:</span> <span class="dt">String</span><span class="op">,</span> <span class="kw">val</span> <span class="va">description</span><span class="op">:</span> <span class="dt">String</span><span class="op">,</span> <span class="kw">val</span> <span class="va">url</span><span class="op">:</span> <span class="dt">String</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="step-3-how-to-write-html-in-kotlin" class="level3">
+<h3 class="anchored" data-anchor-id="step-3-how-to-write-html-in-kotlin">Step 3: How to write html in Kotlin?</h3>
+<p>We all probably know about html-templating that’s available in most languages, I decided against that and went for a DSL. Kotlin is the language for DSL (Domain Specific Language), for good and bad. Through yet another <code>kotlinx</code> library we got <code>kotlinx-html</code> which provides this DSL.</p>
+<p>It looks something like this</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode kotlin code-with-copy"><code class="sourceCode kotlin"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="kw">fun</span> <span class="fu">BODY</span><span class="op">.</span><span class="fu">createFooter</span><span class="op">()</span> <span class="op">=</span> footer <span class="op">{</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>    hr <span class="op">{</span> <span class="op">}</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>    section <span class="op">{</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>        p <span class="op">{</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>            b <span class="op">{</span> <span class="op">+</span>\<span class="st">"Thank you for this time see you in two weeks</span><span class="sc">\"</span><span class="st"> }</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>            br <span class="op">{</span> <span class="op">}</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>            <span class="op">+</span>\<span class="st">"Hampus &amp; Hassan</span><span class="sc">\"</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>By using a DSL we get types (as you can see on the <code>BODY</code>) and other bonuses. Although this DSL is pretty verbose it works pretty good. In the end using a DSL or html-template engine does not matter that much in my opinion. By the way, the way this function is typed is called a <code>extension function</code> in Kotlin and is one of my favorite tools. It means that we extend the class, <code>BODY</code> with a new method which is usable on a object of the class. Cool right?</p>
+<p>Let’s move on to the styling and how CSS can be annoying.</p>
+</section>
+<section id="step-4-styling" class="level3">
+<h3 class="anchored" data-anchor-id="step-4-styling">Step 4: Styling</h3>
+<p>There was some important parts going into this, we want the email to look at least decent and also be responsive so that it’s viewable on both a phone and computer.</p>
+<p>CSS and emails are not as simple as with a webpage I learned rather fast. I had great issues actually getting the HTML to look good in gmail/outlook. In the end I found <a href="https://litmus.com/blog/do-email-marketers-and-designers-still-need-to-inline-css">this</a> awesome post from Litmus which is one of the leading Email Marketing providers. I learned that</p>
+<ol type="1">
+<li>External CSS is a no-go for emails (a lot of the providers turned it off because of security concerns)</li>
+<li>Embedded CSS (using <code>style</code>-tag in the header) works on most places today (not true a few years ago)</li>
+<li>Inline CSS is the best</li>
+</ol>
+<p>Because I want to keep it simple I went with the second approach, this mean that I can keep the code a bit cleaner and not write as many wrappers for the styled elements.</p>
+<p>So knowing how I should implement my styling I needed to find a good style, in the end I remembered an old Reddit-post where I found "MVP.css" which is a small CSS that gives cards, buttons and more. Really brilliant in my opinion, made by Andy Brewer and can be found <a href="https://andybrewer.github.io/mvp/">here</a>. I’ve personally tweaked it a bit to keep the email a bit more compact and informative as this is really made for webpages, but the essentials are the same.</p>
+</section>
+<section id="step-5-wrapping-it-all-up" class="level3">
+<h3 class="anchored" data-anchor-id="step-5-wrapping-it-all-up">Step 5: Wrapping it all up</h3>
+<p>Combining all this into a few files in a git repo we can now generate emails from a JSON easily and have multiple categories.</p>
+<ul>
+<li>The JSON is used as a data structure</li>
+<li>Kotlin used as language</li>
+<li><code>kotlinx-serialization</code> used as a JSON deserializer</li>
+<li><code>kotlinx-html</code> used to build the HTML directly in Kotlin with types</li>
+<li>Embedded CSS used as it’s widely usable by today in email clients</li>
+</ul>
+<p>The repository can be found <a href="https://github.com/londogard/email-gen-kt">here</a>.</p>
+<p>I hope this was somewhat interesting &amp; something learned. If you’ve any comments please reach out to me through any of the available channels!</p>
+<p><em>Hampus Londögård</em></p>
+
+
+</section>
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+      <div class="nav-footer-center">
+        <ul class="footer-items list-unstyled">
+    <li class="nav-item compact">
+    <a class="nav-link" href="https://www.linkedin.com/in/hampus-londögård/">
+      <i class="bi bi-linkedin" role="img">
+</i> 
+    </a>
+  </li>  
+    <li class="nav-item compact">
+    <a class="nav-link" href="https://twitter.com/hlondogard">
+      <i class="bi bi-twitter" role="img">
+</i> 
+    </a>
+  </li>  
+    <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/londogard">
+      <i class="bi bi-github" role="img">
+</i> 
+    </a>
+  </li>  
+    <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/lundez">
+      <i class="bi bi-github" role="img">
+</i> 
+    </a>
+  </li>  
+    <li class="nav-item compact">
+    <a class="nav-link" href="../index.xml">
+      <i class="bi bi-rss" role="img">
+</i> 
+    </a>
+  </li>  
+</ul>
+      </div>
+  </div>
+</footer>
+
+
+
+</body></html>

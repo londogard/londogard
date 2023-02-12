@@ -1,5 +1,4 @@
 ---
-
 description: What is Docker? I went through Docker during our Journal Circle at AFRY X. This is a simple explanation for people not knowledgable about Docker.
 tags: [presentation, machine-learning, docker]
 title: "Docker (Presentation)"

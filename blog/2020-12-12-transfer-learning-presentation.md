@@ -1,5 +1,4 @@
 ---
-
 description: What is Transfer Learning? Can I have the cake and eat it too?
 tags: [presentation, machine-learning]
 title: "Transfer Learning (Presentation)"

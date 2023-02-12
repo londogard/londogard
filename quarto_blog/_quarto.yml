@@ -1,0 +1,51 @@
+project:
+  type: website
+
+website:
+  title: "Londogard Blog"
+  site-url: https://blog.londogard.com/
+  description: "A blog which majorly focuses on Data Science, Data Engineering and sometimes Kotlin / Scala."
+  twitter-card:
+     creator: "@hlondogard"
+  page-footer:
+    left: "Copyright 2023, Hampus Londögård" 
+    center:
+      - about.qmd
+    right:
+      - icon: linkedin
+        href: https://www.linkedin.com/in/hampus-londögård/
+        aria-label: LinkedIn
+      - icon: twitter
+        href: https://twitter.com/hlondogard
+        aria-label: Twitter
+      - icon: github
+        href: https://github.com/lundez
+        aria-label: Lundez GitHub
+      - icon: rss
+        href: index.xml
+        aria-label: Londogard Blog RSS  
+  navbar:
+      right:
+      - about.qmd
+      - icon: linkedin
+        href: https://www.linkedin.com/in/hampus-londögård/
+        aria-label: LinkedIn
+      - icon: twitter
+        href: https://twitter.com/hlondogard
+        aria-label: Twitter
+      - icon: github
+        menu:
+          - icon: github
+            text: "Lundez"
+            href: https://github.com/lundez
+          - icon: github
+            text: "Londogard"
+            href: https://github.com/londogard
+      - icon: rss
+        href: index.xml
+        aria-label: Londogard Blog RSS     
+
+format:
+  html:
+    theme: cosmo
+    css: styles.css

@@ -1,0 +1,35 @@
+[
+  {
+    "listing": "/index.html",
+    "items": [
+      "/posts/2023-02-06-baby-monitor-pt-p2/index.html",
+      "/posts/2022-11-30-why-polars.html",
+      "/posts/2022-11-28-probabilistic-forecasting/index.html",
+      "/posts/2022-11-23-timeseries-learnings/index.html",
+      "/posts/2022-09-07-docker-simplified-presentation.html",
+      "/posts/2022-07-07-snapsvisor-generated/2022-07-07-snapsvisor-generator.html",
+      "/posts/2022-03-13-timeseries-pt-3/index.html",
+      "/posts/2022-03-12-timeseries-pt-2/index.html",
+      "/posts/2022-03-11-timeseries-pt-1/index.html",
+      "/posts/2021-05-17-seam-carving.html",
+      "/posts/2021-04-18-knowledge-distillation-presentation.html",
+      "/posts/2021-04-11-til-pwa-github-pages.html",
+      "/posts/2021-03-29-swedish-named-entity-recognition.html",
+      "/posts/2021-03-17-replace-in-string.html",
+      "/posts/2021-02-18-transformers-explained/transformers-explained.html",
+      "/posts/2021-01-21-til-gitpod-kotlin-jvm.html",
+      "/posts/2020-12-16-object-detection-transformer.html",
+      "/posts/2020-12-12-transfer-learning-presentation.html",
+      "/posts/2020-11-07-snake-kotlin-multiplatform.html",
+      "/posts/2020-09-04-til-sdkman.html",
+      "/posts/2020-09-03-til-fastutil-primitive-structures.html",
+      "/posts/2020-09-03-til-badass-runtime.html",
+      "/posts/2020-08-01-faq-search-covid-2/index.html",
+      "/posts/2020-06-01-sqldelight-kotlin.html",
+      "/posts/2020-05-13-faq-search-covid-1.html",
+      "/posts/2020-03-31-email-generator-kotlin-tipsrundan.html",
+      "/posts/2020-02-10-gradle-github-packages.html",
+      "/posts/2020-02-23-competence-meeting-imdb-text-classification.html"
+    ]
+  }
+]
