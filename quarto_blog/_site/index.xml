@@ -10,7 +10,7 @@
 <atom:link href="https://blog.londogard.com/index.xml" rel="self" type="application/rss+xml"/>
 <description>A blog which majorly focuses on Data Science, Data Engineering and sometimes Kotlin / Scala.</description>
 <generator>quarto-1.2.335</generator>
-<lastBuildDate>Mon, 06 Feb 2023 00:00:00 GMT</lastBuildDate>
+<lastBuildDate>Sun, 05 Feb 2023 23:00:00 GMT</lastBuildDate>
 <item>
   <title>Baby Monitor pt 2</title>
   <dc:creator>Hampus Londögård</dc:creator>
@@ -184,11 +184,12 @@
  ]]></description>
   <category>python</category>
   <guid>https://blog.londogard.com/posts/2023-02-06-baby-monitor-pt-p2/index.html</guid>
-  <pubDate>Mon, 06 Feb 2023 00:00:00 GMT</pubDate>
+  <pubDate>Sun, 05 Feb 2023 23:00:00 GMT</pubDate>
   <media:content url="https://blog.londogard.com/posts/2023-02-06-baby-monitor-pt-p2/20230206181407.png" medium="image" type="image/png" height="116" width="144"/>
 </item>
 <item>
   <title>Polars - A Refreshingly Great DataFrame Library</title>
+  <dc:creator>Hampus Londögård</dc:creator>
   <link>https://blog.londogard.com/posts/2022-11-30-why-polars.html</link>
   <description><![CDATA[ 
 
@@ -196,7 +197,9 @@
 
 
 <p>While working at AFRY we’ve noted that in performance intensive application that isn’t really <em>Big Data</em> ends up being slow when using <a href="https://pandas.pydata.org/"><code>pandas</code></a>.</p>
-<p>Coming from languages such as <em>Scala, Kotlin </em>&amp; <em>golang</em> we knew there had to be more to it. There was a lot of performance to be squeezed! 🏎️ <!--truncate--> Cherry on the top? The <code>pandas</code> API is a constant source of confusion and thereby not very satisfying. I end up having to read/search the documentation more times than I care to admit. All in all a cleaner and more efficient tool was needed to handle our data &amp; model training pipelines.</p>
+<p>Coming from languages such as <em>Scala, Kotlin </em>&amp; <em>golang</em> we knew there had to be more to it. There was a lot of performance to be squeezed! 🏎️</p>
+<!--truncate-->
+<p>Cherry on the top? The <code>pandas</code> API is a constant source of confusion and thereby not very satisfying. I end up having to read/search the documentation more times than I care to admit. All in all a cleaner and more efficient tool was needed to handle our data &amp; model training pipelines.</p>
 <p>One day I stumbled upon <a href="https://github.com/pola-rs/polars"><code>polars</code></a> - an <em>blazing fast</em> DataFrame-library written in Rust. Plenty of buzzwords, documentation and user-guide later I was ready to trial it in a personal project. 🤠</p>
 <p>It was a smooth addition because of the <code>pandas</code> integration, <code>pl.from_pandas</code> &amp; <code>df.to_pandas()</code>, which in turn made it a gradual adoption. The trial was an instant success, moving <code>DataFrame</code>’s to and from <code>polars</code> was diminished by the fact that <code>polars</code> sped up my pipeline so much. And the code was clean, the API more natural, only downgrade was a bit less reading options - otherwise <em>only upgrades</em>! 🤯</p>
 <p>I was ready to trial it work, and boy was I in for a wonderful journey!</p>
@@ -275,7 +278,7 @@
 <span id="cb1-2">  <span class="cf" style="color: #003B4F;">return</span> pl.col(<span class="st" style="color: #20794D;">"age"</span>) <span class="op" style="color: #5E5E5E;">&gt;</span> age</span>
 <span id="cb1-3">  </span>
 <span id="cb1-4"> df.<span class="bu" style="color: null;">filter</span>(filter_age(<span class="dv" style="color: #AD0000;">13</span>))</span></code></pre></div>
-<p>To me this <u>is really cool!</u> 🤓</p>
+<p>To me this <code>&lt;u&gt;</code>is really cool!<code>&lt;/u&gt;</code> 🤓</p>
 <section id="in-production" class="level2">
 <h2 class="anchored" data-anchor-id="in-production">In Production</h2>
 <p>We use <code>polars</code> extensively in production and after evaluating we found:</p>
@@ -292,8 +295,7 @@
 </section>
 <section id="bonus" class="level2">
 <h2 class="anchored" data-anchor-id="bonus">Bonus</h2>
-<p><code>polars</code> is more than a “simpler API” and “faster <code>pandas</code>” with its additional functionality.<br>
-Ever heard of <code>over</code>? Not? Let me tell you a cool story!</p>
+<p><code>polars</code> is more than a “simpler API” and “faster <code>pandas</code>” with its additional functionality. Ever heard of <code>over</code>? Not? Let me tell you a cool story!</p>
 <section id="pl.over" class="level3">
 <h3 class="anchored" data-anchor-id="pl.over"><code>pl.Over</code></h3>
 <p><code>pl.col(age).mean().over(gender)</code> is like <code>pd.groupBy(gender).transform({age: "mean"})</code> but way more expressive and powerful!</p>
@@ -334,7 +336,7 @@ Ever heard of <code>over</code>? Not? Let me tell you a cool story!</p>
   <category>pipeline</category>
   <category>data</category>
   <guid>https://blog.londogard.com/posts/2022-11-30-why-polars.html</guid>
-  <pubDate>Wed, 30 Nov 2022 00:00:00 GMT</pubDate>
+  <pubDate>Tue, 29 Nov 2022 23:00:00 GMT</pubDate>
 </item>
 <item>
   <title>Probabilistic Forecasting Made Simple</title>
@@ -399,7 +401,7 @@ The model does not actually predict a value but a distribution, using <code>Gaus
   <category>machine-learning</category>
   <category>timeseries</category>
   <guid>https://blog.londogard.com/posts/2022-11-28-probabilistic-forecasting/index.html</guid>
-  <pubDate>Mon, 28 Nov 2022 00:00:00 GMT</pubDate>
+  <pubDate>Sun, 27 Nov 2022 23:00:00 GMT</pubDate>
   <media:content url="https://blog.londogard.com/posts/2022-11-28-probabilistic-forecasting/Files/image.png" medium="image" type="image/png" height="105" width="144"/>
 </item>
 <item>
@@ -638,7 +640,7 @@ MLFlow has magic integrations into all cloud providers and libraries which makes
   <category>machine-learning</category>
   <category>timeseries</category>
   <guid>https://blog.londogard.com/posts/2022-11-23-timeseries-learnings/index.html</guid>
-  <pubDate>Wed, 23 Nov 2022 00:00:00 GMT</pubDate>
+  <pubDate>Tue, 22 Nov 2022 23:00:00 GMT</pubDate>
   <media:content url="https://blog.londogard.com/posts/2022-11-23-timeseries-learnings/Files/image.png" medium="image" type="image/png" height="52" width="144"/>
 </item>
 <item>
@@ -962,10 +964,11 @@ Hampus Londögård</p>
   <category>python</category>
   <category>raspberrypi</category>
   <guid>https://blog.londogard.com/posts/2022-11-06-babymonitor-pt-1.html</guid>
-  <pubDate>Sun, 06 Nov 2022 00:00:00 GMT</pubDate>
+  <pubDate>Sat, 05 Nov 2022 23:00:00 GMT</pubDate>
 </item>
 <item>
   <title>Docker (Presentation)</title>
+  <dc:creator>Hampus Londögård</dc:creator>
   <link>https://blog.londogard.com/posts/2022-09-07-docker-simplified-presentation.html</link>
   <description><![CDATA[ 
 
@@ -985,7 +988,7 @@ Hampus Londögård</p>
   <category>machine-learning</category>
   <category>docker</category>
   <guid>https://blog.londogard.com/posts/2022-09-07-docker-simplified-presentation.html</guid>
-  <pubDate>Wed, 07 Sep 2022 00:00:00 GMT</pubDate>
+  <pubDate>Tue, 06 Sep 2022 22:00:00 GMT</pubDate>
 </item>
 <item>
   <title>GPT2-snapsvisor - Generating Swedish Drinking Songs</title>
@@ -1223,7 +1226,7 @@ ingen blir så dragen vid näsan</p>
   <category>nlp</category>
   <category>fun</category>
   <guid>https://blog.londogard.com/posts/2022-07-07-snapsvisor-generated/2022-07-07-snapsvisor-generator.html</guid>
-  <pubDate>Thu, 07 Jul 2022 00:00:00 GMT</pubDate>
+  <pubDate>Wed, 06 Jul 2022 22:00:00 GMT</pubDate>
   <media:content url="https://blog.londogard.com/posts/2022-07-07-snapsvisor-generated/snapsvisor.png" medium="image" type="image/png" height="62" width="144"/>
 </item>
 <item>
@@ -2478,7 +2481,7 @@ Do you wish for a third (and really awesome ❗) approach with PyTorch? Then mak
   <category>timeseries</category>
   <category>workshop</category>
   <guid>https://blog.londogard.com/posts/2022-03-13-timeseries-pt-3/index.html</guid>
-  <pubDate>Sun, 13 Mar 2022 00:00:00 GMT</pubDate>
+  <pubDate>Sat, 12 Mar 2022 23:00:00 GMT</pubDate>
   <media:content url="https://blog.londogard.com/posts/2022-03-13-timeseries-pt-3/generators.jpg" medium="image" type="image/jpeg"/>
 </item>
 <item>
@@ -4102,7 +4105,7 @@ Show Plotly Chart (code cell only visible in active notebook)
   <category>timeseries</category>
   <category>workshop</category>
   <guid>https://blog.londogard.com/posts/2022-03-12-timeseries-pt-2/index.html</guid>
-  <pubDate>Sat, 12 Mar 2022 00:00:00 GMT</pubDate>
+  <pubDate>Fri, 11 Mar 2022 23:00:00 GMT</pubDate>
   <media:content url="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3a/Linear_regression.svg/600px-Linear_regression.svg.png" medium="image" type="image/png"/>
 </item>
 <item>
@@ -4904,7 +4907,7 @@ For the reader an excercise would be to predict the BTC price depending on ETH, 
   <category>timeseries</category>
   <category>workshop</category>
   <guid>https://blog.londogard.com/posts/2022-03-11-timeseries-pt-1/index.html</guid>
-  <pubDate>Fri, 11 Mar 2022 00:00:00 GMT</pubDate>
+  <pubDate>Thu, 10 Mar 2022 23:00:00 GMT</pubDate>
 </item>
 <item>
   <title>KotlinJS, ONNX and Deep Learning in the browser</title>
@@ -5222,7 +5225,7 @@ View code!
   <category>web</category>
   <category>deep-learning</category>
   <guid>https://blog.londogard.com/posts/2022-01-28-kotlinjs-onnx-deep-learning-in-browser/index.html</guid>
-  <pubDate>Fri, 28 Jan 2022 00:00:00 GMT</pubDate>
+  <pubDate>Thu, 27 Jan 2022 23:00:00 GMT</pubDate>
   <media:content url="https://user-images.githubusercontent.com/7490199/151235880-2546faa6-5798-48b4-84b9-db71c20808d8.gif" medium="image" type="image/gif"/>
 </item>
 <item>
@@ -5345,10 +5348,11 @@ I think this is incredibly useful when you need something fast, cheap and that t
   <category>jvm</category>
   <category>kotlin</category>
   <guid>https://blog.londogard.com/posts/2022-01-16-nlp-toolkit-release.html</guid>
-  <pubDate>Sun, 16 Jan 2022 00:00:00 GMT</pubDate>
+  <pubDate>Sat, 15 Jan 2022 23:00:00 GMT</pubDate>
 </item>
 <item>
   <title>Seam Carving (Presentation &amp; Workshop)</title>
+  <dc:creator>Hampus Londögård</dc:creator>
   <link>https://blog.londogard.com/posts/2021-05-17-seam-carving.html</link>
   <description><![CDATA[ 
 
@@ -5563,7 +5567,7 @@ Trying all paths would prove expensive, but if we traverse the reverse we can sp
   <category>kotlin</category>
   <category>workshop</category>
   <guid>https://blog.londogard.com/posts/2021-05-17-seam-carving.html</guid>
-  <pubDate>Mon, 17 May 2021 00:00:00 GMT</pubDate>
+  <pubDate>Sun, 16 May 2021 22:00:00 GMT</pubDate>
   <media:content url="https://user-images.githubusercontent.com/7490199/218312158-6930b301-72e3-4d60-b374-91d29689c8b1.png" medium="image" type="image/png"/>
 </item>
 <item>
@@ -5587,7 +5591,7 @@ Trying all paths would prove expensive, but if we traverse the reverse we can sp
   <category>presentation</category>
   <category>machine-learning</category>
   <guid>https://blog.londogard.com/posts/2021-04-18-knowledge-distillation-presentation.html</guid>
-  <pubDate>Sun, 18 Apr 2021 00:00:00 GMT</pubDate>
+  <pubDate>Sat, 17 Apr 2021 22:00:00 GMT</pubDate>
 </item>
 <item>
   <title>TIL: GitHub Pages + Progressive Web App (PWA) = ❤️</title>
@@ -5698,7 +5702,7 @@ GitHub pages recently got their own tab in settings and all you need to do now i
   <category>pwa</category>
   <category>TIL</category>
   <guid>https://blog.londogard.com/posts/2021-04-11-til-pwa-github-pages.html</guid>
-  <pubDate>Sun, 11 Apr 2021 00:00:00 GMT</pubDate>
+  <pubDate>Sat, 10 Apr 2021 22:00:00 GMT</pubDate>
 </item>
 <item>
   <title>Building a Swedish Named Entity Recognition (NER) model (Flair/Huggingface)</title>
@@ -5947,7 +5951,7 @@ The flair model is available through HuggingFace 🤗 through the following: <a 
   <category>machine-learning</category>
   <category>workshop</category>
   <guid>https://blog.londogard.com/posts/2021-03-29-swedish-named-entity-recognition.html</guid>
-  <pubDate>Mon, 29 Mar 2021 00:00:00 GMT</pubDate>
+  <pubDate>Sun, 28 Mar 2021 22:00:00 GMT</pubDate>
   <media:content url="https://user-images.githubusercontent.com/7490199/113611097-543f9280-964e-11eb-9e59-bd030c32ad0c.png" medium="image" type="image/png"/>
 </item>
 <item>
@@ -6170,7 +6174,7 @@ The flair model is available through HuggingFace 🤗 through the following: <a 
  ]]></description>
   <category>jvm</category>
   <guid>https://blog.londogard.com/posts/2021-03-17-replace-in-string.html</guid>
-  <pubDate>Wed, 17 Mar 2021 00:00:00 GMT</pubDate>
+  <pubDate>Tue, 16 Mar 2021 23:00:00 GMT</pubDate>
 </item>
 <item>
   <title>Transformers From Scratch</title>
@@ -7462,7 +7466,7 @@ Do note that the depth should probably be increased as should the amount of data
   <category>deep-learning</category>
   <category>workshop</category>
   <guid>https://blog.londogard.com/posts/2021-02-18-transformers-explained/transformers-explained.html</guid>
-  <pubDate>Thu, 18 Feb 2021 00:00:00 GMT</pubDate>
+  <pubDate>Wed, 17 Feb 2021 23:00:00 GMT</pubDate>
   <media:content url="https://user-images.githubusercontent.com/7490199/218255581-54624bd8-de0f-4340-a085-d6605b3d5310.png" medium="image" type="image/png"/>
 </item>
 <item>
@@ -7548,7 +7552,7 @@ Hampus</p>
   <category>kotlin</category>
   <category>TIL</category>
   <guid>https://blog.londogard.com/posts/2021-01-21-til-gitpod-kotlin-jvm.html</guid>
-  <pubDate>Thu, 21 Jan 2021 00:00:00 GMT</pubDate>
+  <pubDate>Wed, 20 Jan 2021 23:00:00 GMT</pubDate>
 </item>
 <item>
   <title>Object Detection (Workshop)</title>
@@ -7570,7 +7574,7 @@ Hampus</p>
   <category>presentation</category>
   <category>machine-learning</category>
   <guid>https://blog.londogard.com/posts/2020-12-16-object-detection-transformer.html</guid>
-  <pubDate>Wed, 16 Dec 2020 00:00:00 GMT</pubDate>
+  <pubDate>Tue, 15 Dec 2020 23:00:00 GMT</pubDate>
 </item>
 </channel>
 </rss>

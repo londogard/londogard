@@ -2,18 +2,18 @@
 title: "Polars - A Refreshingly Great DataFrame Library"
 description: "Polars is a DataFrame library written from ground-up to not only have a sensible API but also very efficient operations using multiple cores and clever optimizations such as predicate pushdown & much more!"
 categories: [data-engineering, pipeline, data]
-authors: [hlondogard]
 date: "2022-11-30"
 no_comments: false
 ---
-
-While working at AFRY we've noted that in performance intensive application that isn't really *Big Data* ends up being slow when using [`pandas`](<https://pandas.pydata.org/>).
+While working at AFRY we've noted that in performance intensive application that isn't really *Big Data* ends up being slow when using [`pandas`](https://pandas.pydata.org/).
 
 Coming from languages such as *Scala, Kotlin *& *golang* we knew there had to be more to it. There was a lot of performance to be squeezed! 🏎️
+
 <!--truncate-->
+
 Cherry on the top? The `pandas` API is a constant source of confusion and thereby not very satisfying. I end up having to read/search the documentation more times than I care to admit. All in all a cleaner and more efficient tool was needed to handle our data & model training pipelines.
 
-One day I stumbled upon [`polars`](<https://github.com/pola-rs/polars>) \- an *blazing fast* DataFrame-library written in Rust. Plenty of buzzwords, documentation and user-guide later I was ready to trial it in a personal project. 🤠
+One day I stumbled upon [`polars`](https://github.com/pola-rs/polars) \- an *blazing fast* DataFrame-library written in Rust. Plenty of buzzwords, documentation and user-guide later I was ready to trial it in a personal project. 🤠
 
 It was a smooth addition because of the `pandas` integration, `pl.from_pandas` & `df.to_pandas()`, which in turn made it a gradual adoption. The trial was an instant success, moving `DataFrame`'s to and from `polars` was diminished by the fact that `polars` sped up my pipeline so much. And the code was clean, the API more natural, only downgrade was a bit less reading options - otherwise *only upgrades*! 🤯
 
@@ -25,7 +25,7 @@ Then... what the actual fudge is `polars`?
 
 # Polars
 
-Polars is a DataFrame library written purely in Rust, i.e. no runtime overhead, and uses [`Arrow`](<https://arrow.apache.org/>) as its foundation. The Python/JS bindings are simply a thin wrapper to be able to be able to use functionality in the core library. Very similar to `pandas` with a few major differences.
+Polars is a DataFrame library written purely in Rust, i.e. no runtime overhead, and uses [`Arrow`](https://arrow.apache.org/) as its foundation. The Python/JS bindings are simply a thin wrapper to be able to be able to use functionality in the core library. Very similar to `pandas` with a few major differences.
 
 **Why is it fast?**
 
@@ -37,33 +37,33 @@ Polars is a DataFrame library written purely in Rust, i.e. no runtime overhead, 
 
 `polars` has a **lazy API** with reminisence of SQL and Spark, this lazy API is automatically applied for certain operations such as `groupBy`. Using the lazy API `polars` enables **query optimizations** which improves performance and memory pressure. `polars` tracks your query in a *logical plan* which is optimized.
 
-Here's a list from [pola-rs.github.io](<https://pola-rs.github.io/polars-book/user-guide/>) on how it achieves its performance:
+Here's a list from [pola-rs.github.io](https://pola-rs.github.io/polars-book/user-guide/) on how it achieves its performance:
 
-- [Copy-on-write](<https://en.wikipedia.org/wiki/Copy-on-write>) (COW) semantics
-    - "Free" clones
-    - Cheap appends
+- [Copy-on-write](https://en.wikipedia.org/wiki/Copy-on-write) (COW) semantics
+  - "Free" clones
+  - Cheap appends
 - Appending without clones
 - Column oriented data storage
-    - No block manager (i.e. predictable performance)
+  - No block manager (i.e. predictable performance)
 - Missing values indicated with bitmask
-    - NaN are different from missing
-    - Bitmask optimizations
+  - NaN are different from missing
+  - Bitmask optimizations
 - Efficient algorithms
 - Very fast IO
-    - Its csv and parquet readers are among the fastest in existence
-- [Query optimizations](<https://pola-rs.github.io/polars-book/user-guide/optimizations/lazy/intro.html>)
-    - Predicate pushdown
-        - Filtering at scan level
-    - Projection pushdown
-        - Projection at scan level
-    - Aggregate pushdown
-        - Aggregations at scan level
-    - Simplify expressions
-    - Parallel execution of physical plan
-    - Cardinality based groupby dispatch
-        - Different groupby strategies based on data cardinality
+  - Its csv and parquet readers are among the fastest in existence
+- [Query optimizations](https://pola-rs.github.io/polars-book/user-guide/optimizations/lazy/intro.html)
+  - Predicate pushdown
+    - Filtering at scan level
+  - Projection pushdown
+    - Projection at scan level
+  - Aggregate pushdown
+    - Aggregations at scan level
+  - Simplify expressions
+  - Parallel execution of physical plan
+  - Cardinality based groupby dispatch
+    - Different groupby strategies based on data cardinality
 - SIMD vectorization
-- [`NumPy` universal functions](<https://numpy.org/doc/stable/reference/ufuncs.html>)
+- [`NumPy` universal functions](https://numpy.org/doc/stable/reference/ufuncs.html)
 
 > **Side-note**: one ugly hack I remember doing in `pandas` was to slice columns used in a `groupBy` aggregation before applying `groupBy` to make it faster. In `polars` this operation is lazy and automatically does this optimization in its query optimizer! Boy is it beautiful to see! 😍
 
@@ -88,7 +88,7 @@ def filter_age(age: int) -> pl.Expr:
  df.filter(filter_age(13))
 ```
 
-To me this <u>is really cool!</u> 🤓
+To me this `<u>`is really cool!`</u>` 🤓
 
 ## In Production
 
@@ -106,7 +106,7 @@ I see a bright future with `polars` as it enables workloads which previously req
 
 ## Bonus
 
-`polars` is more than a "simpler API" and "faster `pandas`" with its additional functionality.  
+`polars` is more than a "simpler API" and "faster `pandas`" with its additional functionality.
 Ever heard of `over`? Not? Let me tell you a cool story!
 
 ### `pl.Over`
@@ -153,5 +153,5 @@ out = df.filter(
 
 In this expression we filter that every coluumn is larger than 1.
 
-That's it for this small article. 
+That's it for this small article.
 \~Hampus Londögård

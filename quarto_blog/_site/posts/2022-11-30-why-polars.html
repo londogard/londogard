@@ -6,6 +6,7 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="author" content="Hampus Londögård">
 <meta name="dcterms.date" content="2022-11-30">
 <meta name="description" content="Polars is a DataFrame library written from ground-up to not only have a sensible API but also very efficient operations using multiple cores and clever optimizations such as predicate pushdown &amp; much more!">
 
@@ -133,7 +134,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <meta name="twitter:card" content="summary">
 </head>
 
-<body class="nav-fixed fullcontent">
+<body class="nav-fixed">
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
@@ -148,6 +149,16 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <span class="navbar-toggler-icon"></span>
 </button>
           <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../presentations.html">
+ <span class="menu-text">Presentations</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="https://londogard.com/projects">
+ <span class="menu-text">Londogard Projects↗</span></a>
+  </li>  
+</ul>
             <ul class="navbar-nav navbar-nav-scroll ms-auto">
   <li class="nav-item">
     <a class="nav-link" href="../about.html">
@@ -217,7 +228,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
       <div>
       <div class="quarto-title-meta-heading">Author</div>
       <div class="quarto-title-meta-contents">
-               <p>hlondogard </p>
+               <p>Hampus Londögård </p>
             </div>
     </div>
       
@@ -235,7 +246,24 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
-    
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#polars" id="toc-polars" class="nav-link active" data-scroll-target="#polars">Polars</a>
+  <ul class="collapse">
+  <li><a href="#in-production" id="toc-in-production" class="nav-link" data-scroll-target="#in-production">In Production</a></li>
+  <li><a href="#future" id="toc-future" class="nav-link" data-scroll-target="#future">Future</a></li>
+  <li><a href="#bonus" id="toc-bonus" class="nav-link" data-scroll-target="#bonus">Bonus</a>
+  <ul class="collapse">
+  <li><a href="#pl.over" id="toc-pl.over" class="nav-link" data-scroll-target="#pl.over"><code>pl.Over</code></a></li>
+  <li><a href="#pl.fold" id="toc-pl.fold" class="nav-link" data-scroll-target="#pl.fold"><code>pl.Fold</code></a></li>
+  </ul></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
 <!-- main -->
 <main class="content quarto-banner-title-block" id="quarto-document-content">
 
@@ -243,7 +271,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 
 <p>While working at AFRY we’ve noted that in performance intensive application that isn’t really <em>Big Data</em> ends up being slow when using <a href="https://pandas.pydata.org/"><code>pandas</code></a>.</p>
-<p>Coming from languages such as <em>Scala, Kotlin </em>&amp; <em>golang</em> we knew there had to be more to it. There was a lot of performance to be squeezed! 🏎️ <!--truncate--> Cherry on the top? The <code>pandas</code> API is a constant source of confusion and thereby not very satisfying. I end up having to read/search the documentation more times than I care to admit. All in all a cleaner and more efficient tool was needed to handle our data &amp; model training pipelines.</p>
+<p>Coming from languages such as <em>Scala, Kotlin </em>&amp; <em>golang</em> we knew there had to be more to it. There was a lot of performance to be squeezed! 🏎️</p>
+<!--truncate-->
+<p>Cherry on the top? The <code>pandas</code> API is a constant source of confusion and thereby not very satisfying. I end up having to read/search the documentation more times than I care to admit. All in all a cleaner and more efficient tool was needed to handle our data &amp; model training pipelines.</p>
 <p>One day I stumbled upon <a href="https://github.com/pola-rs/polars"><code>polars</code></a> - an <em>blazing fast</em> DataFrame-library written in Rust. Plenty of buzzwords, documentation and user-guide later I was ready to trial it in a personal project. 🤠</p>
 <p>It was a smooth addition because of the <code>pandas</code> integration, <code>pl.from_pandas</code> &amp; <code>df.to_pandas()</code>, which in turn made it a gradual adoption. The trial was an instant success, moving <code>DataFrame</code>’s to and from <code>polars</code> was diminished by the fact that <code>polars</code> sped up my pipeline so much. And the code was clean, the API more natural, only downgrade was a bit less reading options - otherwise <em>only upgrades</em>! 🤯</p>
 <p>I was ready to trial it work, and boy was I in for a wonderful journey!</p>
@@ -322,7 +352,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> pl.col(<span class="st">"age"</span>) <span class="op">&gt;</span> age</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>  </span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a> df.<span class="bu">filter</span>(filter_age(<span class="dv">13</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>To me this <u>is really cool!</u> 🤓</p>
+<p>To me this <code>&lt;u&gt;</code>is really cool!<code>&lt;/u&gt;</code> 🤓</p>
 <section id="in-production" class="level2">
 <h2 class="anchored" data-anchor-id="in-production">In Production</h2>
 <p>We use <code>polars</code> extensively in production and after evaluating we found:</p>
@@ -339,8 +369,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </section>
 <section id="bonus" class="level2">
 <h2 class="anchored" data-anchor-id="bonus">Bonus</h2>
-<p><code>polars</code> is more than a “simpler API” and “faster <code>pandas</code>” with its additional functionality.<br>
-Ever heard of <code>over</code>? Not? Let me tell you a cool story!</p>
+<p><code>polars</code> is more than a “simpler API” and “faster <code>pandas</code>” with its additional functionality. Ever heard of <code>over</code>? Not? Let me tell you a cool story!</p>
 <section id="pl.over" class="level3">
 <h3 class="anchored" data-anchor-id="pl.over"><code>pl.Over</code></h3>
 <p><code>pl.col(age).mean().over(gender)</code> is like <code>pd.groupBy(gender).transform({age: "mean"})</code> but way more expressive and powerful!</p>
@@ -513,7 +542,16 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </div> <!-- /content -->
 <footer class="footer">
   <div class="nav-footer">
-    <div class="nav-footer-left">Copyright 2023, Hampus Londögård</div>   
+    <div class="nav-footer-left">
+      <ul class="footer-items list-unstyled">
+    <li class="nav-item">
+    <a class="nav-link" href="https://www.buymeacoffee.com/hlondogard">Buy me a Coffee↗</a>
+  </li>  
+    <li class="nav-item">
+    <a class="nav-link" href="https://github.com/sponsors/Lundez?o=esb">Support on GitHub↗</a>
+  </li>  
+</ul>
+    </div>   
       <div class="nav-footer-center">
         <ul class="footer-items list-unstyled">
     <li class="nav-item">
