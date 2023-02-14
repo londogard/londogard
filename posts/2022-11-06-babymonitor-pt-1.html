@@ -1,0 +1,766 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.2.335">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Hampus Londögård">
+<meta name="dcterms.date" content="2022-11-06">
+<meta name="description" content="I’m building a babymonitor!">
+
+<title>Londogard Blog - Babymonitor #1</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<link href="../favicon.ico" rel="icon">
+<script src="../site_libs/quarto-html/quarto.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="../styles.css">
+<meta name="twitter:title" content="Londogard Blog - Babymonitor #1">
+<meta name="twitter:description" content="I'm building a babymonitor!">
+<meta name="twitter:creator" content="@hlondogard">
+<meta name="twitter:card" content="summary">
+</head>
+
+<body class="nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a class="navbar-brand" href="../index.html">
+    <span class="navbar-title">Londogard Blog</span>
+    </a>
+  </div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../presentations.html">
+ <span class="menu-text">Presentations</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="https://londogard.com/projects">
+ <span class="menu-text">Londogard Projects↗</span></a>
+  </li>  
+</ul>
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../about.html">
+ <span class="menu-text">About</span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://www.linkedin.com/in/hampus-londögård/"><i class="bi bi-linkedin" role="img" aria-label="LinkedIn">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://twitter.com/hlondogard"><i class="bi bi-twitter" role="img" aria-label="Twitter">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-bi-github" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+      <i class="bi bi-github" role="img">
+</i> 
+ <span class="menu-text"></span>
+    </a>
+    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="nav-menu-bi-github">    
+        <li>
+    <a class="dropdown-item" href="https://github.com/lundez"><i class="bi bi-github" role="img">
+</i> 
+ <span class="dropdown-text">Lundez</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="https://github.com/londogard"><i class="bi bi-github" role="img">
+</i> 
+ <span class="dropdown-text">Londogard</span></a>
+  </li>  
+    </ul>
+  </li>
+  <li class="nav-item compact">
+    <a class="nav-link" href="../index.xml"><i class="bi bi-rss" role="img" aria-label="Londogard Blog RSS">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+</ul>
+              <div id="quarto-search" class="" title="Search"></div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<header id="title-block-header" class="quarto-title-block default page-columns page-full">
+  <div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-body">
+      <h1 class="title">Babymonitor #1</h1>
+                  <div>
+        <div class="description">
+          I’m building a babymonitor!
+        </div>
+      </div>
+                          <div class="quarto-categories">
+                <div class="quarto-category">python</div>
+                <div class="quarto-category">raspberrypi</div>
+              </div>
+                  </div>
+  </div>
+    
+  
+  <div class="quarto-title-meta">
+
+      <div>
+      <div class="quarto-title-meta-heading">Author</div>
+      <div class="quarto-title-meta-contents">
+               <p>Hampus Londögård </p>
+            </div>
+    </div>
+      
+      <div>
+      <div class="quarto-title-meta-heading">Published</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date">November 6, 2022</p>
+      </div>
+    </div>
+    
+      
+    </div>
+    
+  
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#background" id="toc-background" class="nav-link active" data-scroll-target="#background">Background</a></li>
+  <li><a href="#goals" id="toc-goals" class="nav-link" data-scroll-target="#goals">Goals</a></li>
+  <li><a href="#live-streaming-initial-experimentation" id="toc-live-streaming-initial-experimentation" class="nav-link" data-scroll-target="#live-streaming-initial-experimentation">Live Streaming: Initial Experimentation</a>
+  <ul class="collapse">
+  <li><a href="#protocols-variants" id="toc-protocols-variants" class="nav-link" data-scroll-target="#protocols-variants">Protocols / Variants</a></li>
+  <li><a href="#implementations" id="toc-implementations" class="nav-link" data-scroll-target="#implementations">Implementations</a></li>
+  <li><a href="#performance" id="toc-performance" class="nav-link" data-scroll-target="#performance">Performance</a></li>
+  </ul></li>
+  <li><a href="#ending-notes" id="toc-ending-notes" class="nav-link" data-scroll-target="#ending-notes">Ending Notes</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content quarto-banner-title-block" id="quarto-document-content">
+
+
+
+
+<p>Hi 👋</p>
+<p>I’m building a babymonitor. It’s not gonna be anything novel, neither the first or last in history. But it’s a relevant project to me, and it makes me happy! 🤓</p>
+<p>In this blog I’ll walk through different ways to stream video from the raspberry pi to the network, capturing it in a client browser.</p>
+<!--truncate-->
+<section id="background" class="level2">
+<h2 class="anchored" data-anchor-id="background">Background</h2>
+<p>It all started when I talked to an old friend and he said that his in-laws gifted them the “Rolls-Royce” of babymonitors. The monitor has:</p>
+<ul>
+<li>Bidirectional audio.</li>
+<li>Unidirectional video.
+<ol type="1">
+<li>Night Vision.</li>
+<li>Rotation Horizontally.</li>
+<li>Zoom.</li>
+</ol></li>
+<li>Temperature</li>
+<li>Play soothing bedtime songs.</li>
+</ul>
+<p>Incredibly cool!&nbsp;&nbsp;</p>
+<p>This led to a simple equation:<br>
+<code>awesome + expensive + programmer = Do It Yourself (DIY)</code></p>
+<p>Obviously I need to have the same specifications and a little better, while “cheaper” (my hours are “free” 🤓).</p>
+<p>The greatest part? I have a natural deadline which enforce me to finish the project!</p>
+</section>
+<section id="goals" class="level2">
+<h2 class="anchored" data-anchor-id="goals">Goals</h2>
+<p><strong>KISS</strong>&nbsp;- Keep It Simple Stupid</p>
+<p>I’ve collected the following equipment:</p>
+<ul>
+<li>Raspberry Pi 3B (had one already)</li>
+<li>5 MP camera with mechanical IR filter</li>
+<li>2 servos (rotating camera)</li>
+<li>Temperature / Humidity Sensor</li>
+<li>Microphone Array</li>
+<li>Speaker</li>
+</ul>
+<p>My bottleneck is the Raspberry Pi’s performance really. And with performance comes optimisations, which I love! It makes following the KISS principle a tad harder! 😅</p>
+<p>I have settled on one of three languages to write the video streaming in, either <code>golang</code>, <code>rust</code> or <code>python</code>.<br>
+My initial idea is that the simpler parts will be a FastAPI (Python) server, like temperature and moving servos. Python really is&nbsp;<em>lingua franca</em>&nbsp;on the Raspberry Pi and the support is amazing.&nbsp;&nbsp;</p>
+<p>From my initial experimentation I found Python to require a&nbsp;<em>shit ton</em>&nbsp;of CPU power to livestream video, as such I believe <code>rust</code> or <code>golang</code> will be the way to go. 🚀</p>
+</section>
+<section id="live-streaming-initial-experimentation" class="level2">
+<h2 class="anchored" data-anchor-id="live-streaming-initial-experimentation">Live Streaming: Initial Experimentation</h2>
+<p>I’ve tried multiple things, HTTP, HLS, Websocket &amp; WebRTC. Each step proves a more complex, albeit more optimal, solution. Each with it’s trade-offs.</p>
+<p>Some worthy mentions of other solutions is&nbsp;<em>Real Time Streaming Protocol (RTSP)</em>.</p>
+<section id="protocols-variants" class="level3">
+<h3 class="anchored" data-anchor-id="protocols-variants">Protocols / Variants</h3>
+<p>Describing the protocol and how it’s implemented, in a very general way.</p>
+<div class="panel-tabset" data-group="type">
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" role="tab" aria-controls="tabset-1-1" aria-selected="true">HTTP</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" role="tab" aria-controls="tabset-1-2" aria-selected="false">HLS</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-3" role="tab" aria-controls="tabset-1-3" aria-selected="false">Websocket</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-4-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-4" role="tab" aria-controls="tabset-1-4" aria-selected="false">WebRTC</a></li></ul>
+<div class="tab-content" data-group="type">
+<div id="tabset-1-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-1-1-tab">
+<p><strong>H</strong>yper<strong>t</strong>ext <strong>T</strong>ransfer <strong>P</strong>rotocol, <em>lingua franca</em> protocol of the internet, is a way to stream both video and audio. It’s easy, but not efficient.</p>
+<p><strong>How:</strong> Stream chunks using HTTP messages and let your <code>&lt;video&gt;</code> element handle the consumption of stream.</p>
+</div>
+<div id="tabset-1-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-2-tab">
+<p><strong>H</strong>TTP <strong>L</strong>ive <strong>S</strong>treaming is a simple and pretty efficient way to stream both video and audio over the internet.</p>
+<p><strong>How:</strong> video-/audio-files, <code>.m3u8</code>, which are then picked up by client. The chunks are built from a “live” stream, e.g.&nbsp;webcam, or a file.</p>
+</div>
+<div id="tabset-1-3" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-3-tab">
+<p>Websockets is a communication protocol which allows much lower overhead than raw HTTP while providing bi-directional (duplex) communication. It’s really optimal to stream things that move in real-time through HTTP, such as a video or audio stream.</p>
+<p><strong>How:</strong> Stream your byte-array realtime through a websocket, like you’d a HTTP. There’s less headers involved, but it’s much harder to consume on the client. You need a special JS media player which can decode the websocket stream into video/audio.</p>
+</div>
+<div id="tabset-1-4" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-4-tab">
+<p>WebRTC is a open framework that enables <em>Real-Time Communications (RTC)</em> inside the browser. From the get-go it supports bidirectional video/audio and also encrypted if required.<br>
+It’s <em>the protocol to stream realtime</em> really. It’s used in a lot of the tools you know today.</p>
+<p><strong>How:</strong> set up a WebRTC server and then stream your bytearrays directly after connecting with a client.</p>
+</div>
+</div>
+</div>
+<p>Each protocol comes with positives and negatives.</p>
+<table class="table">
+<colgroup>
+<col style="width: 20%">
+<col style="width: 20%">
+<col style="width: 20%">
+<col style="width: 20%">
+<col style="width: 20%">
+</colgroup>
+<thead>
+<tr class="header">
+<th></th>
+<th>HTTP</th>
+<th>HLS</th>
+<th>Websocket</th>
+<th>WebRTC</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>Pros</strong></td>
+<td>+ Easy to implement.<br>+ Simple protocol.</td>
+<td>+ Easy to implement<br>+ CPU efficient.<br>+ Easy to do “live” streams.</td>
+<td>+ Low latency.<br>+ CPU efficient.</td>
+<td>+ Supports all my use-cases<br>+ Low Latency.<br>+ CPU efficient.</td>
+</tr>
+<tr class="even">
+<td><strong>Cons</strong></td>
+<td>- CPU inefficient (HTTP header overhead).</td>
+<td>- High latency (5-10s+).&nbsp;</td>
+<td>- Hard to consume on client.<br>- Bi-directional streaming is also hard.</td>
+<td>- Not straightforward implementation<br>- Less documentation than HLS/HTTP.</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="implementations" class="level3">
+<h3 class="anchored" data-anchor-id="implementations">Implementations</h3>
+<div class="panel-tabset" data-group="type">
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-2-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-1" role="tab" aria-controls="tabset-2-1" aria-selected="true">HTTP</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-2-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-2" role="tab" aria-controls="tabset-2-2" aria-selected="false">HLS</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-2-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-3" role="tab" aria-controls="tabset-2-3" aria-selected="false">Websocket</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-2-4-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-4" role="tab" aria-controls="tabset-2-4" aria-selected="false">WebRTC</a></li></ul>
+<div class="tab-content" data-group="type">
+<div id="tabset-2-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-2-1-tab">
+<p>Using <strong>MJPEG</strong>.<br>
+The provided&nbsp;<a href="https://raw.githubusercontent.com/raspberrypi/picamera2/main/examples/mjpeg_server.py">MJPEG server</a>&nbsp;from&nbsp;<a href="https://github.com/raspberrypi/picamera2"><code>picamera2</code></a>&nbsp;is excelent show-case on how to stream the video. It sets up a simple HTML with a&nbsp;<code>&lt;img&gt;</code>&nbsp;element which streams new frames using&nbsp;<code>MJPEG</code>&nbsp; which is Motion-JPEG.</p>
+<p>The performance is pretty OK, considering it’s Python &amp; MJPEG. Compared to H264 which works much more effectively.&nbsp;<br>
+We see the CPU hovering around 130-150%, but the largest drawback is the network&nbsp;bandwidth, at ~50Mb/s compared to H.264 at ~3.5Mb/s.<br>
+This is because MJPEG sends the full frame each time, H.264 sends a frame and then some delta frame until it sends a full frame again. This has drawbacks and positives, the bandwidth is low but quality can suffer.</p>
+<details>
+<summary>
+Code
+</summary>
+<div class="sourceCode" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/usr/bin/python3</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Mostly copied from https://picamera.readthedocs.io/en/release-1.13/recipes2.html</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Run this script, then point a web browser at http:&lt;this-ip-address&gt;:8000</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Note: needs simplejpeg to be installed (pip3 install simplejpeg).</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> io</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> logging</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> socketserver</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> http <span class="im">import</span> server</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> threading <span class="im">import</span> Condition, Thread</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> picamera2 <span class="im">import</span> Picamera2</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> picamera2.encoders <span class="im">import</span> JpegEncoder</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> picamera2.outputs <span class="im">import</span> FileOutput</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>PAGE <span class="op">=</span> <span class="st">"""</span><span class="ch">\</span></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a><span class="st">&lt;html&gt;</span></span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a><span class="st">&lt;head&gt;</span></span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a><span class="st">&lt;title&gt;picamera2 MJPEG streaming demo&lt;/title&gt;</span></span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a><span class="st">&lt;/head&gt;</span></span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a><span class="st">&lt;body&gt;</span></span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a><span class="st">&lt;h1&gt;Picamera2 MJPEG Streaming Demo&lt;/h1&gt;</span></span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a><span class="st">&lt;img src="stream.mjpg" width="640" height="480" /&gt;</span></span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a><span class="st">&lt;/body&gt;</span></span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a><span class="st">&lt;/html&gt;</span></span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a><span class="st">"""</span></span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> StreamingOutput(io.BufferedIOBase):</span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>):</span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.frame <span class="op">=</span> <span class="va">None</span></span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.condition <span class="op">=</span> Condition()</span>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> write(<span class="va">self</span>, buf):</span>
+<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a>        <span class="cf">with</span> <span class="va">self</span>.condition:</span>
+<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a>            <span class="va">self</span>.frame <span class="op">=</span> buf</span>
+<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a>            <span class="va">self</span>.condition.notify_all()</span>
+<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> StreamingHandler(server.BaseHTTPRequestHandler):</span>
+<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> do_GET(<span class="va">self</span>):</span>
+<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="va">self</span>.path <span class="op">==</span> <span class="st">'/'</span>:</span>
+<span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a>            <span class="va">self</span>.send_response(<span class="dv">301</span>)</span>
+<span id="cb1-45"><a href="#cb1-45" aria-hidden="true" tabindex="-1"></a>            <span class="va">self</span>.send_header(<span class="st">'Location'</span>, <span class="st">'/index.html'</span>)</span>
+<span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a>            <span class="va">self</span>.end_headers()</span>
+<span id="cb1-47"><a href="#cb1-47" aria-hidden="true" tabindex="-1"></a>        <span class="cf">elif</span> <span class="va">self</span>.path <span class="op">==</span> <span class="st">'/index.html'</span>:</span>
+<span id="cb1-48"><a href="#cb1-48" aria-hidden="true" tabindex="-1"></a>            content <span class="op">=</span> PAGE.encode(<span class="st">'utf-8'</span>)</span>
+<span id="cb1-49"><a href="#cb1-49" aria-hidden="true" tabindex="-1"></a>            <span class="va">self</span>.send_response(<span class="dv">200</span>)</span>
+<span id="cb1-50"><a href="#cb1-50" aria-hidden="true" tabindex="-1"></a>            <span class="va">self</span>.send_header(<span class="st">'Content-Type'</span>, <span class="st">'text/html'</span>)</span>
+<span id="cb1-51"><a href="#cb1-51" aria-hidden="true" tabindex="-1"></a>            <span class="va">self</span>.send_header(<span class="st">'Content-Length'</span>, <span class="bu">len</span>(content))</span>
+<span id="cb1-52"><a href="#cb1-52" aria-hidden="true" tabindex="-1"></a>            <span class="va">self</span>.end_headers()</span>
+<span id="cb1-53"><a href="#cb1-53" aria-hidden="true" tabindex="-1"></a>            <span class="va">self</span>.wfile.write(content)</span>
+<span id="cb1-54"><a href="#cb1-54" aria-hidden="true" tabindex="-1"></a>        <span class="cf">elif</span> <span class="va">self</span>.path <span class="op">==</span> <span class="st">'/stream.mjpg'</span>:</span>
+<span id="cb1-55"><a href="#cb1-55" aria-hidden="true" tabindex="-1"></a>            <span class="va">self</span>.send_response(<span class="dv">200</span>)</span>
+<span id="cb1-56"><a href="#cb1-56" aria-hidden="true" tabindex="-1"></a>            <span class="va">self</span>.send_header(<span class="st">'Age'</span>, <span class="dv">0</span>)</span>
+<span id="cb1-57"><a href="#cb1-57" aria-hidden="true" tabindex="-1"></a>            <span class="va">self</span>.send_header(<span class="st">'Cache-Control'</span>, <span class="st">'no-cache, private'</span>)</span>
+<span id="cb1-58"><a href="#cb1-58" aria-hidden="true" tabindex="-1"></a>            <span class="va">self</span>.send_header(<span class="st">'Pragma'</span>, <span class="st">'no-cache'</span>)</span>
+<span id="cb1-59"><a href="#cb1-59" aria-hidden="true" tabindex="-1"></a>            <span class="va">self</span>.send_header(<span class="st">'Content-Type'</span>, <span class="st">'multipart/x-mixed-replace; boundary=FRAME'</span>)</span>
+<span id="cb1-60"><a href="#cb1-60" aria-hidden="true" tabindex="-1"></a>            <span class="va">self</span>.end_headers()</span>
+<span id="cb1-61"><a href="#cb1-61" aria-hidden="true" tabindex="-1"></a>            <span class="cf">try</span>:</span>
+<span id="cb1-62"><a href="#cb1-62" aria-hidden="true" tabindex="-1"></a>                <span class="cf">while</span> <span class="va">True</span>:</span>
+<span id="cb1-63"><a href="#cb1-63" aria-hidden="true" tabindex="-1"></a>                    <span class="cf">with</span> output.condition:</span>
+<span id="cb1-64"><a href="#cb1-64" aria-hidden="true" tabindex="-1"></a>                        output.condition.wait()</span>
+<span id="cb1-65"><a href="#cb1-65" aria-hidden="true" tabindex="-1"></a>                        frame <span class="op">=</span> output.frame</span>
+<span id="cb1-66"><a href="#cb1-66" aria-hidden="true" tabindex="-1"></a>                    <span class="va">self</span>.wfile.write(<span class="st">b'--FRAME</span><span class="ch">\r\n</span><span class="st">'</span>)</span>
+<span id="cb1-67"><a href="#cb1-67" aria-hidden="true" tabindex="-1"></a>                    <span class="va">self</span>.send_header(<span class="st">'Content-Type'</span>, <span class="st">'image/jpeg'</span>)</span>
+<span id="cb1-68"><a href="#cb1-68" aria-hidden="true" tabindex="-1"></a>                    <span class="va">self</span>.send_header(<span class="st">'Content-Length'</span>, <span class="bu">len</span>(frame))</span>
+<span id="cb1-69"><a href="#cb1-69" aria-hidden="true" tabindex="-1"></a>                    <span class="va">self</span>.end_headers()</span>
+<span id="cb1-70"><a href="#cb1-70" aria-hidden="true" tabindex="-1"></a>                    <span class="va">self</span>.wfile.write(frame)</span>
+<span id="cb1-71"><a href="#cb1-71" aria-hidden="true" tabindex="-1"></a>                    <span class="va">self</span>.wfile.write(<span class="st">b'</span><span class="ch">\r\n</span><span class="st">'</span>)</span>
+<span id="cb1-72"><a href="#cb1-72" aria-hidden="true" tabindex="-1"></a>            <span class="cf">except</span> <span class="pp">Exception</span> <span class="im">as</span> e:</span>
+<span id="cb1-73"><a href="#cb1-73" aria-hidden="true" tabindex="-1"></a>                logging.warning(</span>
+<span id="cb1-74"><a href="#cb1-74" aria-hidden="true" tabindex="-1"></a>                    <span class="st">'Removed streaming client </span><span class="sc">%s</span><span class="st">: </span><span class="sc">%s</span><span class="st">'</span>,</span>
+<span id="cb1-75"><a href="#cb1-75" aria-hidden="true" tabindex="-1"></a>                    <span class="va">self</span>.client_address, <span class="bu">str</span>(e))</span>
+<span id="cb1-76"><a href="#cb1-76" aria-hidden="true" tabindex="-1"></a>        <span class="cf">else</span>:</span>
+<span id="cb1-77"><a href="#cb1-77" aria-hidden="true" tabindex="-1"></a>            <span class="va">self</span>.send_error(<span class="dv">404</span>)</span>
+<span id="cb1-78"><a href="#cb1-78" aria-hidden="true" tabindex="-1"></a>            <span class="va">self</span>.end_headers()</span>
+<span id="cb1-79"><a href="#cb1-79" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-80"><a href="#cb1-80" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-81"><a href="#cb1-81" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> StreamingServer(socketserver.ThreadingMixIn, server.HTTPServer):</span>
+<span id="cb1-82"><a href="#cb1-82" aria-hidden="true" tabindex="-1"></a>    allow_reuse_address <span class="op">=</span> <span class="va">True</span></span>
+<span id="cb1-83"><a href="#cb1-83" aria-hidden="true" tabindex="-1"></a>    daemon_threads <span class="op">=</span> <span class="va">True</span></span>
+<span id="cb1-84"><a href="#cb1-84" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-85"><a href="#cb1-85" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-86"><a href="#cb1-86" aria-hidden="true" tabindex="-1"></a>picam2 <span class="op">=</span> Picamera2()</span>
+<span id="cb1-87"><a href="#cb1-87" aria-hidden="true" tabindex="-1"></a>picam2.configure(picam2.create_video_configuration(main<span class="op">=</span>{<span class="st">"size"</span>: (<span class="dv">640</span>, <span class="dv">480</span>)}))</span>
+<span id="cb1-88"><a href="#cb1-88" aria-hidden="true" tabindex="-1"></a>output <span class="op">=</span> StreamingOutput()</span>
+<span id="cb1-89"><a href="#cb1-89" aria-hidden="true" tabindex="-1"></a>picam2.start_recording(JpegEncoder(), FileOutput(output))</span>
+<span id="cb1-90"><a href="#cb1-90" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-91"><a href="#cb1-91" aria-hidden="true" tabindex="-1"></a><span class="cf">try</span>:</span>
+<span id="cb1-92"><a href="#cb1-92" aria-hidden="true" tabindex="-1"></a>    address <span class="op">=</span> (<span class="st">''</span>, <span class="dv">8000</span>)</span>
+<span id="cb1-93"><a href="#cb1-93" aria-hidden="true" tabindex="-1"></a>    server <span class="op">=</span> StreamingServer(address, StreamingHandler)</span>
+<span id="cb1-94"><a href="#cb1-94" aria-hidden="true" tabindex="-1"></a>    server.serve_forever()</span>
+<span id="cb1-95"><a href="#cb1-95" aria-hidden="true" tabindex="-1"></a><span class="cf">finally</span>:</span>
+<span id="cb1-96"><a href="#cb1-96" aria-hidden="true" tabindex="-1"></a>    picam2.stop_recording()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<div id="tabset-2-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-2-2-tab">
+<p>Very simple using&nbsp;<code>ffmpeg</code>&nbsp;and&nbsp;<code>picamera2</code>&nbsp; in conjunction.&nbsp;</p>
+<p>The performance of HLS is great at ~40% CPU, but the latency is awful at 5-10s easily!</p>
+<p><strong>Python</strong></p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> time</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> picamera2.outputs <span class="im">import</span> FfmpegOutput</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> picamera2.encoders <span class="im">import</span> H264Encoder, Quality</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> picamera2 <span class="im">import</span> Picamera2</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>picam2 <span class="op">=</span> Picamera2()</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>picam2.configure(picam2.create_video_configuration(main<span class="op">=</span>{<span class="st">"size"</span>: (<span class="dv">640</span>, <span class="dv">480</span>)}))</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>encoder <span class="op">=</span> H264Encoder(bitrate<span class="op">=</span><span class="dv">1000000</span>, repeat<span class="op">=</span><span class="va">True</span>, iperiod<span class="op">=</span><span class="dv">15</span>)</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>output <span class="op">=</span> FfmpegOutput(<span class="st">"-f hls -hls_time 4 -hls_list_size 5 -hls_flags delete_segments -hls_allow_cache 0 stream.m3u8"</span>)</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>picam2.start_recording(encoder, output)</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>time.sleep(<span class="dv">9999999</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><strong>HTML</strong></p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode html code-with-copy"><code class="sourceCode html"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">&lt;video</span> <span class="er">width</span><span class="ot">=</span><span class="st">"320"</span> <span class="er">height</span><span class="ot">=</span><span class="st">"240"</span> <span class="er">controls</span> <span class="er">autoplay</span><span class="kw">&gt;</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">&lt;source</span> <span class="er">src</span><span class="ot">=</span><span class="st">"stream.m3u8"</span> <span class="er">type</span><span class="ot">=</span><span class="st">"application/x-mpegURL"</span> <span class="kw">/&gt;</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    Your browser does not support the video tag.</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="kw">&lt;/video&gt;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="tabset-2-3" class="tab-pane" role="tabpanel" aria-labelledby="tabset-2-3-tab">
+<p>I’ve basically re-used&nbsp;<a href="https://github.com/bezineb5/go-h264-streamer"><code>go-h264-streamer</code></a>&nbsp;which is a very simple yet efficient golang-implementation of a websocket driven H264 streamer that streams through websocket to a client. The client has a JS script which is WebASM/emscripten compiled to use WebGL-accelerated graphics to decode the H264 into frames.&nbsp;</p>
+<p>What’s really cool about this implementation is that it only starts the video stream when people connect and shut it down when there’s no connected websockets.</p>
+</div>
+<div id="tabset-2-4" class="tab-pane" role="tabpanel" aria-labelledby="tabset-2-4-tab">
+<p>I kept myself to KISS, unlike all this testing of approaches, and went with golangs&nbsp;<code>pion</code>&nbsp;(<a href="https://github.com/pion/webrtc">https://github.com/pion/webrtc</a>)&nbsp; and their excellent&nbsp;<code>mediadevices</code>&nbsp;(<a href="https://github.com/pion/mediadevices">https://github.com/pion/mediadevices</a>) which wraps the legacy pi camera stack (non-open source drivers, unlike the modern pi camera stack which builds on&nbsp;<code>libcamera</code>).</p>
+</div>
+</div>
+</div>
+</section>
+<section id="performance" class="level3">
+<h3 class="anchored" data-anchor-id="performance">Performance</h3>
+<p>Stats taken from <code>top</code>.</p>
+<table class="table">
+<colgroup>
+<col style="width: 14%">
+<col style="width: 14%">
+<col style="width: 14%">
+<col style="width: 14%">
+<col style="width: 14%">
+<col style="width: 14%">
+<col style="width: 14%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Hardware</th>
+<th>HTTP - MJPEG</th>
+<th>HLS</th>
+<th>Websocket no connection</th>
+<th>Websocket</th>
+<th>WebRTC</th>
+<th>WebRTC (<code>aiortc</code>)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>CPU</strong></td>
+<td>150%</td>
+<td><strong>40%</strong></td>
+<td>&lt;=0.2%</td>
+<td><strong>40%</strong></td>
+<td>170%</td>
+<td>250-350%</td>
+</tr>
+<tr class="even">
+<td><strong>RAM</strong></td>
+<td>6%</td>
+<td><strong>4%</strong></td>
+<td>&lt;=0.4%</td>
+<td>6%</td>
+<td>5%</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="ending-notes" class="level2">
+<h2 class="anchored" data-anchor-id="ending-notes">Ending Notes</h2>
+<p>This is what I have currently.&nbsp;<strong>In the next blog I’ll go through how we’ll set up a backend which will allow us to use the sensors, move the servos and stream audio/video.</strong></p>
+<p>I think the bidirectional communication will require a third blog, and then manufacturing a 3D-printed case as a fourth!</p>
+<p>Until next time,<br>
+Hampus Londögård</p>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+      <ul class="footer-items list-unstyled">
+    <li class="nav-item">
+    <a class="nav-link" href="https://www.buymeacoffee.com/hlondogard">Buy me a Coffee↗</a>
+  </li>  
+    <li class="nav-item">
+    <a class="nav-link" href="https://github.com/sponsors/Lundez?o=esb">Support on GitHub↗</a>
+  </li>  
+</ul>
+    </div>   
+      <div class="nav-footer-center">
+        <ul class="footer-items list-unstyled">
+    <li class="nav-item">
+    <a class="nav-link" href="../about.html">About</a>
+  </li>  
+</ul>
+      </div>
+    <div class="nav-footer-right">
+      <ul class="footer-items list-unstyled">
+    <li class="nav-item compact">
+    <a class="nav-link" href="https://www.linkedin.com/in/hampus-londögård/">
+      <i class="bi bi-linkedin" role="img" aria-label="LinkedIn">
+</i> 
+    </a>
+  </li>  
+    <li class="nav-item compact">
+    <a class="nav-link" href="https://twitter.com/hlondogard">
+      <i class="bi bi-twitter" role="img" aria-label="Twitter">
+</i> 
+    </a>
+  </li>  
+    <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/lundez">
+      <i class="bi bi-github" role="img" aria-label="Lundez GitHub">
+</i> 
+    </a>
+  </li>  
+    <li class="nav-item compact">
+    <a class="nav-link" href="../index.xml">
+      <i class="bi bi-rss" role="img" aria-label="Londogard Blog RSS">
+</i> 
+    </a>
+  </li>  
+</ul>
+    </div>
+  </div>
+</footer>
+
+
+
+</body></html>

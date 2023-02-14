@@ -1,0 +1,1770 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.2.335">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Hampus Londögård">
+<meta name="dcterms.date" content="2021-02-18">
+<meta name="description" content="In this post I walk through Self-Attention Transformers from scratch with demos at the end for Text Classification &amp; Generation, where the PyTorch-code is wrapped by fast.ai to simplify end-2-end.">
+
+<title>Londogard Blog - Transformers From Scratch</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../../favicon.ico" rel="icon">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" integrity="sha512-c3Nl8+7g4LMSTdrm621y7kf9v3SDPnhxLNhcjFJbKECVnmZHTdo+IRO05sNLTH/D3vA6u1X32ehoLC7WFVdheg==" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script>
+<script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
+
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<link rel="stylesheet" href="../../styles.css">
+<meta name="twitter:title" content="Londogard Blog - Transformers From Scratch">
+<meta name="twitter:description" content="In this post I walk through Self-Attention Transformers from scratch with demos at the end for Text Classification &amp; Generation, where the PyTorch-code is wrapped by fast.ai to simplify end-2-end.">
+<meta name="twitter:creator" content="@hlondogard">
+<meta name="twitter:card" content="summary">
+</head>
+
+<body class="nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">Londogard Blog</span>
+    </a>
+  </div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../presentations.html">
+ <span class="menu-text">Presentations</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="https://londogard.com/projects">
+ <span class="menu-text">Londogard Projects↗</span></a>
+  </li>  
+</ul>
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../about.html">
+ <span class="menu-text">About</span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://www.linkedin.com/in/hampus-londögård/"><i class="bi bi-linkedin" role="img" aria-label="LinkedIn">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://twitter.com/hlondogard"><i class="bi bi-twitter" role="img" aria-label="Twitter">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-bi-github" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+      <i class="bi bi-github" role="img">
+</i> 
+ <span class="menu-text"></span>
+    </a>
+    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="nav-menu-bi-github">    
+        <li>
+    <a class="dropdown-item" href="https://github.com/lundez"><i class="bi bi-github" role="img">
+</i> 
+ <span class="dropdown-text">Lundez</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="https://github.com/londogard"><i class="bi bi-github" role="img">
+</i> 
+ <span class="dropdown-text">Londogard</span></a>
+  </li>  
+    </ul>
+  </li>
+  <li class="nav-item compact">
+    <a class="nav-link" href="../../index.xml"><i class="bi bi-rss" role="img" aria-label="Londogard Blog RSS">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+</ul>
+              <div id="quarto-search" class="" title="Search"></div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<header id="title-block-header" class="quarto-title-block default page-columns page-full">
+  <div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-body">
+      <h1 class="title">Transformers From Scratch</h1>
+                  <div>
+        <div class="description">
+          In this post I walk through Self-Attention Transformers from scratch with demos at the end for Text Classification &amp; Generation, where the PyTorch-code is wrapped by fast.ai to simplify end-2-end.
+        </div>
+      </div>
+                          <div class="quarto-categories">
+                <div class="quarto-category">nlp</div>
+                <div class="quarto-category">machine-learning</div>
+                <div class="quarto-category">deep-learning</div>
+                <div class="quarto-category">workshop</div>
+              </div>
+                  </div>
+  </div>
+    
+  
+  <div class="quarto-title-meta">
+
+      <div>
+      <div class="quarto-title-meta-heading">Author</div>
+      <div class="quarto-title-meta-contents">
+               <p>Hampus Londögård </p>
+            </div>
+    </div>
+      
+      <div>
+      <div class="quarto-title-meta-heading">Published</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date">February 18, 2021</p>
+      </div>
+    </div>
+    
+      
+    </div>
+    
+  
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#transformers-from-scratch" id="toc-transformers-from-scratch" class="nav-link active" data-scroll-target="#transformers-from-scratch">Transformers From Scratch</a>
+  <ul class="collapse">
+  <li><a href="#transformers-explained" id="toc-transformers-explained" class="nav-link" data-scroll-target="#transformers-explained">Transformers explained</a></li>
+  <li><a href="#self-attention" id="toc-self-attention" class="nav-link" data-scroll-target="#self-attention">Self-attention</a></li>
+  <li><a href="#understanding-how-it-works" id="toc-understanding-how-it-works" class="nav-link" data-scroll-target="#understanding-how-it-works">Understanding how it works</a></li>
+  <li><a href="#in-pytorch-basic-self-attention" id="toc-in-pytorch-basic-self-attention" class="nav-link" data-scroll-target="#in-pytorch-basic-self-attention">In Pytorch: basic self-attention</a></li>
+  <li><a href="#additional-tricks" id="toc-additional-tricks" class="nav-link" data-scroll-target="#additional-tricks">Additional Tricks</a>
+  <ul class="collapse">
+  <li><a href="#queries-keys-values" id="toc-queries-keys-values" class="nav-link" data-scroll-target="#queries-keys-values">1) Queries, keys &amp; values</a></li>
+  <li><a href="#scaling-the-dot-product" id="toc-scaling-the-dot-product" class="nav-link" data-scroll-target="#scaling-the-dot-product">2) Scaling the Dot Product</a></li>
+  <li><a href="#multi-head-attention" id="toc-multi-head-attention" class="nav-link" data-scroll-target="#multi-head-attention">3) Multi-head Attention</a></li>
+  </ul></li>
+  <li><a href="#in-pytorch-complete-self-attention" id="toc-in-pytorch-complete-self-attention" class="nav-link" data-scroll-target="#in-pytorch-complete-self-attention">In Pytorch: complete self-attention</a></li>
+  <li><a href="#building-transformers" id="toc-building-transformers" class="nav-link" data-scroll-target="#building-transformers">Building Transformers</a>
+  <ul class="collapse">
+  <li><a href="#the-transformer-block" id="toc-the-transformer-block" class="nav-link" data-scroll-target="#the-transformer-block">The transformer block</a></li>
+  </ul></li>
+  <li><a href="#classification-transformer" id="toc-classification-transformer" class="nav-link" data-scroll-target="#classification-transformer">Classification transformer</a>
+  <ul class="collapse">
+  <li><a href="#output-producing-a-classifier" id="toc-output-producing-a-classifier" class="nav-link" data-scroll-target="#output-producing-a-classifier">Output: producing a classifier</a></li>
+  <li><a href="#input-using-positions-think-ngram" id="toc-input-using-positions-think-ngram" class="nav-link" data-scroll-target="#input-using-positions-think-ngram">Input: Using Positions (think: ngram)</a></li>
+  <li><a href="#pytorch" id="toc-pytorch" class="nav-link" data-scroll-target="#pytorch">PyTorch</a></li>
+  </ul></li>
+  <li><a href="#text-generation-transformer" id="toc-text-generation-transformer" class="nav-link" data-scroll-target="#text-generation-transformer">Text generation transformer</a></li>
+  <li><a href="#in-pytorch" id="toc-in-pytorch" class="nav-link" data-scroll-target="#in-pytorch">In PyTorch</a></li>
+  </ul></li>
+  <li><a href="#appendix-demos-text-classification-text-generation" id="toc-appendix-demos-text-classification-text-generation" class="nav-link" data-scroll-target="#appendix-demos-text-classification-text-generation">Appendix: Demos (Text Classification &amp; Text Generation)</a>
+  <ul class="collapse">
+  <li><a href="#dependencies" id="toc-dependencies" class="nav-link" data-scroll-target="#dependencies">Dependencies</a></li>
+  <li><a href="#text-classification" id="toc-text-classification" class="nav-link" data-scroll-target="#text-classification">Text Classification</a>
+  <ul class="collapse">
+  <li><a href="#model-classifier" id="toc-model-classifier" class="nav-link" data-scroll-target="#model-classifier">Model (Classifier)</a></li>
+  <li><a href="#the-text-classification" id="toc-the-text-classification" class="nav-link" data-scroll-target="#the-text-classification">The Text Classification</a></li>
+  </ul></li>
+  <li><a href="#text-generation" id="toc-text-generation" class="nav-link" data-scroll-target="#text-generation">Text Generation</a>
+  <ul class="collapse">
+  <li><a href="#the-model" id="toc-the-model" class="nav-link" data-scroll-target="#the-model">The Model</a></li>
+  <li><a href="#the-text-generation" id="toc-the-text-generation" class="nav-link" data-scroll-target="#the-text-generation">The Text Generation</a></li>
+  </ul></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content quarto-banner-title-block" id="quarto-document-content">
+
+
+
+
+<section id="transformers-from-scratch" class="level1">
+<h1>Transformers From Scratch</h1>
+<p>The video from the workshop (in Swedish) can be found on <a href="https://youtu.be/bHIU96D8SSQ">YouTube</a>.</p>
+<p>Today I’m taking <strong>huge inspiration from Peter Bloem</strong> (Vrije Universiteit Amsterdam) which is a <a href="http://peterbloem.nl/blog/transformers">great blog post</a> &amp; <a href="https://youtu.be/KmAISyVvE1Y?list=PLIXJ-Sacf8u60G1TwcznBmK6rEL3gmZmV">video lecture</a>. It’s <strong>essentially a 80-90 % copy of the blog, with minor modifications and reworked code into TODOs</strong> to make it more like a workshop using the Jupyter format (fitting nicely with Google Colab).<br>
+<em>As demonstrations in the end I integrate PyTorch-code with fast.ai framework.</em><br>
+These demos are done to have a foundation for you to play around with as the models are not deep enough and does not train enough to really show-case the power of Transformers.</p>
+<p>I want to note that the original blog by Peter Bloems is a work of art and does a better job at visualizing graphics in combination with text.</p>
+<p>Finally this blog was done to support a ‘Competence Night’ in Machine Learning that I did @ AFRY.</p>
+<section id="transformers-explained" class="level2">
+<h2 class="anchored" data-anchor-id="transformers-explained">Transformers explained</h2>
+<blockquote class="blockquote">
+<p>Transformers are a very exciting family of machine learning architectures. Many good tutorials exist but in the last few years, transformers have mostly become simpler, so that it is now much more straightforward to explain how modern architectures work. This post (read: Peter Bloems blog) is an attempt to explain directly how modern transformers work, and why, without some of the historical baggage.</p>
+</blockquote>
+<p>It’s assumed a basic understanding of neural networks and backpropagation, for those that are not sure you can either brush up your knowledge in <a href="https://youtu.be/1NVgspM98W0">this video</a> and learn how they’re used today <a href="https://youtu.be/DidHjsp_OV0">here</a>.</p>
+<p>Further we’ll use PyTorch, with some fast.ai for the demos in appendix, to implement the full self attention &amp; transformer module(s).</p>
+</section>
+<section id="self-attention" class="level2">
+<h2 class="anchored" data-anchor-id="self-attention">Self-attention</h2>
+<p>The fundamental operation of any transformer architecture is the self-attention operation.</p>
+<p><strong>Self-attention is a sequence-to-sequence operation</strong>, that is we input a sequence and we have a sequence returned.<br>
+Let’s say we’ve got <code>x1..xn</code> as input and <code>y1..yn</code> as output where each vector is dimensioned <code>k</code>.</p>
+<p>To produce output vector 𝐲i, the self attention operation simply takes a weighted average over all the input vectors</p>
+<p><span class="math inline">\(y_i = \sum_{j=0}^{j=k}{w_{ij}x_j}\)</span></p>
+<p>Where the weights summed over <span class="math inline">\(j=0..k\)</span> is equal to <span class="math inline">\(1\)</span>. <span class="math inline">\(w_{ij}\)</span> is not a parameter but is derived from a function over <span class="math inline">\(x_i\)</span> and <span class="math inline">\(x_j\)</span>.<br>
+The simplest being the dot-product.</p>
+<p><span class="math inline">\(w_{ij}^{'} = x_i^Tx_j\)</span></p>
+<p>Where <span class="math inline">\(x_i\)</span> is at the same position as <span class="math inline">\(y_i\)</span> and <span class="math inline">\(x_j\)</span> traverses through all k values. For <span class="math inline">\(x_{i+1}\)</span> we get a completely different output!</p>
+<p>Because the dot product has no bounds we apply softmax to the result, so that the whole sequence sum to <span class="math inline">\(1\)</span>.</p>
+<p><span class="math inline">\(w_{ij} = \frac{\text{exp } w_{ij}^{'}}{\sum_{j} \text{exp } w_{ij}^{'}}\)</span></p>
+<p>And that’s really it.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://user-images.githubusercontent.com/7490199/218255581-54624bd8-de0f-4340-a085-d6605b3d5310.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">attention</figcaption><p></p>
+</figure>
+</div>
+<blockquote class="blockquote">
+<p>A visual illustration of basic self-attention. Note that the softmax operation over the weights is not illustrated.</p>
+</blockquote>
+<p>Obviously we need to apply a few more things to create a Transformer, but we’ll get to that.</p>
+</section>
+<section id="understanding-how-it-works" class="level2">
+<h2 class="anchored" data-anchor-id="understanding-how-it-works">Understanding how it works</h2>
+<p>As shown previously we’ll use Movie Recommender system to show <em>why</em> the dot-product works.<br>
+Say you created your manually annotated data</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://user-images.githubusercontent.com/7490199/218255785-253e9052-3cbc-4fb7-b797-5fbd102432e9.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">image</figcaption><p></p>
+</figure>
+</div>
+<p>As you see, negative + negative = positive, positive + positive = positive.<br>
+The magnitude of the score increases the final outcome.</p>
+<p>So combining these two vectors together will work out real nice!</p>
+<p>This might not be so practical in reality and as such we make the movie and user features <em>parameters</em> of the model. Then we ask the user for for a small number of movies they like and optimize the features so that their dot product matches the known likes.<br>
+Even when not manually giving any features meaningful data is extracted.</p>
+<p>Even though we don’t tell the model what any of the features should mean, in practice, it turns out that after training the features do actually reflect meaningful semantics about the movie content.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://user-images.githubusercontent.com/7490199/218255808-6dd74148-9dd1-40dd-b158-2b7935ae49a5.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">image</figcaption><p></p>
+</figure>
+</div>
+<p>This is in essence the same as self-attention.</p>
+<p>Using word embeddings on a sentence as</p>
+<p><span class="math inline">\(v_{the}, v_{cat}, v_{walk}\)</span></p>
+<p>and feed it into self attention we get the output-vectors y,</p>
+<p><span class="math inline">\(y_{the}, y_{cat}, y_{walk}\)</span></p>
+<p>where y-vectors are the <em>weighted sum over all embedding vectors in the first sequence</em>, weighted by their (normalized) dot-product with <span class="math inline">\(v_{cat}\)</span>.<br>
+E.g. <span class="math inline">\(y_{the}\)</span> = <span class="math inline">\(v_{the} * v_{the} + v_{the} * v_{cat} + v_{the} * v_{walk}\)</span>.</p>
+<p>Because <em>v</em> is learned this will continually be updated to work better. While updating how <em>v</em> is created most likely <em>walk</em> and <em>cat</em> will have a high dot-product as those are correlated.</p>
+<p>This is the basic intuition. <em>Please note:</em></p>
+<ul>
+<li>No parameters (yet) so the upstream mechanism creating the embeddings fully drives the self-attention by learning representations with particular dot-products</li>
+<li>Self-attention see the input as a <em>bag</em>, i.e.&nbsp;not a continuous input as it is, e.g.&nbsp;it is <em>permutation equivariant</em>.</li>
+</ul>
+</section>
+<section id="in-pytorch-basic-self-attention" class="level2">
+<h2 class="anchored" data-anchor-id="in-pytorch-basic-self-attention">In Pytorch: basic self-attention</h2>
+<blockquote class="blockquote">
+<p>What I cannot create, I do not understand <em>- Feynman</em></p>
+</blockquote>
+<p>The first thing we need to implement is matrix multiplications, which will be done through <em>torch</em> as native python loops are too slow.</p>
+<p>Input: <span class="math inline">\(t\)</span> vectors, dimension <span class="math inline">\(k\)</span> and <span class="math inline">\(b\)</span> mini-batches (tensor: <span class="math inline">\(b, t, k\)</span>)</p>
+<p>We’ll represent the input, a sequence of t vectors of dimension k as a t by k matrix 𝐗. Including a minibatch dimension b, gives us an input tensor of size (b,t,k).</p>
+<p>The set of all raw dot products w′ij forms a matrix, which we can compute simply by multiplying 𝐗 by its transpose:</p>
+<p>Let’s code!</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> TODO(<span class="pp">Exception</span>):</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Raised when there is something TODO"""</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">pass</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> torch</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> torch.nn.functional <span class="im">as</span> F</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="co"># assume we have some tensor x with size (b=1, t=3, k=3)</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> torch.array([[<span class="fl">1.</span>,<span class="fl">2.</span>,<span class="fl">3.</span>,</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>                 <span class="fl">1.</span>,<span class="fl">2.</span>,<span class="fl">3.</span>,</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>                 <span class="fl">1.</span>,<span class="fl">2.</span>,<span class="fl">3.</span>]])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># batch matrix multiplication</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>raw_weights <span class="op">=</span> <span class="cf">raise</span> TODO(<span class="st">"Use torch batch-matrix-multiply (bmm) to do x*x^T. Remember there's 3 dimensions!"</span>)</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Apply row-wise Softmax</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>weights <span class="op">=</span> <span class="cf">raise</span> TODO(<span class="st">"Use functional softmax to apply softmax row-wise (along which dim?)"</span>)</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="co"># creating y</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> torch.bmm(weights, x)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>And that’s it. We have created basic self-attention which is the basis of Transformers (state-of-the-art).</p>
+</section>
+<section id="additional-tricks" class="level2">
+<h2 class="anchored" data-anchor-id="additional-tricks">Additional Tricks</h2>
+<p>To implement Transformers fully we need to add a few tricks.</p>
+<section id="queries-keys-values" class="level3">
+<h3 class="anchored" data-anchor-id="queries-keys-values">1) Queries, keys &amp; values</h3>
+<p>Each input-vector <span class="math inline">\(x_i\)</span> is used 3 times</p>
+<ol type="1">
+<li>Creating its own weight for <span class="math inline">\(y_i\)</span></li>
+<li>Creating others weight for <span class="math inline">\(y\)</span> (<span class="math inline">\(y_j\)</span>)</li>
+<li>Used as a part of the weighted sum for each output <span class="math inline">\(y\)</span></li>
+</ol>
+<p>This is often called the <strong>query</strong>, the <strong>key</strong>, and the <strong>value</strong> (explained later).<br>
+We update the network to instead use <em>three weight-matrices</em>, one for each task, making it more controllable. Adding <span class="math inline">\(W_k, W_q, W_v\)</span> of size <span class="math inline">\(k*k\)</span>, we’ve got</p>
+<p><span class="math inline">\(q_i = W_qx_i, k_i = W_kx_i, v_i = W_vx_i\)</span><br>
+<span class="math inline">\(w_{ij}^{'} = q_i^Tk_j\)</span> <span class="math inline">\(w_ {ij} = softmax(w_{ij}^{'})\)</span><br>
+<span class="math inline">\(y_i = \sum_j w_{ij}v_j\)</span></p>
+<p>We’ve now given the Self Attention some controllable parameters &amp; allows modification to the input vector to fit the task at hands.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://user-images.githubusercontent.com/7490199/218255869-749bfc2e-df1f-498d-8261-47b2d3230e35.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">image</figcaption><p></p>
+</figure>
+</div>
+<blockquote class="blockquote">
+<p>Illustration of the self-attention with key (red), query (query) and value (green) transformations. Remember old image and compare!</p>
+</blockquote>
+</section>
+<section id="scaling-the-dot-product" class="level3">
+<h3 class="anchored" data-anchor-id="scaling-the-dot-product">2) Scaling the Dot Product</h3>
+<p>Softmax can be <em>very sensitive to large values</em>, exploding gradient or making it slow to learn.<br>
+I don’t recall where but ~ 8 years ago someone figured out that scaling the value by <span class="math inline">\(\frac{1}{\sqrt{k}}\)</span> where <span class="math inline">\(k\)</span> is the embedding dimension.</p>
+<p><span class="math inline">\(w_{ij}^{'} = \frac{q_i^Tk_j}{\sqrt{k}}\)</span></p>
+<p><em>Why <span class="math inline">\(\sqrt{k}\)</span>? Imagine a vector in <span class="math inline">\(ℝk\)</span> with values all <span class="math inline">\(c\)</span>. Its Euclidean length is <span class="math inline">\(\sqrt{k}c\)</span>. Therefore, we are dividing out the amount by which the increase in dimension increases the length of the average vectors.</em></p>
+</section>
+<section id="multi-head-attention" class="level3">
+<h3 class="anchored" data-anchor-id="multi-head-attention">3) Multi-head Attention</h3>
+<p>The final improvement is to allow word to have different meanings with different neighbours (basically what <em>ngram</em> achieves).</p>
+<p>By adding multiple, indexed <em>r</em>, self attention mechanisms with different matrices, <span class="math inline">\(W_q^r\)</span> etc. These are called <em>attention heads</em>.</p>
+<p>For input <span class="math inline">\(x_i\)</span> each attention head produces a different output vector <span class="math inline">\(y_i^r\)</span>. We concatenate these, and pass them through a linear transformation to reduce the dimension back to <span class="math inline">\(k\)</span>. <strong>Remember what is a linear transformation?</strong></p>
+<p><strong>Narrow and wide self-attention</strong>. There’s two ways to apply <em>Multi-Head Self-Attention</em>.<br>
+1. (<em>narrow</em>) Cut embedding vector into chunks - 8 heads &amp; <span class="math inline">\(k=256\)</span> –&gt; 8 chunks of size 32 - Each chunk gets Q, K, V matrices (<span class="math inline">\(W_q^r\)</span>,…) (<span class="math inline">\(32\times32\)</span>) 2. (<em>wide</em>) Make matrices <span class="math inline">\(256\times256\)</span> and apply each head to the whole 256-vector - First (<em>narrow</em>) = faster &amp; less memory - Second (<em>wider</em>) = better result</p>
+<p>Only second (<em>wider</em>) variant described.</p>
+</section>
+</section>
+<section id="in-pytorch-complete-self-attention" class="level2">
+<h2 class="anchored" data-anchor-id="in-pytorch-complete-self-attention">In Pytorch: complete self-attention</h2>
+<p>Let’s make the implementation with bells &amp; whistles.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> torch</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> torch <span class="im">import</span> nn</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> torch.nn.functional <span class="im">as</span> F</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> SelfAttention():</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>  <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, k, heads<span class="op">=</span><span class="dv">8</span>):</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">raise</span> TODO(<span class="st">"Make SelfAttention a torch module (nn.Module)"</span>)</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>    <span class="bu">super</span>().<span class="fu">__init__</span>()</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>    <span class="va">self</span>.k, <span class="va">self</span>.heads <span class="op">=</span> k, heads</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://user-images.githubusercontent.com/7490199/218257812-fe88920f-e431-441a-8bda-047279aa3c60.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">image</figcaption><p></p>
+</figure>
+</div>
+<blockquote class="blockquote">
+<p>Combining three attention heads into one matrix multiplication (for the queries).</p>
+</blockquote>
+<p><em>h</em> attention-heads considered as <em>h</em> separate sets of <span class="math inline">\(W_q^r,W_k^r,W_v^r\)</span>, but as shown in image above <strong>a more efficient approach is possible</strong>.</p>
+<p>Combine all heads into three single <span class="math inline">\(k\times hk\)</span> matrices.<br>
+This means that we can compute the concatenated <em>queries</em>, <em>keys</em> &amp; <em>values</em> in a single matrix multiplication.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> SelfAttention(nn.Module):</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, k, heads<span class="op">=</span><span class="dv">8</span>):</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    <span class="bu">super</span>().<span class="fu">__init__</span>()</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    <span class="va">self</span>.k, <span class="va">self</span>.heads <span class="op">=</span> k, heads</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>    <span class="co"># These compute the queries, keys and values for all </span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>    <span class="co"># heads (as a single concatenated vector)</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>    <span class="va">self</span>.tokeys    <span class="op">=</span> <span class="cf">raise</span> TODO(<span class="st">"Create a linear layer of k * hk size, no bias"</span>)</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>    <span class="va">self</span>.toqueries <span class="op">=</span> <span class="cf">raise</span> TODO(<span class="st">"Create a linear layer of k * hk size, no bias"</span>)</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>    <span class="va">self</span>.tovalues  <span class="op">=</span> <span class="cf">raise</span> TODO(<span class="st">"Create a linear layer of k * hk size, no bias"</span>)</span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>      <span class="co"># This unifies the outputs of the different heads into a single k-vector</span></span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>      <span class="va">self</span>.unifyheads <span class="op">=</span> <span class="cf">raise</span> TODO(<span class="st">"Create a linear layer of k * hk size, WITH bias"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>From here we can implement the computation of the self-attention (<code>forward</code> function). Where we first calculate <em>queries, keys &amp; values</em>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> SelfAttention(nn.Module):</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, k, heads<span class="op">=</span><span class="dv">8</span>):</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>    <span class="bu">super</span>().<span class="fu">__init__</span>()</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>    <span class="va">self</span>.k, <span class="va">self</span>.heads <span class="op">=</span> k, heads</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>    <span class="co"># These compute the queries, keys and values for all </span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>    <span class="co"># heads (as a single concatenated vector)</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>    <span class="va">self</span>.tokeys    <span class="op">=</span> nn.Linear(k, k <span class="op">*</span> heads, bias<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>    <span class="va">self</span>.toqueries <span class="op">=</span> nn.Linear(k, k <span class="op">*</span> heads, bias<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>    <span class="va">self</span>.tovalues  <span class="op">=</span> nn.Linear(k, k <span class="op">*</span> heads, bias<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>      <span class="co"># This unifies the outputs of the different heads into </span></span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>      <span class="co"># a single k-vector</span></span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>      <span class="va">self</span>.unifyheads <span class="op">=</span> nn.Linear(heads <span class="op">*</span> k, k)</span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>  <span class="kw">def</span> forward(<span class="va">self</span>, x):</span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>    b, t, k <span class="op">=</span> x.size()</span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a>    h <span class="op">=</span> <span class="va">self</span>.heads</span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a>    queries <span class="op">=</span> <span class="cf">raise</span> TODO(<span class="st">"Create queries and then reshape into h separate matrices, using `view`"</span>)</span>
+<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a>    keys    <span class="op">=</span> <span class="cf">raise</span> TODO(<span class="st">"Create keys and then reshape into h separate matrices, using `view`"</span>)</span>
+<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a>    values  <span class="op">=</span> <span class="cf">raise</span> TODO(<span class="st">"Create values and then reshape into h separate matrices, using `view`"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Having reshaped <em>queries</em> etc from <span class="math inline">\((b,t, h*k)\)</span> into <span class="math inline">\((b,t,h,k)\)</span> each head has its own dimension.</p>
+<p>The step now is to <em>compute dot-product for each head</em>.<br>
+We can batch this if we reshape the matrices into something that’s possible to batch (transposing; as head/batch is not next to each-other). <strong>costly</strong></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> SelfAttention(nn.Module):</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, k, heads<span class="op">=</span><span class="dv">8</span>):</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    <span class="bu">super</span>().<span class="fu">__init__</span>()</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>    <span class="va">self</span>.k, <span class="va">self</span>.heads <span class="op">=</span> k, heads</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>    <span class="co"># These compute the queries, keys and values for all </span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>    <span class="co"># heads (as a single concatenated vector)</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>    <span class="va">self</span>.tokeys    <span class="op">=</span> nn.Linear(k, k <span class="op">*</span> heads, bias<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>    <span class="va">self</span>.toqueries <span class="op">=</span> nn.Linear(k, k <span class="op">*</span> heads, bias<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>    <span class="va">self</span>.tovalues  <span class="op">=</span> nn.Linear(k, k <span class="op">*</span> heads, bias<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>      <span class="co"># This unifies the outputs of the different heads into </span></span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>      <span class="co"># a single k-vector</span></span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>      <span class="va">self</span>.unifyheads <span class="op">=</span> nn.Linear(heads <span class="op">*</span> k, k)</span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>  <span class="kw">def</span> forward(<span class="va">self</span>, x):</span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>    b, t, k <span class="op">=</span> x.size()</span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>    h <span class="op">=</span> <span class="va">self</span>.heads</span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a>    queries <span class="op">=</span> <span class="va">self</span>.toqueries(x).view(b, t, h, k)</span>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a>    keys    <span class="op">=</span> <span class="va">self</span>.tokeys(x)   .view(b, t, h, k)</span>
+<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a>    values  <span class="op">=</span> <span class="va">self</span>.tovalues(x) .view(b, t, h, k)</span>
+<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a>    <span class="co"># - fold heads into the batch dimension ... contiguous = reshapes matrix in memory</span></span>
+<span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a>    keys <span class="op">=</span> keys.transpose(<span class="dv">1</span>, <span class="dv">2</span>).contiguous().view(b <span class="op">*</span> h, t, k)</span>
+<span id="cb7-26"><a href="#cb7-26" aria-hidden="true" tabindex="-1"></a>    queries <span class="op">=</span> queries.transpose(<span class="dv">1</span>, <span class="dv">2</span>).contiguous().view(b <span class="op">*</span> h, t, k)</span>
+<span id="cb7-27"><a href="#cb7-27" aria-hidden="true" tabindex="-1"></a>    values <span class="op">=</span> values.transpose(<span class="dv">1</span>, <span class="dv">2</span>).contiguous().view(b <span class="op">*</span> h, t, k)</span>
+<span id="cb7-28"><a href="#cb7-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-29"><a href="#cb7-29" aria-hidden="true" tabindex="-1"></a>    queries <span class="op">=</span> <span class="cf">raise</span> TODO(<span class="st">"Scale queries by k^(1/4)"</span>)</span>
+<span id="cb7-30"><a href="#cb7-30" aria-hidden="true" tabindex="-1"></a>    keys    <span class="op">=</span> <span class="cf">raise</span> TODO(<span class="st">"Scale keys by k^(1/4)"</span>)</span>
+<span id="cb7-31"><a href="#cb7-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-32"><a href="#cb7-32" aria-hidden="true" tabindex="-1"></a>    <span class="co"># - get dot product of queries and keys, and scale</span></span>
+<span id="cb7-33"><a href="#cb7-33" aria-hidden="true" tabindex="-1"></a>    dot <span class="op">=</span> torch.bmm(queries, keys.transpose(<span class="dv">1</span>, <span class="dv">2</span>))</span>
+<span id="cb7-34"><a href="#cb7-34" aria-hidden="true" tabindex="-1"></a>    <span class="co"># - dot has size (b*h, t, k) containing raw weights</span></span>
+<span id="cb7-35"><a href="#cb7-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-36"><a href="#cb7-36" aria-hidden="true" tabindex="-1"></a>    dot <span class="op">=</span> <span class="cf">raise</span> TODO(<span class="st">"Normalize row-wise using F.softmax"</span>)</span>
+<span id="cb7-37"><a href="#cb7-37" aria-hidden="true" tabindex="-1"></a>    <span class="co"># - dot now contains row-wise normalized weights</span></span>
+<span id="cb7-38"><a href="#cb7-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-39"><a href="#cb7-39" aria-hidden="true" tabindex="-1"></a>    <span class="co"># apply the self attention to the values</span></span>
+<span id="cb7-40"><a href="#cb7-40" aria-hidden="true" tabindex="-1"></a>    out <span class="op">=</span> torch.bmm(dot, values).view(b, h, t, k)</span>
+<span id="cb7-41"><a href="#cb7-41" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-42"><a href="#cb7-42" aria-hidden="true" tabindex="-1"></a>    <span class="co"># swap h, t back, unify heads</span></span>
+<span id="cb7-43"><a href="#cb7-43" aria-hidden="true" tabindex="-1"></a>    out <span class="op">=</span> out.transpose(<span class="dv">1</span>, <span class="dv">2</span>).contiguous().view(b, t, h <span class="op">*</span> k)</span>
+<span id="cb7-44"><a href="#cb7-44" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="cf">raise</span> TODO(<span class="st">"Unify the heads into the classes again using unifyheads"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>And there you have it: multi-head, scaled dot-product self attention.</p>
+</section>
+<section id="building-transformers" class="level2">
+<h2 class="anchored" data-anchor-id="building-transformers">Building Transformers</h2>
+<p>A transformer is not just a self-attention layer, it is an architecture.</p>
+<blockquote class="blockquote">
+<p>Any architecture designed to process a connected set of units—such as the tokens in a sequence or the pixels in an image—where the only interaction between units is through self-attention.</p>
+</blockquote>
+<p>Like most mechanism, e.g.&nbsp;convolutions, a standard approach as emerged. The first step is to wrap the self-attention into a block that we can repeat.</p>
+<section id="the-transformer-block" class="level3">
+<h3 class="anchored" data-anchor-id="the-transformer-block">The transformer block</h3>
+<p>There are some variations on how to build a basic transformer block, but most of them are structured roughly like this:</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://user-images.githubusercontent.com/7490199/218257941-ac36177e-e00e-4544-9b69-0fc8f11b7b62.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">image</figcaption><p></p>
+</figure>
+</div>
+<ul>
+<li>MultiLayer Perceptron = MLP = Basic Feed-forward Neural Network</li>
+<li>Blue lines = Residual Connection (allow the gradient to flow through the network on a kind of “highway”, making the training faster and reducing “blown up gradients”)</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> TransformerBlock(nn.Module):</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, k, heads):</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>    <span class="bu">super</span>().<span class="fu">__init__</span>()</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>    <span class="va">self</span>.attention <span class="op">=</span> <span class="cf">raise</span> TODO(<span class="st">"make a SelfAttention"</span>)</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>    <span class="va">self</span>.norm1 <span class="op">=</span> <span class="cf">raise</span> TODO(<span class="st">"make a nn.LayerNorm of size k"</span>)</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>    <span class="va">self</span>.norm2 <span class="op">=</span> <span class="cf">raise</span> TODO(<span class="st">"make a nn.LayerNorm of size k"</span>)</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>    <span class="co"># k * 4 is arbitrary, but needs to be larger than input/output layer (k)</span></span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>    <span class="va">self</span>.ff <span class="op">=</span> <span class="cf">raise</span> TODO(<span class="st">"create a MLP: Sequential(Linear(k, 4*k), ReLU, Linear(4*k, k))"</span>)</span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>  <span class="kw">def</span> forward(<span class="va">self</span>, x):</span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>    attended <span class="op">=</span> <span class="cf">raise</span> TODO(<span class="st">"call your created attention on x"</span>)</span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>    x <span class="op">=</span> <span class="cf">raise</span> TODO(<span class="st">"Use the first normalizer to normalizer attented+x"</span>)</span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a>    fedforward <span class="op">=</span> <span class="cf">raise</span> TODO(<span class="st">"Call feedforward (ff) on new x"</span>)</span>
+<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="cf">raise</span> TODO(<span class="st">"Finally normalize with 2nd on the addition of feedforward &amp; x"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>And that is really it! We have now built a Transformer Block &amp; Self Attention.</p>
+<p>Now we want to use it :)</p>
+</section>
+</section>
+<section id="classification-transformer" class="level2">
+<h2 class="anchored" data-anchor-id="classification-transformer">Classification transformer</h2>
+<p>The simplest classification task is a <em>Sequence Classifier</em>.<br>
+The IMDB Review dataset is a great contender to try things out with, where each review is <code>positive</code> or <code>negative</code>.</p>
+<p>Essentially we’ll create a chain of Transformers Block and input our embedded vectors of words, and in the end transforming the output into a single value (true/false).</p>
+<section id="output-producing-a-classifier" class="level3">
+<h3 class="anchored" data-anchor-id="output-producing-a-classifier">Output: producing a classifier</h3>
+<p>Most common way: <em>Global Average Pooling</em> on final output sequence and map result to a <em>softmaxed class vector</em>.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://user-images.githubusercontent.com/7490199/218257961-1d764937-0dbe-4a25-8568-dc1d8a39dd31.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">image</figcaption><p></p>
+</figure>
+</div>
+<blockquote class="blockquote">
+<p>Overview of a simple sequence classification transformer. The output sequence is averaged to produce a single vector representing the whole sequence. This vector is projected down to a vector with one element per class and softmaxed to produce probabilities.</p>
+</blockquote>
+</section>
+<section id="input-using-positions-think-ngram" class="level3">
+<h3 class="anchored" data-anchor-id="input-using-positions-think-ngram">Input: Using Positions (think: ngram)</h3>
+<p>We’ve already discussed that the current model uses embedding layer but has no sense of sequence time slotting (~&nbsp;ngram).<br>
+We want our State-of-the-Art model to have a sense of order so we need to fix it.</p>
+<p>Add a second vector of the same length as word embedding, that represent the position of the sentence+word, and add it to the word embedding. There’s two ways to do this.</p>
+<ol type="1">
+<li><strong>Position Embedding</strong> We simply embed the positions like we did the words.
+<ul>
+<li>Easy to implement</li>
+<li>Works pretty good</li>
+<li>Drawback is that we have to see sequences of every length during training, otherwise the position is not trained!</li>
+</ul></li>
+<li><strong>Position Encoding</strong> Position encodings work in the same way as embeddings, except that we don’t learn the position vectors, we just choose some function <span class="math inline">\(f:ℕ→ℝk\)</span> to map the positions to real valued vectors, and let the network figure out how to interpret these encodings.
+<ul>
+<li>E.g. sin/cos</li>
+<li>Works with longer sequences than seen (might not work well, but it works!)</li>
+<li>Drawback: choice of encoding function is a complicated hyperparameter, and more complicated implementation.</li>
+</ul></li>
+</ol>
+<p>For this tutorial the <strong>Position Embedding</strong> is used.</p>
+</section>
+<section id="pytorch" class="level3">
+<h3 class="anchored" data-anchor-id="pytorch">PyTorch</h3>
+<p>Let’s implement this!</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Transformer(nn.Module):</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, k, heads, depth, seq_length, num_tokens, num_classes):</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>        <span class="bu">super</span>().<span class="fu">__init__</span>()</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.num_tokens <span class="op">=</span> num_tokens</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.token_emb <span class="op">=</span> <span class="cf">raise</span> TODO(<span class="st">"Create a Embedding layer (nn.X) with num_tokens &amp; k"</span>)</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.pos_emb <span class="op">=</span> <span class="cf">raise</span> TODO(<span class="st">"Create Embedding Layer with seq_length &amp; k"</span>)</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>        <span class="co"># The sequence of transformer blocks that does all the </span></span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>        <span class="co"># heavy lifting</span></span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>        blocks <span class="op">=</span> []</span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(depth):</span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>            <span class="cf">raise</span> TODO(<span class="st">"Append a TransformerBlock we recently created for each loop; and why not use list-comprehension?"</span>)</span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.t_blocks <span class="op">=</span> <span class="cf">raise</span> TODO(<span class="st">"Now make them a Sequential layer (*list = spread)"</span>)</span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a>            <span class="co"># Maps the final output sequence to class logits</span></span>
+<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.to_probs <span class="op">=</span> <span class="cf">raise</span> TODO(<span class="st">"To get class logits we simply use a Linear layer of k * num_classes"</span>)</span>
+<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> forward(<span class="va">self</span>, x):</span>
+<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a>        <span class="co">"""</span></span>
+<span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a><span class="co">        :param x: A (b, t) tensor of integer values representing </span></span>
+<span id="cb9-22"><a href="#cb9-22" aria-hidden="true" tabindex="-1"></a><span class="co">                  words (in some predetermined vocabulary).</span></span>
+<span id="cb9-23"><a href="#cb9-23" aria-hidden="true" tabindex="-1"></a><span class="co">        :return: A (b, c) tensor of log-probabilities over the </span></span>
+<span id="cb9-24"><a href="#cb9-24" aria-hidden="true" tabindex="-1"></a><span class="co">                 classes (where c is the nr. of classes).</span></span>
+<span id="cb9-25"><a href="#cb9-25" aria-hidden="true" tabindex="-1"></a><span class="co">        """</span></span>
+<span id="cb9-26"><a href="#cb9-26" aria-hidden="true" tabindex="-1"></a>            <span class="co"># generate token embeddings</span></span>
+<span id="cb9-27"><a href="#cb9-27" aria-hidden="true" tabindex="-1"></a>        tokens <span class="op">=</span> <span class="cf">raise</span> TODO(<span class="st">"Embedd the tokens"</span>)</span>
+<span id="cb9-28"><a href="#cb9-28" aria-hidden="true" tabindex="-1"></a>        b, t, k <span class="op">=</span> tokens.size()</span>
+<span id="cb9-29"><a href="#cb9-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-30"><a href="#cb9-30" aria-hidden="true" tabindex="-1"></a>            <span class="co"># generate position embeddings</span></span>
+<span id="cb9-31"><a href="#cb9-31" aria-hidden="true" tabindex="-1"></a>            positions <span class="op">=</span> torch.arange(t)</span>
+<span id="cb9-32"><a href="#cb9-32" aria-hidden="true" tabindex="-1"></a>        positions <span class="op">=</span> <span class="va">self</span>.pos_emb(positions)[<span class="va">None</span>, :, :].expand(b, t, k)</span>
+<span id="cb9-33"><a href="#cb9-33" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb9-34"><a href="#cb9-34" aria-hidden="true" tabindex="-1"></a>        x <span class="op">=</span> tokens <span class="op">+</span> positions</span>
+<span id="cb9-35"><a href="#cb9-35" aria-hidden="true" tabindex="-1"></a>        x <span class="op">=</span> <span class="cf">raise</span> TODO(<span class="st">"Run the network through the tranformer blocks"</span>)</span>
+<span id="cb9-36"><a href="#cb9-36" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb9-37"><a href="#cb9-37" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Average-pool over the t dimension and project to class </span></span>
+<span id="cb9-38"><a href="#cb9-38" aria-hidden="true" tabindex="-1"></a>        <span class="co"># probabilities</span></span>
+<span id="cb9-39"><a href="#cb9-39" aria-hidden="true" tabindex="-1"></a>        x <span class="op">=</span> <span class="cf">raise</span> TODO(<span class="st">"Use the probability function, but first take the mean over dim=1 to average"</span>)</span>
+<span id="cb9-40"><a href="#cb9-40" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="cf">raise</span> TODO(<span class="st">"Use the F.log_softmax on dim=1 to normalize output!"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>At depth 6, with a maximum sequence length of 512, this transformer achieves an accuracy of about 85%, competitive with results from RNN models, and much faster to train. To see the real near-human performance of transformers, we’d need to train a much deeper model on much more data. More about how to do that later.</p>
+</section>
+</section>
+<section id="text-generation-transformer" class="level2">
+<h2 class="anchored" data-anchor-id="text-generation-transformer">Text generation transformer</h2>
+<p>Let’s move on!</p>
+<p>In Text Generation we are not allowed to know the future during training, how else are we going to predict it? This means that we need to use an <strong>autoregressive model</strong>.</p>
+<p>For Text Generation we’ll train a character-to-character prediction, the input is a sequence of characters and output is the input shifted one charafter to the left.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://user-images.githubusercontent.com/7490199/218257974-9275a97a-62c2-4439-a25d-136d77a24b4c.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">image</figcaption><p></p>
+</figure>
+</div>
+<p>For the usual RNN this is all that is needed, but as mentioned now we need to make our model <em>autoregressive</em>, meaning that it can’t look ahead.<br>
+This is done by applying a mask which disables all elements that are ahead of current index, as in image below.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://user-images.githubusercontent.com/7490199/218257983-fe48a555-4e81-4745-ab16-529980518eaf.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">image</figcaption><p></p>
+</figure>
+</div>
+<blockquote class="blockquote">
+<p>Masking the self attention, to ensure that elements can only attend to input elements that precede them in the sequence. Note that the multiplication symbol is slightly misleading: we actually set the masked out elements (the white squares) to −∞</p>
+</blockquote>
+</section>
+<section id="in-pytorch" class="level2">
+<h2 class="anchored" data-anchor-id="in-pytorch">In PyTorch</h2>
+<p>Implementing this in PyTorch</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> SelfAttentionAutoRegressive(nn.Module):</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, k, heads<span class="op">=</span><span class="dv">8</span>):</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>    <span class="bu">super</span>().<span class="fu">__init__</span>()</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>    <span class="va">self</span>.k, <span class="va">self</span>.heads <span class="op">=</span> k, heads</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>    <span class="co"># These compute the queries, keys and values for all </span></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>    <span class="co"># heads (as a single concatenated vector)</span></span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>    <span class="va">self</span>.tokeys    <span class="op">=</span> nn.Linear(k, k <span class="op">*</span> heads, bias<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>    <span class="va">self</span>.toqueries <span class="op">=</span> nn.Linear(k, k <span class="op">*</span> heads, bias<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>    <span class="va">self</span>.tovalues  <span class="op">=</span> nn.Linear(k, k <span class="op">*</span> heads, bias<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>      <span class="co"># This unifies the outputs of the different heads into </span></span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>      <span class="co"># a single k-vector</span></span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a>      <span class="va">self</span>.unifyheads <span class="op">=</span> nn.Linear(heads <span class="op">*</span> k, k)</span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a>  <span class="kw">def</span> forward(<span class="va">self</span>, x):</span>
+<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a>    b, t, k <span class="op">=</span> x.size()</span>
+<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a>    h <span class="op">=</span> <span class="va">self</span>.heads</span>
+<span id="cb10-19"><a href="#cb10-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-20"><a href="#cb10-20" aria-hidden="true" tabindex="-1"></a>    queries <span class="op">=</span> <span class="va">self</span>.toqueries(x).view(b, t, h, k)</span>
+<span id="cb10-21"><a href="#cb10-21" aria-hidden="true" tabindex="-1"></a>    keys    <span class="op">=</span> <span class="va">self</span>.tokeys(x)   .view(b, t, h, k)</span>
+<span id="cb10-22"><a href="#cb10-22" aria-hidden="true" tabindex="-1"></a>    values  <span class="op">=</span> <span class="va">self</span>.tovalues(x) .view(b, t, h, k)</span>
+<span id="cb10-23"><a href="#cb10-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-24"><a href="#cb10-24" aria-hidden="true" tabindex="-1"></a>    <span class="co"># - fold heads into the batch dimension ... contiguous = reshapes matrix in memory</span></span>
+<span id="cb10-25"><a href="#cb10-25" aria-hidden="true" tabindex="-1"></a>    keys <span class="op">=</span> keys.transpose(<span class="dv">1</span>, <span class="dv">2</span>).contiguous().view(b <span class="op">*</span> h, t, k)</span>
+<span id="cb10-26"><a href="#cb10-26" aria-hidden="true" tabindex="-1"></a>    queries <span class="op">=</span> queries.transpose(<span class="dv">1</span>, <span class="dv">2</span>).contiguous().view(b <span class="op">*</span> h, t, k)</span>
+<span id="cb10-27"><a href="#cb10-27" aria-hidden="true" tabindex="-1"></a>    values <span class="op">=</span> values.transpose(<span class="dv">1</span>, <span class="dv">2</span>).contiguous().view(b <span class="op">*</span> h, t, k)</span>
+<span id="cb10-28"><a href="#cb10-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-29"><a href="#cb10-29" aria-hidden="true" tabindex="-1"></a>    queries <span class="op">=</span> queries <span class="op">/</span> (k <span class="op">**</span> (<span class="dv">1</span><span class="op">/</span><span class="dv">4</span>))</span>
+<span id="cb10-30"><a href="#cb10-30" aria-hidden="true" tabindex="-1"></a>    keys    <span class="op">=</span> keys <span class="op">/</span> (k <span class="op">**</span> (<span class="dv">1</span><span class="op">/</span><span class="dv">4</span>))</span>
+<span id="cb10-31"><a href="#cb10-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-32"><a href="#cb10-32" aria-hidden="true" tabindex="-1"></a>    <span class="co"># - get dot product of queries and keys, and scale</span></span>
+<span id="cb10-33"><a href="#cb10-33" aria-hidden="true" tabindex="-1"></a>    dot <span class="op">=</span> torch.bmm(queries, keys.transpose(<span class="dv">1</span>, <span class="dv">2</span>))</span>
+<span id="cb10-34"><a href="#cb10-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-35"><a href="#cb10-35" aria-hidden="true" tabindex="-1"></a>    <span class="co"># === START OF CHANGES ===</span></span>
+<span id="cb10-36"><a href="#cb10-36" aria-hidden="true" tabindex="-1"></a>    indices <span class="op">=</span> torch.triu_indices(t, t, offset<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb10-37"><a href="#cb10-37" aria-hidden="true" tabindex="-1"></a>    dot[:, indices[<span class="dv">0</span>], indices[<span class="dv">1</span>]] <span class="op">=</span> <span class="cf">raise</span> TODO(<span class="st">"-inf; and think off what we are doing. triu_indices is shown below"</span>)</span>
+<span id="cb10-38"><a href="#cb10-38" aria-hidden="true" tabindex="-1"></a>    <span class="co"># === </span><span class="re">END</span><span class="co"> OF CHANGES ===</span></span>
+<span id="cb10-39"><a href="#cb10-39" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-40"><a href="#cb10-40" aria-hidden="true" tabindex="-1"></a>    <span class="co"># - dot has size (b*h, t, t) containing raw weights</span></span>
+<span id="cb10-41"><a href="#cb10-41" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-42"><a href="#cb10-42" aria-hidden="true" tabindex="-1"></a>    dot <span class="op">=</span> F.softmax(dot, dim<span class="op">=</span><span class="dv">2</span>) </span>
+<span id="cb10-43"><a href="#cb10-43" aria-hidden="true" tabindex="-1"></a>    <span class="co"># - dot now contains row-wise normalized weights</span></span>
+<span id="cb10-44"><a href="#cb10-44" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-45"><a href="#cb10-45" aria-hidden="true" tabindex="-1"></a>    <span class="co"># apply the self attention to the values</span></span>
+<span id="cb10-46"><a href="#cb10-46" aria-hidden="true" tabindex="-1"></a>    out <span class="op">=</span> torch.bmm(dot, values).view(b, h, t, k)</span>
+<span id="cb10-47"><a href="#cb10-47" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-48"><a href="#cb10-48" aria-hidden="true" tabindex="-1"></a>    <span class="co"># swap h, t back, unify heads</span></span>
+<span id="cb10-49"><a href="#cb10-49" aria-hidden="true" tabindex="-1"></a>    out <span class="op">=</span> out.transpose(<span class="dv">1</span>, <span class="dv">2</span>).contiguous().view(b, t, h <span class="op">*</span> k)</span>
+<span id="cb10-50"><a href="#cb10-50" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="va">self</span>.unifyheads(out)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>??torch.triu_indices</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Once the model has been ‘handicapped’ as this we’re ready to go!</p>
+<p>If you’d like to learn the historical aspect of Transformers, some design consideration &amp; more details please visit the <a href="http://peterbloem.nl/blog/transformers">original blog</a> by Peter Bloem and finish that one!</p>
+<p>I hope you found this helpful!<br>
+<strong>Please take a good look in Appendix for demos with Text Classification &amp; Text Generation.</strong><br>
+Do note that the depth should probably be increased as should the amount of data. Transformers improve a lot with time, depth &amp; data (especially data!).</p>
+<p>Thanks<br>
+~Hampus</p>
+</section>
+</section>
+<section id="appendix-demos-text-classification-text-generation" class="level1">
+<h1>Appendix: Demos (Text Classification &amp; Text Generation)</h1>
+<p>This appendix includes one demo of each type where I’ve integrated the PyTorch with fast.ai to smoothen the process from model to actually using it.</p>
+<p><strong>DISCLAIMER:</strong><br>
+- We should train on more data for a longer while to really showcase their prowess - Use the full IMDB data to at least get a little better performance - The demos are more wrapped code for you to play around with</p>
+<p>With that in mind, please play around with this. Tweak parameters, add your own data and have fun!</p>
+<section id="dependencies" class="level2">
+<h2 class="anchored" data-anchor-id="dependencies">Dependencies</h2>
+<p>Simply run this block to - Upgrade fastai (2.0+) - Import fastai</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="op">%%</span>capture</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>pip install <span class="op">-</span>U fastai</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> fastai.text.<span class="bu">all</span> <span class="im">import</span> <span class="op">*</span></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> functools <span class="im">import</span> partial <span class="co"># Can use partial to preload a transformer block</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="text-classification" class="level2">
+<h2 class="anchored" data-anchor-id="text-classification">Text Classification</h2>
+<p>The Text Classification is done on the IMDB challenge. There’s code included for both IMDB_SAMPLE and IMDB where the sample is a little too small to actually get good stats on.</p>
+<p>I think adding some more depth (perhaps 6 blocks?) will increase the accuracy even further.</p>
+<section id="model-classifier" class="level3">
+<h3 class="anchored" data-anchor-id="model-classifier">Model (Classifier)</h3>
+<p>Code we already wrote for the classifier</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> SelfAttention(Module):</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>  <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, k, heads<span class="op">=</span><span class="dv">8</span>):</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>    <span class="va">self</span>.k, <span class="va">self</span>.heads <span class="op">=</span> k, heads</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>    <span class="co"># These compute the queries, keys and values for all </span></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>    <span class="co"># heads (as a single concatenated vector)</span></span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>    <span class="va">self</span>.tokeys    <span class="op">=</span> nn.Linear(k, k <span class="op">*</span> heads, bias<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>    <span class="va">self</span>.toqueries <span class="op">=</span> nn.Linear(k, k <span class="op">*</span> heads, bias<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>    <span class="va">self</span>.tovalues  <span class="op">=</span> nn.Linear(k, k <span class="op">*</span> heads, bias<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a>    <span class="co"># This unifies the outputs of the different heads into </span></span>
+<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a>    <span class="co"># a single k-vector</span></span>
+<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a>    <span class="va">self</span>.unifyheads <span class="op">=</span> nn.Linear(heads <span class="op">*</span> k, k)</span>
+<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a>  <span class="kw">def</span> forward(<span class="va">self</span>, x):</span>
+<span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a>    b, t, k <span class="op">=</span> x.size()</span>
+<span id="cb13-17"><a href="#cb13-17" aria-hidden="true" tabindex="-1"></a>    h <span class="op">=</span> <span class="va">self</span>.heads</span>
+<span id="cb13-18"><a href="#cb13-18" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb13-19"><a href="#cb13-19" aria-hidden="true" tabindex="-1"></a>    <span class="cf">assert</span> <span class="va">self</span>.k <span class="op">==</span> k, <span class="ss">f'Input embedding dim (</span><span class="sc">{</span>e<span class="sc">}</span><span class="ss">) should match layer embedding dim (</span><span class="sc">{</span><span class="va">self</span><span class="sc">.</span>emb<span class="sc">}</span><span class="ss">)'</span></span>
+<span id="cb13-20"><a href="#cb13-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-21"><a href="#cb13-21" aria-hidden="true" tabindex="-1"></a>    queries <span class="op">=</span> <span class="va">self</span>.toqueries(x).view(b, t, h, k)</span>
+<span id="cb13-22"><a href="#cb13-22" aria-hidden="true" tabindex="-1"></a>    keys    <span class="op">=</span> <span class="va">self</span>.tokeys(x)   .view(b, t, h, k)</span>
+<span id="cb13-23"><a href="#cb13-23" aria-hidden="true" tabindex="-1"></a>    values  <span class="op">=</span> <span class="va">self</span>.tovalues(x) .view(b, t, h, k)</span>
+<span id="cb13-24"><a href="#cb13-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-25"><a href="#cb13-25" aria-hidden="true" tabindex="-1"></a>    <span class="co"># - fold heads into the batch dimension ... contiguous = reshapes matrix in memory</span></span>
+<span id="cb13-26"><a href="#cb13-26" aria-hidden="true" tabindex="-1"></a>    keys <span class="op">=</span> keys.transpose(<span class="dv">1</span>, <span class="dv">2</span>).contiguous().view(b <span class="op">*</span> h, t, k)</span>
+<span id="cb13-27"><a href="#cb13-27" aria-hidden="true" tabindex="-1"></a>    queries <span class="op">=</span> queries.transpose(<span class="dv">1</span>, <span class="dv">2</span>).contiguous().view(b <span class="op">*</span> h, t, k)</span>
+<span id="cb13-28"><a href="#cb13-28" aria-hidden="true" tabindex="-1"></a>    values <span class="op">=</span> values.transpose(<span class="dv">1</span>, <span class="dv">2</span>).contiguous().view(b <span class="op">*</span> h, t, k)</span>
+<span id="cb13-29"><a href="#cb13-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-30"><a href="#cb13-30" aria-hidden="true" tabindex="-1"></a>    queries <span class="op">=</span> queries <span class="op">/</span> (k <span class="op">**</span> (<span class="dv">1</span><span class="op">/</span><span class="dv">4</span>))</span>
+<span id="cb13-31"><a href="#cb13-31" aria-hidden="true" tabindex="-1"></a>    keys    <span class="op">=</span> keys <span class="op">/</span> (k <span class="op">**</span> (<span class="dv">1</span><span class="op">/</span><span class="dv">4</span>))</span>
+<span id="cb13-32"><a href="#cb13-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-33"><a href="#cb13-33" aria-hidden="true" tabindex="-1"></a>    <span class="co"># - get dot product of queries and keys, and scale</span></span>
+<span id="cb13-34"><a href="#cb13-34" aria-hidden="true" tabindex="-1"></a>    dot <span class="op">=</span> torch.bmm(queries, keys.transpose(<span class="dv">1</span>, <span class="dv">2</span>))</span>
+<span id="cb13-35"><a href="#cb13-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-36"><a href="#cb13-36" aria-hidden="true" tabindex="-1"></a>    <span class="cf">assert</span> dot.size() <span class="op">==</span> (b<span class="op">*</span>h, t, t)</span>
+<span id="cb13-37"><a href="#cb13-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-38"><a href="#cb13-38" aria-hidden="true" tabindex="-1"></a>    <span class="co"># - dot has size (b*h, t, t) containing raw weights</span></span>
+<span id="cb13-39"><a href="#cb13-39" aria-hidden="true" tabindex="-1"></a>    dot <span class="op">=</span> F.softmax(dot, dim<span class="op">=</span><span class="dv">2</span>) </span>
+<span id="cb13-40"><a href="#cb13-40" aria-hidden="true" tabindex="-1"></a>    <span class="co"># - dot now contains row-wise normalized weights</span></span>
+<span id="cb13-41"><a href="#cb13-41" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-42"><a href="#cb13-42" aria-hidden="true" tabindex="-1"></a>    <span class="co"># apply the self attention to the values</span></span>
+<span id="cb13-43"><a href="#cb13-43" aria-hidden="true" tabindex="-1"></a>    out <span class="op">=</span> torch.bmm(dot, values).view(b, h, t, k)</span>
+<span id="cb13-44"><a href="#cb13-44" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-45"><a href="#cb13-45" aria-hidden="true" tabindex="-1"></a>    <span class="co"># swap h, t back, unify heads</span></span>
+<span id="cb13-46"><a href="#cb13-46" aria-hidden="true" tabindex="-1"></a>    out <span class="op">=</span> out.transpose(<span class="dv">1</span>, <span class="dv">2</span>).contiguous().view(b, t, h <span class="op">*</span> k)</span>
+<span id="cb13-47"><a href="#cb13-47" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb13-48"><a href="#cb13-48" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="va">self</span>.unifyheads(out)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> TransformerBlock(Module):</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>  <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, k, heads):</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>    <span class="bu">super</span>().<span class="fu">__init__</span>()</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>    <span class="va">self</span>.attention <span class="op">=</span> SelfAttention(k, heads<span class="op">=</span>heads)</span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>    <span class="va">self</span>.norm1 <span class="op">=</span> nn.LayerNorm(k)</span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>    <span class="va">self</span>.norm2 <span class="op">=</span> nn.LayerNorm(k)</span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>    <span class="va">self</span>.ff <span class="op">=</span> nn.Sequential(</span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a>      nn.Linear(k, <span class="dv">4</span> <span class="op">*</span> k),</span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a>      nn.ReLU(),</span>
+<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a>      nn.Linear(<span class="dv">4</span> <span class="op">*</span> k, k)</span>
+<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb14-15"><a href="#cb14-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-16"><a href="#cb14-16" aria-hidden="true" tabindex="-1"></a>  <span class="kw">def</span> forward(<span class="va">self</span>, x):</span>
+<span id="cb14-17"><a href="#cb14-17" aria-hidden="true" tabindex="-1"></a>    attended <span class="op">=</span> <span class="va">self</span>.attention(x)</span>
+<span id="cb14-18"><a href="#cb14-18" aria-hidden="true" tabindex="-1"></a>    x <span class="op">=</span> <span class="va">self</span>.norm1(attended <span class="op">+</span> x)</span>
+<span id="cb14-19"><a href="#cb14-19" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb14-20"><a href="#cb14-20" aria-hidden="true" tabindex="-1"></a>    fedforward <span class="op">=</span> <span class="va">self</span>.ff(x)</span>
+<span id="cb14-21"><a href="#cb14-21" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="va">self</span>.norm2(fedforward <span class="op">+</span> x)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Transformer(Module):</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, k, heads, depth, seq_length, num_tokens, num_classes, device):</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>        <span class="bu">super</span>().<span class="fu">__init__</span>()</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.device <span class="op">=</span> device</span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.seq_length <span class="op">=</span> seq_length</span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.num_tokens <span class="op">=</span> num_tokens</span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.token_emb <span class="op">=</span> nn.Embedding(num_tokens, k)</span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.pos_emb <span class="op">=</span> nn.Embedding(seq_length, k)</span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a>            <span class="co"># The sequence of transformer blocks that does all the </span></span>
+<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a>        <span class="co"># heavy lifting</span></span>
+<span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a>        tblocks <span class="op">=</span> [TransformerBlock(k<span class="op">=</span>k, heads<span class="op">=</span>heads) <span class="cf">for</span> x <span class="kw">in</span> <span class="bu">range</span>(depth)]</span>
+<span id="cb15-14"><a href="#cb15-14" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.tblocks <span class="op">=</span> nn.Sequential(<span class="op">*</span>tblocks)</span>
+<span id="cb15-15"><a href="#cb15-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-16"><a href="#cb15-16" aria-hidden="true" tabindex="-1"></a>            <span class="co"># Maps the final output sequence to class logits</span></span>
+<span id="cb15-17"><a href="#cb15-17" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.toprobs <span class="op">=</span> nn.Linear(k, num_classes)</span>
+<span id="cb15-18"><a href="#cb15-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-19"><a href="#cb15-19" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> forward(<span class="va">self</span>, x):</span>
+<span id="cb15-20"><a href="#cb15-20" aria-hidden="true" tabindex="-1"></a>        <span class="co">"""</span></span>
+<span id="cb15-21"><a href="#cb15-21" aria-hidden="true" tabindex="-1"></a><span class="co">        :param x: A (b, t) tensor of integer values representing </span></span>
+<span id="cb15-22"><a href="#cb15-22" aria-hidden="true" tabindex="-1"></a><span class="co">                  words (in some predetermined vocabulary).</span></span>
+<span id="cb15-23"><a href="#cb15-23" aria-hidden="true" tabindex="-1"></a><span class="co">        :return: A (b, c) tensor of log-probabilities over the </span></span>
+<span id="cb15-24"><a href="#cb15-24" aria-hidden="true" tabindex="-1"></a><span class="co">                 classes (where c is the nr. of classes).</span></span>
+<span id="cb15-25"><a href="#cb15-25" aria-hidden="true" tabindex="-1"></a><span class="co">        """</span></span>
+<span id="cb15-26"><a href="#cb15-26" aria-hidden="true" tabindex="-1"></a>            <span class="co"># generate token embeddings</span></span>
+<span id="cb15-27"><a href="#cb15-27" aria-hidden="true" tabindex="-1"></a>        <span class="co"># x = x.split(' ')</span></span>
+<span id="cb15-28"><a href="#cb15-28" aria-hidden="true" tabindex="-1"></a>        x <span class="op">=</span> x[:,:<span class="va">self</span>.seq_length,]</span>
+<span id="cb15-29"><a href="#cb15-29" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb15-30"><a href="#cb15-30" aria-hidden="true" tabindex="-1"></a>        tokens <span class="op">=</span> <span class="va">self</span>.token_emb(x)</span>
+<span id="cb15-31"><a href="#cb15-31" aria-hidden="true" tabindex="-1"></a>        b, t, k <span class="op">=</span> tokens.size()</span>
+<span id="cb15-32"><a href="#cb15-32" aria-hidden="true" tabindex="-1"></a>        <span class="co"># print(b, t, k)</span></span>
+<span id="cb15-33"><a href="#cb15-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-34"><a href="#cb15-34" aria-hidden="true" tabindex="-1"></a>        <span class="co"># generate position embeddings</span></span>
+<span id="cb15-35"><a href="#cb15-35" aria-hidden="true" tabindex="-1"></a>        positions <span class="op">=</span> torch.arange(t, device<span class="op">=</span><span class="va">self</span>.device)</span>
+<span id="cb15-36"><a href="#cb15-36" aria-hidden="true" tabindex="-1"></a>        positions <span class="op">=</span> <span class="va">self</span>.pos_emb(positions)[<span class="va">None</span>, :, :].expand(b, t, k)</span>
+<span id="cb15-37"><a href="#cb15-37" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb15-38"><a href="#cb15-38" aria-hidden="true" tabindex="-1"></a>        x <span class="op">=</span> tokens <span class="op">+</span> positions</span>
+<span id="cb15-39"><a href="#cb15-39" aria-hidden="true" tabindex="-1"></a>        x <span class="op">=</span> <span class="va">self</span>.tblocks(x)</span>
+<span id="cb15-40"><a href="#cb15-40" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb15-41"><a href="#cb15-41" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Average-pool over the t dimension and project to class </span></span>
+<span id="cb15-42"><a href="#cb15-42" aria-hidden="true" tabindex="-1"></a>        <span class="co"># probabilities</span></span>
+<span id="cb15-43"><a href="#cb15-43" aria-hidden="true" tabindex="-1"></a>        x <span class="op">=</span> <span class="va">self</span>.toprobs(x.mean(dim<span class="op">=</span><span class="dv">1</span>))</span>
+<span id="cb15-44"><a href="#cb15-44" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> F.log_softmax(x, dim<span class="op">=</span><span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="the-text-classification" class="level3">
+<h3 class="anchored" data-anchor-id="the-text-classification">The Text Classification</h3>
+<ul>
+<li>Data Collection</li>
+<li>Training Loop</li>
+<li>Validation</li>
+</ul>
+<div class="cell" data-outputid="fb790634-bd4a-40c6-d1b1-82d825a43a36">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>path <span class="op">=</span> untar_data(URLs.IMDB)</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>path.ls()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+
+</div>
+<div class="cell-output cell-output-display" data-execution_count="14">
+<pre><code>(#7) [Path('/root/.fastai/data/imdb/README'),Path('/root/.fastai/data/imdb/unsup'),Path('/root/.fastai/data/imdb/train'),Path('/root/.fastai/data/imdb/test'),Path('/root/.fastai/data/imdb/tmp_lm'),Path('/root/.fastai/data/imdb/tmp_clas'),Path('/root/.fastai/data/imdb/imdb.vocab')]</code></pre>
+</div>
+</div>
+<div class="cell" data-outputid="c727a32c-5e27-451e-9307-dfaea1a79052">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># === Use this if you want to use IMDB_SAMPLE: But IMDB_SAMPLE is too small for a transformer ===</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="co"># df = pd.read_csv(path/'texts.csv');df.head(2)</span></span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="co"># dls = TextDataLoaders.from_df(df, path=path, text_col='text', label_col='label', valid_col='is_valid')</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>/usr/local/lib/python3.6/dist-packages/numpy/core/_asarray.py:83: VisibleDeprecationWarning: Creating an ndarray from ragged nested sequences (which is a list-or-tuple of lists-or-tuples-or ndarrays with different lengths or shapes) is deprecated. If you meant to do this, you must specify 'dtype=object' when creating the ndarray
+  return array(a, dtype, copy=False, order=order)</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co"># === Enable this to use much more data (better for transformer) === </span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>db <span class="op">=</span> DataBlock(</span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>    blocks <span class="op">=</span> (TextBlock.from_folder(path, max_vocab<span class="op">=</span><span class="dv">10_000</span>, seq_len<span class="op">=</span><span class="dv">256</span>), CategoryBlock),</span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>    get_items<span class="op">=</span>get_text_files,</span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>    splitter<span class="op">=</span>GrandparentSplitter(valid_name<span class="op">=</span><span class="st">'test'</span>),</span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>    get_y<span class="op">=</span>parent_label</span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a>dls <span class="op">=</span> db.dataloaders(path, path <span class="op">=</span> path)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-outputid="64f23374-5fe5-49b0-98b2-a99d822cfb0c">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>dls.show_batch(max_n<span class="op">=</span><span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+
+<table class="dataframe table table-sm table-striped">
+  <thead>
+    <tr>
+      <th></th>
+      <th>text</th>
+      <th>category</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>xxbos xxmaj raising xxmaj victor xxmaj vargas : a xxmaj review \n\n xxmaj you know , xxmaj raising xxmaj victor xxmaj vargas is like sticking your hands into a big , xxunk bowl of xxunk . xxmaj it 's warm and gooey , but you 're not sure if it feels right . xxmaj try as i might , no matter how warm and gooey xxmaj raising xxmaj victor xxmaj vargas became i was always aware that something did n't quite feel right . xxmaj victor xxmaj vargas suffers from a certain xxunk on the director 's part . xxmaj apparently , the director thought that the ethnic backdrop of a xxmaj latino family on the lower east side , and an xxunk storyline would make the film critic proof . xxmaj he was right , but it did n't fool me . xxmaj raising xxmaj victor xxmaj vargas is</td>
+      <td>negative</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>xxbos xxup the xxup shop xxup around xxup the xxup corner is one of the xxunk and most feel - good romantic comedies ever made . xxmaj there 's just no getting around that , and it 's hard to actually put one 's feeling for this film into words . xxmaj it 's not one of those films that tries too hard , nor does it come up with the xxunk possible scenarios to get the two protagonists together in the end . xxmaj in fact , all its charm is xxunk , contained within the characters and the setting and the plot … which is highly believable to xxunk . xxmaj it 's easy to think that such a love story , as beautiful as any other ever told , * could * happen to you … a feeling you do n't often get from other romantic comedies</td>
+      <td>positive</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+<div class="cell" data-outputid="57ecd05a-1d88-4b08-9ca0-ee66ba28524f">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="bu">len</span>(dls.vocab[<span class="dv">0</span>]),dls.device,dls.one_batch()[<span class="dv">0</span>].size()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="18">
+<pre><code>(10008, device(type='cuda', index=0), (64, 3345))</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co"># (self, k, heads, depth, seq_length, num_tokens, num_classes)</span></span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>learn <span class="op">=</span> Learner(dls, Transformer(k<span class="op">=</span><span class="dv">256</span>, heads<span class="op">=</span><span class="dv">8</span>, depth<span class="op">=</span><span class="dv">4</span>, seq_length<span class="op">=</span><span class="dv">256</span>, num_tokens<span class="op">=</span><span class="bu">len</span>(dls.vocab[<span class="dv">0</span>]), num_classes<span class="op">=</span><span class="dv">2</span>, device<span class="op">=</span>dls.device), metrics<span class="op">=</span>[accuracy])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-outputid="89ae5bc8-27a9-4b69-a879-a6aa64870781">
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>learn.lr_find()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+
+</div>
+<div class="cell-output cell-output-display" data-execution_count="20">
+<pre><code>SuggestedLRs(lr_min=5.754399462603033e-05, lr_steep=0.6309573650360107)</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="transformers-explained_files/figure-html/cell-23-output-3.png" class="img-fluid"></p>
+</div>
+</div>
+<div class="cell" data-outputid="1b8322ee-08d7-4fcc-9cfd-cee2c0fc34bb">
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>learn.fit_one_cycle(<span class="dv">6</span>, <span class="fl">5.7e-5</span>) <span class="co"># We can increase depth &amp; more to improve the result</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+
+<table class="dataframe table table-sm table-striped">
+  <thead>
+    <tr>
+      <th>epoch</th>
+      <th>train_loss</th>
+      <th>valid_loss</th>
+      <th>accuracy</th>
+      <th>time</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>0</td>
+      <td>0.652948</td>
+      <td>0.627165</td>
+      <td>0.656120</td>
+      <td>04:00</td>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>0.580878</td>
+      <td>0.548993</td>
+      <td>0.722400</td>
+      <td>04:08</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>0.481650</td>
+      <td>0.492818</td>
+      <td>0.760320</td>
+      <td>04:09</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>0.458933</td>
+      <td>0.472389</td>
+      <td>0.770200</td>
+      <td>04:09</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td>0.432385</td>
+      <td>0.461327</td>
+      <td>0.778800</td>
+      <td>04:10</td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td>0.409607</td>
+      <td>0.460612</td>
+      <td>0.780320</td>
+      <td>04:08</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+<p>Fast.AI approach</p>
+<div class="cell" data-outputid="b48420dd-edcd-4bfa-e95e-996089e29266">
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>learn <span class="op">=</span> text_classifier_learner(dls, AWD_LSTM, drop_mult<span class="op">=</span><span class="fl">0.5</span>, metrics<span class="op">=</span>accuracy)</span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>learn.fine_tune(<span class="dv">4</span>, <span class="fl">1e-2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+
+</div>
+<div class="cell-output cell-output-display">
+
+<table class="dataframe table table-sm table-striped">
+  <thead>
+    <tr>
+      <th>epoch</th>
+      <th>train_loss</th>
+      <th>valid_loss</th>
+      <th>accuracy</th>
+      <th>time</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>0</td>
+      <td>0.624490</td>
+      <td>0.643156</td>
+      <td>0.625000</td>
+      <td>00:12</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+<div class="cell-output cell-output-display">
+
+<table class="dataframe table table-sm table-striped">
+  <thead>
+    <tr>
+      <th>epoch</th>
+      <th>train_loss</th>
+      <th>valid_loss</th>
+      <th>accuracy</th>
+      <th>time</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>0</td>
+      <td>0.441161</td>
+      <td>0.550412</td>
+      <td>0.755000</td>
+      <td>00:27</td>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>0.380404</td>
+      <td>0.602693</td>
+      <td>0.650000</td>
+      <td>00:27</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>0.316619</td>
+      <td>0.483822</td>
+      <td>0.750000</td>
+      <td>00:27</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>0.256229</td>
+      <td>0.535840</td>
+      <td>0.750000</td>
+      <td>00:27</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>learn.show_results()  </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+</section>
+<section id="text-generation" class="level2">
+<h2 class="anchored" data-anchor-id="text-generation">Text Generation</h2>
+<p>First of we generate text based on the IMDB dataset, but then we’ve also got the shakespeare txt file afterwards for personal testing :)</p>
+<section id="the-model" class="level3">
+<h3 class="anchored" data-anchor-id="the-model">The Model</h3>
+<p>Code we’ve done, the essential model</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> SelfAttentionAutoRegressive(Module):</span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>  <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, k, heads<span class="op">=</span><span class="dv">8</span>):</span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>    <span class="va">self</span>.k, <span class="va">self</span>.heads <span class="op">=</span> k, heads</span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a>    <span class="co"># These compute the queries, keys and values for all </span></span>
+<span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a>    <span class="co"># heads (as a single concatenated vector)</span></span>
+<span id="cb30-7"><a href="#cb30-7" aria-hidden="true" tabindex="-1"></a>    <span class="va">self</span>.tokeys    <span class="op">=</span> nn.Linear(k, k <span class="op">*</span> heads, bias<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb30-8"><a href="#cb30-8" aria-hidden="true" tabindex="-1"></a>    <span class="va">self</span>.toqueries <span class="op">=</span> nn.Linear(k, k <span class="op">*</span> heads, bias<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb30-9"><a href="#cb30-9" aria-hidden="true" tabindex="-1"></a>    <span class="va">self</span>.tovalues  <span class="op">=</span> nn.Linear(k, k <span class="op">*</span> heads, bias<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb30-10"><a href="#cb30-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-11"><a href="#cb30-11" aria-hidden="true" tabindex="-1"></a>      <span class="co"># This unifies the outputs of the different heads into </span></span>
+<span id="cb30-12"><a href="#cb30-12" aria-hidden="true" tabindex="-1"></a>    <span class="co"># a single k-vector</span></span>
+<span id="cb30-13"><a href="#cb30-13" aria-hidden="true" tabindex="-1"></a>    <span class="va">self</span>.unifyheads <span class="op">=</span> nn.Linear(heads <span class="op">*</span> k, k)</span>
+<span id="cb30-14"><a href="#cb30-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-15"><a href="#cb30-15" aria-hidden="true" tabindex="-1"></a>  <span class="kw">def</span> forward(<span class="va">self</span>, x):</span>
+<span id="cb30-16"><a href="#cb30-16" aria-hidden="true" tabindex="-1"></a>    b, t, k <span class="op">=</span> x.size()</span>
+<span id="cb30-17"><a href="#cb30-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-18"><a href="#cb30-18" aria-hidden="true" tabindex="-1"></a>    h <span class="op">=</span> <span class="va">self</span>.heads</span>
+<span id="cb30-19"><a href="#cb30-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-20"><a href="#cb30-20" aria-hidden="true" tabindex="-1"></a>    queries <span class="op">=</span> <span class="va">self</span>.toqueries(x).view(b, t, h, k)</span>
+<span id="cb30-21"><a href="#cb30-21" aria-hidden="true" tabindex="-1"></a>    keys    <span class="op">=</span> <span class="va">self</span>.tokeys(x)   .view(b, t, h, k)</span>
+<span id="cb30-22"><a href="#cb30-22" aria-hidden="true" tabindex="-1"></a>    values  <span class="op">=</span> <span class="va">self</span>.tovalues(x) .view(b, t, h, k)</span>
+<span id="cb30-23"><a href="#cb30-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-24"><a href="#cb30-24" aria-hidden="true" tabindex="-1"></a>    <span class="co"># - fold heads into the batch dimension ... contiguous = reshapes matrix in memory</span></span>
+<span id="cb30-25"><a href="#cb30-25" aria-hidden="true" tabindex="-1"></a>    keys <span class="op">=</span> keys.transpose(<span class="dv">1</span>, <span class="dv">2</span>).contiguous().view(b <span class="op">*</span> h, t, k)</span>
+<span id="cb30-26"><a href="#cb30-26" aria-hidden="true" tabindex="-1"></a>    queries <span class="op">=</span> queries.transpose(<span class="dv">1</span>, <span class="dv">2</span>).contiguous().view(b <span class="op">*</span> h, t, k)</span>
+<span id="cb30-27"><a href="#cb30-27" aria-hidden="true" tabindex="-1"></a>    values <span class="op">=</span> values.transpose(<span class="dv">1</span>, <span class="dv">2</span>).contiguous().view(b <span class="op">*</span> h, t, k)</span>
+<span id="cb30-28"><a href="#cb30-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-29"><a href="#cb30-29" aria-hidden="true" tabindex="-1"></a>    queries <span class="op">=</span> queries <span class="op">/</span> (k <span class="op">**</span> (<span class="dv">1</span><span class="op">/</span><span class="dv">4</span>))</span>
+<span id="cb30-30"><a href="#cb30-30" aria-hidden="true" tabindex="-1"></a>    keys    <span class="op">=</span> keys <span class="op">/</span> (k <span class="op">**</span> (<span class="dv">1</span><span class="op">/</span><span class="dv">4</span>))</span>
+<span id="cb30-31"><a href="#cb30-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-32"><a href="#cb30-32" aria-hidden="true" tabindex="-1"></a>    <span class="co"># - get dot product of queries and keys, and scale</span></span>
+<span id="cb30-33"><a href="#cb30-33" aria-hidden="true" tabindex="-1"></a>    dot <span class="op">=</span> torch.bmm(queries, keys.transpose(<span class="dv">1</span>, <span class="dv">2</span>))</span>
+<span id="cb30-34"><a href="#cb30-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-35"><a href="#cb30-35" aria-hidden="true" tabindex="-1"></a>    indices <span class="op">=</span> torch.triu_indices(t, t, offset<span class="op">=</span><span class="dv">1</span>, device<span class="op">=</span><span class="st">'cuda'</span>) <span class="co"># ---OBS--- this also changed</span></span>
+<span id="cb30-36"><a href="#cb30-36" aria-hidden="true" tabindex="-1"></a>    dot[:, indices[<span class="dv">0</span>], indices[<span class="dv">1</span>]] <span class="op">=</span> <span class="bu">float</span>(<span class="st">'-inf'</span>)</span>
+<span id="cb30-37"><a href="#cb30-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-38"><a href="#cb30-38" aria-hidden="true" tabindex="-1"></a>    <span class="co"># - dot has size (b*h, t, t) containing raw weights</span></span>
+<span id="cb30-39"><a href="#cb30-39" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-40"><a href="#cb30-40" aria-hidden="true" tabindex="-1"></a>    dot <span class="op">=</span> F.softmax(dot, dim<span class="op">=</span><span class="dv">2</span>) </span>
+<span id="cb30-41"><a href="#cb30-41" aria-hidden="true" tabindex="-1"></a>    <span class="co"># - dot now contains row-wise normalized weights</span></span>
+<span id="cb30-42"><a href="#cb30-42" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-43"><a href="#cb30-43" aria-hidden="true" tabindex="-1"></a>    <span class="co"># apply the self attention to the values</span></span>
+<span id="cb30-44"><a href="#cb30-44" aria-hidden="true" tabindex="-1"></a>    out <span class="op">=</span> torch.bmm(dot, values).view(b, h, t, k)</span>
+<span id="cb30-45"><a href="#cb30-45" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-46"><a href="#cb30-46" aria-hidden="true" tabindex="-1"></a>    <span class="co"># swap h, t back, unify heads</span></span>
+<span id="cb30-47"><a href="#cb30-47" aria-hidden="true" tabindex="-1"></a>    out <span class="op">=</span> out.transpose(<span class="dv">1</span>, <span class="dv">2</span>).contiguous().view(b, t, h <span class="op">*</span> k)</span>
+<span id="cb30-48"><a href="#cb30-48" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="va">self</span>.unifyheads(out)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> TransformerBlock(Module):</span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>  <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, k, heads):</span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>    <span class="bu">super</span>().<span class="fu">__init__</span>()</span>
+<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a>    <span class="va">self</span>.attention <span class="op">=</span> SelfAttentionAutoRegressive(k, heads<span class="op">=</span>heads)</span>
+<span id="cb31-6"><a href="#cb31-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-7"><a href="#cb31-7" aria-hidden="true" tabindex="-1"></a>    <span class="va">self</span>.norm1 <span class="op">=</span> nn.LayerNorm(k)</span>
+<span id="cb31-8"><a href="#cb31-8" aria-hidden="true" tabindex="-1"></a>    <span class="va">self</span>.norm2 <span class="op">=</span> nn.LayerNorm(k)</span>
+<span id="cb31-9"><a href="#cb31-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-10"><a href="#cb31-10" aria-hidden="true" tabindex="-1"></a>    <span class="va">self</span>.ff <span class="op">=</span> nn.Sequential(</span>
+<span id="cb31-11"><a href="#cb31-11" aria-hidden="true" tabindex="-1"></a>      nn.Linear(k, <span class="dv">4</span> <span class="op">*</span> k),</span>
+<span id="cb31-12"><a href="#cb31-12" aria-hidden="true" tabindex="-1"></a>      nn.ReLU(),</span>
+<span id="cb31-13"><a href="#cb31-13" aria-hidden="true" tabindex="-1"></a>      nn.Linear(<span class="dv">4</span> <span class="op">*</span> k, k)</span>
+<span id="cb31-14"><a href="#cb31-14" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb31-15"><a href="#cb31-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-16"><a href="#cb31-16" aria-hidden="true" tabindex="-1"></a>  <span class="kw">def</span> forward(<span class="va">self</span>, x):</span>
+<span id="cb31-17"><a href="#cb31-17" aria-hidden="true" tabindex="-1"></a>    attended <span class="op">=</span> <span class="va">self</span>.attention(x)</span>
+<span id="cb31-18"><a href="#cb31-18" aria-hidden="true" tabindex="-1"></a>    x <span class="op">=</span> <span class="va">self</span>.norm1(attended <span class="op">+</span> x)</span>
+<span id="cb31-19"><a href="#cb31-19" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb31-20"><a href="#cb31-20" aria-hidden="true" tabindex="-1"></a>    fedforward <span class="op">=</span> <span class="va">self</span>.ff(x)</span>
+<span id="cb31-21"><a href="#cb31-21" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="va">self</span>.norm2(fedforward <span class="op">+</span> x)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Transformer(Module):</span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, k, heads, depth, seq_length, num_tokens, device):</span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a>        <span class="bu">super</span>().<span class="fu">__init__</span>()</span>
+<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-5"><a href="#cb32-5" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.device <span class="op">=</span> device</span>
+<span id="cb32-6"><a href="#cb32-6" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.seq_length <span class="op">=</span> seq_length</span>
+<span id="cb32-7"><a href="#cb32-7" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.num_tokens <span class="op">=</span> num_tokens</span>
+<span id="cb32-8"><a href="#cb32-8" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.token_emb <span class="op">=</span> nn.Embedding(num_tokens, k)</span>
+<span id="cb32-9"><a href="#cb32-9" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.pos_emb <span class="op">=</span> nn.Embedding(seq_length, k)</span>
+<span id="cb32-10"><a href="#cb32-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-11"><a href="#cb32-11" aria-hidden="true" tabindex="-1"></a>            <span class="co"># The sequence of transformer blocks that does all the </span></span>
+<span id="cb32-12"><a href="#cb32-12" aria-hidden="true" tabindex="-1"></a>        <span class="co"># heavy lifting</span></span>
+<span id="cb32-13"><a href="#cb32-13" aria-hidden="true" tabindex="-1"></a>        tblocks <span class="op">=</span> [TransformerBlock(k<span class="op">=</span>k, heads<span class="op">=</span>heads) <span class="cf">for</span> x <span class="kw">in</span> <span class="bu">range</span>(depth)]</span>
+<span id="cb32-14"><a href="#cb32-14" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.tblocks <span class="op">=</span> nn.Sequential(<span class="op">*</span>tblocks)</span>
+<span id="cb32-15"><a href="#cb32-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-16"><a href="#cb32-16" aria-hidden="true" tabindex="-1"></a>            <span class="co"># Maps the final output sequence to class logits</span></span>
+<span id="cb32-17"><a href="#cb32-17" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.toprobs <span class="op">=</span> nn.Linear(k, num_tokens)</span>
+<span id="cb32-18"><a href="#cb32-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-19"><a href="#cb32-19" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> forward(<span class="va">self</span>, x):</span>
+<span id="cb32-20"><a href="#cb32-20" aria-hidden="true" tabindex="-1"></a>        <span class="co">"""</span></span>
+<span id="cb32-21"><a href="#cb32-21" aria-hidden="true" tabindex="-1"></a><span class="co">        :param x: A (b, t) tensor of integer values representing </span></span>
+<span id="cb32-22"><a href="#cb32-22" aria-hidden="true" tabindex="-1"></a><span class="co">                  words (in some predetermined vocabulary).</span></span>
+<span id="cb32-23"><a href="#cb32-23" aria-hidden="true" tabindex="-1"></a><span class="co">        :return: A (b, c) tensor of log-probabilities over the </span></span>
+<span id="cb32-24"><a href="#cb32-24" aria-hidden="true" tabindex="-1"></a><span class="co">                 classes (where c is the nr. of classes).</span></span>
+<span id="cb32-25"><a href="#cb32-25" aria-hidden="true" tabindex="-1"></a><span class="co">        """</span></span>
+<span id="cb32-26"><a href="#cb32-26" aria-hidden="true" tabindex="-1"></a>            </span>
+<span id="cb32-27"><a href="#cb32-27" aria-hidden="true" tabindex="-1"></a>        <span class="co"># generate token embeddings</span></span>
+<span id="cb32-28"><a href="#cb32-28" aria-hidden="true" tabindex="-1"></a>        <span class="co"># print(x.size())</span></span>
+<span id="cb32-29"><a href="#cb32-29" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb32-30"><a href="#cb32-30" aria-hidden="true" tabindex="-1"></a>        tokens <span class="op">=</span> <span class="va">self</span>.token_emb(x)</span>
+<span id="cb32-31"><a href="#cb32-31" aria-hidden="true" tabindex="-1"></a>        b, t, k <span class="op">=</span> tokens.size()</span>
+<span id="cb32-32"><a href="#cb32-32" aria-hidden="true" tabindex="-1"></a>        <span class="co"># print(b, t, k)</span></span>
+<span id="cb32-33"><a href="#cb32-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-34"><a href="#cb32-34" aria-hidden="true" tabindex="-1"></a>        <span class="co"># generate position embeddings</span></span>
+<span id="cb32-35"><a href="#cb32-35" aria-hidden="true" tabindex="-1"></a>        positions <span class="op">=</span> torch.arange(t, device<span class="op">=</span><span class="va">self</span>.device)</span>
+<span id="cb32-36"><a href="#cb32-36" aria-hidden="true" tabindex="-1"></a>        positions <span class="op">=</span> <span class="va">self</span>.pos_emb(positions)[<span class="va">None</span>, :, :].expand(b, t, k)</span>
+<span id="cb32-37"><a href="#cb32-37" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb32-38"><a href="#cb32-38" aria-hidden="true" tabindex="-1"></a>        x <span class="op">=</span> tokens <span class="op">+</span> positions</span>
+<span id="cb32-39"><a href="#cb32-39" aria-hidden="true" tabindex="-1"></a>        x <span class="op">=</span> <span class="va">self</span>.tblocks(x)</span>
+<span id="cb32-40"><a href="#cb32-40" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb32-41"><a href="#cb32-41" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Average-pool over the t dimension and project to class </span></span>
+<span id="cb32-42"><a href="#cb32-42" aria-hidden="true" tabindex="-1"></a>        <span class="co"># probabilities</span></span>
+<span id="cb32-43"><a href="#cb32-43" aria-hidden="true" tabindex="-1"></a>        x <span class="op">=</span> <span class="va">self</span>.toprobs(x.view(b<span class="op">*</span>t, k)).view(b, t, <span class="va">self</span>.num_tokens)</span>
+<span id="cb32-44"><a href="#cb32-44" aria-hidden="true" tabindex="-1"></a>        <span class="co"># print(x.size())</span></span>
+<span id="cb32-45"><a href="#cb32-45" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> F.log_softmax(x, dim<span class="op">=</span><span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="the-text-generation" class="level3">
+<h3 class="anchored" data-anchor-id="the-text-generation">The Text Generation</h3>
+<ul>
+<li>Data Collection</li>
+<li>Training Loop</li>
+<li>Validation</li>
+</ul>
+<div class="cell" data-outputid="e25f20d8-caa1-4948-da8d-8e5f5f9de5cd">
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>path <span class="op">=</span> untar_data(URLs.IMDB_SAMPLE)</span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>path.ls()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="20">
+<pre><code>(#2) [Path('/root/.fastai/data/imdb_sample/texts.csv'),Path('/root/.fastai/data/imdb_sample/models')]</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.read_csv(path<span class="op">/</span><span class="st">'texts.csv'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-outputid="d6c53250-dae8-4f5f-88fc-9d2a91cc881e">
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>df.head(<span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="22">
+
+<div>
+
+<table class="dataframe table table-sm table-striped">
+  <thead>
+    <tr>
+      <th></th>
+      <th>label</th>
+      <th>text</th>
+      <th>is_valid</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>negative</td>
+      <td>Un-bleeping-believable! Meg Ryan doesn't even look her usual pert lovable self in this, which normally makes me forgive her shallow ticky acting schtick. Hard to believe she was the producer on this dog. Plus Kevin Kline: what kind of suicide trip has his career been on? Whoosh... Banzai!!! Finally this was directed by the guy who did Big Chill? Must be a replay of Jonestown - hollywood style. Wooofff!</td>
+      <td>False</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+</div>
+<div class="cell" data-outputid="e5b3156e-86bb-4f4f-8475-98b32d12a49c">
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a>dls <span class="op">=</span> TextDataLoaders.from_df(df, path<span class="op">=</span>path, text_col<span class="op">=</span><span class="st">'text'</span>, is_lm<span class="op">=</span><span class="va">True</span>, valid_col<span class="op">=</span><span class="st">'is_valid'</span>, seq_len<span class="op">=</span><span class="dv">256</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>/usr/local/lib/python3.6/dist-packages/numpy/core/_asarray.py:83: VisibleDeprecationWarning: Creating an ndarray from ragged nested sequences (which is a list-or-tuple of lists-or-tuples-or ndarrays with different lengths or shapes) is deprecated. If you meant to do this, you must specify 'dtype=object' when creating the ndarray
+  return array(a, dtype, copy=False, order=order)</code></pre>
+</div>
+</div>
+<div class="cell" data-outputid="d2f8842e-64f7-405c-f689-9ffe8ad2f713">
+<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a>dls.show_batch(max_n<span class="op">=</span><span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+
+<table class="dataframe table table-sm table-striped">
+  <thead>
+    <tr>
+      <th></th>
+      <th>text</th>
+      <th>text_</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>xxbos i enjoyed this movie . xxmaj unlike like some of the xxunk up , xxunk trash that is passed off as action movies , xxmaj playing xxmaj god is simple and realistic , with characters that are believable , action that is not over the top and enough twists and turns to keep you interested until the end . \n\n xxmaj well directed , well acted and a good story . xxbos xxmaj for those fans of xxmaj laurel and xxmaj hardy , the 1940s and beyond were a very sad time for the team . xxmaj their xxunk with xxmaj xxunk xxmaj xxunk xxmaj studios had xxunk and now they were " free xxunk to work for any studio who xxunk them a job . xxmaj unfortunately , xxmaj fox , xxup xxunk , xxup xxunk ( without xxmaj xxunk ) and even a xxmaj french film company</td>
+      <td>i enjoyed this movie . xxmaj unlike like some of the xxunk up , xxunk trash that is passed off as action movies , xxmaj playing xxmaj god is simple and realistic , with characters that are believable , action that is not over the top and enough twists and turns to keep you interested until the end . \n\n xxmaj well directed , well acted and a good story . xxbos xxmaj for those fans of xxmaj laurel and xxmaj hardy , the 1940s and beyond were a very sad time for the team . xxmaj their xxunk with xxmaj xxunk xxmaj xxunk xxmaj studios had xxunk and now they were " free xxunk to work for any studio who xxunk them a job . xxmaj unfortunately , xxmaj fox , xxup xxunk , xxup xxunk ( without xxmaj xxunk ) and even a xxmaj french film company who</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+<div class="cell" data-outputid="29e0f3e4-c092-4136-de05-83a05307bff5">
+<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="bu">len</span>(dls.vocab),dls.one_batch()[<span class="dv">0</span>].size()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="27">
+<pre><code>(7080, (64, 256))</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a>learn <span class="op">=</span> Learner(dls, Transformer(k<span class="op">=</span><span class="dv">256</span>, heads<span class="op">=</span><span class="dv">8</span>, depth<span class="op">=</span><span class="dv">3</span>, seq_length<span class="op">=</span><span class="dv">256</span>, num_tokens<span class="op">=</span><span class="bu">len</span>(dls.vocab), device<span class="op">=</span>dls.device), loss_func<span class="op">=</span>CrossEntropyLossFlat())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-outputid="8028a840-2057-4d98-8551-20935a565c95">
+<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a>learn.freeze()</span>
+<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a>learn.lr_find()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+
+</div>
+<div class="cell-output cell-output-display" data-execution_count="56">
+<pre><code>SuggestedLRs(lr_min=0.02089296132326126, lr_steep=0.0014454397605732083)</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="transformers-explained_files/figure-html/cell-37-output-3.png" class="img-fluid"></p>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a>learn.unfreeze()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-outputid="6d76f339-45e7-4ab0-c728-5f5638446c7a">
+<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a>learn.fit_one_cycle(<span class="dv">4</span>)  <span class="co"># Add suggested LR if you'd like</span></span>
+<span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a>learn.fit_one_cycle(<span class="dv">4</span>)</span>
+<span id="cb46-3"><a href="#cb46-3" aria-hidden="true" tabindex="-1"></a>learn.fit_one_cycle(<span class="dv">4</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+
+<table class="dataframe table table-sm table-striped">
+  <thead>
+    <tr>
+      <th>epoch</th>
+      <th>train_loss</th>
+      <th>valid_loss</th>
+      <th>time</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>0</td>
+      <td>5.952718</td>
+      <td>6.005916</td>
+      <td>00:09</td>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>5.943147</td>
+      <td>5.950939</td>
+      <td>00:09</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>5.907956</td>
+      <td>5.901570</td>
+      <td>00:09</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>5.869049</td>
+      <td>5.870370</td>
+      <td>00:09</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+<div class="cell-output cell-output-display">
+
+<table class="dataframe table table-sm table-striped">
+  <thead>
+    <tr>
+      <th>epoch</th>
+      <th>train_loss</th>
+      <th>valid_loss</th>
+      <th>time</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>0</td>
+      <td>5.782402</td>
+      <td>5.828668</td>
+      <td>00:09</td>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>5.687460</td>
+      <td>5.575956</td>
+      <td>00:09</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>5.571561</td>
+      <td>5.469945</td>
+      <td>00:09</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>5.484975</td>
+      <td>5.450408</td>
+      <td>00:09</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+<div class="cell-output cell-output-display">
+
+<table class="dataframe table table-sm table-striped">
+  <thead>
+    <tr>
+      <th>epoch</th>
+      <th>train_loss</th>
+      <th>valid_loss</th>
+      <th>time</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>0</td>
+      <td>5.322245</td>
+      <td>5.439701</td>
+      <td>00:09</td>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>5.280037</td>
+      <td>5.311460</td>
+      <td>00:09</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>5.215474</td>
+      <td>5.259928</td>
+      <td>00:09</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>5.167902</td>
+      <td>5.247015</td>
+      <td>00:09</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb47"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> predict(<span class="va">self</span>, text, n_words<span class="op">=</span><span class="dv">1</span>, no_unk<span class="op">=</span><span class="va">True</span>, temperature<span class="op">=</span><span class="fl">1.</span>, min_p<span class="op">=</span><span class="va">None</span>, no_bar<span class="op">=</span><span class="va">False</span>,</span>
+<span id="cb47-2"><a href="#cb47-2" aria-hidden="true" tabindex="-1"></a>            decoder<span class="op">=</span>decode_spec_tokens, only_last_word<span class="op">=</span><span class="va">False</span>):</span>
+<span id="cb47-3"><a href="#cb47-3" aria-hidden="true" tabindex="-1"></a>    <span class="co">"Return `text` and the `n_words` that come after"</span></span>
+<span id="cb47-4"><a href="#cb47-4" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb47-5"><a href="#cb47-5" aria-hidden="true" tabindex="-1"></a>    idxs <span class="op">=</span> idxs_all <span class="op">=</span> <span class="va">self</span>.dls.test_dl([text]).items[<span class="dv">0</span>].to(<span class="va">self</span>.dls.device)</span>
+<span id="cb47-6"><a href="#cb47-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> no_unk: unk_idx <span class="op">=</span> <span class="va">self</span>.dls.vocab.index(UNK)</span>
+<span id="cb47-7"><a href="#cb47-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> _ <span class="kw">in</span> (<span class="bu">range</span>(n_words) <span class="cf">if</span> no_bar <span class="cf">else</span> progress_bar(<span class="bu">range</span>(n_words), leave<span class="op">=</span><span class="va">False</span>)):</span>
+<span id="cb47-8"><a href="#cb47-8" aria-hidden="true" tabindex="-1"></a>        <span class="cf">with</span> <span class="va">self</span>.no_bar(): preds,_ <span class="op">=</span> <span class="va">self</span>.get_preds(dl<span class="op">=</span>[(idxs[<span class="va">None</span>],)])</span>
+<span id="cb47-9"><a href="#cb47-9" aria-hidden="true" tabindex="-1"></a>        <span class="co"># print(preds.size())</span></span>
+<span id="cb47-10"><a href="#cb47-10" aria-hidden="true" tabindex="-1"></a>        res <span class="op">=</span> preds[<span class="dv">0</span>][<span class="op">-</span><span class="dv">1</span>]</span>
+<span id="cb47-11"><a href="#cb47-11" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> no_unk: res[unk_idx] <span class="op">=</span> <span class="fl">0.</span></span>
+<span id="cb47-12"><a href="#cb47-12" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> min_p <span class="kw">is</span> <span class="kw">not</span> <span class="va">None</span>:</span>
+<span id="cb47-13"><a href="#cb47-13" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> (res <span class="op">&gt;=</span> min_p).<span class="bu">float</span>().<span class="bu">sum</span>() <span class="op">==</span> <span class="dv">0</span>:</span>
+<span id="cb47-14"><a href="#cb47-14" aria-hidden="true" tabindex="-1"></a>                warn(<span class="ss">f"There is no item with probability &gt;= </span><span class="sc">{</span>min_p<span class="sc">}</span><span class="ss">, try a lower value."</span>)</span>
+<span id="cb47-15"><a href="#cb47-15" aria-hidden="true" tabindex="-1"></a>            <span class="cf">else</span>: res[res <span class="op">&lt;</span> min_p] <span class="op">=</span> <span class="fl">0.</span></span>
+<span id="cb47-16"><a href="#cb47-16" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> temperature <span class="op">!=</span> <span class="fl">1.</span>: res.pow_(<span class="dv">1</span> <span class="op">/</span> temperature)</span>
+<span id="cb47-17"><a href="#cb47-17" aria-hidden="true" tabindex="-1"></a>        idx <span class="op">=</span> torch.multinomial(res, <span class="dv">1</span>).item()</span>
+<span id="cb47-18"><a href="#cb47-18" aria-hidden="true" tabindex="-1"></a>        idxs <span class="op">=</span> idxs_all <span class="op">=</span> torch.cat([idxs_all, idxs.new([idx])])</span>
+<span id="cb47-19"><a href="#cb47-19" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> only_last_word: idxs <span class="op">=</span> idxs[<span class="op">-</span><span class="dv">1</span>][<span class="va">None</span>]</span>
+<span id="cb47-20"><a href="#cb47-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-21"><a href="#cb47-21" aria-hidden="true" tabindex="-1"></a>    num <span class="op">=</span> <span class="va">self</span>.dls.train_ds.numericalize</span>
+<span id="cb47-22"><a href="#cb47-22" aria-hidden="true" tabindex="-1"></a>    tokens <span class="op">=</span> [num.vocab[i] <span class="cf">for</span> i <span class="kw">in</span> idxs_all <span class="cf">if</span> num.vocab[i] <span class="kw">not</span> <span class="kw">in</span> [BOS, PAD]]</span>
+<span id="cb47-23"><a href="#cb47-23" aria-hidden="true" tabindex="-1"></a>    sep <span class="op">=</span> <span class="va">self</span>.dls.train_ds.tokenizer.sep</span>
+<span id="cb47-24"><a href="#cb47-24" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> sep.join(decoder(tokens))</span>
+<span id="cb47-25"><a href="#cb47-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-26"><a href="#cb47-26" aria-hidden="true" tabindex="-1"></a><span class="at">@delegates</span>(Learner.get_preds)</span>
+<span id="cb47-27"><a href="#cb47-27" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> get_preds(<span class="va">self</span>, concat_dim<span class="op">=</span><span class="dv">1</span>, <span class="op">**</span>kwargs):</span>
+<span id="cb47-28"><a href="#cb47-28" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> <span class="bu">super</span>().get_preds(concat_dim<span class="op">=</span>concat_dim, <span class="op">**</span>kwargs)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-outputid="99593356-56a4-47d5-bb8d-e35f5b5a227c">
+<div class="sourceCode cell-code" id="cb48"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a>predict(learn, <span class="st">"I think its a very"</span>, n_words<span class="op">=</span><span class="dv">20</span>, temperature<span class="op">=</span><span class="fl">1.</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+
+</div>
+<div class="cell-output cell-output-display" data-execution_count="68">
+<pre><code>'i think its a very Who spoiler to sort with a flat in clumsy and my world to sit to american to were even'</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb50"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a>learn.save(<span class="st">'gen.pkl'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb51"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Shakespeare for those that'd want it!</span></span>
+<span id="cb51-2"><a href="#cb51-2" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>wget https:<span class="op">//</span>cs.stanford.edu<span class="op">/</span>people<span class="op">/</span>karpathy<span class="op">/</span>char<span class="op">-</span>rnn<span class="op">/</span>shakespear.txt</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>FastAI way</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb52"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a>predict(language_model_learner(dls, AWD_LSTM), <span class="st">"I think its"</span>, n_words<span class="op">=</span><span class="dv">2</span>, temperature<span class="op">=</span><span class="fl">1.</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+
+
+</section>
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+      <ul class="footer-items list-unstyled">
+    <li class="nav-item">
+    <a class="nav-link" href="https://www.buymeacoffee.com/hlondogard">Buy me a Coffee↗</a>
+  </li>  
+    <li class="nav-item">
+    <a class="nav-link" href="https://github.com/sponsors/Lundez?o=esb">Support on GitHub↗</a>
+  </li>  
+</ul>
+    </div>   
+      <div class="nav-footer-center">
+        <ul class="footer-items list-unstyled">
+    <li class="nav-item">
+    <a class="nav-link" href="../../about.html">About</a>
+  </li>  
+</ul>
+      </div>
+    <div class="nav-footer-right">
+      <ul class="footer-items list-unstyled">
+    <li class="nav-item compact">
+    <a class="nav-link" href="https://www.linkedin.com/in/hampus-londögård/">
+      <i class="bi bi-linkedin" role="img" aria-label="LinkedIn">
+</i> 
+    </a>
+  </li>  
+    <li class="nav-item compact">
+    <a class="nav-link" href="https://twitter.com/hlondogard">
+      <i class="bi bi-twitter" role="img" aria-label="Twitter">
+</i> 
+    </a>
+  </li>  
+    <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/lundez">
+      <i class="bi bi-github" role="img" aria-label="Lundez GitHub">
+</i> 
+    </a>
+  </li>  
+    <li class="nav-item compact">
+    <a class="nav-link" href="../../index.xml">
+      <i class="bi bi-rss" role="img" aria-label="Londogard Blog RSS">
+</i> 
+    </a>
+  </li>  
+</ul>
+    </div>
+  </div>
+</footer>
+
+
+
+</body></html>

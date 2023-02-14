@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.2.335">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Hampus Londögård">
+<meta name="dcterms.date" content="2022-07-07">
+<meta name="description" content="Snapsvisor is traditional Swedish Drinking Songs, sometimes they need some refreshing which I try to do through AI here! ;)">
+
+<title>Londogard Blog - GPT2-snapsvisor - Generating Swedish Drinking Songs</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../../favicon.ico" rel="icon">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="../../styles.css">
+<meta name="twitter:title" content="Londogard Blog - GPT2-snapsvisor - Generating Swedish Drinking Songs">
+<meta name="twitter:description" content="Snapsvisor is traditional Swedish Drinking Songs, sometimes they need some refreshing which I try to do through AI here! ;)">
+<meta name="twitter:creator" content="@hlondogard">
+<meta name="twitter:card" content="summary">
+</head>
+
+<body class="nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">Londogard Blog</span>
+    </a>
+  </div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../presentations.html">
+ <span class="menu-text">Presentations</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="https://londogard.com/projects">
+ <span class="menu-text">Londogard Projects↗</span></a>
+  </li>  
+</ul>
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../about.html">
+ <span class="menu-text">About</span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://www.linkedin.com/in/hampus-londögård/"><i class="bi bi-linkedin" role="img" aria-label="LinkedIn">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://twitter.com/hlondogard"><i class="bi bi-twitter" role="img" aria-label="Twitter">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-bi-github" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+      <i class="bi bi-github" role="img">
+</i> 
+ <span class="menu-text"></span>
+    </a>
+    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="nav-menu-bi-github">    
+        <li>
+    <a class="dropdown-item" href="https://github.com/lundez"><i class="bi bi-github" role="img">
+</i> 
+ <span class="dropdown-text">Lundez</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="https://github.com/londogard"><i class="bi bi-github" role="img">
+</i> 
+ <span class="dropdown-text">Londogard</span></a>
+  </li>  
+    </ul>
+  </li>
+  <li class="nav-item compact">
+    <a class="nav-link" href="../../index.xml"><i class="bi bi-rss" role="img" aria-label="Londogard Blog RSS">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+</ul>
+              <div id="quarto-search" class="" title="Search"></div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<header id="title-block-header" class="quarto-title-block default page-columns page-full">
+  <div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-body">
+      <h1 class="title">GPT2-snapsvisor - Generating Swedish Drinking Songs</h1>
+                  <div>
+        <div class="description">
+          Snapsvisor is traditional Swedish Drinking Songs, sometimes they need some refreshing which I try to do through AI here! ;)
+        </div>
+      </div>
+                          <div class="quarto-categories">
+                <div class="quarto-category">machine-learning</div>
+                <div class="quarto-category">nlp</div>
+                <div class="quarto-category">fun</div>
+              </div>
+                  </div>
+  </div>
+    
+  
+  <div class="quarto-title-meta">
+
+      <div>
+      <div class="quarto-title-meta-heading">Author</div>
+      <div class="quarto-title-meta-contents">
+               <p>Hampus Londögård </p>
+            </div>
+    </div>
+      
+      <div>
+      <div class="quarto-title-meta-heading">Published</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date">July 7, 2022</p>
+      </div>
+    </div>
+    
+      
+    </div>
+    
+  
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#gpt-3-few-shot-learning-and-prompt-engineering" id="toc-gpt-3-few-shot-learning-and-prompt-engineering" class="nav-link active" data-scroll-target="#gpt-3-few-shot-learning-and-prompt-engineering">GPT-3: Few-Shot Learning and Prompt Engineering</a></li>
+  <li><a href="#few-shot-learning-explained" id="toc-few-shot-learning-explained" class="nav-link" data-scroll-target="#few-shot-learning-explained">Few-Shot Learning Explained</a></li>
+  <li><a href="#fine-tuning-a-model" id="toc-fine-tuning-a-model" class="nav-link" data-scroll-target="#fine-tuning-a-model">Fine-Tuning a model</a></li>
+  <li><a href="#building-the-dataset-of-snapsvisor" id="toc-building-the-dataset-of-snapsvisor" class="nav-link" data-scroll-target="#building-the-dataset-of-snapsvisor">Building the dataset of Snapsvisor</a></li>
+  <li><a href="#fine-tuning-the-model" id="toc-fine-tuning-the-model" class="nav-link" data-scroll-target="#fine-tuning-the-model">Fine-Tuning the model</a></li>
+  <li><a href="#tldr-too-long-didnt-read" id="toc-tldr-too-long-didnt-read" class="nav-link" data-scroll-target="#tldr-too-long-didnt-read">TL;DR (Too Long; Didn’t Read)</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content quarto-banner-title-block" id="quarto-document-content">
+
+
+
+
+<p>This midsummer my friends gave me the idea that I should generate Swedish Drinking Songs, or&nbsp;<em>Snapsvisor</em>,&nbsp;using Machine Learning and I thought it&nbsp;could be a lot of fun! 🍻&nbsp;&nbsp;</p>
+<p>To achieve the best results I’d need access to GPT-3, or equivalent model, alas I don’t and as such I needed&nbsp; to do some extra work! Fun work though! 🤓</p>
+<p>First some examples: <img src="snapsvisor.png" class="img-fluid"></p>
+<!--truncate-->
+<p>Why GPT-3?</p>
+<ul>
+<li>Possible to do&nbsp;<em>prompt engineering</em>, which gwern has a great&nbsp;<a href="https://www.gwern.net/GPT-3#prompts-as-programming">blog on</a>
+<ul>
+<li>TL;DR prompt engineering allows you to write a prompt and get a response, e.g.&nbsp;“step-by-step how to write a blog” and the return the step-by-step.</li>
+</ul></li>
+<li>Much better zero-/one-/few-shot learning
+<ul>
+<li>Because the model has a ton more parameters and trained on a larger dataset</li>
+</ul></li>
+</ul>
+<p>Drawbacks with GPT-2: - The performance is noticable worse because of the lower parameters and less data, sometimes called tokens, used to train the model.</p>
+<p>As such the result is not amazing, but it’s capable and really funny - based on the premise that you know Swedish!</p>
+<p><strong>It’s available on the <a href="https://huggingface.co/lunde/gpt2-snapsvisor">HuggingFace Hub</a></strong> with a <strong>inference widget</strong> and <strong>as a pre-trained model</strong>, which can generate your own <em>Snapsvisor</em> - N.B. it removes newlines.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> transformers <span class="im">import</span> AutoTokenizer, AutoModelForCausalLM</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>tokenizer <span class="op">=</span> AutoTokenizer.from_pretrained(<span class="st">"lunde/gpt2-snapsvisor"</span>)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> AutoModelForCausalLM.from_pretrained(<span class="st">"lunde/gpt2-snapsvisor"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<section id="gpt-3-few-shot-learning-and-prompt-engineering" class="level3">
+<h3 class="anchored" data-anchor-id="gpt-3-few-shot-learning-and-prompt-engineering">GPT-3: Few-Shot Learning and Prompt Engineering</h3>
+<p>Few-Shot Learning is the capability to solve an unknown task using either very few or no (training) data points at all to solve, which can successfully be done today.</p>
+<p>In other words, we can achieve great accuracy with little or no data att all!</p>
+<p>Few-Shot Learning reminds me of how human learns, we are very fast at generalizing knowledge. By knowing the difference between a cat, dog and tiger we can very fast learn that a lion is a unique animal and if we are told the name we know that this unique animal is a lion!</p>
+<p>We are also able to make up words that we don’t know about, like “car wheel” by seeing a wheel on a car!</p>
+</section>
+<section id="few-shot-learning-explained" class="level3">
+<h3 class="anchored" data-anchor-id="few-shot-learning-explained">Few-Shot Learning Explained</h3>
+<p>Less theory, more examples!</p>
+<p><em>Prompt Engineering</em>&nbsp; is a Few-Shot technique that grew increasingly powerful with each generation of Large Language Models (LLM) and with GPT-3 it became incredibly good.</p>
+<ul>
+<li><strong>Model:</strong>&nbsp;The Large Language Model (LLM) being used, e.g.&nbsp;GPT-3 .</li>
+<li><strong>Prompt:</strong>&nbsp;The text given to the LLM to generate an answer from, or complete.</li>
+<li><strong>Zero-shot:</strong>&nbsp;A prompt with no examples, e.g.&nbsp;<code>The name of a character from Star Wars is:</code>&nbsp;or&nbsp;<code>[Swedish: "Snaps!", English: "</code></li>
+<li><strong>Few-shot:</strong>&nbsp;A prompt with one (1-shot) or more (n-shot, few-shot) examples. See example below</li>
+</ul>
+<p>To then give a example of few-shot (4) prompt:</p>
+<pre><code>This is a list of startup ideas:
+1. [Tag: Internet] A website that lets you post articles you've written, and other people can help you edit them.
+2. [Tag: Home] A website that lets you share a photo of something broken in your house, and then local people can offer to fix it for you.
+3. [Tag: Children] An online service that teaches children how to code.
+4. [Tag: Financial] An online service that allows people to rent out their unused durable goods to people who need them.
+5. [Tag: Machine Learning]</code></pre>
+<p>Using&nbsp;<em>Prompt Engineering</em>&nbsp;and GPT-3 I’m certain that it’d be possible to generate&nbsp;<em>Snapsvisor</em>&nbsp;with little data, i.e.&nbsp;Few-Shot Learning.</p>
+<p>GPT-2’s few-shot capabilities are much smaller as such I need to&nbsp;<em>Fine Tune</em>&nbsp;the model.</p>
+</section>
+<section id="fine-tuning-a-model" class="level3">
+<h3 class="anchored" data-anchor-id="fine-tuning-a-model">Fine-Tuning a model</h3>
+<p>Fine-Tuning a model can be done in multiple ways, three examples of fine-tuning is</p>
+<ol type="1">
+<li><em>Training</em>&nbsp;(like normally)</li>
+<li><em>Freezing</em></li>
+<li><em>Dynamic Learning Rate</em></li>
+</ol>
+<p><strong>Training</strong></p>
+<p>Simply train your pre-trailed model with the new dataset. The Language Models parameters is already encoded with knowledge about language, structure and semantic meaning. This efficient representation and initiation means that it faster learns about new, similar, tasks&nbsp;than a pseudo-random weight initialization.&nbsp;&nbsp;</p>
+<p>It has to be noted that the pre-training task, scheme and data impacts the later fine-tuning.</p>
+<p><strong>Freezing</strong>&nbsp;</p>
+<p>Freezing layers is one of the most common approaches, usually freezing all layers except the&nbsp;<em>head</em>&nbsp;- the head is the final layer(s) and the rest is the&nbsp;<em>backbone</em>. Usually the head is equal to the classification layer.&nbsp;</p>
+<p>In other words, the head takes an internal representation, embedding, and learns to decode&nbsp;it in the optimal way to solve the task.</p>
+<p>By only changing your head and training that part we train the model faster and don’t risk forgetting important information in the network.</p>
+<p><img src="06406d83-410b-4e79-b2c8-025c53dbf9b2.png" class="img-fluid"></p>
+<blockquote class="blockquote">
+<p><strong>Important info early in the network:</strong><br>
+Early in the network important information is chopped into large pieces and unimportant information is largely removed.<br>
+Like carpeting you first chop the large pieces and the further you get the smaller and finer details are built. The same can be said about neural networks.&nbsp;<br>
+This means that if we learn to remove important information at the early stages we’ll loose it. This is catastrophic forgetting.</p>
+</blockquote>
+<p>Once the head is trained we can improve the results further by gradually unfreezing the last layers, one at a time. But make sure to have a low learning rate as otherwise the model might forget important information.</p>
+<p><img src="ed771f34-3726-43f3-8d73-194f9e94e42d.png" class="img-fluid"></p>
+<p><strong>Dynamic Learning Rate</strong>&nbsp;</p>
+<p>Rather than freezing and unfreezing layer there’s a technique where you apply different learning rates, lower in early layers and larger at the final ones.</p>
+<p>This means that we don’t risk forgetting important information in the early layers.</p>
+<p><img src="e449ace7-df38-4bda-bc44-38a8cad9ad18.png" class="img-fluid"></p>
+</section>
+<section id="building-the-dataset-of-snapsvisor" class="level3">
+<h3 class="anchored" data-anchor-id="building-the-dataset-of-snapsvisor">Building the dataset of Snapsvisor</h3>
+<p>Because only GPT-2 was accessible we must&nbsp;<em>Fine-Tune</em>&nbsp;the model. Gathering the data becomes the first and most important step, and we need many&nbsp;<em>Snapsvisor</em>.</p>
+<p>To build this dataset I decided to do what most software developers decide to do in this stage,&nbsp;<em>scrape the internet</em>. The internet is really a wonderful source of data and I found multiple sites that had&nbsp;<em>Snapsvisor</em>.</p>
+<p>To query and parse these I needed my necessary tools, which in Python naturally is&nbsp;</p>
+<ol type="1">
+<li><code>requests</code></li>
+<li><code>BeautifulSoup4</code></li>
+</ol>
+<section id="requests" class="level5">
+<h5 class="anchored" data-anchor-id="requests">Requests</h5>
+<p>It’s very easy to do HTTP-requests using&nbsp;<code>requests</code>, simply call&nbsp;<code>.get</code>&nbsp;or&nbsp;<code>.post</code></p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> requests</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>url <span class="op">=</span> <span class="st">"https://www.website.com/path/to/query"</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>resp <span class="op">=</span> requests.get(url)</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>resp.status_code, resp.text <span class="co"># also possible to run resp.json</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>And if the web-page blocks you by some reason most of the times it can be solved by updating the&nbsp;<code>headers</code>&nbsp; supplied.</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>headers <span class="op">=</span> { <span class="st">"User-Agent"</span>: <span class="st">"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:20.0) Gecko/20100101 Firefox/20.0"</span> }</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>resp <span class="op">=</span> requests.get(url, headers<span class="op">=</span>headers).text</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>That’s all we need to learn about&nbsp;<code>requests</code>&nbsp;for now!</p>
+</section>
+<section id="beautifulsoup" class="level5">
+<h5 class="anchored" data-anchor-id="beautifulsoup">BeautifulSoup</h5>
+<p>And how about BeautifulSoup, or bs4 as it’s sometimes called?</p>
+<p>It’s also rather easy, the webpage is returned almost like a dictionary with tools to query in-memory.</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>resp <span class="op">=</span> requests.get(url).text</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>soup <span class="op">=</span> BeautifulSoup(resp, <span class="st">"html.parser"</span>)</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="co"># now you can query `soup.find_all("a")` to get all a-elements in the HTML page etc</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>To learn more see the documentation at&nbsp;<a href="https://www.crummy.com/software/BeautifulSoup/bs4/doc/">https://www.crummy.com/software/BeautifulSoup/bs4/doc/</a>.</p>
+</section>
+</section>
+<section id="fine-tuning-the-model" class="level3">
+<h3 class="anchored" data-anchor-id="fine-tuning-the-model">Fine-Tuning the model</h3>
+<p>I found a swedish version of GPT-2 in the HuggingFace Hub 🥳</p>
+<p>Fine-Tuning the model on my data to generate&nbsp;<em>Snapsvisor</em>&nbsp;is not far away! 😎</p>
+<p>To move fast and make it easy I chose to use&nbsp;the HuggingFace Trainer-API. A better tutorial than this one is available in the HuggingFace documentation.</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> transformers <span class="im">import</span> AutoTokenizer, TextDataset, DataCollatorForLanguageModeling</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> transformers <span class="im">import</span> Trainer, TrainingArguments, AutoModelForCausalLM</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>model_name <span class="op">=</span> <span class="st">"flax-community/swe-gpt-wiki"</span> <span class="co"># replace with your model</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>tokenizer <span class="op">=</span> AutoTokenizer.from_pretrained(model_name)</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> AutoModelForCausalLM.from_pretrained(gpt_model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>With the pretrained model and tokenizer locked and loaded we’re ready to fine-tune with our own data.&nbsp;</p>
+<p>Loading our dataset can be done in multiple ways, but the easiest is most likely to either use HuggingFace&nbsp;<code>[datasets](https://huggingface.co/docs/datasets)</code>&nbsp;or through their&nbsp;<code>DataCollatorForLanguageModelling</code>&nbsp;.</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> load_dataset(train_path, tokenizer):</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>    train_dataset <span class="op">=</span> TextDataset(</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>          tokenizer<span class="op">=</span>tokenizer,</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>          file_path<span class="op">=</span>train_path,</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>          block_size<span class="op">=</span><span class="dv">128</span>)</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>    data_collator <span class="op">=</span> DataCollatorForLanguageModeling(</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>         tokenizer<span class="op">=</span>tokenizer, mlm<span class="op">=</span><span class="va">False</span>,</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> train_dataset, data_collator</span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>train_path <span class="op">=</span> <span class="st">"all_text.txt"</span> <span class="co"># replace with your training file</span></span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>train_dataset, data_collator <span class="op">=</span> load_dataset(train_path, tokenizer)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>With our model, tokenizer and (training) dataset ready we can start fine-tuning the model! This is easiest done using HuggingFace’s&nbsp;<code>Trainer</code>&nbsp;.</p>
+<p>HuggingFace has used a&nbsp;<em>Argument-Object</em>&nbsp;pattern to reduce the number of arguments to the&nbsp;<code>Trainer</code>. The&nbsp;<code>TrainingArguments</code>&nbsp; class wraps a lot of the arguments, fully typed. 👌</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>training_args <span class="op">=</span> TrainingArguments(</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>    output_dir<span class="op">=</span><span class="st">"./gpt2-snaps"</span>, <span class="co"># The output directory</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>    overwrite_output_dir<span class="op">=</span><span class="va">True</span>, <span class="co"># Overwrite the content of the output directory</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>    num_train_epochs<span class="op">=</span><span class="dv">300</span>, <span class="co"># Number of training epochs</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>    per_device_train_batch_size<span class="op">=</span><span class="dv">8</span>, <span class="co"># Batch size for training</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>    save_steps<span class="op">=</span><span class="dv">1000</span>, <span class="co"># After # steps model is saved</span></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>    warmup_steps<span class="op">=</span><span class="dv">500</span>, <span class="co"># Number of warmup steps for learning rate scheduler</span></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>    fp16<span class="op">=</span><span class="va">True</span> <span class="co"># Activate float-point=16 precision to train faster</span></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>trainer <span class="op">=</span> Trainer(</span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>    model<span class="op">=</span>model,</span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>    args<span class="op">=</span>training_args,</span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>    data_collator<span class="op">=</span>data_collator,</span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>    train_dataset<span class="op">=</span>train_dataset,</span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Training is one click away!&nbsp;<strong>But we don’t have a validation dataset?</strong></p>
+<p>As I have little data I chose to train with all data, I don’t really care if we overfit the data (unless it looks bad) for this small task. As such we use all the data to train our Language Model.</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>trainer.train(resume_from_checkpoint<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>trainer.save_model()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Generating text, or&nbsp;<code>inference</code>, is smooth using HuggingFace&nbsp;<code>pipelines</code>.</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> transformers <span class="im">import</span> pipeline</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>trainer.model.cpu()</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>snaps <span class="op">=</span> pipeline(<span class="st">'text-generation'</span>, model<span class="op">=</span>trainer.model, tokenizer<span class="op">=</span>gpt_model)</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>result <span class="op">=</span> snaps(<span class="st">'Nu tar vi en nubbe'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>That’s all there is really!</p>
+<p>Some examples:</p>
+<blockquote class="blockquote">
+<p>Nu tar vi en nubbe,&nbsp;<br>
+Den ska hellre krypa och bränna upp.&nbsp;<br>
+Vi bränna, men inte mjölka oss,&nbsp;<br>
+och bränner till bords</p>
+</blockquote>
+<blockquote class="blockquote">
+<p>Nu tar vi en nubbe – slåss här i ett svep.<br>
+Byssa luderorgon, snapsar!<br>
+När den evigt låga solen tar oss en ljus natt,<br>
+ingen blir så dragen vid näsan</p>
+</blockquote>
+</section>
+<section id="tldr-too-long-didnt-read" class="level2">
+<h2 class="anchored" data-anchor-id="tldr-too-long-didnt-read">TL;DR (Too Long; Didn’t Read)</h2>
+<p>For those that are not interested in details or writeups I thought I’d leave a small TL;DR</p>
+<ol type="1">
+<li>Find a pre-trained Language Model (e.g.&nbsp;GPT-2) (<a href="https://huggingface.co/flax-community/swe-gpt-wiki">link</a>)</li>
+<li>Scrape the web for text data (in my case “Snapsvisor”) using&nbsp;<code>requests</code>&nbsp; (<a href="https://requests.readthedocs.io/">link</a>) and&nbsp;<code>beautifulsoup4</code>&nbsp;(<a href="https://www.crummy.com/software/BeautifulSoup/bs4/doc/">link</a>)</li>
+<li>Fine-Tune the model using HuggingFace&nbsp;<code>Trainer</code>-api (<a href="https://huggingface.co/docs/transformers/main_classes/trainer">link</a>)</li>
+<li>Generate text using HuggingFace&nbsp;<code>pipelines</code>&nbsp;(<a href="https://huggingface.co/docs/transformers/main_classes/pipelines">link</a>)</li>
+</ol>
+<p>And in the end we can generate some&nbsp;<em>Snapsvisor</em>, like the following examples</p>
+<blockquote class="blockquote">
+<p>Snälla skålar till en nubbe, buguperrens till en skål.<br>
+Snapsen får ta en nubbe,<br>
+när nubben inte tagit visdomsträngar,<br>
+sen får ta nubben hellre.<br>
+Hinka lilla magen, ta nubben,<br>
+där ska det gå till en nubbe.</p>
+</blockquote>
+<blockquote class="blockquote">
+<p>Nu tar vi en nubbe,&nbsp;<br>
+Den ska hellre krypa och bränna upp.&nbsp;<br>
+Vi bränna, men inte mjölka oss,&nbsp;<br>
+och bränner till bords</p>
+</blockquote>
+<blockquote class="blockquote">
+<p>Nu tar vi en nubbe – slåss här i ett svep.<br>
+Byssa luderorgon, snapsar!<br>
+När den evigt låga solen tar oss en ljus natt,<br>
+ingen blir så dragen vid näsan</p>
+</blockquote>
+<p>And <strong>it’s available on the <a href="https://huggingface.co/lunde/gpt2-snapsvisor">HuggingFace Hub</a></strong> with a <strong>inference widget</strong>, which can generate your own <em>Snapsvisor</em> - N.B. it removes newlines.</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> transformers <span class="im">import</span> AutoTokenizer, AutoModelForCausalLM</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>tokenizer <span class="op">=</span> AutoTokenizer.from_pretrained(<span class="st">"lunde/gpt2-snapsvisor"</span>)</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> AutoModelForCausalLM.from_pretrained(<span class="st">"lunde/gpt2-snapsvisor"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Until next time!</p>
+<p>~Hampus Londögård</p>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+      <ul class="footer-items list-unstyled">
+    <li class="nav-item">
+    <a class="nav-link" href="https://www.buymeacoffee.com/hlondogard">Buy me a Coffee↗</a>
+  </li>  
+    <li class="nav-item">
+    <a class="nav-link" href="https://github.com/sponsors/Lundez?o=esb">Support on GitHub↗</a>
+  </li>  
+</ul>
+    </div>   
+      <div class="nav-footer-center">
+        <ul class="footer-items list-unstyled">
+    <li class="nav-item">
+    <a class="nav-link" href="../../about.html">About</a>
+  </li>  
+</ul>
+      </div>
+    <div class="nav-footer-right">
+      <ul class="footer-items list-unstyled">
+    <li class="nav-item compact">
+    <a class="nav-link" href="https://www.linkedin.com/in/hampus-londögård/">
+      <i class="bi bi-linkedin" role="img" aria-label="LinkedIn">
+</i> 
+    </a>
+  </li>  
+    <li class="nav-item compact">
+    <a class="nav-link" href="https://twitter.com/hlondogard">
+      <i class="bi bi-twitter" role="img" aria-label="Twitter">
+</i> 
+    </a>
+  </li>  
+    <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/lundez">
+      <i class="bi bi-github" role="img" aria-label="Lundez GitHub">
+</i> 
+    </a>
+  </li>  
+    <li class="nav-item compact">
+    <a class="nav-link" href="../../index.xml">
+      <i class="bi bi-rss" role="img" aria-label="Londogard Blog RSS">
+</i> 
+    </a>
+  </li>  
+</ul>
+    </div>
+  </div>
+</footer>
+
+
+
+</body></html>

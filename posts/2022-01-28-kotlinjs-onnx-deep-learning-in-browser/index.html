@@ -1,0 +1,774 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.2.335">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Hampus Londögård">
+<meta name="dcterms.date" content="2022-01-28">
+<meta name="description" content="Ever wanted to deploy State-of-the-Art Deep Learning models in the browser? In this blog you’ll learn about how to run inference through onnx webruntime directly inside the browser!">
+
+<title>Londogard Blog - KotlinJS, ONNX and Deep Learning in the browser</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../../favicon.ico" rel="icon">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="../../styles.css">
+<meta name="twitter:title" content="Londogard Blog - KotlinJS, ONNX and Deep Learning in the browser">
+<meta name="twitter:description" content="Ever wanted to deploy State-of-the-Art Deep Learning models in the browser? In this blog you'll learn about how to run inference through onnx webruntime directly inside the browser!">
+<meta name="twitter:creator" content="@hlondogard">
+<meta name="twitter:card" content="summary">
+</head>
+
+<body class="nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">Londogard Blog</span>
+    </a>
+  </div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../presentations.html">
+ <span class="menu-text">Presentations</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="https://londogard.com/projects">
+ <span class="menu-text">Londogard Projects↗</span></a>
+  </li>  
+</ul>
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../about.html">
+ <span class="menu-text">About</span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://www.linkedin.com/in/hampus-londögård/"><i class="bi bi-linkedin" role="img" aria-label="LinkedIn">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://twitter.com/hlondogard"><i class="bi bi-twitter" role="img" aria-label="Twitter">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-bi-github" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+      <i class="bi bi-github" role="img">
+</i> 
+ <span class="menu-text"></span>
+    </a>
+    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="nav-menu-bi-github">    
+        <li>
+    <a class="dropdown-item" href="https://github.com/lundez"><i class="bi bi-github" role="img">
+</i> 
+ <span class="dropdown-text">Lundez</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="https://github.com/londogard"><i class="bi bi-github" role="img">
+</i> 
+ <span class="dropdown-text">Londogard</span></a>
+  </li>  
+    </ul>
+  </li>
+  <li class="nav-item compact">
+    <a class="nav-link" href="../../index.xml"><i class="bi bi-rss" role="img" aria-label="Londogard Blog RSS">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+</ul>
+              <div id="quarto-search" class="" title="Search"></div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<header id="title-block-header" class="quarto-title-block default page-columns page-full">
+  <div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-body">
+      <h1 class="title">KotlinJS, ONNX and Deep Learning in the browser</h1>
+                  <div>
+        <div class="description">
+          Ever wanted to deploy State-of-the-Art Deep Learning models in the browser? In this blog you’ll learn about how to run inference through onnx webruntime directly inside the browser!
+        </div>
+      </div>
+                          <div class="quarto-categories">
+                <div class="quarto-category">kotlin</div>
+                <div class="quarto-category">web</div>
+                <div class="quarto-category">deep-learning</div>
+              </div>
+                  </div>
+  </div>
+    
+  
+  <div class="quarto-title-meta">
+
+      <div>
+      <div class="quarto-title-meta-heading">Author</div>
+      <div class="quarto-title-meta-contents">
+               <p>Hampus Londögård </p>
+            </div>
+    </div>
+      
+      <div>
+      <div class="quarto-title-meta-heading">Published</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date">January 28, 2022</p>
+      </div>
+    </div>
+    
+      
+    </div>
+    
+  
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#kotlinjs-onnx-and-deep-learning-in-the-browser" id="toc-kotlinjs-onnx-and-deep-learning-in-the-browser" class="nav-link active" data-scroll-target="#kotlinjs-onnx-and-deep-learning-in-the-browser">KotlinJS, ONNX and Deep Learning in the browser</a>
+  <ul class="collapse">
+  <li><a href="#quick-kotlin-js" id="toc-quick-kotlin-js" class="nav-link" data-scroll-target="#quick-kotlin-js">Quick Kotlin JS</a></li>
+  <li><a href="#quick-onnx" id="toc-quick-onnx" class="nav-link" data-scroll-target="#quick-onnx">Quick ONNX</a></li>
+  <li><a href="#the-set-up" id="toc-the-set-up" class="nav-link" data-scroll-target="#the-set-up">The Set Up</a>
+  <ul class="collapse">
+  <li><a href="#introducing-fritz2" id="toc-introducing-fritz2" class="nav-link" data-scroll-target="#introducing-fritz2">Introducing fritz2</a></li>
+  <li><a href="#onnx-typing-in-kotlinjs" id="toc-onnx-typing-in-kotlinjs" class="nav-link" data-scroll-target="#onnx-typing-in-kotlinjs">ONNX typing in KotlinJS</a></li>
+  </ul></li>
+  <li><a href="#the-implementation" id="toc-the-implementation" class="nav-link" data-scroll-target="#the-implementation">The Implementation</a>
+  <ul class="collapse">
+  <li><a href="#basic-ui" id="toc-basic-ui" class="nav-link" data-scroll-target="#basic-ui">Basic UI</a></li>
+  <li><a href="#binding-onnx-and-webruntime" id="toc-binding-onnx-and-webruntime" class="nav-link" data-scroll-target="#binding-onnx-and-webruntime">Binding ONNX and webruntime</a></li>
+  <li><a href="#solving-the-puzzle" id="toc-solving-the-puzzle" class="nav-link" data-scroll-target="#solving-the-puzzle">Solving the puzzle</a></li>
+  </ul></li>
+  <li><a href="#thoughts" id="toc-thoughts" class="nav-link" data-scroll-target="#thoughts">Thoughts</a>
+  <ul class="collapse">
+  <li><a href="#kotlinjs-vs-typescript" id="toc-kotlinjs-vs-typescript" class="nav-link" data-scroll-target="#kotlinjs-vs-typescript">KotlinJS vs TypeScript</a></li>
+  <li><a href="#onnx-in-the-web" id="toc-onnx-in-the-web" class="nav-link" data-scroll-target="#onnx-in-the-web">ONNX in the web</a></li>
+  <li><a href="#the-combination" id="toc-the-combination" class="nav-link" data-scroll-target="#the-combination">The Combination</a></li>
+  </ul></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content quarto-banner-title-block" id="quarto-document-content">
+
+
+
+
+<section id="kotlinjs-onnx-and-deep-learning-in-the-browser" class="level1">
+<h1>KotlinJS, ONNX and Deep Learning in the browser</h1>
+<p>One day I had the crazy idea to try two non-mainstream things out at the same time. On top of that I figured I’d combine them in the same project, imagine that! <!--truncate--></p>
+<p>Preview of final result running model inference in the browser using KotlinJS, ONNX &amp; fritz2: <img src="https://user-images.githubusercontent.com/7490199/151235880-2546faa6-5798-48b4-84b9-db71c20808d8.gif" class="img-fluid" alt="model inference in browser gif"></p>
+<section id="quick-kotlin-js" class="level2">
+<h2 class="anchored" data-anchor-id="quick-kotlin-js">Quick Kotlin JS</h2>
+<p>KotlinJS resembles TypeScript (TS) in the sense that it’s typed and transpiles into JavaScript (JS) at the end of the day. The final JS code runs directly in the browser or through Node.js.</p>
+<p>What makes KotlinJS stand out? In my optinion it picks up where TS leaves. By adding (almost) all of the Kotlin ecosystem we get a really superb toolbox out-of-the-box, which is more than simply types. Some of the awesome perks are coroutines and collections.<br>
+As someone who has done a lot of backend development in Scala, with some Java, it feels like home because of the familiar apperance and interaction.<br>
+Having sweet syntax, superb typing I feel a great preference toward KotlinJS even if TS is closer to JS making transpiled code easier to reason about.</p>
+</section>
+<section id="quick-onnx" class="level2">
+<h2 class="anchored" data-anchor-id="quick-onnx">Quick ONNX</h2>
+<div class="callout-tip callout callout-style-default callout-captioned">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+Open Neural Network Exchange (ONNX)
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<blockquote class="blockquote">
+<p><a href="https://en.wikipedia.org/wiki/Open_Neural_Network_Exchange">Open Neural Network Exchange</a> (ONNX) Runtime is a open format created by Facebook, Microsoft &amp; others, and is part of <em>Linux Foundation AI</em>.</p>
+</blockquote>
+</div>
+</div>
+<p>ONNX is an open polyglot format, meaning that you can run Neural Networks from multiple coding languages. This in turn promotes innovation and collaboration, especially through the fact that you can run your State-of-the-Art model almost everywhere, including C# and Java.<br>
+ONNX is a impressive feat that allows companies to reduce their inference time by magnitudes, cherry on top it reduces code complexity when models are deployed directly in the original backend.</p>
+<p>Recently ONNX added a new runtime, <strong>ONNX-webruntime</strong>, which enables ONNX models to run directly inside the browser. Simply take your PyTorch/Tensorflow model, convert to ONNX and then run! Incredible! 🎉.<br>
+ONNX-webruntime leverages <strong>WebGL</strong> as GPU and <strong>WASM with SIMD</strong> as CPU.<br>
+Simple edge deployment is here!</p>
+</section>
+<section id="the-set-up" class="level2">
+<h2 class="anchored" data-anchor-id="the-set-up">The Set Up</h2>
+<p>The set up is simple, - Kotlin JS project - <code>fritz2</code> as web framework - <code>onnx-webruntime</code> as deep learning inference tool</p>
+<p>For this demo I could’ve used raw html elements in the Kotlin JS code, but it’s more fun to use something enjoyable, as such I chose <code>fritz2</code> that I introduce below 👇.</p>
+<section id="introducing-fritz2" class="level3">
+<h3 class="anchored" data-anchor-id="introducing-fritz2">Introducing fritz2</h3>
+<p>Introducing <a href="https://www.fritz2.dev/"><strong>fritz2</strong></a>, a small but impressive framework.<br>
+Because of the size you can understand the full idea and implementation, which is something you cannot say about React. Through simple DSLs, superb usage of <code>Flow&lt;T&gt;</code> you end up with a simple yet powerful model that maps perfectly to my own mind.<br>
+In my opinion <strong>fritz2 feels less magic</strong> while very powerful and simple. Everything works with full typing and no hacks. Cherry on the top? No virtual dom!</p>
+<p>Fritz2 has a extra <a href="https://components.fritz2.dev/">components library</a> which you can additionally install. This library contains simple components to make your development much faster, with things like File input, Data Tables and much more!</p>
+<p>Personally I even did my own wedding website using <code>fritz2</code>, and it ended up pretty great! <img src="wedding_fritz2.png" class="img-fluid" alt="fritz2 gui"> &gt; My personal wedding site created in fritz2</p>
+</section>
+<section id="onnx-typing-in-kotlinjs" class="level3">
+<h3 class="anchored" data-anchor-id="onnx-typing-in-kotlinjs">ONNX typing in KotlinJS</h3>
+<p>Using <code>dukat</code> (included by default in Kotlin &gt; 1.6 or perhaps earlier) it’s possible to generate external types/bindings for any TypeScript project.<br>
+Guess what, ONNXRuntime Web is full TypeScript - awesome!</p>
+<p>Unfortunately ONNX has some really weird structure which I’d call non-standard, this ends up not working great in <code>dukat</code>-generation…<br>
+Luckily enough it is <strong>easy to make your own bindings</strong>. Keep your breath for now, I’ll share them later in this post, but for now let’s say that it’s like a .d.ts-file.</p>
+</section>
+</section>
+<section id="the-implementation" class="level2">
+<h2 class="anchored" data-anchor-id="the-implementation">The Implementation</h2>
+<p>We need to create our project, I usually do it by scratch but if you want to keep it easy setting up the MPP project for <code>friz2</code> you can make sure to use their <a href="https://github.com/jwstegemann/fritz2-template">template project</a>. Make sure to include the fritz2 component library, as it’ll be used in the implementation.<br>
+Please note that the focus will be ONNX, as such I’ll save some <code>fritz2</code> details for another post.</p>
+<section id="basic-ui" class="level3">
+<h3 class="anchored" data-anchor-id="basic-ui">Basic UI</h3>
+<p><strong>Getting the skeleton UI up</strong><br>
+In the “main” file of the js-folder, but not as in js-code 😉, you’ll need to set up a file and image element.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode kotlin code-with-copy"><code class="sourceCode kotlin"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">fun</span> <span class="fu">main</span><span class="op">()</span> <span class="op">{</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">val</span> <span class="va">imgSrc</span> <span class="op">=</span> RootStore<span class="op">(</span><span class="st">""</span><span class="op">)</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    render <span class="op">{</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>        <span class="kw">val</span> <span class="va">srcImg</span> <span class="op">=</span> img<span class="op">(</span>id <span class="op">=</span> <span class="st">"img-from"</span><span class="op">)</span> <span class="op">{</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>            src<span class="op">(</span>imgSrc<span class="op">.</span><span class="kw">data</span><span class="op">)</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>    file <span class="op">{</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>        accept<span class="op">(</span><span class="st">"image/*"</span><span class="op">)</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>        button <span class="op">{</span> text<span class="op">(</span><span class="st">"Single select"</span><span class="op">)</span> <span class="op">}</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span>map <span class="op">{</span> file <span class="op">-&gt;</span> <span class="st">"data:</span><span class="ss">${</span>file<span class="op">.</span>type<span class="ss">}</span><span class="st">;base64,</span><span class="ss">${</span>file<span class="op">.</span>content<span class="ss">}</span><span class="st">"</span> <span class="op">}</span> handledBy imgSrc<span class="op">.</span>update</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Breaking down what’s done</p>
+<ol type="1">
+<li>A <code>RootStore</code> is a abstraction on top of a <code>(Mutable)StateFlow</code> which is a <code>Flow</code> with a state.
+<ol type="1">
+<li>In simple terms a <code>Flow</code> is a <strong>collection of asynchronously computed values</strong> just like you have <code>Sequence</code> and <code>List</code> being collections of synchronously computed values.</li>
+</ol></li>
+<li>A <code>Store</code> is a reactive component that contains our apps state, it can do bidirectional communication with the DOM/GUI.
+<ol type="1">
+<li>We update <code>imgSrc</code> through the <code>file</code>-component, whenever <code>file</code> is updated.<br>
+</li>
+<li><code>&lt;img&gt;</code> listens on changes from <code>imgSrc</code>, hence it’s updated as <code>imgSrc</code> is updated</li>
+<li>All in all we get <strong>typed</strong> and <strong>no-magic</strong> dynamical updates in our GUI. This is something I love, compared to <code>react</code> and <code>svelte</code> where it seems more magical.</li>
+</ol></li>
+</ol>
+<p>The connector between <code>file</code> and <code>imgSrc</code> is dirty, I hoped to be able to load the <code>b64</code> content directly into a <code>UInt8ClampedArray</code> to have optimal performance, but because the <code>b64</code>-string actually contains PNG/JPEG headers and other things the perfomance gains versus simplicity is not worth it. Hence I transform it from the <code>b64</code>-string (<code>data:image/pdf;base64,&lt;content&gt;</code>) to image and then extract <code>ImageData</code> - annoying but clean.<br>
+The detail that <code>&lt;content&gt;</code> in <code>b64</code>-string is only the pixel data haunted me for a long time… I couldn’t figure why my arrays had the wrong dimensions! 😅</p>
+<p>The next step: transfer image from this component to another, while allowing a transformation (neural network inference) in-between.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode kotlin code-with-copy"><code class="sourceCode kotlin"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co">// highlight-start</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="kw">fun</span> <span class="fu">loadImgToCanvas</span><span class="op">(</span><span class="va">img</span><span class="op">:</span> <span class="dt">Image</span><span class="op">,</span> <span class="va">canvas</span><span class="op">:</span> <span class="dt">Canvas</span><span class="op">,</span> <span class="va">context</span><span class="op">:</span> <span class="dt">CanvasRenderingContext2D</span><span class="op">)</span> <span class="op">{</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="op">(</span>img<span class="op">.</span>domNode<span class="op">.</span>src<span class="op">.</span>isNotEmpty<span class="op">())</span> <span class="op">{</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>        canvas<span class="op">.</span>width <span class="op">=</span> img<span class="op">.</span>domNode<span class="op">.</span>naturalWidth</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>        canvas<span class="op">.</span>height <span class="op">=</span> img<span class="op">.</span>domNode<span class="op">.</span>naturalHeight</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>        context<span class="op">.</span>drawImage<span class="op">(</span>img<span class="op">,</span> <span class="fl">0.0</span><span class="op">,</span> <span class="fl">0.0</span><span class="op">)</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="co">// highlight-end</span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="kw">fun</span> <span class="fu">main</span><span class="op">()</span> <span class="op">{</span>  </span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>    <span class="kw">val</span> <span class="va">imgSrc</span> <span class="op">=</span> RootStore<span class="op">(</span><span class="st">""</span><span class="op">)</span>  </span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>    render <span class="op">{</span></span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>        <span class="kw">val</span> <span class="va">srcImg</span> <span class="op">=</span> img<span class="op">(</span>id <span class="op">=</span> <span class="st">"img-from"</span><span class="op">)</span> <span class="op">{</span></span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>            src<span class="op">(</span>imgSrc<span class="op">.</span><span class="kw">data</span><span class="op">)</span></span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span></span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>        <span class="kw">val</span> <span class="va">targetCanvas</span> <span class="op">=</span> canvas<span class="op">(</span>id <span class="op">=</span> <span class="st">"img-to"</span><span class="op">)</span> <span class="op">{</span> <span class="op">}</span></span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>        <span class="kw">val</span> <span class="va">imgContext</span> <span class="op">=</span> targetCanvas<span class="op">.</span>domNode<span class="op">.</span>getContext<span class="op">(</span><span class="st">"2d"</span><span class="op">)</span> <span class="kw">as</span> CanvasRenderingContext2D</span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>        file <span class="op">{</span> <span class="co">/** same as before ... */</span> </span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a>        <span class="co">// highlight-next-line</span></span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a>        srcImg<span class="op">.</span>domNode<span class="op">.</span>onload <span class="op">{</span> loadImgToCanvas<span class="op">(</span>srcImg<span class="op">,</span> targetCanvas<span class="op">,</span> imgContext<span class="op">)</span> <span class="op">}</span></span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Whenever <code>srcImg.onload</code> event happens we call <code>loadImgToCanvas</code> which loads <code>img</code> on our canvas.<br>
+<strong>Why did I choose to not have a new <code>&lt;img&gt;</code>?</strong> Because we later need to use <code>ImageData</code> and this is the way to have the minimum number of data transitions, trust me 😉.</p>
+<p>Let’s start adding bindings for ONNX!</p>
+</section>
+<section id="binding-onnx-and-webruntime" class="level3">
+<h3 class="anchored" data-anchor-id="binding-onnx-and-webruntime">Binding ONNX and webruntime</h3>
+<p>Binding TS/JS is as simple as a <code>.d.ts</code>-file in TS. You define the component to bind, declare the types, e.g.&nbsp;function name, input and outout. Simple as that!</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode kotlin code-with-copy"><code class="sourceCode kotlin"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="at">@file</span><span class="op">:</span>JsModule<span class="op">(</span><span class="st">"onnxruntime-web"</span><span class="op">)</span>   <span class="co">// npm-package</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="at">@file</span><span class="op">:</span>JsNonModule</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="kw">import</span> <span class="im">kotlin</span><span class="op">.</span><span class="im">js</span><span class="op">.</span><span class="im">Promise</span>  </span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>external abstract <span class="kw">class</span> InferenceSession <span class="op">{</span>  </span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>    <span class="kw">fun</span> <span class="fu">run</span><span class="op">(</span><span class="va">feeds</span><span class="op">:</span> <span class="dt">FeedsType</span><span class="op">):</span> <span class="dt">Promise</span><span class="op">&lt;</span><span class="dt">ReturnType</span><span class="op">&gt;</span> // <span class="fu">FeedsType</span> / <span class="fu">ReturnType</span> <span class="fu">separately</span> <span class="fu">defined</span> <span class="fu">the</span> <span class="fu">same</span> <span class="fu">way</span> <span class="kw">as</span> <span class="fu">InferenceSession</span> &amp; <span class="fu">run</span><span class="op">.</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Moving further we’ll add a method to extract <code>ImageData</code>’s <code>UInt8ClampedArray</code> from a <code>img</code>-element using a <code>canvas</code>-element with its <code>CanvasRenderingContext2D</code> (lots of JS/web words, the most I’ll have in a sentence, peeew! 😅)</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode kotlin code-with-copy"><code class="sourceCode kotlin"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">fun</span> <span class="fu">imgToUInt8ClampedArray</span><span class="op">(</span><span class="va">img</span><span class="op">:</span> <span class="dt">HTMLImageElement</span><span class="op">,</span> <span class="va">ctx</span><span class="op">:</span> <span class="dt">CanvasRenderingContext2D</span><span class="op">):</span> <span class="dt">Uint8ClampedArray</span> <span class="op">{</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">val</span> <span class="va">canvas</span> <span class="op">=</span> ctx<span class="op">.</span>canvas</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    canvas<span class="op">.</span>width <span class="op">=</span> img<span class="op">.</span>naturalWidth</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    canvas<span class="op">.</span>height <span class="op">=</span> img<span class="op">.</span>naturalHeight</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>    ctx<span class="op">.</span>drawImage<span class="op">(</span>img<span class="op">,</span> <span class="fl">0.0</span><span class="op">,</span> <span class="fl">0.0</span><span class="op">)</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>    <span class="kw">return</span> ctx<span class="op">.</span>getImageData<span class="op">(</span><span class="fl">0.0</span><span class="op">,</span> <span class="fl">0.0</span><span class="op">,</span> img<span class="op">.</span>naturalWidth<span class="op">.</span>toDouble<span class="op">(),</span> img<span class="op">.</span>naturalHeight<span class="op">.</span>toDouble<span class="op">()).</span><span class="kw">data</span> <span class="co">// extract data from ImageData</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>The <code>UInt8ClampedArray</code> has to be transformed into a <code>Float32Array</code> that the model expects.<br>
+Sounds easy? Think again!<br>
+Because JS is not a data science language it’s not surprising that the data is “incorrectly” ordered. The model expects the data to be formed as <code>[3,width,height]</code> where 3 is the number of dimensions, in our case RGB, but in JS it’s the reverse way. On top of the wrong ordering JS has a fourth dimension, namely transparency. Following all that knowledge we can transform the array.</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode kotlin code-with-copy"><code class="sourceCode kotlin"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">fun</span> <span class="fu">uInt8ClampedToFloat32Array</span><span class="op">(</span><span class="kw">data</span><span class="op">:</span> <span class="dt">Uint8ClampedArray</span><span class="op">):</span> <span class="dt">Float32Array</span> <span class="op">{</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">val</span> <span class="va">floats</span> <span class="op">=</span> Float32Array<span class="op">(</span><span class="kw">data</span><span class="op">.</span>length <span class="op">/</span> <span class="dv">4</span> <span class="op">*</span> <span class="dv">3</span><span class="op">)</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    <span class="kw">val</span> <span class="va">rgb</span> <span class="op">=</span>listOf<span class="op">(</span><span class="dv">0</span><span class="op">,</span> <span class="kw">data</span><span class="op">.</span>length <span class="op">/</span> <span class="dv">4</span><span class="op">,</span> <span class="kw">data</span><span class="op">.</span>length <span class="op">/</span> <span class="dv">4</span> <span class="op">*</span> <span class="dv">2</span><span class="op">)</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> <span class="op">(</span>i <span class="kw">in</span> <span class="dv">0</span>untildata<span class="op">.</span>lengthstep4<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>        floats<span class="op">[</span>rgb<span class="op">[</span><span class="dv">0</span><span class="op">]</span> <span class="op">+</span> i <span class="op">/</span> <span class="dv">4</span><span class="op">]</span> <span class="op">=</span> <span class="kw">data</span><span class="op">[</span>i <span class="op">+</span> <span class="dv">0</span><span class="op">]</span> <span class="op">/</span> <span class="fl">255f</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>        floats<span class="op">[</span>rgb<span class="op">[</span><span class="dv">1</span><span class="op">]</span> <span class="op">+</span> i <span class="op">/</span> <span class="dv">4</span><span class="op">]</span> <span class="op">=</span> <span class="kw">data</span><span class="op">[</span>i <span class="op">+</span> <span class="dv">1</span><span class="op">]</span> <span class="op">/</span> <span class="fl">255f</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>        floats<span class="op">[</span>rgb<span class="op">[</span><span class="dv">2</span><span class="op">]</span> <span class="op">+</span> i <span class="op">/</span> <span class="dv">4</span><span class="op">]</span> <span class="op">=</span> <span class="kw">data</span><span class="op">[</span>i <span class="op">+</span> <span class="dv">2</span><span class="op">]</span> <span class="op">/</span> <span class="fl">255f</span> <span class="co">// Skip i+3 as that's ALPHA</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>    <span class="kw">return</span> floats</span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>As ONNX expects <code>Tensor</code> we need to transform the <code>Float32Array</code> into a <code>Tensor</code> and then into <code>FeedsInput</code> which is a <code>Object</code> of the data, luckily that’s very easy after our binding is done.</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode kotlin code-with-copy"><code class="sourceCode kotlin"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="kw">fun</span> <span class="fu">tensorToInput</span><span class="op">(</span><span class="va">tensor</span><span class="op">:</span> <span class="dt">Tensor</span><span class="op">,</span> <span class="va">inputName</span><span class="op">:</span> <span class="dt">String</span> <span class="op">=</span> <span class="st">"input"</span><span class="op">):</span> <span class="dt">FeedsType</span> <span class="op">{</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">val</span> <span class="va">input</span><span class="op">:</span> dynamic <span class="op">=</span> <span class="kw">object</span> <span class="op">{}</span> <span class="co">// To hack JS Objects</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>    input<span class="op">[</span>inputName<span class="op">]</span> <span class="op">=</span> tensor</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>    <span class="kw">return</span> input<span class="op">.</span>unsafeCast<span class="op">&lt;</span>FeedsType<span class="op">&gt;()</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="kw">val</span> <span class="va">tensor</span> <span class="op">=</span> Tensor<span class="op">(</span><span class="st">"float32"</span><span class="op">,</span> floats<span class="op">,</span> arrayOf<span class="op">(</span><span class="dv">1</span><span class="op">,</span> <span class="dv">3</span><span class="op">,</span> srcImg<span class="op">.</span>domNode<span class="op">.</span>naturalWidth<span class="op">,</span> srcImg<span class="op">.</span>domNode<span class="op">.</span>naturalHeight<span class="op">))</span></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a><span class="kw">val</span> <span class="va">input</span> <span class="op">=</span> tensorToInput<span class="op">(</span>tensor<span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>…and it’s time to run the model! 🥳</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode kotlin code-with-copy"><code class="sourceCode kotlin"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">val</span> <span class="va">ir</span> <span class="op">=</span> InferenceSession<span class="op">.</span>create<span class="op">(</span><span class="st">"./dce2.onnx"</span><span class="op">).</span>await<span class="op">()</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="kw">val</span> <span class="va">out</span> <span class="op">=</span> ir<span class="op">.</span>run<span class="op">(</span>input<span class="op">).</span>await<span class="op">()</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="kw">val</span> <span class="va">outTensor</span> <span class="op">=</span> <span class="kw">out</span><span class="op">[</span><span class="st">"output"</span><span class="op">]</span> <span class="kw">as</span> Tensor</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="kw">val</span> <span class="va">outData</span> <span class="op">=</span> outTensor<span class="op">.</span><span class="kw">data</span> <span class="kw">as</span> Float32Array</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>The output then needs to have the reverse transform applied to be viewable in the browser. That is, reverse axis, add fourth dimension and cast into <code>int</code>.</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode kotlin code-with-copy"><code class="sourceCode kotlin"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co">// Calling on the output data, before converting to UInt8Clamped..</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> <span class="op">(</span>i <span class="kw">in</span> <span class="dv">0</span>untiloutData<span class="op">.</span>length<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>    outData<span class="op">[</span>i<span class="op">]</span> <span class="op">=</span> min<span class="op">(</span>outData<span class="op">[</span>i<span class="op">],</span> <span class="fl">1f</span><span class="op">)</span> <span class="op">*</span> <span class="fl">255f</span> <span class="co">// `min` to not go above 255</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="kw">fun</span> <span class="fu">float32ToUInt8Clamped</span><span class="op">(</span><span class="kw">data</span><span class="op">:</span> <span class="dt">Float32Array</span><span class="op">):</span> <span class="dt">Uint8ClampedArray</span> <span class="op">{</span></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>    <span class="kw">val</span> <span class="va">rgb</span> <span class="op">=</span>arrayOf<span class="op">(</span><span class="dv">0</span><span class="op">,</span> <span class="kw">data</span><span class="op">.</span>length <span class="op">/</span> <span class="dv">3</span><span class="op">,</span> <span class="kw">data</span><span class="op">.</span>length <span class="op">/</span> <span class="dv">3</span> <span class="op">*</span> <span class="dv">2</span><span class="op">)</span></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>    <span class="kw">val</span> <span class="va">intOut</span> <span class="op">=</span> Uint8ClampedArray<span class="op">(</span><span class="kw">data</span><span class="op">.</span>length <span class="op">/</span> <span class="dv">3</span> <span class="op">*</span> <span class="dv">4</span><span class="op">)</span></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> <span class="op">(</span>i <span class="kw">in</span> <span class="dv">0</span>untilintOut<span class="op">.</span>length <span class="op">/</span> <span class="dv">4</span><span class="op">)</span> <span class="op">{</span></span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>        intOut<span class="op">.</span>asDynamic<span class="op">()[</span>i <span class="op">*</span> <span class="dv">4</span> <span class="op">+</span> <span class="dv">0</span><span class="op">]</span> <span class="op">=</span> <span class="kw">data</span><span class="op">[</span>rgb<span class="op">[</span><span class="dv">0</span><span class="op">]</span> <span class="op">+</span> i<span class="op">].</span>toInt<span class="op">()</span></span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>        intOut<span class="op">.</span>asDynamic<span class="op">()[</span>i <span class="op">*</span> <span class="dv">4</span> <span class="op">+</span> <span class="dv">1</span><span class="op">]</span> <span class="op">=</span> <span class="kw">data</span><span class="op">[</span>rgb<span class="op">[</span><span class="dv">1</span><span class="op">]</span> <span class="op">+</span> i<span class="op">].</span>toInt<span class="op">()</span></span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>        intOut<span class="op">.</span>asDynamic<span class="op">()[</span>i <span class="op">*</span> <span class="dv">4</span> <span class="op">+</span> <span class="dv">2</span><span class="op">]</span> <span class="op">=</span> <span class="kw">data</span><span class="op">[</span>rgb<span class="op">[</span><span class="dv">2</span><span class="op">]</span> <span class="op">+</span> i<span class="op">].</span>toInt<span class="op">()</span></span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>        intOut<span class="op">.</span>asDynamic<span class="op">()[</span>i <span class="op">*</span> <span class="dv">4</span> <span class="op">+</span> <span class="dv">3</span><span class="op">]</span> <span class="op">=</span> <span class="dv">255</span> <span class="op">}</span></span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>    <span class="kw">return</span> intOut</span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>As you might notice we cast a lot <code>asDynamic()</code>, this is because of a current bug in Kotlin JS where it sends signed <code>Byte</code> when it should be an unsigned <code>Byte</code>.<br>
+See the current issue at <a href="https://youtrack.jetbrains.com/issue/KT-24583">youtrack.jetbrains.com</a>.</p>
+<p>We <strong>finally got all the pieces</strong>, how about gluing it all together? 😄</p>
+</section>
+<section id="solving-the-puzzle" class="level3">
+<h3 class="anchored" data-anchor-id="solving-the-puzzle">Solving the puzzle</h3>
+<p>The model I wish to use has a dynamic input/output size, e.g.&nbsp;the image dimensions, I need to recreate the session or else it will throw as ONNX expects the last used shape on new runs. This is not true as images are of different sizes.<br>
+One solution would be to preprocess the image to always be the same size, but I prefer to return the image in the original dimensions for this use-case.</p>
+<details>
+<summary>
+View code!
+</summary>
+<div class="sourceCode" id="cb9"><pre class="sourceCode kotlin code-with-copy"><code class="sourceCode kotlin"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="kw">fun</span> <span class="fu">imgToUInt8ClampedArray</span><span class="op">(</span><span class="va">img</span><span class="op">:</span> <span class="dt">HTMLImageElement</span><span class="op">,</span> <span class="va">ctx</span><span class="op">:</span> <span class="dt">CanvasRenderingContext2D</span><span class="op">):</span> <span class="dt">Uint8ClampedArray</span> <span class="op">{</span>  </span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">/** same code as previously */</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="op">}</span>  </span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="kw">fun</span> <span class="fu">float32ToUInt8Clamped</span><span class="op">(</span><span class="kw">data</span><span class="op">:</span> <span class="dt">Float32Array</span><span class="op">):</span> <span class="dt">Uint8ClampedArray</span> <span class="op">{</span>  </span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>    <span class="co">/** same code as previously */</span></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a><span class="op">}</span>  </span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a><span class="kw">fun</span> <span class="fu">tensorToInput</span><span class="op">(</span><span class="va">tensor</span><span class="op">:</span> <span class="dt">Tensor</span><span class="op">,</span> <span class="va">inputName</span><span class="op">:</span> <span class="dt">String</span> <span class="op">=</span> <span class="st">"input"</span><span class="op">):</span> <span class="dt">FeedsType</span> <span class="op">{</span>  </span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>    <span class="co">/** same code as previously */</span>  </span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a><span class="op">}</span>  </span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a><span class="kw">fun</span> <span class="fu">uInt8ClampedToFloat32Array</span><span class="op">(</span><span class="kw">data</span><span class="op">:</span> <span class="dt">Uint8ClampedArray</span><span class="op">):</span> <span class="dt">Float32Array</span> <span class="op">{</span>  </span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>    <span class="co">/** same code as previously */</span></span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a><span class="op">}</span>  </span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a><span class="at">@OptIn</span><span class="op">(</span>ExperimentalTime<span class="op">::</span><span class="kw">class</span>, ExperimentalCoroutinesApi<span class="op">:</span>:<span class="kw">class</span>)  </span>
+<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a>suspend <span class="kw">fun</span> main<span class="op">()</span> <span class="op">{</span>  </span>
+<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a>    <span class="kw">val</span> <span class="va">flow</span> <span class="op">=</span> RootStore<span class="op">(</span><span class="st">""</span><span class="op">)</span>  </span>
+<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a>    <span class="kw">val</span> <span class="va">isLoaded</span> <span class="op">=</span> RootStore<span class="op">(</span><span class="st">""</span><span class="op">)</span>  </span>
+<span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a>    <span class="kw">val</span> <span class="va">webgl</span><span class="op">:</span> dynamic <span class="op">=</span> <span class="kw">object</span> <span class="op">{}</span>  </span>
+<span id="cb9-22"><a href="#cb9-22" aria-hidden="true" tabindex="-1"></a>    webgl<span class="op">[</span><span class="st">"executionProviders"</span><span class="op">]</span> <span class="op">=</span> arrayOf<span class="op">(</span><span class="st">"webgl"</span><span class="op">)</span>  <span class="co">// want that WebGL GPU power</span></span>
+<span id="cb9-23"><a href="#cb9-23" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb9-24"><a href="#cb9-24" aria-hidden="true" tabindex="-1"></a>    render <span class="op">{</span>  </span>
+<span id="cb9-25"><a href="#cb9-25" aria-hidden="true" tabindex="-1"></a>         <span class="kw">val</span> <span class="va">srcImg</span> <span class="op">=</span> img<span class="op">(</span>id <span class="op">=</span> <span class="st">"img-from"</span><span class="op">)</span> <span class="op">{</span>  </span>
+<span id="cb9-26"><a href="#cb9-26" aria-hidden="true" tabindex="-1"></a>            src<span class="op">(</span>flow<span class="op">.</span><span class="kw">data</span><span class="op">)</span>  </span>
+<span id="cb9-27"><a href="#cb9-27" aria-hidden="true" tabindex="-1"></a>            domNode<span class="op">.</span>onload <span class="op">=</span> <span class="op">{</span> isLoaded<span class="op">.</span>update<span class="op">(</span>domNode<span class="op">.</span>src<span class="op">)</span> <span class="op">}</span>  </span>
+<span id="cb9-28"><a href="#cb9-28" aria-hidden="true" tabindex="-1"></a>         <span class="op">}</span></span>
+<span id="cb9-29"><a href="#cb9-29" aria-hidden="true" tabindex="-1"></a>        <span class="kw">val</span> <span class="va">targetCanvas</span> <span class="op">=</span> canvas<span class="op">(</span>id <span class="op">=</span> <span class="st">"img-to"</span><span class="op">)</span> <span class="op">{}</span>  </span>
+<span id="cb9-30"><a href="#cb9-30" aria-hidden="true" tabindex="-1"></a>        <span class="kw">val</span> <span class="va">imgContext</span> <span class="op">=</span> targetCanvas<span class="op">.</span>domNode<span class="op">.</span>getContext<span class="op">(</span><span class="st">"2d"</span><span class="op">)</span> <span class="kw">as</span> CanvasRenderingContext2D  </span>
+<span id="cb9-31"><a href="#cb9-31" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb9-32"><a href="#cb9-32" aria-hidden="true" tabindex="-1"></a>        isLoaded<span class="op">.</span><span class="kw">data</span>  </span>
+<span id="cb9-33"><a href="#cb9-33" aria-hidden="true" tabindex="-1"></a>        <span class="op">.</span>distinctUntilChanged<span class="op">()</span>  </span>
+<span id="cb9-34"><a href="#cb9-34" aria-hidden="true" tabindex="-1"></a>        <span class="op">.</span>filter <span class="op">{</span> b64 <span class="op">-&gt;</span> b64<span class="op">.</span>isNotEmpty<span class="op">()</span> <span class="op">}</span></span>
+<span id="cb9-35"><a href="#cb9-35" aria-hidden="true" tabindex="-1"></a>        <span class="op">.</span>map <span class="op">{</span>  </span>
+<span id="cb9-36"><a href="#cb9-36" aria-hidden="true" tabindex="-1"></a>            <span class="kw">val</span> <span class="va">ir</span> <span class="op">=</span> runCatching <span class="op">{</span> InferenceSession<span class="op">.</span>create<span class="op">(</span><span class="st">"./dce2.onnx"</span><span class="op">,</span> webgl<span class="op">).</span>await<span class="op">()</span> <span class="op">}</span>  </span>
+<span id="cb9-37"><a href="#cb9-37" aria-hidden="true" tabindex="-1"></a>                <span class="op">.</span>onFailure <span class="op">{</span> showAlertToast <span class="op">{</span> alert <span class="op">{</span> title<span class="op">(</span><span class="st">"Could not load WebGL, using WASM."</span><span class="op">)</span> <span class="op">}</span> <span class="op">}</span> <span class="op">}</span>  </span>
+<span id="cb9-38"><a href="#cb9-38" aria-hidden="true" tabindex="-1"></a>                <span class="op">.</span>getOrDefault<span class="op">(</span>InferenceSession<span class="op">.</span>create<span class="op">(</span><span class="st">"./dce2.onnx"</span><span class="op">).</span>await<span class="op">())</span>  </span>
+<span id="cb9-39"><a href="#cb9-39" aria-hidden="true" tabindex="-1"></a>            <span class="kw">val</span> <span class="va">intData</span> <span class="op">=</span> imgToUInt8ClampedArray<span class="op">(</span>srcImg<span class="op">.</span>domNode<span class="op">,</span> imgContext<span class="op">)</span>  </span>
+<span id="cb9-40"><a href="#cb9-40" aria-hidden="true" tabindex="-1"></a>            <span class="kw">val</span> <span class="va">floats</span> <span class="op">=</span> uInt8ClampedToFloat32Array<span class="op">(</span>intData<span class="op">)</span>  </span>
+<span id="cb9-41"><a href="#cb9-41" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-42"><a href="#cb9-42" aria-hidden="true" tabindex="-1"></a>            <span class="kw">val</span> <span class="va">tensor</span> <span class="op">=</span> Tensor<span class="op">(</span><span class="st">"float32"</span><span class="op">,</span> floats<span class="op">,</span> arrayOf<span class="op">(</span><span class="dv">1</span><span class="op">,</span> <span class="dv">3</span><span class="op">,</span> srcImg<span class="op">.</span>domNode<span class="op">.</span>naturalWidth<span class="op">,</span> srcImg<span class="op">.</span>domNode<span class="op">.</span>naturalHeight<span class="op">))</span>  </span>
+<span id="cb9-43"><a href="#cb9-43" aria-hidden="true" tabindex="-1"></a>            <span class="kw">val</span> <span class="va">input</span> <span class="op">=</span> tensorToInput<span class="op">(</span>tensor<span class="op">)</span>  </span>
+<span id="cb9-44"><a href="#cb9-44" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb9-45"><a href="#cb9-45" aria-hidden="true" tabindex="-1"></a>            <span class="kw">val</span> <span class="va">out</span> <span class="op">=</span> ir<span class="op">.</span>run<span class="op">(</span>input<span class="op">).</span>await<span class="op">()</span>  </span>
+<span id="cb9-46"><a href="#cb9-46" aria-hidden="true" tabindex="-1"></a>            <span class="kw">val</span> <span class="va">outTensor</span> <span class="op">=</span> <span class="kw">out</span><span class="op">[</span><span class="st">"output"</span><span class="op">]</span> <span class="kw">as</span> Tensor  </span>
+<span id="cb9-47"><a href="#cb9-47" aria-hidden="true" tabindex="-1"></a><span class="kw">val</span> <span class="va">outData</span> <span class="op">=</span> outTensor<span class="op">.</span><span class="kw">data</span> <span class="kw">as</span> Float32Array  </span>
+<span id="cb9-48"><a href="#cb9-48" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-49"><a href="#cb9-49" aria-hidden="true" tabindex="-1"></a>            <span class="cf">for</span> <span class="op">(</span>i <span class="kw">in</span> <span class="dv">0</span> until outData<span class="op">.</span>length<span class="op">)</span> <span class="op">{</span>  </span>
+<span id="cb9-50"><a href="#cb9-50" aria-hidden="true" tabindex="-1"></a>                outData<span class="op">[</span>i<span class="op">]</span> <span class="op">=</span> min<span class="op">(</span>outData<span class="op">[</span>i<span class="op">],</span> <span class="fl">1f</span><span class="op">)</span> <span class="op">*</span> <span class="fl">255f</span>  </span>
+<span id="cb9-51"><a href="#cb9-51" aria-hidden="true" tabindex="-1"></a>            <span class="op">}</span>  </span>
+<span id="cb9-52"><a href="#cb9-52" aria-hidden="true" tabindex="-1"></a>            <span class="kw">val</span> <span class="va">intOut</span> <span class="op">=</span> float32ToUInt8Clamped<span class="op">(</span>outData<span class="op">)</span>  </span>
+<span id="cb9-53"><a href="#cb9-53" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-54"><a href="#cb9-54" aria-hidden="true" tabindex="-1"></a>            ImageData<span class="op">(</span>intOut<span class="op">,</span> srcImg<span class="op">.</span>domNode<span class="op">.</span>naturalWidth<span class="op">,</span> srcImg<span class="op">.</span>domNode<span class="op">.</span>naturalHeight<span class="op">)</span>  </span>
+<span id="cb9-55"><a href="#cb9-55" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span> handledBy <span class="op">{</span> imageData <span class="op">-&gt;</span> imgContext<span class="op">.</span>putImageData<span class="op">(</span>imageData<span class="op">,</span> <span class="fl">0.0</span><span class="op">,</span> <span class="fl">0.0</span><span class="op">)</span> <span class="op">}</span></span>
+<span id="cb9-56"><a href="#cb9-56" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb9-57"><a href="#cb9-57" aria-hidden="true" tabindex="-1"></a>    file <span class="op">{</span>  </span>
+<span id="cb9-58"><a href="#cb9-58" aria-hidden="true" tabindex="-1"></a>        accept<span class="op">(</span><span class="st">"image/*"</span><span class="op">)</span>  </span>
+<span id="cb9-59"><a href="#cb9-59" aria-hidden="true" tabindex="-1"></a>        button <span class="op">{</span> text<span class="op">(</span><span class="st">"Single select"</span><span class="op">)</span> <span class="op">}</span>  </span>
+<span id="cb9-60"><a href="#cb9-60" aria-hidden="true" tabindex="-1"></a>     <span class="op">}.</span>map <span class="op">{</span> file <span class="op">-&gt;</span> <span class="st">"data:</span><span class="ss">${</span>file<span class="op">.</span>type<span class="ss">}</span><span class="st">;base64,</span><span class="ss">${</span>file<span class="op">.</span>content<span class="ss">}</span><span class="st">"</span> <span class="op">}</span> handledBy flow<span class="op">.</span>update  </span>
+<span id="cb9-61"><a href="#cb9-61" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span>  </span>
+<span id="cb9-62"><a href="#cb9-62" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<p>With the joining bindings for ONNX.</p>
+</section>
+</section>
+<section id="thoughts" class="level2">
+<h2 class="anchored" data-anchor-id="thoughts">Thoughts</h2>
+<p>Wrapping it all together I feel like I want to leave with the sentiment that KotlinJS is a player, ONNX Webruntime certainly is capable and I’ll continue creating small MVP:s and demos using this setup!</p>
+<section id="kotlinjs-vs-typescript" class="level3">
+<h3 class="anchored" data-anchor-id="kotlinjs-vs-typescript">KotlinJS vs TypeScript</h3>
+<p>Regarding KotlinJS I believe it’s still behind TypeScript in terms of compatibility. I need to do more plumbing than someone using TS would, especially as <code>dukat</code> don’t solve all my problems magically. Luckily it’s very easy to make those bindings!</p>
+<p>In terms of how usable it is I find it much better than TypeScript, the experience when working with KotlinJS-code (e.g.&nbsp;interfacing std-lib, pure kotlin code or bindings) is so much better than TypeScript - it’s just like when I write my good ol’ JVM applications. I’m not sure if I’m missing something, but TypeScript’s typesystem always felt a bit choppy, just like Pythons. Sometimes I don’t get the intellisense I’m expecting.</p>
+</section>
+<section id="onnx-in-the-web" class="level3">
+<h3 class="anchored" data-anchor-id="onnx-in-the-web">ONNX in the web</h3>
+<p>The performance when using WebGL is definitely better than I expected, but not as good as using the usual runtime. Something I did notice during my testing is that <strong>it scales badly with size</strong>, using a high-res image (3000x4000) ends up slowing my whole computer. I know I’m not really working on a separate thread or anything, but it’s too bad it doesn’t scale well. Further there’s an internal max-limit somewhere around the same dimensions, which I hit once with another image.</p>
+<blockquote class="blockquote">
+<p>Personally, including these issues, I’m left impressed <strong>about how easy it is to set up a completely custom model</strong> to run inside the browser (“on the edge”), where we <strong>don’t have to care about architecture, OS or anything</strong> and that it works efficiently enough to use.</p>
+</blockquote>
+<p>I can see this as a key tool to start-ups and larger companies to reduce costs &amp; inference-time (as computation happens on the edge). On top of the $’s I see a win for privacy as the data will never leave the users device, which in turn simplifies GDPR compliance and much more!</p>
+<p>Even moving inference to the edge through a common simple interface that is the browser we’ll still have plenty of need for servers, not only serving larger models for complex problems, old devices and batch inference of larger amounts of data.</p>
+<p>The future is indeed still moving fast for Deep Learning and I can’t wait to see where we’re moving!<br>
+<strong>My own prediction:</strong> Deep Learning will simply ignore <em>serverless</em> computing and jump straight to <em>edge computing</em> in an effort to reduce costs.</p>
+</section>
+<section id="the-combination" class="level3">
+<h3 class="anchored" data-anchor-id="the-combination">The Combination</h3>
+<p>Combining ONNX &amp; KotlinJS (perhaps testing Compose rather than fritz2) is something I’m gonna keep on doing in the future to deploy demos. Either deploying through Github Pages or my own Raspberry Pi this will be piece a cake as my devices don’t have to do the inference, keeping my costs down for fun demos.</p>
+<p><strong>Demo:</strong> A live demo can be found <a href="https://photo-fritz2.pages.dev/">here</a>.</p>
+<p>And the code can be found on <a href="https://github.com/londogard/photo-fritz2">github.com/londogard/photo-fritz2</a>, but be careful - it’s not that beautiful right now 😰</p>
+<p>That’s it for now.. 🥳<br>
+~Hampus Londögård</p>
+
+
+</section>
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+      <ul class="footer-items list-unstyled">
+    <li class="nav-item">
+    <a class="nav-link" href="https://www.buymeacoffee.com/hlondogard">Buy me a Coffee↗</a>
+  </li>  
+    <li class="nav-item">
+    <a class="nav-link" href="https://github.com/sponsors/Lundez?o=esb">Support on GitHub↗</a>
+  </li>  
+</ul>
+    </div>   
+      <div class="nav-footer-center">
+        <ul class="footer-items list-unstyled">
+    <li class="nav-item">
+    <a class="nav-link" href="../../about.html">About</a>
+  </li>  
+</ul>
+      </div>
+    <div class="nav-footer-right">
+      <ul class="footer-items list-unstyled">
+    <li class="nav-item compact">
+    <a class="nav-link" href="https://www.linkedin.com/in/hampus-londögård/">
+      <i class="bi bi-linkedin" role="img" aria-label="LinkedIn">
+</i> 
+    </a>
+  </li>  
+    <li class="nav-item compact">
+    <a class="nav-link" href="https://twitter.com/hlondogard">
+      <i class="bi bi-twitter" role="img" aria-label="Twitter">
+</i> 
+    </a>
+  </li>  
+    <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/lundez">
+      <i class="bi bi-github" role="img" aria-label="Lundez GitHub">
+</i> 
+    </a>
+  </li>  
+    <li class="nav-item compact">
+    <a class="nav-link" href="../../index.xml">
+      <i class="bi bi-rss" role="img" aria-label="Londogard Blog RSS">
+</i> 
+    </a>
+  </li>  
+</ul>
+    </div>
+  </div>
+</footer>
+
+
+
+</body></html>
