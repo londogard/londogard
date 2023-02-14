@@ -6,13 +6,6 @@ on:
 
 jobs:
   deploy:
-    name: Render and Publish
-      -uses: quarto-dev/quarto-actions/publish@v2
-      with:
-        target: gh-pages
-        path: quarto_blog
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     name: Deploy to GitHub Pages
     runs-on: ubuntu-latest
     steps:
