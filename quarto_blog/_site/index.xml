@@ -370,8 +370,14 @@ The model does not actually predict a value but a distribution, using <code>Gaus
 <li>Based on these x&nbsp;predictions we have a distribution of data.</li>
 <li>Build a <em>confidence interval</em>&nbsp;from the points.
 <ul>
-<li><p>```python outs = torch.vstack([model.predict(in_data) for i in range(x)]) # Defined by confidence coefficients Z_TABLE = {0.8: 1.28, 0.85: 1.44, 0.9: 1.65, 0.95: 1.96, 0.99: 2.58, 0.999: 3.29, 0.9999: 3.89}</p>
-<p># Confidence Interval with mean as line mean = outs.mean() lower = mean - Z_TABLE[confidence] * outs.std() upper = mean + Z_TABLE[confidence] * outs.std()```</p></li>
+<li><div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1">  outs <span class="op" style="color: #5E5E5E;">=</span> torch.vstack([model.predict(in_data) <span class="cf" style="color: #003B4F;">for</span> i <span class="kw" style="color: #003B4F;">in</span> <span class="bu" style="color: null;">range</span>(x)])</span>
+<span id="cb1-2">  <span class="co" style="color: #5E5E5E;"># Defined by confidence coefficients</span></span>
+<span id="cb1-3">  Z_TABLE <span class="op" style="color: #5E5E5E;">=</span> {<span class="fl" style="color: #AD0000;">0.8</span>: <span class="fl" style="color: #AD0000;">1.28</span>, <span class="fl" style="color: #AD0000;">0.85</span>: <span class="fl" style="color: #AD0000;">1.44</span>, <span class="fl" style="color: #AD0000;">0.9</span>: <span class="fl" style="color: #AD0000;">1.65</span>, <span class="fl" style="color: #AD0000;">0.95</span>: <span class="fl" style="color: #AD0000;">1.96</span>, <span class="fl" style="color: #AD0000;">0.99</span>: <span class="fl" style="color: #AD0000;">2.58</span>, <span class="fl" style="color: #AD0000;">0.999</span>: <span class="fl" style="color: #AD0000;">3.29</span>, <span class="fl" style="color: #AD0000;">0.9999</span>: <span class="fl" style="color: #AD0000;">3.89</span>}</span>
+<span id="cb1-4"></span>
+<span id="cb1-5">  <span class="co" style="color: #5E5E5E;"># Confidence Interval with mean as line</span></span>
+<span id="cb1-6">  mean <span class="op" style="color: #5E5E5E;">=</span> outs.mean()</span>
+<span id="cb1-7">  lower <span class="op" style="color: #5E5E5E;">=</span> mean <span class="op" style="color: #5E5E5E;">-</span> Z_TABLE[confidence] <span class="op" style="color: #5E5E5E;">*</span> outs.std()</span>
+<span id="cb1-8">  upper <span class="op" style="color: #5E5E5E;">=</span> mean <span class="op" style="color: #5E5E5E;">+</span> Z_TABLE[confidence] <span class="op" style="color: #5E5E5E;">*</span> outs.std()</span></code></pre></div></li>
 </ul></li>
 </ol>
 </section>

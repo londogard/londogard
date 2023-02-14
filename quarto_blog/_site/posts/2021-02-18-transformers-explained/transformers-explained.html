@@ -138,7 +138,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <meta name="twitter:card" content="summary">
 </head>
 
-<body class="nav-fixed fullcontent">
+<body class="nav-fixed">
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
@@ -251,7 +251,54 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
-    
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#transformers-from-scratch" id="toc-transformers-from-scratch" class="nav-link active" data-scroll-target="#transformers-from-scratch">Transformers From Scratch</a>
+  <ul class="collapse">
+  <li><a href="#transformers-explained" id="toc-transformers-explained" class="nav-link" data-scroll-target="#transformers-explained">Transformers explained</a></li>
+  <li><a href="#self-attention" id="toc-self-attention" class="nav-link" data-scroll-target="#self-attention">Self-attention</a></li>
+  <li><a href="#understanding-how-it-works" id="toc-understanding-how-it-works" class="nav-link" data-scroll-target="#understanding-how-it-works">Understanding how it works</a></li>
+  <li><a href="#in-pytorch-basic-self-attention" id="toc-in-pytorch-basic-self-attention" class="nav-link" data-scroll-target="#in-pytorch-basic-self-attention">In Pytorch: basic self-attention</a></li>
+  <li><a href="#additional-tricks" id="toc-additional-tricks" class="nav-link" data-scroll-target="#additional-tricks">Additional Tricks</a>
+  <ul class="collapse">
+  <li><a href="#queries-keys-values" id="toc-queries-keys-values" class="nav-link" data-scroll-target="#queries-keys-values">1) Queries, keys &amp; values</a></li>
+  <li><a href="#scaling-the-dot-product" id="toc-scaling-the-dot-product" class="nav-link" data-scroll-target="#scaling-the-dot-product">2) Scaling the Dot Product</a></li>
+  <li><a href="#multi-head-attention" id="toc-multi-head-attention" class="nav-link" data-scroll-target="#multi-head-attention">3) Multi-head Attention</a></li>
+  </ul></li>
+  <li><a href="#in-pytorch-complete-self-attention" id="toc-in-pytorch-complete-self-attention" class="nav-link" data-scroll-target="#in-pytorch-complete-self-attention">In Pytorch: complete self-attention</a></li>
+  <li><a href="#building-transformers" id="toc-building-transformers" class="nav-link" data-scroll-target="#building-transformers">Building Transformers</a>
+  <ul class="collapse">
+  <li><a href="#the-transformer-block" id="toc-the-transformer-block" class="nav-link" data-scroll-target="#the-transformer-block">The transformer block</a></li>
+  </ul></li>
+  <li><a href="#classification-transformer" id="toc-classification-transformer" class="nav-link" data-scroll-target="#classification-transformer">Classification transformer</a>
+  <ul class="collapse">
+  <li><a href="#output-producing-a-classifier" id="toc-output-producing-a-classifier" class="nav-link" data-scroll-target="#output-producing-a-classifier">Output: producing a classifier</a></li>
+  <li><a href="#input-using-positions-think-ngram" id="toc-input-using-positions-think-ngram" class="nav-link" data-scroll-target="#input-using-positions-think-ngram">Input: Using Positions (think: ngram)</a></li>
+  <li><a href="#pytorch" id="toc-pytorch" class="nav-link" data-scroll-target="#pytorch">PyTorch</a></li>
+  </ul></li>
+  <li><a href="#text-generation-transformer" id="toc-text-generation-transformer" class="nav-link" data-scroll-target="#text-generation-transformer">Text generation transformer</a></li>
+  <li><a href="#in-pytorch" id="toc-in-pytorch" class="nav-link" data-scroll-target="#in-pytorch">In PyTorch</a></li>
+  </ul></li>
+  <li><a href="#appendix-demos-text-classification-text-generation" id="toc-appendix-demos-text-classification-text-generation" class="nav-link" data-scroll-target="#appendix-demos-text-classification-text-generation">Appendix: Demos (Text Classification &amp; Text Generation)</a>
+  <ul class="collapse">
+  <li><a href="#dependencies" id="toc-dependencies" class="nav-link" data-scroll-target="#dependencies">Dependencies</a></li>
+  <li><a href="#text-classification" id="toc-text-classification" class="nav-link" data-scroll-target="#text-classification">Text Classification</a>
+  <ul class="collapse">
+  <li><a href="#model-classifier" id="toc-model-classifier" class="nav-link" data-scroll-target="#model-classifier">Model (Classifier)</a></li>
+  <li><a href="#the-text-classification" id="toc-the-text-classification" class="nav-link" data-scroll-target="#the-text-classification">The Text Classification</a></li>
+  </ul></li>
+  <li><a href="#text-generation" id="toc-text-generation" class="nav-link" data-scroll-target="#text-generation">Text Generation</a>
+  <ul class="collapse">
+  <li><a href="#the-model" id="toc-the-model" class="nav-link" data-scroll-target="#the-model">The Model</a></li>
+  <li><a href="#the-text-generation" id="toc-the-text-generation" class="nav-link" data-scroll-target="#the-text-generation">The Text Generation</a></li>
+  </ul></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
 <!-- main -->
 <main class="content quarto-banner-title-block" id="quarto-document-content">
 

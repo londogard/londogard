@@ -134,7 +134,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <meta name="twitter:card" content="summary">
 </head>
 
-<body class="nav-fixed fullcontent">
+<body class="nav-fixed">
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
@@ -247,7 +247,41 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
-    
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction">Introduction</a></li>
+  <li><a href="#part-1-how-does-kotlin-multiplatform-work" id="toc-part-1-how-does-kotlin-multiplatform-work" class="nav-link" data-scroll-target="#part-1-how-does-kotlin-multiplatform-work">Part 1: How does Kotlin Multiplatform work?</a>
+  <ul class="collapse">
+  <li><a href="#llvm" id="toc-llvm" class="nav-link" data-scroll-target="#llvm">LLVM</a></li>
+  <li><a href="#how-the-kotlin-compiler-works-frontend-to-backend" id="toc-how-the-kotlin-compiler-works-frontend-to-backend" class="nav-link" data-scroll-target="#how-the-kotlin-compiler-works-frontend-to-backend">How the Kotlin Compiler works, Frontend to Backend</a>
+  <ul class="collapse">
+  <li><a href="#the-kotlin-compiler-frontend" id="toc-the-kotlin-compiler-frontend" class="nav-link" data-scroll-target="#the-kotlin-compiler-frontend">The Kotlin Compiler Frontend</a></li>
+  <li><a href="#the-kotlin-compiler-backend" id="toc-the-kotlin-compiler-backend" class="nav-link" data-scroll-target="#the-kotlin-compiler-backend">The Kotlin Compiler Backend</a></li>
+  </ul></li>
+  <li><a href="#how-kotlin-keeps-multiplatform-clean" id="toc-how-kotlin-keeps-multiplatform-clean" class="nav-link" data-scroll-target="#how-kotlin-keeps-multiplatform-clean">How Kotlin keeps multiplatform clean</a></li>
+  <li><a href="#summarizing-how-multiplatform-works" id="toc-summarizing-how-multiplatform-works" class="nav-link" data-scroll-target="#summarizing-how-multiplatform-works">Summarizing how Multiplatform works</a></li>
+  <li><a href="#outro-kotlin-multiplatform-and-why-it-matters" id="toc-outro-kotlin-multiplatform-and-why-it-matters" class="nav-link" data-scroll-target="#outro-kotlin-multiplatform-and-why-it-matters">Outro: Kotlin Multiplatform and why it matters</a></li>
+  </ul></li>
+  <li><a href="#part-2-how-to-set-up-multiplatform-and-build-snake" id="toc-part-2-how-to-set-up-multiplatform-and-build-snake" class="nav-link" data-scroll-target="#part-2-how-to-set-up-multiplatform-and-build-snake">Part 2: How to set up Multiplatform and build Snake</a>
+  <ul class="collapse">
+  <li><a href="#building-a-jvm-app-snake" id="toc-building-a-jvm-app-snake" class="nav-link" data-scroll-target="#building-a-jvm-app-snake">Building a JVM App (Snake)</a>
+  <ul class="collapse">
+  <li><a href="#drawing-the-snake-apple" id="toc-drawing-the-snake-apple" class="nav-link" data-scroll-target="#drawing-the-snake-apple">Drawing the snake &amp; apple</a></li>
+  <li><a href="#creating-the-data-structures" id="toc-creating-the-data-structures" class="nav-link" data-scroll-target="#creating-the-data-structures">Creating the data structures</a></li>
+  </ul></li>
+  <li><a href="#wrapping-up-the-code-with-some-minor-refactoring-new-functionality" id="toc-wrapping-up-the-code-with-some-minor-refactoring-new-functionality" class="nav-link" data-scroll-target="#wrapping-up-the-code-with-some-minor-refactoring-new-functionality">Wrapping up the code with some minor refactoring / new functionality</a></li>
+  </ul></li>
+  <li><a href="#part-3-true-multiplatform-moving-to-js-native" id="toc-part-3-true-multiplatform-moving-to-js-native" class="nav-link" data-scroll-target="#part-3-true-multiplatform-moving-to-js-native">Part 3: True multiplatform (moving to JS &amp; Native)</a>
+  <ul class="collapse">
+  <li><a href="#jsbrowser-target" id="toc-jsbrowser-target" class="nav-link" data-scroll-target="#jsbrowser-target">JS/Browser target</a></li>
+  <li><a href="#native-target" id="toc-native-target" class="nav-link" data-scroll-target="#native-target">Native target</a></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
 <!-- main -->
 <main class="content quarto-banner-title-block" id="quarto-document-content">
 
