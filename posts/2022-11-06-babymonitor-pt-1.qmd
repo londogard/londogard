@@ -1,0 +1,279 @@
+---
+title: "Babymonitor #1"
+date: "2022-11-06"
+description: "I'm building a babymonitor!"
+categories: [python, raspberrypi]
+author: Hampus Londögård
+---
+
+Hi 👋
+
+I’m building a babymonitor. It’s not gonna be anything novel, neither the first or last in history. But it’s a relevant project to me, and it makes me happy! 🤓
+
+In this blog I'll walk through different ways to stream video from the raspberry pi to the network, capturing it in a client browser.
+  
+<!--truncate-->
+## Background
+
+It all started when I talked to an old friend and he said that his in-laws gifted them the "Rolls-Royce" of babymonitors. The monitor has:
+
+- Bidirectional audio.
+- Unidirectional video.
+    1. Night Vision.
+    2. Rotation Horizontally.
+    3. Zoom.
+- Temperature
+- Play soothing bedtime songs.
+
+Incredibly cool!  
+
+This led to a simple equation:  
+`awesome + expensive + programmer = Do It Yourself (DIY)`
+
+Obviously I need to have the same specifications and a little better, while "cheaper" (my hours are "free" 🤓).  
+
+The greatest part? I have a natural deadline which enforce me to finish the project!
+
+  
+
+## Goals
+
+**KISS** \- Keep It Simple Stupid
+
+I've collected the following equipment:
+
+- Raspberry Pi 3B (had one already)
+- 5 MP camera with mechanical IR filter
+- 2 servos (rotating camera)
+- Temperature / Humidity Sensor
+- Microphone Array
+- Speaker
+
+
+My bottleneck is the Raspberry Pi's performance really. And with performance comes optimisations, which I love! It makes following the KISS principle a tad harder! 😅
+
+I have settled on one of three languages to write the video streaming in, either `golang`, `rust` or `python`.  
+My initial idea is that the simpler parts will be a FastAPI (Python) server, like temperature and moving servos. Python really is _lingua franca_ on the Raspberry Pi and the support is amazing.  
+
+From my initial experimentation I found Python to require a _shit ton_ of CPU power to livestream video, as such I believe `rust` or `golang` will be the way to go. 🚀
+
+## Live Streaming: Initial Experimentation
+
+I've tried multiple things, HTTP, HLS, Websocket & WebRTC. Each step proves a more complex, albeit more optimal, solution. Each with it's trade-offs.
+
+Some worthy mentions of other solutions is _Real Time Streaming Protocol (RTSP)_.
+
+### Protocols / Variants
+
+Describing the protocol and how it's implemented, in a very general way.
+
+::: {.panel-tabset group="type"}
+## HTTP
+**H**yper**t**ext **T**ransfer **P**rotocol, _lingua franca_ protocol of the internet, is a way to stream both video and audio. It's easy, but not efficient.
+
+**How:** Stream chunks using HTTP messages and let your `<video>` element handle the consumption of stream.
+
+## HLS
+
+**H**TTP **L**ive **S**treaming is a simple and pretty efficient way to stream both video and audio over the internet.
+
+**How:** video-/audio-files, `.m3u8`, which are then picked up by client. The chunks are built from a "live" stream, e.g. webcam, or a file.
+
+## Websocket
+
+Websockets is a communication protocol which allows much lower overhead than raw HTTP while providing bi-directional (duplex) communication. It's really optimal to stream things that move in real-time through HTTP, such as a video or audio stream.
+
+**How:** Stream your byte-array realtime through a websocket, like you'd a HTTP. There's less headers involved, but it's much harder to consume on the client. You need a special JS media player which can decode the websocket stream into video/audio.
+
+## WebRTC
+WebRTC is a open framework that enables _Real-Time Communications (RTC)_ inside the browser. From the get-go it supports bidirectional video/audio and also encrypted if required.  
+It's _the protocol to stream realtime_ really. It's used in a lot of the tools you know today.
+
+**How:** set up a WebRTC server and then stream your bytearrays directly after connecting with a client.
+
+:::
+
+Each protocol comes with positives and negatives.
+
+|  | HTTP | HLS | Websocket | WebRTC |
+| --- | --- | --- | --- | --- |
+| **Pros** | + Easy to implement.<br/>+ Simple protocol. | + Easy to implement<br/>+ CPU efficient.<br/>+ Easy to do "live" streams. | + Low latency.<br/>+ CPU efficient. | + Supports all my use-cases<br/>+ Low Latency.<br/>+ CPU efficient. |
+| **Cons** | - CPU inefficient (HTTP header overhead). | - High latency (5-10s+).  | - Hard to consume on client.<br/>- Bi-directional streaming is also hard. | - Not straightforward implementation<br/>- Less documentation than HLS/HTTP. |
+
+### Implementations
+
+::: {.panel-tabset group="type"}
+
+## HTTP
+Using **MJPEG**.  
+The provided [MJPEG server](https://raw.githubusercontent.com/raspberrypi/picamera2/main/examples/mjpeg_server.py) from [`picamera2`](https://github.com/raspberrypi/picamera2) is excelent show-case on how to stream the video. It sets up a simple HTML with a `<img>` element which streams new frames using `MJPEG`  which is Motion-JPEG.
+
+The performance is pretty OK, considering it's Python & MJPEG. Compared to H264 which works much more effectively.   
+We see the CPU hovering around 130-150%, but the largest drawback is the network bandwidth, at ~50Mb/s compared to H.264 at ~3.5Mb/s.  
+This is because MJPEG sends the full frame each time, H.264 sends a frame and then some delta frame until it sends a full frame again. This has drawbacks and positives, the bandwidth is low but quality can suffer.
+
+<details>
+<summary>Code</summary>
+
+```python
+#!/usr/bin/python3
+
+# Mostly copied from https://picamera.readthedocs.io/en/release-1.13/recipes2.html
+# Run this script, then point a web browser at http:<this-ip-address>:8000
+# Note: needs simplejpeg to be installed (pip3 install simplejpeg).
+
+import io
+import logging
+import socketserver
+from http import server
+from threading import Condition, Thread
+
+from picamera2 import Picamera2
+from picamera2.encoders import JpegEncoder
+from picamera2.outputs import FileOutput
+
+PAGE = """\
+<html>
+<head>
+<title>picamera2 MJPEG streaming demo</title>
+</head>
+<body>
+<h1>Picamera2 MJPEG Streaming Demo</h1>
+<img src="stream.mjpg" width="640" height="480" />
+</body>
+</html>
+"""
+
+
+class StreamingOutput(io.BufferedIOBase):
+    def __init__(self):
+        self.frame = None
+        self.condition = Condition()
+
+    def write(self, buf):
+        with self.condition:
+            self.frame = buf
+            self.condition.notify_all()
+
+
+class StreamingHandler(server.BaseHTTPRequestHandler):
+    def do_GET(self):
+        if self.path == '/':
+            self.send_response(301)
+            self.send_header('Location', '/index.html')
+            self.end_headers()
+        elif self.path == '/index.html':
+            content = PAGE.encode('utf-8')
+            self.send_response(200)
+            self.send_header('Content-Type', 'text/html')
+            self.send_header('Content-Length', len(content))
+            self.end_headers()
+            self.wfile.write(content)
+        elif self.path == '/stream.mjpg':
+            self.send_response(200)
+            self.send_header('Age', 0)
+            self.send_header('Cache-Control', 'no-cache, private')
+            self.send_header('Pragma', 'no-cache')
+            self.send_header('Content-Type', 'multipart/x-mixed-replace; boundary=FRAME')
+            self.end_headers()
+            try:
+                while True:
+                    with output.condition:
+                        output.condition.wait()
+                        frame = output.frame
+                    self.wfile.write(b'--FRAME\r\n')
+                    self.send_header('Content-Type', 'image/jpeg')
+                    self.send_header('Content-Length', len(frame))
+                    self.end_headers()
+                    self.wfile.write(frame)
+                    self.wfile.write(b'\r\n')
+            except Exception as e:
+                logging.warning(
+                    'Removed streaming client %s: %s',
+                    self.client_address, str(e))
+        else:
+            self.send_error(404)
+            self.end_headers()
+
+
+class StreamingServer(socketserver.ThreadingMixIn, server.HTTPServer):
+    allow_reuse_address = True
+    daemon_threads = True
+
+
+picam2 = Picamera2()
+picam2.configure(picam2.create_video_configuration(main={"size": (640, 480)}))
+output = StreamingOutput()
+picam2.start_recording(JpegEncoder(), FileOutput(output))
+
+try:
+    address = ('', 8000)
+    server = StreamingServer(address, StreamingHandler)
+    server.serve_forever()
+finally:
+    picam2.stop_recording()
+```
+
+</details>
+
+## HLS
+
+Very simple using `ffmpeg` and `picamera2`  in conjunction. 
+
+The performance of HLS is great at ~40% CPU, but the latency is awful at 5-10s easily!
+
+**Python**
+```python
+import time
+from picamera2.outputs import FfmpegOutput
+from picamera2.encoders import H264Encoder, Quality
+from picamera2 import Picamera2
+
+
+picam2 = Picamera2()
+picam2.configure(picam2.create_video_configuration(main={"size": (640, 480)}))
+encoder = H264Encoder(bitrate=1000000, repeat=True, iperiod=15)
+output = FfmpegOutput("-f hls -hls_time 4 -hls_list_size 5 -hls_flags delete_segments -hls_allow_cache 0 stream.m3u8")
+picam2.start_recording(encoder, output)
+time.sleep(9999999)
+```
+
+**HTML**
+```html
+<video width="320" height="240" controls autoplay>
+    <source src="stream.m3u8" type="application/x-mpegURL" />
+    Your browser does not support the video tag.
+</video>
+```
+
+## Websocket
+
+I've basically re-used [`go-h264-streamer`](https://github.com/bezineb5/go-h264-streamer) which is a very simple yet efficient golang-implementation of a websocket driven H264 streamer that streams through websocket to a client. The client has a JS script which is WebASM/emscripten compiled to use WebGL-accelerated graphics to decode the H264 into frames. 
+
+What's really cool about this implementation is that it only starts the video stream when people connect and shut it down when there's no connected websockets.
+
+## WebRTC
+
+I kept myself to KISS, unlike all this testing of approaches, and went with golangs `pion` ([https://github.com/pion/webrtc](https://github.com/pion/webrtc))  and their excellent `mediadevices` ([https://github.com/pion/mediadevices](https://github.com/pion/mediadevices)) which wraps the legacy pi camera stack (non-open source drivers, unlike the modern pi camera stack which builds on `libcamera`).
+
+:::
+
+### Performance
+
+Stats taken from `top`.
+
+| Hardware | HTTP - MJPEG | HLS | Websocket no connection | Websocket | WebRTC | WebRTC (`aiortc`) |
+| --- | --- | --- | --- | --- | --- | --- |
+| **CPU** | 150% | **40%** | <=0.2% | **40%** | 170% | 250-350% |
+| **RAM** | 6% | **4%** | <=0.4% | 6% | 5% | |
+
+
+## Ending Notes
+
+This is what I have currently. **In the next blog I'll go through how we'll set up a backend which will allow us to use the sensors, move the servos and stream audio/video.**
+
+I think the bidirectional communication will require a third blog, and then manufacturing a 3D-printed case as a fourth!
+
+
+Until next time,  
+Hampus Londögård

@@ -1,0 +1,24 @@
+---
+title: "Presentations"
+listing:
+  contents: presentations
+  sort: "date desc"
+  type: default
+page-layout: full
+title-block-banner: true
+---
+
+During the years I've done a few presentations and workshops.
+
+---
+
+- **Nov 12th 2021 - [Managing the ML Lifecycle without a headache](https://www.youtube.com/watch?v=0eWEzwUnDkc)**
+    - Unfortunately I had to re-record the recording at home because the video recorder crashed during the live presentation.
+    - Presenting how to streamline your ML development through MLOps, showcased through using [DVC](https://dvc.org/) & [CML](https://cml.dev/).
+
+- **Sep 7th 2021 - [Panel: How can we accelerate the industry forward? #IndustryDay](https://www.youtube.com/watch?v=F1mlmUbmAw0&t=7009s)**
+    - I was asked to join as a expert on AI with focus on how to accelerate the industry forward.
+
+- **Jul 5th 2021 - [Vikten av att verkligen förstå AI](https://www.youtube.com/watch?v=yl6B3X6PwCk)** (swe)
+    - Presenting the importance of understanding model. A light talk that requires no prior experience in ML.
+    - A blend of Ethical AI and Explainable AI (XAI)

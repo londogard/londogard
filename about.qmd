@@ -1,0 +1,33 @@
+---
+title: "About"
+image: profile.jpg
+about:
+  template: jolla
+  links:
+    - icon: twitter
+      text: Twitter
+      href: https://twitter.com/hlondogard
+    - icon: linkedin
+      text: LinkedIn
+      href: https://www.linkedin.com/in/hampus-londögård/
+    - icon: github
+      text: Lundez
+      href: https://github.com/lundez
+    - icon: github
+      text: Londogard
+      href: https://github.com/londogard
+
+---
+
+At Londogard we find order in chaos by creating structures and understanding out of unstructured data. Our belief is that by creating understanding of data new possibilities open up and a lot of automation is possible where today manual tedious work is applied.
+
+Our goal is to employ Machine Learning models that makes sense and provide value rather than being made to tick of a check-box. The aim is to provide **Efficient, Performant, Measurable & Understandable** models.
+
+1. _Efficient_ should truly run on a single small machine (the edge).  
+2. _Performant_ achieving very close to State-of-the-Art performance, striking a good balance of performance & efficiency.  
+3. _Measurable_ in a way that makes sense for your personal use-case. Not some random metrics.  
+4. _Understandable_ to the level where you understand why a prediction was made as it was.
+
+Through our blog & demos we try to show-case powerful models that all run on the same single Raspberry Pi 4 (4GB)
+
+Email us @ dev@londogard.com

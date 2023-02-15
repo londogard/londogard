@@ -1,0 +1,99 @@
+---
+description: "I built a baby monitor! Built using Python, Svelte & Raspberry Pi."
+categories: [python]
+title: "Baby Monitor pt 2"
+author: Hampus Londögård
+date: "2023-02-06"
+---
+Back in action and finalizing the baby monitor!👶
+
+**TL;DR**
+Built a baby monitor that included the following features:
+
+1. Bidirectional Audio & Unidirectional Video (Night & Day Vision!)
+2. Temperature Sensor
+3. Motor (Servo) to move left/right & up/down
+
+The project was born the day I met an old friend and saw his expensive baby monitor that he had been gifted, I needed to match it! 🤓
+
+<!--truncate-->
+
+**Result:**
+![300](20230206181407.png)
+I'm very happy about the results, my wife asked me to draw a smile on the creepy monitor, hence the smile! 😜
+Video of it running live can be found at the end!
+
+## Implementation Details
+
+To implement and build this camera I had to combine both hardware and software into a package.
+
+### Hardware Details
+
+Most of my hardware was bought through Aliexpress, with few parts being from an old Pi.
+
+| Hardware                                                                   | Functionality                                             | Software Required/Used                                                                | Notes                                                                                                                                                                                                                                    |
+| -------------------------------------------------------------------------- | --------------------------------------------------------- | ------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Raspberry Pi 3B+                                                           | The Brain which powers everything                         | Raspberry Pi OS Lite (Bullseye)                                                       | This OS uses the new Open Source camera-stack, Libcamera!                                                                                                                                                                                |
+| [DS18B20](https://www.aliexpress.com/item/4000143479592.html)                 | Temperature Sensor                                        | [W1ThermSensor](https://github.com/timofurrer/w1thermsensor)                             | I wish I found this earlier, at first I parsed the raw file myself. And it was hard to find set-up instructions!                                                                                                                         |
+| [Nylon FPV Servo](https://www.aliexpress.com/item/1623404058.html)            | Servo Motor (moving the camera)                           | [gpiozero](https://gpiozero.readthedocs.io/en/stable/)                                   | A brilliant library. It has to be noted that this servo works through Pulse Width Modulation (PWM) and to make the servos quite we need to set `servo.value=None` after setting it to a value. Complicates the configuration a little. |
+| [Raspberry Pi 4 Camera 5MP](https://www.aliexpress.com/item/32668508991.html) | Camera with IR-cut (IR on/off via hardware automatically) | [libcamera](https://libcamera.org/) / [picamera2](https://github.com/raspberrypi/picamera2) | Very simple to use over all. Tricky that you needed to focus it yourself, I thought it was broken first! 😆                                                                                                                              |
+| [Microphone from Google AIY v1](https://aiyprojects.withgoogle.com/voice-v1/) | Record sound                                              | This is tricky because of the HAT, requires custom installation.                      |                                                                                                                                                                                                                                          |
+| [Speaker from Google AIY v1](https://aiyprojects.withgoogle.com/voice-v1/)    | Play sound                                                |                                                                                       |                                                                                                                                                                                                                                          |
+| [Pi HAT from Google AIY v1](https://aiyprojects.withgoogle.com/voice-v1/)     | Combine sensors, microphone & speakers                    |                                                                                       |                                                                                                                                                                                                                                          |
+
+### Software Stack
+
+To make use of my beautiful hardware I need software!
+Keeping things simple (KISS) I decided to use a Python backend and show it through a simple webapp. That way I can view the baby monitor from my PC, Smartphone & anything that has a browser really.
+
+The end result became as follows 👇
+![](20230206201818.png)
+
+#### Webapp Client
+
+Over all I really enjoyed playing around with [Svelte](https://svelte.dev/). It felt very straight-forward and simple, although there's less community and libraries compared to [React](https://reactjs.org/).
+All in all I'd give it one up compared to React because of simplicity, but I'm just a ordinary Backend Dev / Data Engineer+Scientist.
+
+#### Server/Backend
+
+[FastAPI](https://fastapi.tiangolo.com/) as always is a blessing to work with! The auto-generated swagger page, superb type integration and much more makes me feel right at home as someone who's really a Scala-dev.😉
+FastAPI has its drawbacks though, the streaming component definitely showed some rather large overhead. I had to fall back to raw http to have good performance 😰
+
+The end result became two backends, but I tried to keep the responsibilities clear and it worked out fine!
+
+## End Result
+
+![350](20230206181407.png)
+And a video to show how real-time it is!
+
+![Test Video](Studio_Project.mp4)
+
+I'm very happy about the results!
+
+### Images of the Building Process
+
+And some images of when I built the monitor!
+
+| What                                 | Image                                                                               |
+| ------------------------------------ | ----------------------------------------------------------------------------------- |
+| Building the Camera                  | ![350](20220924_200441.jpg)                                                           |
+| Connecting the final piece of Camera | ![350](20220924_201132.jpg)                                                           |
+| Building Temperature Sensor          | ![350](20220924_203146.jpg)                                                           |
+| Connecting Temperature, Pi & Camera  | ![350](20220927_174516.jpg)                                                           |
+| Manual Temperature Validation        | ![350](20220927_174522.jpg)                                                           |
+| Testing the Servo                    | ![Testing the Servo](20220927_195156.mp4) |
+| Connecting all in a paper box        | ![350](20221204_191914.jpg)                                                           |
+| First Wooden Baby Monitor Prototype  | ![350](20230108_160751.jpg)                                                           |
+| Final Wooden Baby Monitor            | ![350](signal-2023-01-08-20-34-58-840.jpg)                                            |
+
+## A sad ending
+
+The servo motors showed to be too weak which interestingly means they're too strong.
+As they try to move the housing it works slowly until it move everything at once which creates a force stronger than the pad that the monitor was standing on.
+
+The end result was... Sweet release of machine breakage 😢
+
+![350](20230120_185651.jpg) ![350](20230128_113031.jpg)
+
+That's it for this time! Now I look forward to become a father! 👨‍👩‍👧‍👦
+~Hampus Londögård
