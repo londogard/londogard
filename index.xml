@@ -6191,6 +6191,7 @@ The flair model is available through HuggingFace 🤗 through the following: <a 
 
 
 
+<p><a href="https://colab.research.google.com/github/londogard/londogard/blob/master/blog/2021-02-18-transformers-explained/transformers-explained.ipynb"><img src="https://blog.londogard.com/posts/2021-02-18-transformers-explained/https:/colab.research.google.com/assets/colab-badge.svg" class="img-fluid" alt="Open In Colab"></a> <a href="https://mybinder.org/v2/gh/londogard/londogard/HEAD?labpath=blog/2021-02-18-transformers-explained/transformers-explained.ipynb"><img src="https://blog.londogard.com/posts/2021-02-18-transformers-explained/https:/mybinder.org/badge_logo.svg" class="img-fluid" alt="Binder"></a></p>
 <section id="transformers-from-scratch" class="level1">
 <h1>Transformers From Scratch</h1>
 <p>The video from the workshop (in Swedish) can be found on <a href="https://youtu.be/bHIU96D8SSQ">YouTube</a>.</p>
@@ -7473,7 +7474,7 @@ Do note that the depth should probably be increased as should the amount of data
   <category>workshop</category>
   <guid>https://blog.londogard.com/posts/2021-02-18-transformers-explained/transformers-explained.html</guid>
   <pubDate>Thu, 18 Feb 2021 00:00:00 GMT</pubDate>
-  <media:content url="https://user-images.githubusercontent.com/7490199/218255581-54624bd8-de0f-4340-a085-d6605b3d5310.png" medium="image" type="image/png"/>
+  <media:content url="https://colab.research.google.com/assets/colab-badge.svg" medium="image" type="image/svg+xml"/>
 </item>
 <item>
   <title>TIL: GitPod - your editor in the cloud</title>
