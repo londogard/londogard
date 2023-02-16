@@ -6,6 +6,9 @@ website:
   favicon: favicon.ico
   site-url: https://blog.londogard.com/
   description: "A blog which majorly focuses on Data Science, Data Engineering and sometimes Kotlin / Scala."
+  comments:
+    giscus:
+      repo: londogard/londogard
   twitter-card:
      creator: "@hlondogard"
   page-footer:
