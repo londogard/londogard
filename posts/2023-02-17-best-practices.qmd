@@ -1,0 +1,172 @@
+## Best Practices Are Contextual
+
+One way or another everybody learns this someday practically! 😅
+
+I wonder if one might fall into the same trap, or the reversed one, sometime in the future.. 🤔
+
+### Background
+
+We have a project with a decent chunk of data (> 100GB) which we believed would require a clever out-of-memory solution such as `mmap`⁠ with a smart data structure to optimize the stream of data.  
+
+> `**mmap**` is a solution to stream data into memory from disk, and back. This enables us to:
+> 
+> 1. Transform a bigger-than-memory dataset and write to disk again.
+>     
+> 2. Train on a bigger-than-memory dataset by streaming it into memory
+>     
+
+Using `mmap` combined with a smart column-based (OLAP) file format such as `arrow` is praised as a great solution, we see it recommended every day by companies, blogs & libraries. 
+
+  
+
+> `**arrow**`  is a column-based file format which is laid out in the same way its in-memory.   
+> This means it's very efficient when `mmap`ing as it's not required to deserialize.
+
+  
+
+Historically I've seen huge gains by using OLAP-stored file storage such as `parquet` and `arrow`, additionally with `parquet` you're handed a free efficient column-based compression.
+
+Based on my history of using `mmap` algorithmically (lower-level) and OLAP files we ended up using [🤗 Datasets](https://huggingface.co/docs/datasets/index) which is a library to work with datasets. 
+
+> **🤗 (HuggingFace)** is a company that helps other companies deploy State-of-the-Art text and image models while providing a huge Open Source community with a lot of datasets, models and much more.
+
+Their dataset API must be based on best practise right? What we later learned is that best practice really is contextual. **This is the story.**
+
+### Problem Identification
+
+The first question I got was _"how did you even identify this problem?"._
+
+After all it's really easy to hide performance issues behind the powerful compute in the cloud.
+
+The answer is simple: _"the training was equally fast if not faster locally on a Mac M1 than the compute cluster with GPU's"._
+
+This surely would make anyone pause and reflect right? Yes, if they ever get to see the problem. Most don't because they only run through the cloud because it's so simple and convenient.
+
+This is **step one - don't trust environments**. Don't make cloud compute power solve your problems. **Build a Local-First solution** which enables easier debugging. Additionally it opens so many doors like:
+
+- Quick iterations by running subset-training
+    
+- Improved Circular Data Analysis
+    
+- A certain satisfaction of simplicity
+    
+
+I'll write a blog on _Local First_\-approach and all the bonuses of such workflow.
+
+As we started our journey to find problem(s) in our "best-practice" training pipeline we need to understand what is actually happening - introducing debuggers & profilers!
+
+## Debugging/Profiling PyTorch
+
+Using the [PyTorch Profiler](https://pytorch.org/tutorials/recipes/recipes/profiler_recipe.html) we found that we spent a lot of our time in the DataLoader.. Not a good sign, we'd prefer to utilize our GPU's maximally!
+
+Based on this knowledge we built a hypothesis:
+
+My MacBook Pro (M1) has a much faster SSD than the Azure VM making it faster even if it's mathematical operations are slower.
+
+To make sure that Azure had a fair challenge we validated the following:
+
+1. ✅ We're **not** using a mounted storage but a downloaded dataset on the VM
+    
+2. ✅ We're using the correct VM
+    
+
+All seem correct, what could we do to improve? 🤔
+
+  
+
+We decided to rethink our "best practice" pipeline. Where could we save time? What's is actually the part of the DataLoader that's slow?
+
+### Rethinking our pipeline
+
+We found the biggest bottleneck pretty fast.
+
+**🎯 _Random Access Read_**
+
+Random Access is slow with high latency even on the best SSD's, and this is why _Random Access Memory_ (RAM) exist! It has improved substantially the last decade, but nonetheless it's slow.
+
+We built a system that retrieves data from columnar storage but randomly. Our batches are sequential which helps a little, but we extract our batch starting point randomly. We're solving a time series forecasting problem which also means we expand one data point into a window of the last X points to predict future Y points. This isn't cheap either, to roll over data like this.
+
+<Subsequence Sampler>
+
+  
+
+This means that by keeping more data in-memory (RAM) we can reduce our latency and bottleneck! 🦸‍♂️
+
+  
+
+With this realization decided to optimize our pipeline by sidestepping best-practice and building a simple but custom batch-operation.
+
+### Optimizing Preprocessing 
+
+As we applied one optimization after another it built into this beautiful onion where we by each layer we removed we had new opportunities based on the new base.
+
+1. Preprocess by batch rather than streaming data (by batch)
+
+- One batch being one file
+
+  
+
+This sped up our preprocessing enough that we don't need to cache it and thereby no need to do it on all data.
+
+Because of previous optimization we could apply the next one
+
+1. Preprocess by batch and only columns later used
+
+- Slice data according to x & y columns required
+
+This sped up our pipeline and substantially reduced memory requirements leading us to our third and final optimization in pre-processing.
+
+1. When training scaler do it on a sample of all data, reading all data lazily.
+
+  
+
+All in all we had huge speedups in our preprocessing, as follows:
+
+1. ~ 10x faster
+2. ~ 10x faster
+3. ~ 2x faster
+
+Moving our pipeline from ~ 20 minutes to seconds.
+
+  
+
+### Optimizing Training Loop
+
+With a preprocessing moving in seconds rather than minutes we were ready to move ahead into our training loop. 
+
+By our learnings from the preprocessing step we knew we could load a lot of data into memory directly by slicing the exact data required (often being 1/16th of 1/8th of all). Additionally our cloud compute does have > 100GB ram and should almost be able to fit the full data.
+
+Using this knowledge we applied the following optimization:
+
+1. Load data into RAM and slice on-demand
+
+- Rather than reading by streaming it into memory
+
+After applying this we had some huge speed-ups but there was one issue left as we still spent a lot of time in `DataLoader`, we knew that each item we loaded was converted to a `⁠torch.tensor`⁠, why not keep it as a tensor from the get-go?
+
+1. Load data into RAM as a dictionary `{"channel": torch.tensor()}`  with each channel being key
+
+Thus we ascended into a efficient pipeline, training being cut from hours to minutes! 🤯
+
+  
+
+### What we learned
+
+- **Best practices are contextual.**
+
+    - Custom _"dumb"_ code could end up much more efficient.
+
+- Start Simple.
+
+    - Simpler is often better (apply KISS).
+
+- Custom code is not always more complex as libraries hides complexity.
+- Balance complexity and efficiency delicately
+
+So by batching the data smarter and even keeping a lot of it as tensors in-memory we had an incredible amount of gains.
+
+It's simple, stupid and wonderful.
+
+  
+
+~Hampus Londögård
