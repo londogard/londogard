@@ -1,28 +1,51 @@
-## Best Practices Are Contextual
+---
+title: "Best Practices Are Contextual"
+description: "This is something all of us know but sometime forget, or ignore, when we learn about a new technology or methodology in a presentation/blog."
+categories: [soft]
+date: "2023-02-17"
+---
 
-One way or another everybody learns this someday practically! 😅
+Today Best Practices are commonly presented as the _One True Solution™_ without considering the context(s) in which the practice is to be applied. I believe that with todays framework(s) & methodologies it's getting more and more common that people start following a kind of "hive-mind", and who leads this mind? Usually the ones selling it...
 
-I wonder if one might fall into the same trap, or the reversed one, sometime in the future.. 🤔
+Of course there's multiple other angles such as thinking "No on ever got fired by buying IBM" (or rather following a MANGA solution in this case) or as easy as Career Climbing. Who wouldn't like to have the coolest and most talked about tool on their CV? Even if it doesn't fully make sense and might be shoe-horned?
+
+Anyhow, this is the story of how we/I got caught in a best practice which actually _didn't apply_ in my context.  
+Ironically giving a new advice! 😅 Who knowes, perhaps it'll lead into the same trap in the future.. 🤔
 
 ### Background
 
-We have a project with a decent chunk of data (> 100GB) which we believed would require a clever out-of-memory solution such as `mmap`⁠ with a smart data structure to optimize the stream of data.  
+We started a project where we had a lot of data, not Big Data, but a decent chunk on > 100 GB.  
+Being active in the industry and following the latest trends I knew that streaming data rather than loading it all makes a lot of sense and is recommended in multiple libraries such as [HuggingFace Datasets](https://huggingface.co/docs/datasets/index).  
 
-> `**mmap**` is a solution to stream data into memory from disk, and back. This enables us to:  
-> 1. Transform a bigger-than-memory dataset and write to disk again.  
-> 2. Train on a bigger-than-memory dataset by streaming it into memory
+Further I knew that there's certain file formats which works exceptionally when streaming, or `mmap`, to do a very cheap data load and usage.  
 
-Using `mmap` combined with a smart column-based (OLAP) file format such as `arrow` is praised as a great solution, we see it recommended every day by companies, blogs & libraries.  
+::: {.callout-note}
+## `mmap`
 
-> `**arrow**`  is a column-based file format which is laid out in the same way its in-memory.   
-> This means it's very efficient when `mmap`ing as it's not required to deserialize.
+Memory-mapping (`mmap`) is a solution to stream data into memory from disk, and back. This enables us to:  
+
+1. Transform a bigger-than-memory dataset and write to disk again.  
+2. Train on a bigger-than-memory dataset by streaming it into memory
+:::
+
+Using `mmap` combined with a good file format such as Apache Arrow is praised around by companies and libraries.
+
+::: {.callout-note}
+## `arrow`
+[Apache Arrow](https://arrow.apache.org/) is a column-based file format which is saved in a deserialized format, i.e. it is the same as it is in-memory.
+
+This results in incredibly efficient `mmap` where we can stream data into memory _without deserialize/serialize_! Further by being a OLAP (column-based) format you can slice the columns you use and not stream anything else. Exceptional!
+:::
   
+I've first-hand experience of the gains of using OLAP-based file formats such as `parquet` which additionally supply column-compression which is very efficient in analytics. How many rows contain the same date repeated? Now it's cheap! 😉
 
-Historically I've seen huge gains by using OLAP-stored file storage such as `parquet` and `arrow`, additionally with `parquet` you're handed a free efficient column-based compression.
+Based on my history of using `mmap` algorithmically (low-level) and OLAP files we ended up using [🤗 Datasets](https://huggingface.co/docs/datasets/index) which is a library to work with datasets. 
 
-Based on my history of using `mmap` algorithmically (lower-level) and OLAP files we ended up using [🤗 Datasets](https://huggingface.co/docs/datasets/index) which is a library to work with datasets. 
+::: {.callout-note}
+## 🤗 (HuggingFace)
 
-> **🤗 (HuggingFace)** is a company that helps other companies deploy State-of-the-Art text and image models while providing a huge Open Source community with a lot of datasets, models and much more.
+HuggingFace is a company that helps other companies deploy State-of-the-Art text and image models while providing a huge Open Source community with a lot of datasets, models and much more.
+:::
 
 Their dataset API must be based on best practise right? What we later learned is that best practice really is contextual. **This is the story.**
 
@@ -33,7 +56,8 @@ After all it's really easy to hide performance issues behind the powerful comput
 
 The answer is simple: _"the training was equally fast if not faster locally on a Mac M1 than the compute cluster with GPU's"._
 
-This surely would make anyone pause and reflect right? Yes, if they ever get to see the problem. Most don't because they only run through the cloud because it's so simple and convenient.
+This surely would make anyone pause and reflect right? Yes, if they ever get to see the problem.  
+A lot of us wouldn't because it's very commmon to only run on the cloud out of convenience.
 
 This is **step one - don't trust environments**. Don't make cloud compute power solve your problems. **Build a Local-First solution** which enables easier debugging. Additionally it opens so many doors like:
 
@@ -50,17 +74,15 @@ As we started our journey to find problem(s) in our "best-practice" training pip
 Using the [PyTorch Profiler](https://pytorch.org/tutorials/recipes/recipes/profiler_recipe.html) we found that we spent a lot of our time in the DataLoader.. Not a good sign, we'd prefer to utilize our GPU's maximally!
 
 Based on this knowledge we built a hypothesis:  
-My MacBook Pro (M1) has a much faster SSD than the Azure VM making it faster even if it's mathematical operations are slower.
+My MacBook Pro (M1) has a much faster SSD than the Azure VM making it faster even if the mathematical operations are slower.
 
 To make sure that Azure had a fair challenge we validated the following:
 
-1. ✅ We're **not** using a mounted storage but a downloaded dataset on the VM
-2. ✅ We're using the correct VM
+- [X] We're **not** using a mounted storage but a downloaded dataset on the VM
+- [X] We're using the correct VM
     
 
-All seem correct, what could we do to improve? 🤔
-
-  
+All seem correct, what else can we do to improve? 🤔
 
 We decided to rethink our "best practice" pipeline. Where could we save time? What's is actually the part of the DataLoader that's slow?
 
@@ -75,11 +97,8 @@ We built a system that retrieves data from columnar storage but randomly. Our ba
 
 <Subsequence Sampler>
 
-  
 
-This means that by keeping more data in-memory (RAM) we can reduce our latency and bottleneck! 🦸‍♂️
-
-  
+This means that by keeping more data in-memory (RAM) we can reduce our latency and bottleneck! Especially on VM's with slower SSD's such as Azure.🦸‍♂️
 
 With this realization decided to optimize our pipeline by sidestepping best-practice and building a simple but custom batch-operation.
 
@@ -89,8 +108,6 @@ As we applied one optimization after another it built into this beautiful onion 
 
 1. Preprocess by batch rather than streaming data (by batch)
     - One batch being one file
-
-  
 
 This sped up our preprocessing enough that we don't need to cache it and thereby no need to do it on all data.
 
@@ -103,36 +120,34 @@ This sped up our pipeline and substantially reduced memory requirements leading 
 
 3. When training scaler do it on a sample of all data, reading all data lazily.
 
-  
-
 All in all we had huge speedups in our preprocessing, as follows:
 
 1. ~ 10x faster
 2. ~ 10x faster
 3. ~ 2x faster
 
-Moving our pipeline from ~ 20 minutes to seconds.
+**All in all this made our pipeline take seconds rather than ~20 minutes**
 
-  
 
 ### Optimizing Training Loop
 
-With a preprocessing moving in seconds rather than minutes we were ready to move ahead into our training loop. 
+With preprocessing completing in seconds rather than minutes we could move ahead to improve our training loop. 
 
-By our learnings from the preprocessing step we knew we could load a lot of data into memory directly by slicing the exact data required (often being 1/16th of 1/8th of all). Additionally our cloud compute does have > 100GB ram and should almost be able to fit the full data.
+Based on our learnings from the preprocessing iterations we knew that we could essentially load all data into memory if we sliced it, which we usually did, resulting in only using 1/8th or 1/16th of the dataset. 
+Additionally we learned that we could get cloud compute with 2-300 GB RAM at Azure (quickly earning the expense back by crazy speed-ups).
 
 Using this knowledge we applied the following optimization:
 
-1. Load data into RAM and slice on-demand
+1. Load sliced data into RAM on-demand
     - Rather than reading by streaming it into memory
 
-After applying this we had some huge speed-ups but there was one issue left as we still spent a lot of time in `DataLoader`, we knew that each item we loaded was converted to a `⁠torch.tensor`⁠, why not keep it as a tensor from the get-go?
+Applying this change we saw huge efficiency gains but we still spent a lot of time in the `DataLoader`, why?
+We found that on each batch load we converted our data into a `torch.tensor` which should be pretty fast, but it still end up being a bottleneck. Why not keep it as a tensor from the get-go?
 
-1. Load data into RAM as a dictionary `{"channel": torch.tensor()}`  with each channel being key
+2. Load data into RAM as a dictionary `{"column": torch.tensor()}`  with each column being key
 
-Thus we ascended into a efficient pipeline, training being cut from hours to minutes! 🤯
+**Thus we ascended into a efficient pipeline, training being cut from hours to minutes! 🤯**
 
-  
 
 ### What we learned
 
@@ -140,12 +155,12 @@ Thus we ascended into a efficient pipeline, training being cut from hours to min
     - Custom _"dumb"_ code could end up much more efficient.
 - Start Simple.
     - Simpler is often better (apply KISS).
-- Custom code is not always more complex as libraries hides complexity.
-- Balance complexity and efficiency delicately
+- Custom code is not always more complex than libraries because they hide complexity.
+- Balance complexity and efficiency delicately.
 
-So by batching the data smarter and even keeping a lot of it as tensors in-memory we had an incredible amount of gains.
+By batching data smarter and keeping a lot of it as tensors in-memory we had an incredible amount of gains.
 
 It's simple, stupid and wonderful.
- 
+
 
 ~Hampus Londögård
