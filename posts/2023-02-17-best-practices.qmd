@@ -1,16 +1,15 @@
 ---
 title: "Best Practices Are Contextual"
 description: "This is something all of us know but sometime forget, or ignore, when we learn about a new technology or methodology in a presentation/blog."
-categories: [soft]
-date: "2023-02-17"
+categories: [soft, pipeline, deep-learning, data]
+date: "2023-02-19"
 ---
 
 Today Best Practices are commonly presented as the _One True Solution™_ without considering the context(s) in which the practice is to be applied. I believe that with todays frameworks & methodologies it's getting more and more common that people start following a kind of "hive-mind", and who's the driver? Usually the ones selling it...
 
 Of course there's multiple other angles such as:
 
-- "No on ever got fired by buying IBM"
-    - Or rather following a MANGA best practice in our case
+- "No on ever got fired by buying IBM" (or following MANGA best practices)
 - Career Climbing
     - Who wouldn't want to make their CV more interesting by applying a well-known technique or framework? Even if it doesn't make sense for the application.
 
@@ -97,10 +96,10 @@ We found the biggest bottleneck pretty fast.
 **🎯 _Random Access Read_**  
 Random Access is slow with high latency even on the best SSD's, and this is why _Random Access Memory_ (RAM) exist! It has improved substantially the last decade, but nonetheless it's slow.
 
-We built a system that retrieves data from columnar storage but randomly. Our batches are sequential which helps a little, but we extract our batch starting point randomly. We're solving a time series forecasting problem which also means we expand one data point into a window of the last X points to predict future Y points. This isn't cheap either, to roll over data like this.
+We built a system that retrieves data from columnar storage but randomly. Our batches are sequential which helps a little, but we extract our batch starting point randomly, see @fig-subsamp. We're solving a time series forecasting problem which also means we expand one data point into a window of the last X points to predict future Y points. This isn't cheap either, to roll over data like this.  
+To keep a batch internally intact is very important for some models such as the Recurrent Neural Networks (RNN) that keeps an internal state being reset each batch.
 
-<Subsequence Sampler>
-
+![RandomSubsequenceSampler that allows randomizing batches but keeping batches internally intact](assets/randomsubsampler.png){#fig-subsamp height=300}
 
 This means that by keeping more data in-memory (RAM) we can reduce our latency and bottleneck! Especially on VM's with slower SSD's such as Azure.🦸‍♂️
 
