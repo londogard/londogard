@@ -1,0 +1,23 @@
+---
+title: "Dev Setup"
+listing:
+  contents: presentations
+  sort: "date desc"
+  type: default
+page-layout: full
+title-block-banner: true
+---
+
+In this post I'll share my dev setup, divided into three categories.  
+
+1. Code Editors
+2. Languages
+3. Shell Utils
+
+## VS Code
+
+## Jetbrains
+
+## Python
+
+## Kotlin
