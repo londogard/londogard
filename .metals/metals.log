@@ -8,3 +8,6 @@ SLF4J: See https://www.slf4j.org/codes.html#ignoredBindings for an explanation.
 2023.03.20 19:54:18 INFO  time: initialize in 3.32s
 2023.03.20 19:54:24 WARN  Build server is not auto-connectable.
 2023.03.20 19:54:24 WARN  no build tool detected in workspace '/home/hlondogard/git/londogard'. The most common cause for this problem is that the editor was opened in the wrong working directory, for example if you use sbt then the workspace directory should contain build.sbt. 
+2023.03.21 18:04:47 INFO  Shutting down server
+2023.03.21 18:04:47 INFO  shutting down Metals
+2023.03.21 18:04:48 INFO  Exiting server
