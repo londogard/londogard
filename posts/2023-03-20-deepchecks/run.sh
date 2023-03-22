@@ -1,1 +1,0 @@
-jupyter nbconvert posts/2023-03-20-deepchecks/index.ipynb --to slides --post serve
