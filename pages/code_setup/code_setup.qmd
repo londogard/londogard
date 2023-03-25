@@ -8,6 +8,7 @@ page-layout: full
 format:
   html:
     code-fold: true
+    code-summary: "Show the code"
 filters:
    - include-code-files
 title-block-banner: true
@@ -40,12 +41,20 @@ All these files are located in `.vscode` as suggested by filename.
 
 ```{.json include=".vscode/settings.json" filename=".vscode/settings.json"}
 ```
+
+VS Code Settings & Extensions
 :::
 
 ### devcontainer
 
+This file is located in `.devcontainer` as suggested by filename.
+
+::: {.callout-note collapse="true"}
+## `devcontainer.json` (click to expand)
+
 ```{.json include=".devcontainer/devcontainer.json" filename=".devcontainer/devcontainer.json"}
 ```
+:::
 
 ## Jetbrains
 
@@ -61,8 +70,13 @@ And setup on specific programming languages.
 
 ## Python
 
+::: {.callout-note collapse="true"}
+## `env.yml` (click to expand)
+
 ```{.yaml include="env.yml" filename="env.yml"}
 ```
+:::
+
 
 ## Kotlin
 
