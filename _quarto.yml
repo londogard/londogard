@@ -18,7 +18,7 @@ website:
       - text: "![](https://img.shields.io/static/v1?label=Sponsor&message=%E2%9D%A4&logo=GitHub&color=%23fe8e86){width=100}"
         href: https://github.com/sponsors/Lundez?o=esb
     center:
-      - about.qmd
+      - pages/about.qmd
     right:
       - icon: linkedin
         href: https://www.linkedin.com/in/hampus-londögård/
@@ -34,11 +34,14 @@ website:
         aria-label: Londogard Blog RSS  
   navbar:
       left: 
-      - presentations.qmd
+      - /
+
+      - pages/presentations.qmd
       - text: "Londogard Projects↗"
         href: https://londogard.com/projects
       right:
-      - about.qmd
+      - pages/about.qmd
+      - pages/code_setup/code_setup.qmd
       - icon: linkedin
         href: https://www.linkedin.com/in/hampus-londögård/
         aria-label: LinkedIn

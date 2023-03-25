@@ -1,0 +1,89 @@
+---
+title: "Dev Setup"
+listing:
+  contents: presentations
+  sort: "date desc"
+  type: default
+page-layout: full
+format:
+  html:
+    code-fold: true
+    code-summary: "Show the code"
+filters:
+   - include-code-files
+title-block-banner: true
+---
+
+In this post I'll share my dev setup, divided into three categories.  
+
+1. Code Editors
+2. Programming Languages
+3. Shell
+
+# Code Editors Setup
+
+I introduce my editor setups, including plugins and other things.
+
+## VS Code
+
+Using VS-code you'll see two common ways to initiate a project, either using (1) raw settings or a (2) devcontainer.  
+The containerized approach is really cool because it gives the same environment independing on hardware as it's Docker.
+
+### VS Code Settings
+
+All these files are located in `.vscode` as suggested by filename.
+
+
+::: {#tbl-panel layout-ncol=2}
+
+```{.json include=".vscode/extensions.json" filename=".vscode/extensions.json"}
+```
+
+```{.json include=".vscode/settings.json" filename=".vscode/settings.json"}
+```
+
+VS Code Settings & Extensions
+:::
+
+### devcontainer
+
+This file is located in `.devcontainer` as suggested by filename.
+
+::: {.callout-note collapse="true"}
+## `devcontainer.json` (click to expand)
+
+```{.json include=".devcontainer/devcontainer.json" filename=".devcontainer/devcontainer.json"}
+```
+:::
+
+## Jetbrains
+
+### Extensions
+
+- Ruff
+- [color highlighter](https://plugins.jetbrains.com/plugin/13309-color-highlighter)
+- [Rainbow CSV](https://plugins.jetbrains.com/plugin/12896-rainbow-csv)
+
+# Programming Languages Setup
+
+And setup on specific programming languages.
+
+## Python
+
+::: {.callout-note collapse="true"}
+## `env.yml` (click to expand)
+
+```{.yaml include="env.yml" filename="env.yml"}
+```
+:::
+
+
+## Kotlin
+
+Using Gradle, Kotlin is awesome with stdlib! :)
+
+# Shell
+
+- [starship.rs](https://starship.rs/) - The minimal, blazing-fast, and infinitely customizable prompt for any shell!
+
+... to be continued.
