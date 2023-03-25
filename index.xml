@@ -9,8 +9,353 @@
 <link>https://blog.londogard.com/index.html</link>
 <atom:link href="https://blog.londogard.com/index.xml" rel="self" type="application/rss+xml"/>
 <description>A blog which majorly focuses on Data Science, Data Engineering and sometimes Kotlin / Scala.</description>
-<generator>quarto-1.2.335</generator>
-<lastBuildDate>Sun, 19 Feb 2023 00:00:00 GMT</lastBuildDate>
+<generator>quarto-1.2.475</generator>
+<lastBuildDate>Mon, 20 Mar 2023 00:00:00 GMT</lastBuildDate>
+<item>
+  <title>Automated Data Validation &amp; Exploration</title>
+  <dc:creator>Hampus Londögård</dc:creator>
+  <link>https://blog.londogard.com/posts/2023-03-20-deepchecks/index.html</link>
+  <description><![CDATA[ 
+
+
+
+
+<p>To run this as slides use the following command in the terminal:</p>
+<div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><span class="ex" style="color: null;">nbconvert</span> posts/2023-03-20-deepchecks/index.ipynb <span class="at" style="color: #657422;">--to</span> slides <span class="at" style="color: #657422;">--post</span> serve</span></code></pre></div>
+<p><strong>N.B.</strong> this blog is originally a presentation, hence it’s not really written in the best way. Potentially I’ll rewrite into a true blog in the future.</p>
+<section id="data-validation-exploration" class="level1">
+<h1>Data Validation &amp; Exploration</h1>
+<p>Today we’ll dive into automated <em>Data Validation</em> and <em>Data Exploration</em>.</p>
+<p>Every day we work through a multitude of data using heurestics, statistics and many tools. But is there better tools out there? Is there a way to automate some of the process to put greater emphasis on the important things?</p>
+</section>
+<section id="data-validation-tools" class="level1">
+<h1>Data Validation Tools</h1>
+<p>There is a few tools.</p>
+<ol type="1">
+<li><a href="https://github.com/deepchecks/deepchecks">Deepchecks</a> <em>Tests for Continuous Validation of ML Models &amp; Data</em></li>
+<li><a href="https://github.com/ydataai/ydata-profiling">ydata-profiling</a> (previously _pandas-profiling) <em>Create HTML profiling reports from pandas DataFrame objects</em></li>
+<li><a href="https://github.com/great-expectations/great_expectations">greatexpectations</a> <em>Always know what to expect from your data.</em></li>
+<li><a href="https://pandera.readthedocs.io/en/stable/">pandera</a> <em>A Statistical Data Testing Toolkit</em></li>
+</ol>
+<p>We’ll focus on a few discussion points today</p>
+<ul>
+<li>When does it make sense to introduce this type of tool?</li>
+<li>How do you use this type of tool today?</li>
+<li>How can it be improved?</li>
+<li>Can it be used as part of Data Analysis?</li>
+<li>Can it be used in any other part of the process?</li>
+</ul>
+<p>(This was for the presentation/‘journal circle’)</p>
+</section>
+<section id="introduction" class="level1">
+<h1>Introduction</h1>
+<p>As we all know to be true data is incredibly important when developing Machine Learning Applications.</p>
+<blockquote class="blockquote">
+<p>Shit in, shit out</p>
+</blockquote>
+<p>First we’ll make a quick introduction to each tool and their strengths.</p>
+<p><del>Second I’ll share a few use-case examples.</del> (didn’t have time to complete)</p>
+<p>Finally we’ll end up discussing how we can use, or use, these tools.</p>
+</section>
+<section id="deepchecks" class="level1">
+<h1>Deepchecks</h1>
+<div id="fig-deepchecks" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="https://blog.londogard.com/posts/2023-03-20-deepchecks/checks-and-conditions.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">Figure&nbsp;1: <a href="https://github.com/deepchecks/deepchecks">Deepchecks Checks</a>|</figcaption><p></p>
+</figure>
+</div>
+<blockquote class="blockquote">
+<p>Deepchecks is a Python package for <strong>comprehensively validating</strong> your <strong>machine learning models</strong> and <strong>data</strong> with minimal effort. This includes checks related to various types of issues, such as <strong>model performance, data integrity, distribution mismatches</strong>, and more.</p>
+</blockquote>
+<section id="data-formats" class="level2">
+<h2 class="anchored" data-anchor-id="data-formats">Data Formats</h2>
+<p>Deepchecks supports the following formats:</p>
+<ol type="1">
+<li>Tabular</li>
+<li>Computer Vision</li>
+<li>NLP (text)</li>
+</ol>
+</section>
+<section id="example" class="level2">
+<h2 class="anchored" data-anchor-id="example">Example</h2>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://blog.londogard.com/posts/2023-03-20-deepchecks/model_evaluation_suite.gif" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">Video of a Deepcheck Evaluation Suite</figcaption><p></p>
+</figure>
+</div>
+</section>
+<section id="types-of-checks" class="level2">
+<h2 class="anchored" data-anchor-id="types-of-checks">Types of checks</h2>
+<p>The types of checks are divided into 3 variants,</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://blog.londogard.com/posts/2023-03-20-deepchecks/pipeline_when_to_validate.svg" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">Deepchecks Types and where they run</figcaption><p></p>
+</figure>
+</div>
+</section>
+<section id="running-a-deepcheck" class="level2">
+<h2 class="anchored" data-anchor-id="running-a-deepcheck">Running a Deepcheck</h2>
+<p>Either you run a full suite or a single feature. You choose!</p>
+<section id="full-evaluation-suite" class="level3">
+<h3 class="anchored" data-anchor-id="full-evaluation-suite">Full Evaluation Suite</h3>
+<div class="cell" data-slideshow="{&quot;slide_type&quot;:&quot;fragment&quot;}">
+<div class="sourceCode cell-code" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><span class="im" style="color: #00769E;">from</span> deepchecks.tabular.suites <span class="im" style="color: #00769E;">import</span> model_evaluation</span>
+<span id="cb2-2">suite <span class="op" style="color: #5E5E5E;">=</span> model_evaluation()</span>
+<span id="cb2-3">result <span class="op" style="color: #5E5E5E;">=</span> suite.run(train_dataset<span class="op" style="color: #5E5E5E;">=</span>train_dataset, test_dataset<span class="op" style="color: #5E5E5E;">=</span>test_dataset, model<span class="op" style="color: #5E5E5E;">=</span>model)</span>
+<span id="cb2-4">result.save_as_html() <span class="co" style="color: #5E5E5E;"># replace this with result.show() or result.show_in_window() to see results inline or in window</span></span></code></pre></div>
+</div>
+</section>
+<section id="single-validation" class="level3">
+<h3 class="anchored" data-anchor-id="single-validation">Single Validation</h3>
+<div class="cell" data-slideshow="{&quot;slide_type&quot;:&quot;fragment&quot;}">
+<div class="sourceCode cell-code" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><span class="im" style="color: #00769E;">from</span> deepchecks.tabular.checks <span class="im" style="color: #00769E;">import</span> FeatureDrift</span>
+<span id="cb3-2"><span class="im" style="color: #00769E;">import</span> pandas <span class="im" style="color: #00769E;">as</span> pd</span>
+<span id="cb3-3"></span>
+<span id="cb3-4">train_df <span class="op" style="color: #5E5E5E;">=</span> pd.read_csv(<span class="st" style="color: #20794D;">'train_data.csv'</span>)</span>
+<span id="cb3-5">test_df <span class="op" style="color: #5E5E5E;">=</span> pd.read_csv(<span class="st" style="color: #20794D;">'test_data.csv'</span>)</span>
+<span id="cb3-6"><span class="co" style="color: #5E5E5E;"># Initialize and run desired check</span></span>
+<span id="cb3-7">FeatureDrift().run(train_df, test_df)</span></code></pre></div>
+</div>
+</section>
+</section>
+</section>
+<section id="ydata-profiling" class="level1">
+<h1>ydata-profiling</h1>
+<p><code>ydata-profiling</code>, previously <code>pandas-profiling</code> is a tool that allows you to easily profile a dataset quickly and grok the data.</p>
+<section id="key-features" class="level2">
+<h2 class="anchored" data-anchor-id="key-features">Key features</h2>
+<ul>
+<li><p><strong>Type inference</strong>: automatic detection of columns’ data types (<em>Categorical</em>, <em>Numerical</em>, <em>Date</em>, etc.)</p></li>
+<li><p><strong>Warnings</strong>: A summary of the problems/challenges in the data that you might need to work on (<em>missing data</em>, <em>inaccuracies</em>, <em>skewness</em>, etc.)</p></li>
+<li><p><strong>Univariate analysis</strong>: including descriptive statistics (mean, median, mode, etc) and informative visualizations such as distribution histograms</p></li>
+<li><p><strong>Multivariate analysis</strong>: including correlations, a detailed analysis of missing data, duplicate rows, and visual support for variables pairwise interaction</p></li>
+<li><p><strong>Time-Series</strong>: including different statistical information relative to time dependent data such as auto-correlation and seasonality, along ACF and PACF plots.</p></li>
+<li><p><strong>Text analysis</strong>: most common categories (uppercase, lowercase, separator), scripts (Latin, Cyrillic) and blocks (ASCII, Cyrilic)</p></li>
+<li><p><strong>File and Image analysis</strong>: file sizes, creation dates, dimensions, indication of truncated images and existence of EXIF metadata</p></li>
+<li><p><strong>Compare datasets</strong>: one-line solution to enable a fast and complete report on the comparison of datasets</p></li>
+<li><p><strong>Flexible output formats</strong>: all analysis can be exported to an HTML report that can be easily shared with different parties, as JSON for an easy integration in automated systems and as a widget in a Jupyter Notebook.</p></li>
+</ul>
+<p>The report contains three additional sections:</p>
+<ul>
+<li><strong>Overview</strong>: mostly global details about the dataset (number of records, number of variables, overall missigness and duplicates, memory footprint)</li>
+<li><strong>Alerts</strong>: a comprehensive and automatic list of potential data quality issues (high correlation, skewness, uniformity, zeros, missing values, constant values, between others)</li>
+<li><strong>Reproduction</strong>: technical details about the analysis (time, version and configuration)</li>
+</ul>
+</section>
+<section id="how-to-use" class="level2">
+<h2 class="anchored" data-anchor-id="how-to-use">How to use</h2>
+<p><code>ydata-profiling</code> is incredibly simple to use!</p>
+<p>All that needs to be done is</p>
+<div class="sourceCode" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1">profile <span class="op" style="color: #5E5E5E;">=</span> ProfileReport(df, title<span class="op" style="color: #5E5E5E;">=</span><span class="st" style="color: #20794D;">"Profiling Report"</span>)</span></code></pre></div>
+<p>Examples found on <a href="https://github.com/ydataai/ydata-profiling/blob/master/README.md#-examples">github</a>.<br>
+For a specific example see <a href="https://ydata-profiling.ydata.ai/examples/master/titanic/titanic_report.html">titanic</a>.</p>
+</section>
+</section>
+<section id="great-expectations-gx" class="level1">
+<h1>Great Expectations (GX)</h1>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://blog.londogard.com/posts/2023-03-20-deepchecks/gx_oss_process-050a4264f415a1bff3ceea3ac6f9b3a0.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">great expectations</figcaption><p></p>
+</figure>
+</div>
+<blockquote class="blockquote">
+<p>Great Expectations (GX) helps data teams build a shared understanding of their data through quality testing, documentation, and profiling.</p>
+</blockquote>
+<p>GX is a well-known tool with a huge community. This means that there’s multiple plugins in other tools to support this framework.</p>
+<p>It support things like Snowflake, BigQuery, Spark, Pandas, ..!</p>
+<p>It’s easy to use and gives Data Documentation of the tests which can be saved in S3 or other places giving everyone a possibility to view and share these!</p>
+<section id="example-of-gx" class="level2">
+<h2 class="anchored" data-anchor-id="example-of-gx">Example of GX</h2>
+<div class="cell" data-slideshow="{&quot;slide_type&quot;:&quot;fragment&quot;}">
+<div class="sourceCode cell-code" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><span class="co" style="color: #5E5E5E;"># great expectations check example</span></span>
+<span id="cb5-2"><span class="co" style="color: #5E5E5E;"># can also be JSON</span></span>
+<span id="cb5-3">expect_column_values_to_be_between(</span>
+<span id="cb5-4">    column<span class="op" style="color: #5E5E5E;">=</span><span class="st" style="color: #20794D;">"passenger_count"</span>,</span>
+<span id="cb5-5">    min_value<span class="op" style="color: #5E5E5E;">=</span><span class="dv" style="color: #AD0000;">1</span>,</span>
+<span id="cb5-6">    max_value<span class="op" style="color: #5E5E5E;">=</span><span class="dv" style="color: #AD0000;">6</span></span>
+<span id="cb5-7">)</span></code></pre></div>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://blog.londogard.com/posts/2023-03-20-deepchecks/datadocs-8d8bc71d8aec770a38656ce60cc1e073.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">automated data docs</figcaption><p></p>
+</figure>
+</div>
+<p>Even has <em>Data Assistant</em> to build automated checks based on Golden Dataset!</p>
+<p>There’s &gt; 50 built-in expexctations and &gt;300 including community added!</p>
+<blockquote class="blockquote">
+<p>Our stakeholders would notice data issues before we did – which eroded trust in our data</p>
+</blockquote>
+</section>
+</section>
+<section id="pandera" class="level1">
+<h1>pandera</h1>
+<ol type="1">
+<li><strong>Define a schema</strong> once and use it to <strong>validate</strong> different <strong>dataframe types</strong>.</li>
+<li><strong>Check</strong> the <strong>types and properties</strong> of columns/values.</li>
+<li>Perform more <strong>complex statistical validation</strong> like hypothesis testing.</li>
+<li><strong>Seamlessly integrate</strong> with existing data analysis/processing pipelines <strong>via function decorators</strong>.</li>
+<li>Define dataframe models with the class-based API with pydantic-style syntax and validate dataframes using the typing syntax.</li>
+<li><strong>Synthesize data</strong> from schema objects for property-based testing with pandas data structures.</li>
+<li>Lazily Validate dataframes so that all validation rules are executed before raising an error.</li>
+<li>Integrate with a rich ecosystem of python tools like pydantic, fastapi and mypy.</li>
+</ol>
+<section id="pandera-dictionary-schema" class="level2">
+<h2 class="anchored" data-anchor-id="pandera-dictionary-schema">Pandera Dictionary Schema</h2>
+<div class="cell" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
+<div class="sourceCode cell-code" id="cb6" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><span class="im" style="color: #00769E;">import</span> pandas <span class="im" style="color: #00769E;">as</span> pd</span>
+<span id="cb6-2"><span class="im" style="color: #00769E;">import</span> pandera <span class="im" style="color: #00769E;">as</span> pa</span>
+<span id="cb6-3"></span>
+<span id="cb6-4"><span class="co" style="color: #5E5E5E;"># data to validate</span></span>
+<span id="cb6-5">df <span class="op" style="color: #5E5E5E;">=</span> pd.DataFrame({</span>
+<span id="cb6-6">    <span class="st" style="color: #20794D;">"column1"</span>: [<span class="dv" style="color: #AD0000;">1</span>, <span class="dv" style="color: #AD0000;">4</span>, <span class="dv" style="color: #AD0000;">0</span>, <span class="dv" style="color: #AD0000;">10</span>, <span class="dv" style="color: #AD0000;">9</span>],</span>
+<span id="cb6-7">    <span class="st" style="color: #20794D;">"column3"</span>: [<span class="st" style="color: #20794D;">"value_1"</span>, <span class="st" style="color: #20794D;">"value_2"</span>, <span class="st" style="color: #20794D;">"value_3"</span>, <span class="st" style="color: #20794D;">"value_2"</span>, <span class="st" style="color: #20794D;">"value_1"</span>],</span>
+<span id="cb6-8">})</span>
+<span id="cb6-9"></span>
+<span id="cb6-10"><span class="co" style="color: #5E5E5E;"># define schema</span></span>
+<span id="cb6-11">schema <span class="op" style="color: #5E5E5E;">=</span> pa.DataFrameSchema({</span>
+<span id="cb6-12">    <span class="st" style="color: #20794D;">"column1"</span>: pa.Column(<span class="bu" style="color: null;">int</span>, checks<span class="op" style="color: #5E5E5E;">=</span>pa.Check.le(<span class="dv" style="color: #AD0000;">10</span>)),</span>
+<span id="cb6-13">    <span class="st" style="color: #20794D;">"column3"</span>: pa.Column(<span class="bu" style="color: null;">str</span>, checks<span class="op" style="color: #5E5E5E;">=</span>[</span>
+<span id="cb6-14">        pa.Check.str_startswith(<span class="st" style="color: #20794D;">"value_"</span>),</span>
+<span id="cb6-15">        pa.Check(<span class="kw" style="color: #003B4F;">lambda</span> s: s.<span class="bu" style="color: null;">str</span>.split(<span class="st" style="color: #20794D;">"_"</span>, expand<span class="op" style="color: #5E5E5E;">=</span><span class="va" style="color: #111111;">True</span>).shape[<span class="dv" style="color: #AD0000;">1</span>] <span class="op" style="color: #5E5E5E;">==</span> <span class="dv" style="color: #AD0000;">2</span>)</span>
+<span id="cb6-16">    ]),</span>
+<span id="cb6-17">})</span>
+<span id="cb6-18"></span>
+<span id="cb6-19">validated_df <span class="op" style="color: #5E5E5E;">=</span> schema(df)</span>
+<span id="cb6-20"><span class="bu" style="color: null;">print</span>(validated_df)</span></code></pre></div>
+</div>
+</section>
+<section id="pandera-pydantic-class-schema" class="level2">
+<h2 class="anchored" data-anchor-id="pandera-pydantic-class-schema">Pandera (Pydantic) Class Schema</h2>
+<div class="cell" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
+<div class="sourceCode cell-code" id="cb7" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><span class="im" style="color: #00769E;">from</span> pandera.typing <span class="im" style="color: #00769E;">import</span> Series</span>
+<span id="cb7-2"></span>
+<span id="cb7-3"><span class="kw" style="color: #003B4F;">class</span> Schema(pa.DataFrameModel):</span>
+<span id="cb7-4">    column1: Series[<span class="bu" style="color: null;">int</span>] <span class="op" style="color: #5E5E5E;">=</span> pa.Field(le<span class="op" style="color: #5E5E5E;">=</span><span class="dv" style="color: #AD0000;">10</span>)</span>
+<span id="cb7-5">    column2: Series[<span class="bu" style="color: null;">float</span>] <span class="op" style="color: #5E5E5E;">=</span> pa.Field(lt<span class="op" style="color: #5E5E5E;">=-</span><span class="fl" style="color: #AD0000;">1.2</span>)</span>
+<span id="cb7-6">    column3: Series[<span class="bu" style="color: null;">str</span>] <span class="op" style="color: #5E5E5E;">=</span> pa.Field(str_startswith<span class="op" style="color: #5E5E5E;">=</span><span class="st" style="color: #20794D;">"value_"</span>)</span>
+<span id="cb7-7"></span>
+<span id="cb7-8">    <span class="at" style="color: #657422;">@pa.check</span>(<span class="st" style="color: #20794D;">"column3"</span>)</span>
+<span id="cb7-9">    <span class="kw" style="color: #003B4F;">def</span> column_3_check(cls, series: Series[<span class="bu" style="color: null;">str</span>]) <span class="op" style="color: #5E5E5E;">-&gt;</span> Series[<span class="bu" style="color: null;">bool</span>]:</span>
+<span id="cb7-10">        <span class="co" style="color: #5E5E5E;">"""Check that column3 values have two elements after being split with '_'"""</span></span>
+<span id="cb7-11">        <span class="cf" style="color: #003B4F;">return</span> series.<span class="bu" style="color: null;">str</span>.split(<span class="st" style="color: #20794D;">"_"</span>, expand<span class="op" style="color: #5E5E5E;">=</span><span class="va" style="color: #111111;">True</span>).shape[<span class="dv" style="color: #AD0000;">1</span>] <span class="op" style="color: #5E5E5E;">==</span> <span class="dv" style="color: #AD0000;">2</span></span>
+<span id="cb7-12"></span>
+<span id="cb7-13">Schema.validate(df)</span></code></pre></div>
+</div>
+</section>
+</section>
+<section id="final-comparison-table" class="level1">
+<h1>Final Comparison Table</h1>
+<p>Comparing the tools this is how they can be used, and if I really like using them :wink:</p>
+<table class="table">
+<colgroup>
+<col style="width: 12%">
+<col style="width: 12%">
+<col style="width: 12%">
+<col style="width: 12%">
+<col style="width: 12%">
+<col style="width: 12%">
+<col style="width: 12%">
+<col style="width: 12%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Tool</th>
+<th>Data Stores (Pandas, Spark, DB, Other)</th>
+<th>Steps (Analysis, Training, Production, Non-ML)</th>
+<th>Drift</th>
+<th>Hypothesis</th>
+<th>Data Generation</th>
+<th>Data Types</th>
+<th>Personal Favorite(s)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>deepchecks</td>
+<td>✅😐❌✅</td>
+<td>✅✅✅✅</td>
+<td>✅</td>
+<td>❌</td>
+<td>❌</td>
+<td>❌</td>
+<td>✅</td>
+</tr>
+<tr class="even">
+<td>ydata-profiling</td>
+<td>✅✅✅❌</td>
+<td>✅❌❌✅</td>
+<td>✅</td>
+<td>❌</td>
+<td>❌</td>
+<td>✅</td>
+<td>✅</td>
+</tr>
+<tr class="odd">
+<td>greatexpectations</td>
+<td>✅✅✅✅</td>
+<td>❌❌✅✅</td>
+<td>❌</td>
+<td>❌</td>
+<td>❌</td>
+<td>✅</td>
+<td>😐</td>
+</tr>
+<tr class="even">
+<td>pandera</td>
+<td>✅✅⏳✅</td>
+<td>❌✅✅✅</td>
+<td>❌</td>
+<td>✅</td>
+<td>✅</td>
+<td>✅</td>
+<td>✅</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="bonus-additional-great-frameworks" class="level1">
+<h1>Bonus: Additional Great Frameworks</h1>
+<ul>
+<li><a href="https://fairlearn.org/"><strong>Fairlearn</strong></a> <em>Fairlearn is an open-source, community-driven project to help data scientists improve fairness of AI systems.</em></li>
+<li><a href="http://torchdrift.org/"><strong>Torchdrift</strong></a></li>
+<li><a href="https://github.com/SeldonIO/alibi-detect"><strong>alibi-detect</strong></a></li>
+<li><a href="https://www.evidentlyai.com/"><strong>Evidently</strong></a> (superb)</li>
+</ul>
+</section>
+<section id="bonus-2-pygwalker" class="level1">
+<h1>Bonus 2: PyGWalker</h1>
+<p>I found a new tool lately called PyGWalker which was really cool! It cannot handle really large data, but it’s excellent for smaller datasets :)</p>
+<blockquote class="blockquote">
+<p>Turn your pandas dataframe into a Tableau-style User Interface for visual analysis</p>
+</blockquote>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://blog.londogard.com/posts/2023-03-20-deepchecks/pygwalker.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">PyGWalker</figcaption><p></p>
+</figure>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://blog.londogard.com/posts/2023-03-20-deepchecks/pygwalker.gif" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">PyGWalker GIF</figcaption><p></p>
+</figure>
+</div>
+
+
+</section>
+
+ ]]></description>
+  <category>machine-learning</category>
+  <category>data</category>
+  <guid>https://blog.londogard.com/posts/2023-03-20-deepchecks/index.html</guid>
+  <pubDate>Mon, 20 Mar 2023 00:00:00 GMT</pubDate>
+  <media:content url="https://github.com/deepchecks/deepchecks" medium="image"/>
+</item>
 <item>
   <title>Best Practices Are Contextual</title>
   <dc:creator>Hampus Londögård</dc:creator>
@@ -7664,91 +8009,6 @@ Do note that the depth should probably be increased as should the amount of data
   <guid>https://blog.londogard.com/posts/2021-02-18-transformers-explained/transformers-explained.html</guid>
   <pubDate>Thu, 18 Feb 2021 00:00:00 GMT</pubDate>
   <media:content url="https://colab.research.google.com/assets/colab-badge.svg" medium="image" type="image/svg+xml"/>
-</item>
-<item>
-  <title>TIL: GitPod - your editor in the cloud</title>
-  <dc:creator>Hampus Londögård</dc:creator>
-  <link>https://blog.londogard.com/posts/2021-01-21-til-gitpod-kotlin-jvm.html</link>
-  <description><![CDATA[ 
-
-
-
-
-<section id="til-gitpod---your-editor-in-the-cloud" class="level1">
-<h1>TIL: GitPod - your editor in the cloud</h1>
-<p><a href="https://gitpod.io/">GitPod.io</a> is a editor in the cloud based on <a href="https://theia-ide.org/">Theia</a> which is a IDE built for the cloud &amp; desktop. It implements the same language servers and allow you to use the same extensions as in VS Code - which is great. <!--truncate--></p>
-<p><img src="https://blog.londogard.com/posts/https:/user-images.githubusercontent.com/7490199/105518849-0bc43a00-5cd9-11eb-9842-813d8f1b5735.png" alt="gitpod" width="50%" height="50%"></p>
-<p>For more about GitPod and how to combine it with languages such as Kotlin, Java &amp; more, read 👇.</p>
-<section id="what" class="level3">
-<h3 class="anchored" data-anchor-id="what">What</h3>
-<p><a href="https://gitpod.io/">GitPod.io</a> from the start worked for the normal “low-barrier” languages such as JavaScript &amp; Python and still works great, and it really is where it excels. Lately though they’ve stepped up and added more &amp; more targets with further customization.</p>
-<p>You can now: - Customize your docker build by installing new packages (through <code>brew</code> or <code>apt install</code>). - Customize your extensions (majority, if not all, from VS Code available) - Add VNC (see native desktop programs) - Prebuilt containers (save a lot of time to not rebuild everything each time) - … &amp; more</p>
-<p>With a free account you get 50h / month of time to use this (as of 2021-01-22), which is very kind of GitPod!</p>
-</section>
-<section id="how" class="level3">
-<h3 class="anchored" data-anchor-id="how">How</h3>
-<p>First of all you need either a GitHub, GitLab or Bitbucket account. Once that is done you need to find a repository that you want to work on, it can be both a private or public repository.</p>
-<p>Once you’ve got your account &amp; repository set up then head to gitpod.io/#{Repository: e.g.&nbsp;https://github.com/londogard/snake-js-jvm-native} and it will open up. This will ask you to create a PR with some new config adding a new file called <code>.gitpod.yml</code> and further you can add <code>.gitpod.Dockerfile</code> which configures your Docker setup.</p>
-<p><strong>Setting up <code>.gitpod.yml</code>:</strong></p>
-<div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode yml code-with-copy"><code class="sourceCode yaml"><span id="cb1-1"><span class="fu" style="color: #4758AB;">image</span><span class="kw" style="color: #003B4F;">:</span></span>
-<span id="cb1-2"><span class="at" style="color: #657422;">  </span><span class="fu" style="color: #4758AB;">file</span><span class="kw" style="color: #003B4F;">:</span><span class="at" style="color: #657422;"> .gitpod.Dockerfile</span><span class="co" style="color: #5E5E5E;"> # OBS: only use this if you have a custom image</span></span>
-<span id="cb1-3"></span>
-<span id="cb1-4"><span class="co" style="color: #5E5E5E;"># List the ports you want to expose and what to do when they are served. See https://www.gitpod.io/docs/config-ports/</span></span>
-<span id="cb1-5"><span class="fu" style="color: #4758AB;">ports</span><span class="kw" style="color: #003B4F;">:</span></span>
-<span id="cb1-6"><span class="at" style="color: #657422;">  </span><span class="kw" style="color: #003B4F;">-</span><span class="at" style="color: #657422;"> </span><span class="fu" style="color: #4758AB;">port</span><span class="kw" style="color: #003B4F;">:</span><span class="at" style="color: #657422;"> </span><span class="dv" style="color: #AD0000;">3000</span></span>
-<span id="cb1-7"><span class="at" style="color: #657422;">    </span><span class="fu" style="color: #4758AB;">onOpen</span><span class="kw" style="color: #003B4F;">:</span><span class="at" style="color: #657422;"> open-preview</span></span>
-<span id="cb1-8"></span>
-<span id="cb1-9"><span class="co" style="color: #5E5E5E;"># List the start up tasks. You can start them in parallel in multiple terminals. See https://www.gitpod.io/docs/config-start-tasks/</span></span>
-<span id="cb1-10"><span class="fu" style="color: #4758AB;">tasks</span><span class="kw" style="color: #003B4F;">:</span></span>
-<span id="cb1-11"><span class="at" style="color: #657422;">  </span><span class="kw" style="color: #003B4F;">-</span><span class="at" style="color: #657422;"> </span><span class="fu" style="color: #4758AB;">init</span><span class="kw" style="color: #003B4F;">:</span><span class="at" style="color: #657422;"> ./gradlew clean build</span></span>
-<span id="cb1-12"></span>
-<span id="cb1-13"><span class="fu" style="color: #4758AB;">vscode</span><span class="kw" style="color: #003B4F;">:</span></span>
-<span id="cb1-14"><span class="at" style="color: #657422;">  </span><span class="fu" style="color: #4758AB;">extensions</span><span class="kw" style="color: #003B4F;">:</span></span>
-<span id="cb1-15"><span class="at" style="color: #657422;">    </span><span class="kw" style="color: #003B4F;">-</span><span class="at" style="color: #657422;"> random.extension</span><span class="co" style="color: #5E5E5E;"> # (automatically added by adding extensions through interface). </span></span></code></pre></div>
-<p><strong>Setting up <code>.gitpod.Docker</code>:</strong></p>
-<pre><code>FROM gitpod/workspace-full-vnc  # For NoVNC to work
-
-USER gitpod
-
-RUN sudo apt-get -q update &amp;&amp; \
-    sudo apt-get install -y libgtk-3-dev &amp;&amp; \ # For NoVNC to work
-    sudo apt-get install -yq gcc-multilib &amp;&amp; \
-    sudo apt install -y libtinfo5 &amp;&amp; \ # For Kotlin Native to work
-    sudo rm -rf /var/lib/apt/lists/*</code></pre>
-<p>With this setup you can push the changes to your repo and re-open the GitPod to reload a brand new Docker image with the updated packages.</p>
-<p>This configuration allows you to do all I’ve mentioned such as running Native Kotlin, run with VNC to view native application windows and more!<br>
-By default you’re able to view a in-place/preview browser window so doing web development is working from the get-go and as such also Kotlin/JS worked pretty well without any configuration.</p>
-<p>If you’re wondering, the NoVNC is on port 6080.</p>
-</section>
-<section id="why" class="level3">
-<h3 class="anchored" data-anchor-id="why">Why</h3>
-<p>For me there’s actually not just one reason to why I’d like to do this.</p>
-<ol type="1">
-<li>Be able to do some quick coding / reviewing on my tablet.</li>
-<li>Workshops at AFRY (no installation required for users)</li>
-</ol>
-<p>Just in a few days (2021-01-26) I’ll do a workshop at AFRY with Kotlin Multiplatform where GitPod.io will be a great alternative for colleagues who have computers where they’re not allowed to install their own applications.</p>
-</section>
-<section id="alternatives" class="level3">
-<h3 class="anchored" data-anchor-id="alternatives">Alternatives</h3>
-<ul>
-<li><a href="https://github.com/features/codespaces">GitHub Codespaces</a> is coming, but is still in a private BETA.</li>
-<li>VS Code Remote (<strong>obs</strong> this actually require your own computer somewhere to host the vs code server)</li>
-</ul>
-<p>I think for now GitPod.io is the simplest and best out of them, unless you have your own computer to use as a server for VS Code Remote!</p>
-<p>Thanks<br>
-Hampus</p>
-
-
-</section>
-</section>
-
- ]]></description>
-  <category>jvm</category>
-  <category>kotlin</category>
-  <category>TIL</category>
-  <guid>https://blog.londogard.com/posts/2021-01-21-til-gitpod-kotlin-jvm.html</guid>
-  <pubDate>Thu, 21 Jan 2021 00:00:00 GMT</pubDate>
 </item>
 </channel>
 </rss>

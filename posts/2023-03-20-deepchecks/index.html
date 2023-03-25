@@ -1,0 +1,817 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.2.475">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Hampus Londögård">
+<meta name="dcterms.date" content="2023-03-20">
+<meta name="description" content="A presentation I did at work where we walk through different tools to automate or assist Data Exploration and Validation. A very exciting topic for sure!">
+
+<title>Londogard Blog - Automated Data Validation &amp; Exploration</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../../favicon.ico" rel="icon">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="../../styles.css">
+<meta name="twitter:title" content="Londogard Blog - Automated Data Validation &amp; Exploration">
+<meta name="twitter:description" content="A presentation I did at work where we walk through different tools to automate or assist Data Exploration and Validation. A very exciting topic for sure!">
+<meta name="twitter:creator" content="@hlondogard">
+<meta name="twitter:card" content="summary">
+</head>
+
+<body class="nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">Londogard Blog</span>
+    </a>
+  </div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="dropdown-header">
+ <span class="menu-text">/</span></li>
+  <li class="nav-item">
+    <a class="nav-link" href="../../pages/presentations.html">
+ <span class="menu-text">Presentations</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="https://londogard.com/projects">
+ <span class="menu-text">Londogard Projects↗</span></a>
+  </li>  
+</ul>
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../pages/about.html">
+ <span class="menu-text">About</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../pages/code_setup/code_setup.html">
+ <span class="menu-text">Dev Setup</span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://www.linkedin.com/in/hampus-londögård/"><i class="bi bi-linkedin" role="img" aria-label="LinkedIn">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://twitter.com/hlondogard"><i class="bi bi-twitter" role="img" aria-label="Twitter">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-bi-github" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+      <i class="bi bi-github" role="img">
+</i> 
+ <span class="menu-text"></span>
+    </a>
+    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="nav-menu-bi-github">    
+        <li>
+    <a class="dropdown-item" href="https://github.com/lundez"><i class="bi bi-github" role="img">
+</i> 
+ <span class="dropdown-text">Lundez</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="https://github.com/londogard"><i class="bi bi-github" role="img">
+</i> 
+ <span class="dropdown-text">Londogard</span></a>
+  </li>  
+    </ul>
+  </li>
+  <li class="nav-item compact">
+    <a class="nav-link" href="../../index.xml"><i class="bi bi-rss" role="img" aria-label="Londogard Blog RSS">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+</ul>
+              <div id="quarto-search" class="" title="Search"></div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<header id="title-block-header" class="quarto-title-block default page-columns page-full">
+  <div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-body">
+      <h1 class="title">Automated Data Validation &amp; Exploration</h1>
+                  <div>
+        <div class="description">
+          A presentation I did at work where we walk through different tools to automate or assist Data Exploration and Validation. A very exciting topic for sure!
+        </div>
+      </div>
+                          <div class="quarto-categories">
+                <div class="quarto-category">machine-learning</div>
+                <div class="quarto-category">data</div>
+              </div>
+                  </div>
+  </div>
+    
+  
+  <div class="quarto-title-meta">
+
+      <div>
+      <div class="quarto-title-meta-heading">Author</div>
+      <div class="quarto-title-meta-contents">
+               <p>Hampus Londögård </p>
+            </div>
+    </div>
+      
+      <div>
+      <div class="quarto-title-meta-heading">Published</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date">March 20, 2023</p>
+      </div>
+    </div>
+    
+      
+    </div>
+    
+  
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#data-validation-exploration" id="toc-data-validation-exploration" class="nav-link active" data-scroll-target="#data-validation-exploration">Data Validation &amp; Exploration</a></li>
+  <li><a href="#data-validation-tools" id="toc-data-validation-tools" class="nav-link" data-scroll-target="#data-validation-tools">Data Validation Tools</a></li>
+  <li><a href="#introduction" id="toc-introduction" class="nav-link" data-scroll-target="#introduction">Introduction</a></li>
+  <li><a href="#deepchecks" id="toc-deepchecks" class="nav-link" data-scroll-target="#deepchecks">Deepchecks</a>
+  <ul class="collapse">
+  <li><a href="#data-formats" id="toc-data-formats" class="nav-link" data-scroll-target="#data-formats">Data Formats</a></li>
+  <li><a href="#example" id="toc-example" class="nav-link" data-scroll-target="#example">Example</a></li>
+  <li><a href="#types-of-checks" id="toc-types-of-checks" class="nav-link" data-scroll-target="#types-of-checks">Types of checks</a></li>
+  <li><a href="#running-a-deepcheck" id="toc-running-a-deepcheck" class="nav-link" data-scroll-target="#running-a-deepcheck">Running a Deepcheck</a>
+  <ul class="collapse">
+  <li><a href="#full-evaluation-suite" id="toc-full-evaluation-suite" class="nav-link" data-scroll-target="#full-evaluation-suite">Full Evaluation Suite</a></li>
+  <li><a href="#single-validation" id="toc-single-validation" class="nav-link" data-scroll-target="#single-validation">Single Validation</a></li>
+  </ul></li>
+  </ul></li>
+  <li><a href="#ydata-profiling" id="toc-ydata-profiling" class="nav-link" data-scroll-target="#ydata-profiling">ydata-profiling</a>
+  <ul class="collapse">
+  <li><a href="#key-features" id="toc-key-features" class="nav-link" data-scroll-target="#key-features">Key features</a></li>
+  <li><a href="#how-to-use" id="toc-how-to-use" class="nav-link" data-scroll-target="#how-to-use">How to use</a></li>
+  </ul></li>
+  <li><a href="#great-expectations-gx" id="toc-great-expectations-gx" class="nav-link" data-scroll-target="#great-expectations-gx">Great Expectations (GX)</a>
+  <ul class="collapse">
+  <li><a href="#example-of-gx" id="toc-example-of-gx" class="nav-link" data-scroll-target="#example-of-gx">Example of GX</a></li>
+  </ul></li>
+  <li><a href="#pandera" id="toc-pandera" class="nav-link" data-scroll-target="#pandera">pandera</a>
+  <ul class="collapse">
+  <li><a href="#pandera-dictionary-schema" id="toc-pandera-dictionary-schema" class="nav-link" data-scroll-target="#pandera-dictionary-schema">Pandera Dictionary Schema</a></li>
+  <li><a href="#pandera-pydantic-class-schema" id="toc-pandera-pydantic-class-schema" class="nav-link" data-scroll-target="#pandera-pydantic-class-schema">Pandera (Pydantic) Class Schema</a></li>
+  </ul></li>
+  <li><a href="#final-comparison-table" id="toc-final-comparison-table" class="nav-link" data-scroll-target="#final-comparison-table">Final Comparison Table</a></li>
+  <li><a href="#bonus-additional-great-frameworks" id="toc-bonus-additional-great-frameworks" class="nav-link" data-scroll-target="#bonus-additional-great-frameworks">Bonus: Additional Great Frameworks</a></li>
+  <li><a href="#bonus-2-pygwalker" id="toc-bonus-2-pygwalker" class="nav-link" data-scroll-target="#bonus-2-pygwalker">Bonus 2: PyGWalker</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content quarto-banner-title-block" id="quarto-document-content">
+
+
+
+
+<p>To run this as slides use the following command in the terminal:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">nbconvert</span> posts/2023-03-20-deepchecks/index.ipynb <span class="at">--to</span> slides <span class="at">--post</span> serve</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><strong>N.B.</strong> this blog is originally a presentation, hence it’s not really written in the best way. Potentially I’ll rewrite into a true blog in the future.</p>
+<section id="data-validation-exploration" class="level1">
+<h1>Data Validation &amp; Exploration</h1>
+<p>Today we’ll dive into automated <em>Data Validation</em> and <em>Data Exploration</em>.</p>
+<p>Every day we work through a multitude of data using heurestics, statistics and many tools. But is there better tools out there? Is there a way to automate some of the process to put greater emphasis on the important things?</p>
+</section>
+<section id="data-validation-tools" class="level1">
+<h1>Data Validation Tools</h1>
+<p>There is a few tools.</p>
+<ol type="1">
+<li><a href="https://github.com/deepchecks/deepchecks">Deepchecks</a> <em>Tests for Continuous Validation of ML Models &amp; Data</em></li>
+<li><a href="https://github.com/ydataai/ydata-profiling">ydata-profiling</a> (previously _pandas-profiling) <em>Create HTML profiling reports from pandas DataFrame objects</em></li>
+<li><a href="https://github.com/great-expectations/great_expectations">greatexpectations</a> <em>Always know what to expect from your data.</em></li>
+<li><a href="https://pandera.readthedocs.io/en/stable/">pandera</a> <em>A Statistical Data Testing Toolkit</em></li>
+</ol>
+<p>We’ll focus on a few discussion points today</p>
+<ul>
+<li>When does it make sense to introduce this type of tool?</li>
+<li>How do you use this type of tool today?</li>
+<li>How can it be improved?</li>
+<li>Can it be used as part of Data Analysis?</li>
+<li>Can it be used in any other part of the process?</li>
+</ul>
+<p>(This was for the presentation/‘journal circle’)</p>
+</section>
+<section id="introduction" class="level1">
+<h1>Introduction</h1>
+<p>As we all know to be true data is incredibly important when developing Machine Learning Applications.</p>
+<blockquote class="blockquote">
+<p>Shit in, shit out</p>
+</blockquote>
+<p>First we’ll make a quick introduction to each tool and their strengths.</p>
+<p><del>Second I’ll share a few use-case examples.</del> (didn’t have time to complete)</p>
+<p>Finally we’ll end up discussing how we can use, or use, these tools.</p>
+</section>
+<section id="deepchecks" class="level1">
+<h1>Deepchecks</h1>
+<div id="fig-deepchecks" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="checks-and-conditions.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">Figure&nbsp;1: <a href="https://github.com/deepchecks/deepchecks">Deepchecks Checks</a>|</figcaption><p></p>
+</figure>
+</div>
+<blockquote class="blockquote">
+<p>Deepchecks is a Python package for <strong>comprehensively validating</strong> your <strong>machine learning models</strong> and <strong>data</strong> with minimal effort. This includes checks related to various types of issues, such as <strong>model performance, data integrity, distribution mismatches</strong>, and more.</p>
+</blockquote>
+<section id="data-formats" class="level2">
+<h2 class="anchored" data-anchor-id="data-formats">Data Formats</h2>
+<p>Deepchecks supports the following formats:</p>
+<ol type="1">
+<li>Tabular</li>
+<li>Computer Vision</li>
+<li>NLP (text)</li>
+</ol>
+</section>
+<section id="example" class="level2">
+<h2 class="anchored" data-anchor-id="example">Example</h2>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="model_evaluation_suite.gif" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">Video of a Deepcheck Evaluation Suite</figcaption><p></p>
+</figure>
+</div>
+</section>
+<section id="types-of-checks" class="level2">
+<h2 class="anchored" data-anchor-id="types-of-checks">Types of checks</h2>
+<p>The types of checks are divided into 3 variants,</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="pipeline_when_to_validate.svg" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">Deepchecks Types and where they run</figcaption><p></p>
+</figure>
+</div>
+</section>
+<section id="running-a-deepcheck" class="level2">
+<h2 class="anchored" data-anchor-id="running-a-deepcheck">Running a Deepcheck</h2>
+<p>Either you run a full suite or a single feature. You choose!</p>
+<section id="full-evaluation-suite" class="level3">
+<h3 class="anchored" data-anchor-id="full-evaluation-suite">Full Evaluation Suite</h3>
+<div class="cell" data-slideshow="{&quot;slide_type&quot;:&quot;fragment&quot;}">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> deepchecks.tabular.suites <span class="im">import</span> model_evaluation</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>suite <span class="op">=</span> model_evaluation()</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>result <span class="op">=</span> suite.run(train_dataset<span class="op">=</span>train_dataset, test_dataset<span class="op">=</span>test_dataset, model<span class="op">=</span>model)</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>result.save_as_html() <span class="co"># replace this with result.show() or result.show_in_window() to see results inline or in window</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="single-validation" class="level3">
+<h3 class="anchored" data-anchor-id="single-validation">Single Validation</h3>
+<div class="cell" data-slideshow="{&quot;slide_type&quot;:&quot;fragment&quot;}">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> deepchecks.tabular.checks <span class="im">import</span> FeatureDrift</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>train_df <span class="op">=</span> pd.read_csv(<span class="st">'train_data.csv'</span>)</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>test_df <span class="op">=</span> pd.read_csv(<span class="st">'test_data.csv'</span>)</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Initialize and run desired check</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>FeatureDrift().run(train_df, test_df)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+</section>
+</section>
+<section id="ydata-profiling" class="level1">
+<h1>ydata-profiling</h1>
+<p><code>ydata-profiling</code>, previously <code>pandas-profiling</code> is a tool that allows you to easily profile a dataset quickly and grok the data.</p>
+<section id="key-features" class="level2">
+<h2 class="anchored" data-anchor-id="key-features">Key features</h2>
+<ul>
+<li><p><strong>Type inference</strong>: automatic detection of columns’ data types (<em>Categorical</em>, <em>Numerical</em>, <em>Date</em>, etc.)</p></li>
+<li><p><strong>Warnings</strong>: A summary of the problems/challenges in the data that you might need to work on (<em>missing data</em>, <em>inaccuracies</em>, <em>skewness</em>, etc.)</p></li>
+<li><p><strong>Univariate analysis</strong>: including descriptive statistics (mean, median, mode, etc) and informative visualizations such as distribution histograms</p></li>
+<li><p><strong>Multivariate analysis</strong>: including correlations, a detailed analysis of missing data, duplicate rows, and visual support for variables pairwise interaction</p></li>
+<li><p><strong>Time-Series</strong>: including different statistical information relative to time dependent data such as auto-correlation and seasonality, along ACF and PACF plots.</p></li>
+<li><p><strong>Text analysis</strong>: most common categories (uppercase, lowercase, separator), scripts (Latin, Cyrillic) and blocks (ASCII, Cyrilic)</p></li>
+<li><p><strong>File and Image analysis</strong>: file sizes, creation dates, dimensions, indication of truncated images and existence of EXIF metadata</p></li>
+<li><p><strong>Compare datasets</strong>: one-line solution to enable a fast and complete report on the comparison of datasets</p></li>
+<li><p><strong>Flexible output formats</strong>: all analysis can be exported to an HTML report that can be easily shared with different parties, as JSON for an easy integration in automated systems and as a widget in a Jupyter Notebook.</p></li>
+</ul>
+<p>The report contains three additional sections:</p>
+<ul>
+<li><strong>Overview</strong>: mostly global details about the dataset (number of records, number of variables, overall missigness and duplicates, memory footprint)</li>
+<li><strong>Alerts</strong>: a comprehensive and automatic list of potential data quality issues (high correlation, skewness, uniformity, zeros, missing values, constant values, between others)</li>
+<li><strong>Reproduction</strong>: technical details about the analysis (time, version and configuration)</li>
+</ul>
+</section>
+<section id="how-to-use" class="level2">
+<h2 class="anchored" data-anchor-id="how-to-use">How to use</h2>
+<p><code>ydata-profiling</code> is incredibly simple to use!</p>
+<p>All that needs to be done is</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>profile <span class="op">=</span> ProfileReport(df, title<span class="op">=</span><span class="st">"Profiling Report"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Examples found on <a href="https://github.com/ydataai/ydata-profiling/blob/master/README.md#-examples">github</a>.<br>
+For a specific example see <a href="https://ydata-profiling.ydata.ai/examples/master/titanic/titanic_report.html">titanic</a>.</p>
+</section>
+</section>
+<section id="great-expectations-gx" class="level1">
+<h1>Great Expectations (GX)</h1>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="gx_oss_process-050a4264f415a1bff3ceea3ac6f9b3a0.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">great expectations</figcaption><p></p>
+</figure>
+</div>
+<blockquote class="blockquote">
+<p>Great Expectations (GX) helps data teams build a shared understanding of their data through quality testing, documentation, and profiling.</p>
+</blockquote>
+<p>GX is a well-known tool with a huge community. This means that there’s multiple plugins in other tools to support this framework.</p>
+<p>It support things like Snowflake, BigQuery, Spark, Pandas, ..!</p>
+<p>It’s easy to use and gives Data Documentation of the tests which can be saved in S3 or other places giving everyone a possibility to view and share these!</p>
+<section id="example-of-gx" class="level2">
+<h2 class="anchored" data-anchor-id="example-of-gx">Example of GX</h2>
+<div class="cell" data-slideshow="{&quot;slide_type&quot;:&quot;fragment&quot;}">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># great expectations check example</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="co"># can also be JSON</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>expect_column_values_to_be_between(</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    column<span class="op">=</span><span class="st">"passenger_count"</span>,</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>    min_value<span class="op">=</span><span class="dv">1</span>,</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>    max_value<span class="op">=</span><span class="dv">6</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="datadocs-8d8bc71d8aec770a38656ce60cc1e073.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">automated data docs</figcaption><p></p>
+</figure>
+</div>
+<p>Even has <em>Data Assistant</em> to build automated checks based on Golden Dataset!</p>
+<p>There’s &gt; 50 built-in expexctations and &gt;300 including community added!</p>
+<blockquote class="blockquote">
+<p>Our stakeholders would notice data issues before we did – which eroded trust in our data</p>
+</blockquote>
+</section>
+</section>
+<section id="pandera" class="level1">
+<h1>pandera</h1>
+<ol type="1">
+<li><strong>Define a schema</strong> once and use it to <strong>validate</strong> different <strong>dataframe types</strong>.</li>
+<li><strong>Check</strong> the <strong>types and properties</strong> of columns/values.</li>
+<li>Perform more <strong>complex statistical validation</strong> like hypothesis testing.</li>
+<li><strong>Seamlessly integrate</strong> with existing data analysis/processing pipelines <strong>via function decorators</strong>.</li>
+<li>Define dataframe models with the class-based API with pydantic-style syntax and validate dataframes using the typing syntax.</li>
+<li><strong>Synthesize data</strong> from schema objects for property-based testing with pandas data structures.</li>
+<li>Lazily Validate dataframes so that all validation rules are executed before raising an error.</li>
+<li>Integrate with a rich ecosystem of python tools like pydantic, fastapi and mypy.</li>
+</ol>
+<section id="pandera-dictionary-schema" class="level2">
+<h2 class="anchored" data-anchor-id="pandera-dictionary-schema">Pandera Dictionary Schema</h2>
+<div class="cell" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandera <span class="im">as</span> pa</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="co"># data to validate</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.DataFrame({</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">"column1"</span>: [<span class="dv">1</span>, <span class="dv">4</span>, <span class="dv">0</span>, <span class="dv">10</span>, <span class="dv">9</span>],</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">"column3"</span>: [<span class="st">"value_1"</span>, <span class="st">"value_2"</span>, <span class="st">"value_3"</span>, <span class="st">"value_2"</span>, <span class="st">"value_1"</span>],</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>})</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a><span class="co"># define schema</span></span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>schema <span class="op">=</span> pa.DataFrameSchema({</span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>    <span class="st">"column1"</span>: pa.Column(<span class="bu">int</span>, checks<span class="op">=</span>pa.Check.le(<span class="dv">10</span>)),</span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>    <span class="st">"column3"</span>: pa.Column(<span class="bu">str</span>, checks<span class="op">=</span>[</span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>        pa.Check.str_startswith(<span class="st">"value_"</span>),</span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>        pa.Check(<span class="kw">lambda</span> s: s.<span class="bu">str</span>.split(<span class="st">"_"</span>, expand<span class="op">=</span><span class="va">True</span>).shape[<span class="dv">1</span>] <span class="op">==</span> <span class="dv">2</span>)</span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>    ]),</span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>})</span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a>validated_df <span class="op">=</span> schema(df)</span>
+<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(validated_df)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="pandera-pydantic-class-schema" class="level2">
+<h2 class="anchored" data-anchor-id="pandera-pydantic-class-schema">Pandera (Pydantic) Class Schema</h2>
+<div class="cell" data-slideshow="{&quot;slide_type&quot;:&quot;subslide&quot;}">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pandera.typing <span class="im">import</span> Series</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Schema(pa.DataFrameModel):</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>    column1: Series[<span class="bu">int</span>] <span class="op">=</span> pa.Field(le<span class="op">=</span><span class="dv">10</span>)</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>    column2: Series[<span class="bu">float</span>] <span class="op">=</span> pa.Field(lt<span class="op">=-</span><span class="fl">1.2</span>)</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>    column3: Series[<span class="bu">str</span>] <span class="op">=</span> pa.Field(str_startswith<span class="op">=</span><span class="st">"value_"</span>)</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">@pa.check</span>(<span class="st">"column3"</span>)</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> column_3_check(cls, series: Series[<span class="bu">str</span>]) <span class="op">-&gt;</span> Series[<span class="bu">bool</span>]:</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>        <span class="co">"""Check that column3 values have two elements after being split with '_'"""</span></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> series.<span class="bu">str</span>.split(<span class="st">"_"</span>, expand<span class="op">=</span><span class="va">True</span>).shape[<span class="dv">1</span>] <span class="op">==</span> <span class="dv">2</span></span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>Schema.validate(df)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+</section>
+<section id="final-comparison-table" class="level1">
+<h1>Final Comparison Table</h1>
+<p>Comparing the tools this is how they can be used, and if I really like using them :wink:</p>
+<table class="table">
+<colgroup>
+<col style="width: 12%">
+<col style="width: 12%">
+<col style="width: 12%">
+<col style="width: 12%">
+<col style="width: 12%">
+<col style="width: 12%">
+<col style="width: 12%">
+<col style="width: 12%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Tool</th>
+<th>Data Stores (Pandas, Spark, DB, Other)</th>
+<th>Steps (Analysis, Training, Production, Non-ML)</th>
+<th>Drift</th>
+<th>Hypothesis</th>
+<th>Data Generation</th>
+<th>Data Types</th>
+<th>Personal Favorite(s)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>deepchecks</td>
+<td>✅😐❌✅</td>
+<td>✅✅✅✅</td>
+<td>✅</td>
+<td>❌</td>
+<td>❌</td>
+<td>❌</td>
+<td>✅</td>
+</tr>
+<tr class="even">
+<td>ydata-profiling</td>
+<td>✅✅✅❌</td>
+<td>✅❌❌✅</td>
+<td>✅</td>
+<td>❌</td>
+<td>❌</td>
+<td>✅</td>
+<td>✅</td>
+</tr>
+<tr class="odd">
+<td>greatexpectations</td>
+<td>✅✅✅✅</td>
+<td>❌❌✅✅</td>
+<td>❌</td>
+<td>❌</td>
+<td>❌</td>
+<td>✅</td>
+<td>😐</td>
+</tr>
+<tr class="even">
+<td>pandera</td>
+<td>✅✅⏳✅</td>
+<td>❌✅✅✅</td>
+<td>❌</td>
+<td>✅</td>
+<td>✅</td>
+<td>✅</td>
+<td>✅</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="bonus-additional-great-frameworks" class="level1">
+<h1>Bonus: Additional Great Frameworks</h1>
+<ul>
+<li><a href="https://fairlearn.org/"><strong>Fairlearn</strong></a> <em>Fairlearn is an open-source, community-driven project to help data scientists improve fairness of AI systems.</em></li>
+<li><a href="http://torchdrift.org/"><strong>Torchdrift</strong></a></li>
+<li><a href="https://github.com/SeldonIO/alibi-detect"><strong>alibi-detect</strong></a></li>
+<li><a href="https://www.evidentlyai.com/"><strong>Evidently</strong></a> (superb)</li>
+</ul>
+</section>
+<section id="bonus-2-pygwalker" class="level1">
+<h1>Bonus 2: PyGWalker</h1>
+<p>I found a new tool lately called PyGWalker which was really cool! It cannot handle really large data, but it’s excellent for smaller datasets :)</p>
+<blockquote class="blockquote">
+<p>Turn your pandas dataframe into a Tableau-style User Interface for visual analysis</p>
+</blockquote>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="pygwalker.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">PyGWalker</figcaption><p></p>
+</figure>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="pygwalker.gif" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">PyGWalker GIF</figcaption><p></p>
+</figure>
+</div>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<script src="https://giscus.app/client.js" data-repo="londogard/londogard" data-repo-id="MDEwOlJlcG9zaXRvcnkyOTcyNzE0MzE=" data-category="General" data-category-id="MDE4OkRpc2N1c3Npb25DYXRlZ29yeTMwODYxNzM4" data-mapping="title" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="top" data-theme="light" data-lang="en" crossorigin="anonymous" async="">
+</script>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+      <ul class="footer-items list-unstyled">
+    <li class="nav-item">
+    <a class="nav-link" href="https://www.buymeacoffee.com/hlondogard"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-blue.png" class="img-fluid" width="100"></a>
+  </li>  
+    <li class="nav-item">
+    <a class="nav-link" href="https://github.com/sponsors/Lundez?o=esb"><img src="https://img.shields.io/static/v1?label=Sponsor&amp;message=%E2%9D%A4&amp;logo=GitHub&amp;color=%23fe8e86.png" class="img-fluid" width="100"></a>
+  </li>  
+</ul>
+    </div>   
+      <div class="nav-footer-center">
+        <ul class="footer-items list-unstyled">
+    <li class="nav-item">
+    <a class="nav-link" href="../../pages/about.html">About</a>
+  </li>  
+</ul>
+      </div>
+    <div class="nav-footer-right">
+      <ul class="footer-items list-unstyled">
+    <li class="nav-item compact">
+    <a class="nav-link" href="https://www.linkedin.com/in/hampus-londögård/">
+      <i class="bi bi-linkedin" role="img" aria-label="LinkedIn">
+</i> 
+    </a>
+  </li>  
+    <li class="nav-item compact">
+    <a class="nav-link" href="https://twitter.com/hlondogard">
+      <i class="bi bi-twitter" role="img" aria-label="Twitter">
+</i> 
+    </a>
+  </li>  
+    <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/lundez">
+      <i class="bi bi-github" role="img" aria-label="Lundez GitHub">
+</i> 
+    </a>
+  </li>  
+    <li class="nav-item compact">
+    <a class="nav-link" href="../../index.xml">
+      <i class="bi bi-rss" role="img" aria-label="Londogard Blog RSS">
+</i> 
+    </a>
+  </li>  
+</ul>
+    </div>
+  </div>
+</footer>
+
+
+
+</body></html>
