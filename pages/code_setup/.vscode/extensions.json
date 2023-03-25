@@ -1,0 +1,11 @@
+{
+    "recommendations": [
+        "charliermarsh.ruff",
+        "quarto.quarto",
+        "ms-python.python",
+        "codeium.codeium",
+        "ms-azuretools.vscode-docker",
+        "ms-vscode.remote-repositories",
+        "ms-vscode-remote.vscode-remote-extensionpack"
+    ]
+}

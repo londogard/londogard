@@ -39,6 +39,7 @@ website:
         href: https://londogard.com/projects
       right:
       - pages/about.qmd
+      - pages/code_setup/code_setup.qmd
       - icon: linkedin
         href: https://www.linkedin.com/in/hampus-londögård/
         aria-label: LinkedIn
