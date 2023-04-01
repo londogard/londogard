@@ -34,8 +34,6 @@ website:
         aria-label: Londogard Blog RSS  
   navbar:
       left: 
-      - /
-
       - pages/presentations.qmd
       - text: "Londogard Projects↗"
         href: https://londogard.com/projects
