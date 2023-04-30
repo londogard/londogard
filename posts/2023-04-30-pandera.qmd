@@ -1,0 +1,21 @@
+---
+title: "Pandera - Type your Data Pipelines"
+description: "Pandera allows"
+categories: [data, pipeline, type]
+date: "2023-02-19"
+---
+
+Pandera - a way to type your data pipelines in Python!  
+Personally I feel like the documentation is really good, feel free to check [it out](https://pandera.readthedocs.io/en/stable/).
+
+Through decorators it smoothly integrates into your other Python-code. The validation is done run-time, the only possible way in Python, unlike other typed languages, e.g. Scala.
+
+**What makes me exited** about `pandera`?  
+
+1. Robust & Clean Pipelines.
+2. Reproducible and Testable.
+3. Integrates with other great ecosystems like `pydantic`, `fastapi` & `mypy`.
+
+What makes me **not exited** about `pandera`?
+
+1. 
