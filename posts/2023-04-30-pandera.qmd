@@ -1,0 +1,35 @@
+---
+title: "Pandera - Type your Data Pipelines"
+description: "Pandera allows you to decorate functions which will make your DataFrame's run-time typed. This means that developers & data engineers can expect something to be true, awesome!"
+categories: [data, pipeline, type]
+date: "2023-04-30"
+---
+
+Pandera - a way to type your data pipelines in Python!  
+Personally I feel like the documentation is really good, feel free to check [it out](https://pandera.readthedocs.io/en/stable/).
+
+Through decorators it smoothly integrates into your other Python-code. The validation is done run-time, the only possible way in Python, unlike other typed languages, e.g. Scala.
+
+**What makes me exited** about `pandera`?  
+
+1. Robust & Clean Pipelines.
+2. Reproducible and Testable.
+3. Integrates with other great ecosystems like `pydantic`, `fastapi` & `mypy`.
+
+What makes me **not exited** about `pandera`?
+
+1. **No `polars` support yet**
+2. It validates through **run-time crashes** (because of Python)
+    - It helps that `pandera` has `lazy evaluation`, but still it's runtime!
+
+## How I'm using `pandera` in production setting
+
+Because life is how life is a lot of our pipelines, especially ML pipelines, are written fully in Python. I'm really happy to have tools like `polars` which makes it a tad bit speedier, but in all honesty I'd deeply prefer to use a fully typed language like Kotlin or Scala. 
+
+To build maintainable pipelines we need to know what to expect and what to do in the unexpected, in Python we glue these pieces together unlike strongly typed languages where it's built 
+into the core itself.
+
+But because life is how life is we use Python and `pandera` shines brightly in making the non-typed world a little bit better.
+
+In our ML pipelines we decorate inputs to make sure we have the right data as expected before training our models. `pandera` fits really nicely into an organisation that has a structured 
+orchestration tool like `dagster` or similar.
