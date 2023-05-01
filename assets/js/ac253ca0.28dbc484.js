@@ -1,1 +1,0 @@
-"use strict";(self.webpackChunklondogard=self.webpackChunklondogard||[]).push([[3066],{3615:function(a){a.exports=JSON.parse('{"allTagsPath":"/blog/tags","slug":"/blog/tags/jvm","name":"jvm","count":9,"permalink":"/blog/tags/jvm"}')}}]);

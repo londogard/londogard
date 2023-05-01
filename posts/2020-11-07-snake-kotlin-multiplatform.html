@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.2.475">
+<meta name="generator" content="quarto-1.3.340">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -20,9 +20,10 @@ div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
 ul.task-list{list-style: none;}
 ul.task-list li input[type="checkbox"] {
   width: 0.8em;
-  margin: 0 0.8em 0.2em -1.6em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
 pre > code.sourceCode { white-space: pre; position: relative; }
 pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
@@ -49,43 +50,13 @@ pre.numberSource code > span > a:first-child::before
     -khtml-user-select: none; -moz-user-select: none;
     -ms-user-select: none; user-select: none;
     padding: 0 4px; width: 4em;
-    color: #aaaaaa;
   }
-pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
 div.sourceCode
   {   }
 @media screen {
 pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
-code span.al { color: #ff0000; font-weight: bold; } /* Alert */
-code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
-code span.at { color: #7d9029; } /* Attribute */
-code span.bn { color: #40a070; } /* BaseN */
-code span.bu { color: #008000; } /* BuiltIn */
-code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
-code span.ch { color: #4070a0; } /* Char */
-code span.cn { color: #880000; } /* Constant */
-code span.co { color: #60a0b0; font-style: italic; } /* Comment */
-code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
-code span.do { color: #ba2121; font-style: italic; } /* Documentation */
-code span.dt { color: #902000; } /* DataType */
-code span.dv { color: #40a070; } /* DecVal */
-code span.er { color: #ff0000; font-weight: bold; } /* Error */
-code span.ex { } /* Extension */
-code span.fl { color: #40a070; } /* Float */
-code span.fu { color: #06287e; } /* Function */
-code span.im { color: #008000; font-weight: bold; } /* Import */
-code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
-code span.kw { color: #007020; font-weight: bold; } /* Keyword */
-code span.op { color: #666666; } /* Operator */
-code span.ot { color: #007020; } /* Other */
-code span.pp { color: #bc7a00; } /* Preprocessor */
-code span.sc { color: #4070a0; } /* SpecialChar */
-code span.ss { color: #bb6688; } /* SpecialString */
-code span.st { color: #4070a0; } /* String */
-code span.va { color: #19177c; } /* Variable */
-code span.vs { color: #4070a0; } /* VerbatimString */
-code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
 </style>
 
 
@@ -130,8 +101,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <link rel="stylesheet" href="../styles.css">
 <meta name="twitter:title" content="Londogard Blog - How to build and play Snake via Native Binary, JVM and JS/Browser (Kotlin)">
 <meta name="twitter:description" content="A three part blog (all included in this one) that goes through 1) How Kotlin Multiplatform works, 2) How to build a game (Snake) and finally 3) how to make it multiplatform.">
+<meta name="twitter:image" content="https://user-images.githubusercontent.com/7490199/218269627-e1ed024c-05f5-4755-a8d5-944f46bcbea8.png">
 <meta name="twitter:creator" content="@hlondogard">
-<meta name="twitter:card" content="summary">
+<meta name="twitter:card" content="summary_large_image">
 </head>
 
 <body class="nav-fixed">
@@ -145,65 +117,67 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
     <span class="navbar-title">Londogard Blog</span>
     </a>
   </div>
+            <div id="quarto-search" class="" title="Search"></div>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
   <span class="navbar-toggler-icon"></span>
 </button>
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item">
-    <a class="nav-link" href="../pages/presentations.html">
+    <a class="nav-link" href="../pages/presentations.html" rel="" target="">
  <span class="menu-text">Presentations</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="https://londogard.com/projects">
+    <a class="nav-link" href="https://londogard.com/projects" rel="" target="">
  <span class="menu-text">Londogard Projects↗</span></a>
   </li>  
 </ul>
             <ul class="navbar-nav navbar-nav-scroll ms-auto">
   <li class="nav-item">
-    <a class="nav-link" href="../pages/about.html">
+    <a class="nav-link" href="../pages/about.html" rel="" target="">
  <span class="menu-text">About</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../pages/code_setup/code_setup.html">
+    <a class="nav-link" href="../pages/code_setup/code_setup.html" rel="" target="">
  <span class="menu-text">Dev Setup</span></a>
   </li>  
   <li class="nav-item compact">
-    <a class="nav-link" href="https://www.linkedin.com/in/hampus-londögård/"><i class="bi bi-linkedin" role="img" aria-label="LinkedIn">
+    <a class="nav-link" href="https://www.linkedin.com/in/hampus-londögård/" rel="" target=""><i class="bi bi-linkedin" role="img" aria-label="LinkedIn">
 </i> 
  <span class="menu-text"></span></a>
   </li>  
   <li class="nav-item compact">
-    <a class="nav-link" href="https://twitter.com/hlondogard"><i class="bi bi-twitter" role="img" aria-label="Twitter">
+    <a class="nav-link" href="https://twitter.com/hlondogard" rel="" target=""><i class="bi bi-twitter" role="img" aria-label="Twitter">
 </i> 
  <span class="menu-text"></span></a>
   </li>  
   <li class="nav-item dropdown ">
-    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-bi-github" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-bi-github" role="button" data-bs-toggle="dropdown" aria-expanded="false" rel="" target="">
       <i class="bi bi-github" role="img">
 </i> 
  <span class="menu-text"></span>
     </a>
     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="nav-menu-bi-github">    
         <li>
-    <a class="dropdown-item" href="https://github.com/lundez"><i class="bi bi-github" role="img">
+    <a class="dropdown-item" href="https://github.com/lundez" rel="" target=""><i class="bi bi-github" role="img">
 </i> 
  <span class="dropdown-text">Lundez</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="https://github.com/londogard"><i class="bi bi-github" role="img">
+    <a class="dropdown-item" href="https://github.com/londogard" rel="" target=""><i class="bi bi-github" role="img">
 </i> 
  <span class="dropdown-text">Londogard</span></a>
   </li>  
     </ul>
   </li>
   <li class="nav-item compact">
-    <a class="nav-link" href="../index.xml"><i class="bi bi-rss" role="img" aria-label="Londogard Blog RSS">
+    <a class="nav-link" href="../index.xml" rel="" target=""><i class="bi bi-rss" role="img" aria-label="Londogard Blog RSS">
 </i> 
  <span class="menu-text"></span></a>
   </li>  
 </ul>
-              <div id="quarto-search" class="" title="Search"></div>
+            <div class="quarto-navbar-tools">
+</div>
           </div> <!-- /navcollapse -->
       </div> <!-- /container-fluid -->
     </nav>
@@ -313,7 +287,7 @@ It’s also required that your Kotlin version is above 1.4 (some huge Multiplatf
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="https://user-images.githubusercontent.com/7490199/218269627-e1ed024c-05f5-4755-a8d5-944f46bcbea8.png" class="img-fluid figure-img"></p>
-<p></p><figcaption class="figure-caption">Image from <a href="https://kotlinlang.org/">kotlinlang.org</a></figcaption><p></p>
+<figcaption class="figure-caption">Image from <a href="https://kotlinlang.org/">kotlinlang.org</a></figcaption>
 </figure>
 </div>
 <p>By my own account it’s a language that has learned from many mistakes done in the past and tries to extend and embrace the good ones!</p>
@@ -359,7 +333,7 @@ The Kotlin Compiler first compiles Kotlin code into a <em>Intermediate Represent
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="https://user-images.githubusercontent.com/7490199/97027300-d2095900-155a-11eb-9d18-6fb58a0a9699.png" class="img-fluid figure-img"></p>
-<p></p><figcaption class="figure-caption">Compiler Chain</figcaption><p></p>
+<figcaption class="figure-caption">Compiler Chain</figcaption>
 </figure>
 </div>
 <p>The first part is called the <strong>Compiler Frontend</strong></p>
@@ -368,7 +342,7 @@ The Kotlin Compiler first compiles Kotlin code into a <em>Intermediate Represent
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="https://user-images.githubusercontent.com/7490199/97027463-1137aa00-155b-11eb-9c31-a60e3e25af87.png" class="img-fluid figure-img"></p>
-<p></p><figcaption class="figure-caption">Compiler Frontend</figcaption><p></p>
+<figcaption class="figure-caption">Compiler Frontend</figcaption>
 </figure>
 </div>
 <p>The <em>Compiler Frontend</em> turns the Kotlin code into a <em>Intermediate Representation</em> of the code which is represented by a <a href="https://en.wikipedia.org/wiki/Abstract_syntax_tree">abstract syntax tree</a>. The <em>abstract syntax tree</em> in turn is built from concrete syntax, e.g.&nbsp;strings.<br>
@@ -381,7 +355,7 @@ For those interested this could be a really fun challenge and learning lesson to
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="https://user-images.githubusercontent.com/7490199/97077672-ddee2d00-15e5-11eb-9f71-916c5b2a0544.png" class="img-fluid figure-img"></p>
-<p></p><figcaption class="figure-caption">Compiler Backend</figcaption><p></p>
+<figcaption class="figure-caption">Compiler Backend</figcaption>
 </figure>
 </div>
 <p>The <em>Compiler Backend</em> turns this abstract syntax tree, or <em>IR</em>, into computer output language.<br>
@@ -391,7 +365,7 @@ Just as with the frontend it’s a really good challenge to either implement a b
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="https://user-images.githubusercontent.com/7490199/97077776-b8155800-15e6-11eb-8ae6-a83a77253087.png" class="img-fluid figure-img"></p>
-<p></p><figcaption class="figure-caption">Different Kotlin Compiler Backends</figcaption><p></p>
+<figcaption class="figure-caption">Different Kotlin Compiler Backends</figcaption>
 </figure>
 </div>
 <blockquote class="blockquote">
@@ -408,7 +382,7 @@ During the final step in LLVM all the optimizations applied to C, C++, Swift &am
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="https://user-images.githubusercontent.com/7490199/97077938-2dcdf380-15e8-11eb-8282-873d80f6178e.png" class="img-fluid figure-img"></p>
-<p></p><figcaption class="figure-caption">How Kotlin types are compiled</figcaption><p></p>
+<figcaption class="figure-caption">How Kotlin types are compiled</figcaption>
 </figure>
 </div>
 <p>By using <code>Kotlin.String</code> rather than the usual <code>Java.lang.String</code> you do when programming Java you get a type that works on multiple platforms, including some awesome convenience functions. Imagine, you can write native code using <code>.substring</code>, <code>.take(n)</code> &amp; <code>.replace</code> - amazing compared to <code>c</code> right? :happy:</p>
@@ -457,7 +431,7 @@ The final, and perhaps obvious, one I’d like to mention straight away is that 
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="https://kotlinlang.org/assets/images/reference/mpp/mpp-project-1.png" class="img-fluid figure-img"></p>
-<p></p><figcaption class="figure-caption">Select a project template</figcaption><p></p>
+<figcaption class="figure-caption">Select a project template</figcaption>
 </figure>
 </div>
 <p>Run the build.</p>
@@ -643,7 +617,7 @@ The next step is to actually draw the <code>Cell</code>’s and wrap the <code>C
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="https://user-images.githubusercontent.com/7490199/97808473-5c427300-1c67-11eb-9fa9-9110f596533b.png" class="img-fluid figure-img"></p>
-<p></p><figcaption class="figure-caption">Snake Game</figcaption><p></p>
+<figcaption class="figure-caption">Snake Game</figcaption>
 </figure>
 </div>
 <p>Pretty cool right!? We’ve got<br>
@@ -931,9 +905,23 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     icon: icon
   };
   anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
   const clipboard = new window.ClipboardJS('.code-copy-button', {
-    target: function(trigger) {
-      return trigger.previousElementSibling;
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
     }
   });
   clipboard.on('success', function(e) {
@@ -998,6 +986,92 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       return note.innerHTML;
     });
   }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
   const findCites = (el) => {
     const parentEl = el.parentElement;
     if (parentEl) {
@@ -1052,13 +1126,13 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   </li>  
 </ul>
     </div>   
-      <div class="nav-footer-center">
-        <ul class="footer-items list-unstyled">
+    <div class="nav-footer-center">
+      <ul class="footer-items list-unstyled">
     <li class="nav-item">
     <a class="nav-link" href="../pages/about.html">About</a>
   </li>  
 </ul>
-      </div>
+    </div>
     <div class="nav-footer-right">
       <ul class="footer-items list-unstyled">
     <li class="nav-item compact">

@@ -1,1 +1,0 @@
-"use strict";(self.webpackChunklondogard=self.webpackChunklondogard||[]).push([[7220],{7918:function(a){a.exports=JSON.parse('{"allTagsPath":"/blog/tags","slug":"/blog/tags/fun","name":"fun","count":1,"permalink":"/blog/tags/fun"}')}}]);
