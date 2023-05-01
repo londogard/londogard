@@ -1,8 +1,8 @@
 ---
 title: "Pandera - Type your Data Pipelines"
-description: "Pandera allows"
+description: "Pandera allows you to decorate functions which will make your DataFrame's run-time typed. This means that developers & data engineers can expect something to be true, awesome!"
 categories: [data, pipeline, type]
-date: "2023-02-19"
+date: "2023-04-30"
 ---
 
 Pandera - a way to type your data pipelines in Python!  
