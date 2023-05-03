@@ -1,8 +1,8 @@
 ---
-title: "DuckDB - Quacking Data"
+title: "DuckDB - Quacking Data (WIP)"
 description: "DuckDB is particularly well-suited for Online Analytical Processing (OLAP) tasks, which involve analyzing large datasets to gain insights and generate reports. Its columnar storage format and vectorized query engine enable fast and efficient data processing, even on complex analytical queries. Additionally, DuckDB supports a variety of OLAP-specific features, such as window functions, making it a powerful tool for OLAP workloads."
 categories: [data, pipeline]
-date: "2023-04-30"
+date: "2023-05-03"
 ---
 
 > DuckDB is a relational database management system (RDBMS) that is used for managing data stored in relations, which are essentially tables. DuckDB is an in-process OLAP DBMS written in C++. It has no dependencies, is easy to set up, and is optimized to perform queries on data. It is similar to SQLite for Analytics. DuckDB is designed to run on a single machine, and it is not a multi-tenant database. It is perfect for data practitioners that want to perform local analytical workloads easily and quickly.

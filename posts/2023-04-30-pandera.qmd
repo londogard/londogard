@@ -1,5 +1,5 @@
 ---
-title: "Pandera - Type your Data Pipelines"
+title: "Pandera - Type your Data Pipelines (WIP)"
 description: "Pandera allows you to decorate functions which will make your DataFrame's run-time typed. This means that developers & data engineers can expect something to be true, awesome!"
 categories: [data, pipeline, type]
 date: "2023-04-30"
