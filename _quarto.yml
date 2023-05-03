@@ -58,6 +58,8 @@ website:
         href: index.xml
         aria-label: Londogard Blog RSS     
 
+bibliography: references.bib
+
 format:
   html:
     theme: cosmo
