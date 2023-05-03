@@ -7,6 +7,11 @@ date: "2023-04-30"
 
 > DuckDB is a relational database management system (RDBMS) that is used for managing data stored in relations, which are essentially tables. DuckDB is an in-process OLAP DBMS written in C++. It has no dependencies, is easy to set up, and is optimized to perform queries on data. It is similar to SQLite for Analytics. DuckDB is designed to run on a single machine, and it is not a multi-tenant database. It is perfect for data practitioners that want to perform local analytical workloads easily and quickly.
 
+:::{.callout-warning}
+This blog is a continuous work and WIP.
+:::
+
+
 # DuckDB - Quacking Data
 
 DuckDB is the OLAP-version of SQLite. It's _simple_, _feature rich_, _fast_ and most importantly _free_. 
@@ -38,10 +43,9 @@ Through this power of a single node more than 99.9% of all problems should be po
 
 # How am I using DuckDB in my professional life?
 
-DuckDB is integral to my workflow. I use it when `polars` is not enough. Because DuckDB can easily query `parquet` we're good to go in most
-Machine Learning setups. 
+DuckDB is integral to my workflow. I use it when `polars` is not enough. Because DuckDB can easily query `parquet` we're good to go in most Machine Learning setups. 
 
-Connecting directly to S3 is as simple as using an [extension](https://duckdb.org/docs/guides/import/s3_import.html) which is done in the following way:
+Connecting directly to S3 is as simple as using the official [`httpfs` extension](https://duckdb.org/docs/guides/import/s3_import.html) which is done in the following way:
 
 ```
 INSTALL httpfs; # run once

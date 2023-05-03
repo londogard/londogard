@@ -8,6 +8,10 @@ date: "2023-04-30"
 Pandera - a way to type your data pipelines in Python!  
 Personally I feel like the documentation is really good, feel free to check [it out](https://pandera.readthedocs.io/en/stable/).
 
+:::{.callout-warning}
+This blog is a continuous work and WIP.
+:::
+
 Through decorators it smoothly integrates into your other Python-code. The validation is done run-time, the only possible way in Python, unlike other typed languages, e.g. Scala.
 
 **What makes me exited** about `pandera`?  
