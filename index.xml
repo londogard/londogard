@@ -10,9 +10,101 @@
 <atom:link href="https://blog.londogard.com/index.xml" rel="self" type="application/rss+xml"/>
 <description>A blog which majorly focuses on Data Science, Data Engineering and sometimes Kotlin / Scala.</description>
 <generator>quarto-1.3.340</generator>
-<lastBuildDate>Sun, 30 Apr 2023 00:00:00 GMT</lastBuildDate>
+<lastBuildDate>Wed, 03 May 2023 00:00:00 GMT</lastBuildDate>
 <item>
-  <title>Pandera - Type your Data Pipelines</title>
+  <title>DuckDB - Quacking Data (WIP)</title>
+  <dc:creator>Hampus Londögård</dc:creator>
+  <link>https://blog.londogard.com/posts/2023-05-05-duckdb.html</link>
+  <description><![CDATA[ 
+
+
+
+
+<blockquote class="blockquote">
+<p>DuckDB is a relational database management system (RDBMS) that is used for managing data stored in relations, which are essentially tables. DuckDB is an in-process OLAP DBMS written in C++. It has no dependencies, is easy to set up, and is optimized to perform queries on data. It is similar to SQLite for Analytics. DuckDB is designed to run on a single machine, and it is not a multi-tenant database. It is perfect for data practitioners that want to perform local analytical workloads easily and quickly.</p>
+</blockquote>
+<div class="callout callout-style-default callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Warning
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>This blog is a continuous work and WIP.</p>
+</div>
+</div>
+<section id="duckdb---quacking-data" class="level1">
+<h1>DuckDB - Quacking Data</h1>
+<p>DuckDB is the OLAP-version of SQLite. It’s <em>simple</em>, <em>feature rich</em>, <em>fast</em> and most importantly <em>free</em>. It reall is an incredible tool for quick local analytical workloads. It has very impressive results in the <a href="https://duckdblabs.github.io/db-benchmark/">H2O-benchmark</a> resulting in a jack-of-all-trades for analytics.</p>
+<p>It has neat integration into:</p>
+<ol type="1">
+<li><code>pandas</code></li>
+<li><strong><code>polars</code></strong></li>
+<li>Arrow, PostgreSQL, <code>parquet</code>, <code>deltalake</code>, …</li>
+</ol>
+<p>Where you simply query on top of the datastructure which makes the query incredibly efficient even if it’s not “DuckDB”-format. It all becomes painless and efficient through the <a href="https://arrow.apache.org">Apache Arrow-protocol</a>. Arrow is a <em>cross-language development platform for in-memory analytics</em> which is very fast, because the underlying structure remains we never copy data between DuckDB and <code>polars</code> as an example. Rather DuckDB operates on <code>polars</code> Arrow dataset. Cool? Yes! 🤓</p>
+<p>Lately they’ve added superb <a href="https://duckdb.org/2023/04/28/spatial.html">Spatial Support</a> where they leverage <a href="https://gdal.org/">GDAL</a>.</p>
+<p>Recently <a href="https://motherduck.com/">Motherduck</a> gave a talk on how <a href="https://motherduck.com/blog/big-data-is-dead/"><em>Big Data is Dead</em></a>, where a BigQuery founding engineer laid out the average customer doesn’t have Big Data. Jordan Tigani notes the following trends.</p>
+<div id="fig-queries" class="quarto-layout-panel">
+<figure class="figure">
+<div class="quarto-layout-row quarto-layout-valign-top">
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://blog.londogard.com/posts/assets/average_load.jpg" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption">Data Sizes at Companies</figcaption>
+</figure>
+</div>
+</div>
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://blog.londogard.com/posts/assets/query_intensity.jpg" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption">Query Intensity on Data by Age</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p></p><figcaption class="figure-caption">Figure&nbsp;1: Jordan Tigani’s ‘Feel of the Industry’</figcaption><p></p>
+</figure>
+</div>
+<p>Further Jordan notes that from 2006 to 2023 we see a huge increase in how powerful single nodes are. In 2006 you could get 2GB RAM, today a standard instance has 256 GB RAM and if you slap your wallet at the problem you can get 24TB (!) RAM.</p>
+<p>Through this power of a single node more than 99.9% of all problems should be possible to solve through a single node where DuckDB can reign supreme.</p>
+</section>
+<section id="how-am-i-using-duckdb-in-my-professional-life" class="level1">
+<h1>How am I using DuckDB in my professional life?</h1>
+<p>DuckDB is integral to my workflow. I use it when <code>polars</code> is not enough. Because DuckDB can easily query <code>parquet</code> we’re good to go in most Machine Learning setups.</p>
+<p>Connecting directly to S3 is as simple as using the official <a href="https://duckdb.org/docs/guides/import/s3_import.html"><code>httpfs</code> extension</a> which is done in the following way:</p>
+<pre><code>INSTALL httpfs; # run once
+
+LOAD httpfs;</code></pre>
+</section>
+<section id="how-i-want-to-move-forward-with-duckdb" class="level1">
+<h1>How I want to move forward with DuckDB</h1>
+<p>I have so many plans on what I wish to achieve.</p>
+<section id="poor-mans-data-lake" class="level2">
+<h2 class="anchored" data-anchor-id="poor-mans-data-lake">Poor Mans Data Lake</h2>
+<p>I have been thinking a lot lately on building my own Data Lake using DuckDB, <code>polars</code> &amp; <code>dagster</code>. This would be greatly inspired by <code>dagster</code>’s <a href="https://dagster.io/blog/duckdb-data-lake">blog - ‘Poor Mans Data Lake’</a>.</p>
+</section>
+<section id="best-practices-write-up" class="level2">
+<h2 class="anchored" data-anchor-id="best-practices-write-up">Best Practices Write-Up</h2>
+<p>Additionally it’d be very interesting to set up a “Best Practices” using “Local First” tooling such as DuckDB &amp; <code>polars</code>. When to use what and how they differentiate.</p>
+
+
+</section>
+</section>
+
+ ]]></description>
+  <category>data</category>
+  <category>pipeline</category>
+  <guid>https://blog.londogard.com/posts/2023-05-05-duckdb.html</guid>
+  <pubDate>Wed, 03 May 2023 00:00:00 GMT</pubDate>
+</item>
+<item>
+  <title>Pandera - Type your Data Pipelines (WIP)</title>
   <dc:creator>Hampus Londögård</dc:creator>
   <link>https://blog.londogard.com/posts/2023-04-30-pandera.html</link>
   <description><![CDATA[ 
@@ -22,6 +114,19 @@
 
 <p>Pandera - a way to type your data pipelines in Python!<br>
 Personally I feel like the documentation is really good, feel free to check <a href="https://pandera.readthedocs.io/en/stable/">it out</a>.</p>
+<div class="callout callout-style-default callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Warning
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>This blog is a continuous work and WIP.</p>
+</div>
+</div>
 <p>Through decorators it smoothly integrates into your other Python-code. The validation is done run-time, the only possible way in Python, unlike other typed languages, e.g.&nbsp;Scala.</p>
 <p><strong>What makes me exited</strong> about <code>pandera</code>?</p>
 <ol type="1">
@@ -14998,459 +15103,6 @@ GitHub pages recently got their own tab in settings and all you need to do now i
   <category>TIL</category>
   <guid>https://blog.londogard.com/posts/2021-04-11-til-pwa-github-pages.html</guid>
   <pubDate>Sun, 11 Apr 2021 00:00:00 GMT</pubDate>
-</item>
-<item>
-  <title>Building a Swedish Named Entity Recognition (NER) model (Flair/Huggingface)</title>
-  <dc:creator>Hampus Londögård</dc:creator>
-  <link>https://blog.londogard.com/posts/2021-03-29-swedish-named-entity-recognition.html</link>
-  <description><![CDATA[ 
-
-
-
-
-<p>Not interested in reading the whole article and just wanna play around with the model(s)? Head over to <a href="https://londogard.com/ner">londogard.com/ner</a>. <img src="https://blog.londogard.com/posts/https:/user-images.githubusercontent.com/7490199/113611097-543f9280-964e-11eb-9e59-bd030c32ad0c.png" class="img-fluid" alt="image"> <strong>P.S.</strong> The Flair model is available for simple installation through <a href="https://huggingface.co/londogard/flair-swe-ner">huggingface.co’s model hub</a> <!--truncate--></p>
-<section id="building-a-swedish-named-entity-recognition-ner-model" class="level1">
-<h1>Building a Swedish Named Entity Recognition (NER) model</h1>
-<p>At <em>Londogard</em> we aim to employ Natural Language Processing (NLP) in a practical manner. The goal is not to create the models of OpenAI or Google, but rather something that is usable from the get-go and performant leading to a simple to use product.<br>
-In this post I’ll cover how we at Londogard developed a State-of-the-Art (SotA) Named Entity Recognition (NER) model for Swedish using Flair &amp; huggingface. :tada:</p>
-<p>It all started last weekend when I was allowed into the <a href="https://streamlit.io/">streamlit.io</a>’s <em>sharing</em> beta.<br>
-If you don’t know what streamlit, here’s an excerpt from their frontpage: &gt;<strong>The fastest way to build and share data apps</strong> &gt;Streamlit turns data scripts into shareable web apps in minutes.<br>
-&gt;All in Python. All for free. No front‑end experience required.</p>
-<p>Essentially streamlit is a way to combine backend &amp; frontend into a unified script-like experience where the default UI looks pretty good. On top of this script-like experience streamlit has built a powerful yet simple to use cache system.</p>
-<blockquote class="blockquote">
-<p>In my opinion creating demos has never been simpler than with streamlit.io</p>
-</blockquote>
-<p>Back to the problem at hands, I wished to deploy a model through streamlit that actually was a meaningful experience where efficiency and performance are combined, according to the Londogard motto.<br>
-As such I embarked on the journey that was to deploy a NER model for <em>Swedish</em> where Swedish actually isn’t all to common in NLP. Lately <em>Kungliga Biblioteket</em> has been trying to improve this through their <a href="https://github.com/Kungbib/swedish-spacy">spaCy-contribution</a>, which yet has to be included in spaCy, and their <a href="https://huggingface.co/KB/">HuggingFace-contributions</a> where we can find BERT, Electra &amp; Albert pre-trained.<br>
-My first idea was to take one of these and fine-tune to finally deploy, but the size of BERT is too large as is.</p>
-<p>What choices are left to allow deploy of these models? - Distilling ⚗️ - Quantizing - Fine-tuning ALBERT on NER - Performance has been shown to be quite a bit below BERT (7% units) in a paper by KTH, for Swedish.</p>
-<p><em>So what did I do?</em> I did as any other professional and google’d.<br>
-A library I hadn’t heard the name of in a year popped up at the top of the results, I was intrigued.<br>
-Flair, a library that was created by Zalando Research, now under the flag <code>/flairnlp</code> which in practice means that the core contributor-group has been changed to Humbold-University of Berlin.<br>
-Flair contains the so-called <em>Flair Embeddings</em> which are contextual embeddings of high quality. Flair retains SotA for NER in multiple languages through these and the performance is pretty damn good over all.</p>
-<p>Before I dive into the details on how I trained my own model you can find a demo on <a href="https://londogard.com/ner">londogard.com/ner</a>, where the model is deployed through <a href="https://streamlit.io/">streamlit.io</a>.</p>
-<section id="named-entity-recognition-and-how-it-can-do-your-bidding" class="level2">
-<h2 class="anchored" data-anchor-id="named-entity-recognition-and-how-it-can-do-your-bidding">Named Entity Recognition and how it can do your bidding</h2>
-<p>As the name suggests NER is the task to recognize entities in text. Entities can be a lot of different things such as the obvious <em>Person</em> but also <em>Location</em>, <em>Organisation</em> &amp; <em>Time</em>. More entities exists and they can really become whatever your data allows (<em>Brand</em>, <em>Medicine</em> or <em>Dosage</em>? You got it!)</p>
-<p><strong>Practical use-cases of NER</strong> 1. Automatic anonymization of data 2. Medical prescription 3. Automatically tag data - e.g.&nbsp;News tagged by Organisations, Persons &amp; Locations included</p>
-<p>… &amp; much more</p>
-<p>In my case I’m simply aiming for the traditional NER model which categorize things like <em>Location</em>, <em>Person</em> &amp; <em>Organisation</em>.</p>
-</section>
-<section id="flairing-the-way-to-success" class="level2">
-<h2 class="anchored" data-anchor-id="flairing-the-way-to-success">Flair(ing) the way to success</h2>
-<p>Flair is a SotA NLP library developed by <a href="https://www.informatik.hu-berlin.de/en/forschung-en/gebiete/ml-en/">Humboldt University of Berlin</a> and friends. As mentioned its core contributors are from Humboldt University of Berlin and the whole idea is to provide contextual embeddings. Some of the things provided through Flair:</p>
-<ol type="1">
-<li>Flair Embeddings</li>
-<li>(Easily) Stacked Embeddings
-<ul>
-<li>e.g.&nbsp;combine Transformer, Flair &amp; GloVe for your end-model</li>
-</ul></li>
-<li>Easy access to multiple embeddings
-<ul>
-<li>GloVe, Transformer, ELMo &amp; many more</li>
-</ul></li>
-<li>Simple training of high-performant NER (Token Classifier) Model and a Text Classifier model</li>
-</ol>
-<p>As mentioned Flair retain SotA in multiple languages for NER, but they do the same for POS.</p>
-<p><strong>The Language Model</strong><br>
-If you’re curious the simplest Flair embeddings are essentially a Language Model built on Dropout, LSTM &amp; a Linear Layer. Pretty simple.</p>
-<p><strong>The Token Classifier (NER/POS)</strong><br>
-It’s based on a small LSTM-network with a CRF on top. The LSTM exists to create features for the CRF to learn and tag from. This is a very common approach which yields high accuracy. If you’re aware of what features you wish to use a pure CRF can be very strong, Stanford NLP library was actually for very long based on a CRF and had SotA, but the manual feature engineering can be expensive &amp; hard.</p>
-<p><strong>The Text Classifier</strong> Simply a linear layer on top of the embeddings.</p>
-<p><strong>More Models</strong><br>
-Flair actually supports two other tasks, <em>Text Regression</em> &amp; <em>Similarity</em> but I won’t go in to those.</p>
-<p>More about how I trained my NER will come a bit further down. To read more about Flair and how they work please check out their <a href="https://github.com/flairNLP/flair">GitHub</a> which also links to the papers.</p>
-</section>
-<section id="swedish-data" class="level2">
-<h2 class="anchored" data-anchor-id="swedish-data">Swedish data</h2>
-<p>First of all I had to go find some data and I found crème de la crème in <a href="https://spraakbanken.gu.se/en/resources/suc3">SUC 3.0</a>, because we really do sentence by sentence training in NER it’s not the end of the world that the ‘free’ variant that doesn’t require a research licence is scrambled. Unscrambled data would lead to a better model but it’s still doable.</p>
-<p>But as Jeremy Howard proposes, start with small and simple data then expand into your full task. SUC 3.0 is pretty large and slow to train. With some fast googling I found a saviour, <em>klintan</em>. Klintan has created a open Swedish NER dataset based on Webbnyheter 2020 from Språkbanken, it’s semi-manually annotated. This means that he first based it on <em>Gazetters</em>, essentially dataset(s) of entities, and then manually reviewed the data with two different native Swedish Speakers. More people have later added some improvements on top of that, find the full dataset <a href="https://github.com/klintan/swedish-ner-corpus">here</a>, but please note that <em>it’s much smaller</em> than SUC 3.0.<br>
-After finding this dataset I read more into Flair and I found out that they actually provide this dataset through their API and in this dataset we have 4 categories PER, ORG, LOC and MISC.</p>
-<p>With these two datasets in mind I went ahead to train.</p>
-</section>
-<section id="training-the-flair" class="level2">
-<h2 class="anchored" data-anchor-id="training-the-flair">Training the flair</h2>
-<p>First let me say the <a href="https://github.com/flairNLP/flair/tree/master/resources/docs">documentation</a> is actually pretty good! First part is to set up the <code>Corpus</code>.</p>
-<section id="setting-up-the-corpus-dataset" class="level3">
-<h3 class="anchored" data-anchor-id="setting-up-the-corpus-dataset">Setting up the Corpus / Dataset</h3>
-<p><strong>The built-in <em>klintan/ner-swedish-corpus</em></strong></p>
-<div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><span class="co" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;"># 1. get the corpus</span></span>
-<span id="cb1-2">corpus: Corpus <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> NER_SWEDISH()</span>
-<span id="cb1-3"><span class="bu" style="color: null;
-background-color: null;
-font-style: inherit;">print</span>(corpus)</span>
-<span id="cb1-4"></span>
-<span id="cb1-5"><span class="co" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;"># 2. what tag do we want to predict?</span></span>
-<span id="cb1-6">tag_type <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> <span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">'ner'</span></span>
-<span id="cb1-7"></span>
-<span id="cb1-8"><span class="co" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;"># 3. make the tag dictionary from the corpus</span></span>
-<span id="cb1-9">tag_dictionary <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> corpus.make_tag_dictionary(tag_type<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span>tag_type)</span>
-<span id="cb1-10"><span class="bu" style="color: null;
-background-color: null;
-font-style: inherit;">print</span>(tag_dictionary)</span></code></pre></div>
-<p><strong>Custom dataset (SUC 3.0, in my case scrambled)</strong><br>
-Remember to convert the SUC tags into a IOB format before training. Emil Stenström has kindly created a simple Python-script for this available through <a href="https://github.com/EmilStenstrom/suc_to_iob">github.com/EmilStenstrom/suc_to_iob</a>. First transform the data and later you can run the following code</p>
-<div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1">columns <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> {<span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">0</span>: <span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">'text'</span>, <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">1</span>: <span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">'ner'</span>}</span>
-<span id="cb2-2"></span>
-<span id="cb2-3"><span class="co" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;"># this is the folder in which train, test and dev files reside</span></span>
-<span id="cb2-4">data_folder <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> <span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">'path/to/data/suc'</span></span>
-<span id="cb2-5"></span>
-<span id="cb2-6"><span class="co" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;"># init a corpus using column format, data folder and the names of the train, dev and test files</span></span>
-<span id="cb2-7">corpus: Corpus <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> ColumnCorpus(data_folder, columns, train_file<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span><span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">'train.txt'</span>, test_file<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span><span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">'test.txt'</span>, dev_file<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span><span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">'dev.txt'</span>)</span>
-<span id="cb2-8"></span>
-<span id="cb2-9"><span class="co" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;"># 2. what tag do we want to predict?</span></span>
-<span id="cb2-10">tag_type <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> <span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">'ner'</span></span>
-<span id="cb2-11"></span>
-<span id="cb2-12"><span class="co" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;"># 3. make the tag dictionary from the corpus</span></span>
-<span id="cb2-13">tag_dictionary <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> corpus.make_tag_dictionary(tag_type<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span>tag_type)</span>
-<span id="cb2-14"><span class="bu" style="color: null;
-background-color: null;
-font-style: inherit;">print</span>(tag_dictionary)</span></code></pre></div>
-<p>With this in mind we’re ready to set up our model for training.</p>
-</section>
-<section id="model-setup" class="level3">
-<h3 class="anchored" data-anchor-id="model-setup">Model Setup</h3>
-<p>Our model will build on <code>FlairEmbeddings</code> (e.g.&nbsp;contextual embeddings) and <code>BytePairEmbeddings</code> which are a bit like classic <code>WordEmbeddings</code> but done on BPE-tokenized text. This is a really interesting approach which achieves similar performance as <code>fastText</code> using ~ 0.2 % of the total size (11mb vs 6gb).<br>
-The model itself will use a LSTM with a hidden size of 256 and a CRF classifier on top.</p>
-<div class="sourceCode" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><span class="co" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;"># 4. initialize embeddings</span></span>
-<span id="cb3-2">embedding_types <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> [</span>
-<span id="cb3-3">    <span class="co" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;"># WordEmbeddings('sv'), # uncomment to add WordEmb</span></span>
-<span id="cb3-4">    BytePairEmbeddings(<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">'sv'</span>),</span>
-<span id="cb3-5">    FlairEmbeddings(<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"sv-forward"</span>),</span>
-<span id="cb3-6">    FlairEmbeddings(<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"sv-backward"</span>)</span>
-<span id="cb3-7">]</span>
-<span id="cb3-8"></span>
-<span id="cb3-9">embeddings: StackedEmbeddings <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> StackedEmbeddings(embeddings<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span>embedding_types)</span>
-<span id="cb3-10"></span>
-<span id="cb3-11"><span class="co" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;"># 5. initialize sequence tagger</span></span>
-<span id="cb3-12">tagger: SequenceTagger <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> SequenceTagger(hidden_size<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span><span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">256</span>,</span>
-<span id="cb3-13">                                        embeddings<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span>embeddings,</span>
-<span id="cb3-14">                                        tag_dictionary<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span>tag_dictionary,</span>
-<span id="cb3-15">                                        tag_type<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span>tag_type,</span>
-<span id="cb3-16">                                        use_crf<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span><span class="va" style="color: #111111;
-background-color: null;
-font-style: inherit;">True</span>)</span></code></pre></div>
-</section>
-<section id="training-the-model" class="level3">
-<h3 class="anchored" data-anchor-id="training-the-model">Training the model</h3>
-<p>Because I run through google colab and the machine can be terminated any second I run using <code>checkpoint=True</code> which means you can continue training where you left off. My models are saved to my Google Drive, real handy! &gt;Pro-tip: use <code>checkpoint=True</code> in combination with Google Drive on your Google Colab.</p>
-<div class="sourceCode" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><span class="co" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;"># 7. start training</span></span>
-<span id="cb4-2">trainer.train(<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">'drive/MyDrive/path/to/model/save/'</span>,</span>
-<span id="cb4-3">                learning_rate<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span><span class="fl" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">0.1</span>,</span>
-<span id="cb4-4">                <span class="co" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;"># set chunk size to lower memory requirements</span></span>
-<span id="cb4-5">                <span class="co" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">#mini_batch_chunk_size=16,</span></span>
-<span id="cb4-6">                mini_batch_size<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span><span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">32</span>,</span>
-<span id="cb4-7">                checkpoint<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span><span class="va" style="color: #111111;
-background-color: null;
-font-style: inherit;">True</span>,</span>
-<span id="cb4-8">                embeddings_storage_mode<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span><span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">'none'</span>, <span class="co" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;"># only required for SUC 3.0 which grows too large</span></span>
-<span id="cb4-9">                <span class="co" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">#batch_growth_annealing=True,</span></span>
-<span id="cb4-10">                <span class="co" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">#anneal_with_restarts=True,</span></span>
-<span id="cb4-11">                max_epochs<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span><span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">150</span>)</span></code></pre></div>
-</section>
-<section id="loading-model-from-checkpoint" class="level3">
-<h3 class="anchored" data-anchor-id="loading-model-from-checkpoint">Loading model from checkpoint</h3>
-<div class="sourceCode" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1">trainer <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> ModelTrainer.load_checkpoint(<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">'drive/MyDrive/path/to/model/save/checkpoint.pt'</span>, corpus)</span></code></pre></div>
-<p>And that’s it!</p>
-</section>
-</section>
-<section id="result" class="level2">
-<h2 class="anchored" data-anchor-id="result">Result</h2>
-<p>For me the results looks really good and close to what I expected, I had hoped that Flair would achieve at least 0.88+ F1 but 0.855 isn’t too bad. The size, speed and simplicity of Flair makes it a great contender!</p>
-<table class="table">
-<thead>
-<tr class="header">
-<th>Dataset</th>
-<th>Size</th>
-<th>Avg F1</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>klintan/swedish-ner-corpus</td>
-<td>320MB</td>
-<td>~<strong>0.89</strong></td>
-</tr>
-<tr class="even">
-<td>SUC 3.0 (PER, LOC &amp; ORG)</td>
-<td>320MB</td>
-<td>~<strong>0.89</strong></td>
-</tr>
-<tr class="odd">
-<td>SUC 3.0 (PER, LOC, ORG, TME, MSR, …)</td>
-<td>320MB</td>
-<td><strong>0.855</strong></td>
-</tr>
-<tr class="even">
-<td>SUC 3.0 (PER, LOC, ORG, TME, MSR, …) Quantized</td>
-<td>80MB</td>
-<td><strong>0.853</strong></td>
-</tr>
-<tr class="odd">
-<td>SUC 3.0 (PER, LOC, ORG, TME, MSR, …) w/ ALBERT</td>
-<td>50MB</td>
-<td><strong>0.85</strong> (via <a href="http://kth.diva-portal.org/smash/get/diva2:1451804/FULLTEXT01.pdf">KTH</a>)</td>
-</tr>
-<tr class="even">
-<td>SUC 3.0 (PER, LOC, ORG, TME, MSR, …) w/ BERT (<a href="https://github.com/Kungbib/swedish-bert-models#bert-base-fine-tuned-for-swedish-ner">KungBib</a>)</td>
-<td>480MB</td>
-<td><strong>0.928</strong></td>
-</tr>
-<tr class="odd">
-<td>SUC 3.0 (PER, LOC, ORG, TME, MSR, …) w/ BERT Quantized</td>
-<td>120MB</td>
-<td><strong>0.928</strong></td>
-</tr>
-</tbody>
-</table>
-<p>I believe it’s important to note that Quantized models are also much faster running ~ 4 times faster (avg 360ms went to 80ms on a CPU for flair).<br>
-Quantization updates the f32 into int8 which allows the model to more efficiently utilize CPU and the ONNX-runtime also makes the whole model better at using CPU-instructions.</p>
-</section>
-<section id="deploying-on-streamlit.iosharing" class="level2">
-<h2 class="anchored" data-anchor-id="deploying-on-streamlit.iosharing">Deploying on streamlit.io/sharing</h2>
-<p>And for the final part! :tada: First you need a new public repository on GitHub with the streamlit &amp; model code. This requires to set up a <code>requirements.txt</code> with all necessary dependencies.</p>
-<p>Then you need to figure out how you’ll host your model if it’s too large. I found GitHub LFS to work out decently, but the cap was pretty small (1GB / Month) and I broke the limit on my 3rd model. I went ahead and registered on <a href="https://www.backblaze.com">Backblaze</a> which has great reviews, but I think the best solution in my shoes would be to host it through HuggingFace Model storage (free if public!). <strong>edit:</strong> I actually ended up storing the flair model on <a href="https://huggingface.co/londogard/flair-swe-ner">huggingface.co/londogard/flair-swe-ner</a> 🤗.</p>
-<p>Setting up the script itself was quite easy for Flair.</p>
-<div class="sourceCode" id="cb6" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><span class="co" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;"># load tagger for POS and</span></span>
-<span id="cb6-2"><span class="at" style="color: #657422;
-background-color: null;
-font-style: inherit;">@st.cache</span>(allow_output_mutation<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span><span class="va" style="color: #111111;
-background-color: null;
-font-style: inherit;">True</span>)</span>
-<span id="cb6-3"><span class="kw" style="color: #003B4F;
-background-color: null;
-font-style: inherit;">def</span> load_model():</span>
-<span id="cb6-4">    tagger <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> SequenceTagger.load(<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">'best-model-large-data.pt'</span>)</span>
-<span id="cb6-5">    <span class="cf" style="color: #003B4F;
-background-color: null;
-font-style: inherit;">return</span> tagger</span>
-<span id="cb6-6"></span>
-<span id="cb6-7"><span class="at" style="color: #657422;
-background-color: null;
-font-style: inherit;">@st.cache</span>(allow_output_mutation<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span><span class="va" style="color: #111111;
-background-color: null;
-font-style: inherit;">True</span>, hash_funcs<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span>{SequenceTagger: <span class="kw" style="color: #003B4F;
-background-color: null;
-font-style: inherit;">lambda</span>  _: <span class="va" style="color: #111111;
-background-color: null;
-font-style: inherit;">None</span>})</span>
-<span id="cb6-8"><span class="kw" style="color: #003B4F;
-background-color: null;
-font-style: inherit;">def</span> predict(model, text):</span>
-<span id="cb6-9">    manual_sentence <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> Sentence(manual_user_input)</span>
-<span id="cb6-10">    model.predict(manual_sentence)</span>
-<span id="cb6-11">    <span class="cf" style="color: #003B4F;
-background-color: null;
-font-style: inherit;">return</span> render_ner_html(manual_sentence, wrap_page<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span><span class="va" style="color: #111111;
-background-color: null;
-font-style: inherit;">False</span>)</span>
-<span id="cb6-12"></span>
-<span id="cb6-13">tagger <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> load_model()</span>
-<span id="cb6-14"></span>
-<span id="cb6-15">st.title(<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"Swedish Named Entity Recognition (NER) tagger"</span>)</span>
-<span id="cb6-16">st.subheader(<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"Created by [Londogard](https://londogard.com) (Hampus Londögård)"</span>)</span>
-<span id="cb6-17">st.title(<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"Please type something in the box below"</span>)</span>
-<span id="cb6-18">manual_user_input <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> st.text_area(<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">""</span>)</span>
-<span id="cb6-19"></span>
-<span id="cb6-20"><span class="cf" style="color: #003B4F;
-background-color: null;
-font-style: inherit;">if</span> <span class="bu" style="color: null;
-background-color: null;
-font-style: inherit;">len</span>(manual_user_input) <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">&gt;</span> <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">0</span>:</span>
-<span id="cb6-21">    sentence <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> predict(tagger, manual_user_input)</span>
-<span id="cb6-22">    st.success(<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"Below is your tagged string."</span>)</span>
-<span id="cb6-23">    st.write(sentence, unsafe_allow_html<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span><span class="va" style="color: #111111;
-background-color: null;
-font-style: inherit;">True</span>)</span></code></pre></div>
-<p>It’s important to note how I’ve placed the caching solution. I both cache the model loading &amp; predictions to keep it as speedy as possible.</p>
-<p>The <code>allow_output_mutation</code> option skips hashing the output to validate that the cache is correct, we don’t care if output has been modified really.</p>
-<p>The <code>hash_funcs={SequenceTagger: lambda  _: None}</code> is <strong>incredibly important</strong>.<br>
-The flair model are pretty slow to hash, especially if quantized. It’s possible to use <code>id</code> which is a unique ID for the python object that lasts the full lifetime, but because I know that the model wont change I simply use <code>lambda _: None</code> to not do any lookup at all.<br>
-If the model input would change in-between using <code>id</code> is the best approach. Note that neither of this approaches are any good if you wanna compare an object to another (e.g.&nbsp;two string inputs), there we should just keep standard hashing.</p>
-</section>
-<section id="outro" class="level2">
-<h2 class="anchored" data-anchor-id="outro">Outro</h2>
-<p>I trained Flair embeddings which is a much simpler approach than Transformers and achieved almost SotA while having a much smaller &amp; simpler model (~2/3rd of the size). But in the end I was very impressed by how well quantization applies for CPU utilization so I also applied the same approach for BERT-ner by KB, where I even did a ONNX Quantization which has been shown to be even more effective than PyTorch own quantization, but then again it requires the ONNX runtime.</p>
-<p>Both models are available on the same device / streamlit configuration, find them on <a href="https://londogard.com/ner">londogard.com/ner</a>.<br>
-The flair model is available through HuggingFace 🤗 through the following: <a href="https://huggingface.co/londogard">londogard (huggingface.co)</a>.</p>
-<p>Thanks for this time, Hampus Londögård @ Londogard</p>
-
-
-</section>
-</section>
-
- ]]></description>
-  <category>nlp</category>
-  <category>machine-learning</category>
-  <category>workshop</category>
-  <guid>https://blog.londogard.com/posts/2021-03-29-swedish-named-entity-recognition.html</guid>
-  <pubDate>Mon, 29 Mar 2021 00:00:00 GMT</pubDate>
 </item>
 </channel>
 </rss>

@@ -2,158 +2,162 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://blog.londogard.com/pages/presentations.html</loc>
-    <lastmod>2023-05-01T15:12:20.676Z</lastmod>
+    <lastmod>2023-05-03T05:32:43.274Z</lastmod>
   </url>
   <url>
     <loc>https://blog.londogard.com/pages/code_setup/code_setup.html</loc>
-    <lastmod>2023-05-01T15:12:22.080Z</lastmod>
+    <lastmod>2023-05-03T05:32:44.390Z</lastmod>
   </url>
   <url>
     <loc>https://blog.londogard.com/pages/about.html</loc>
-    <lastmod>2023-05-01T15:12:22.909Z</lastmod>
+    <lastmod>2023-05-03T05:32:45.094Z</lastmod>
   </url>
   <url>
     <loc>https://blog.londogard.com/posts/2023-03-31-yelp-reviews.html</loc>
-    <lastmod>2023-05-01T15:12:24.857Z</lastmod>
+    <lastmod>2023-05-03T05:32:46.702Z</lastmod>
   </url>
   <url>
     <loc>https://blog.londogard.com/posts/2021-01-21-til-gitpod-kotlin-jvm.html</loc>
-    <lastmod>2023-05-01T15:12:26.069Z</lastmod>
+    <lastmod>2023-05-03T05:32:47.710Z</lastmod>
   </url>
   <url>
     <loc>https://blog.londogard.com/posts/2020-12-12-transfer-learning-presentation.html</loc>
-    <lastmod>2023-05-01T15:12:26.857Z</lastmod>
+    <lastmod>2023-05-03T05:32:48.378Z</lastmod>
   </url>
   <url>
     <loc>https://blog.londogard.com/posts/2022-09-07-docker-simplified-presentation.html</loc>
-    <lastmod>2023-05-01T15:12:27.681Z</lastmod>
+    <lastmod>2023-05-03T05:32:49.022Z</lastmod>
   </url>
   <url>
     <loc>https://blog.londogard.com/posts/2020-06-01-sqldelight-kotlin.html</loc>
-    <lastmod>2023-05-01T15:12:29.205Z</lastmod>
+    <lastmod>2023-05-03T05:32:50.226Z</lastmod>
   </url>
   <url>
     <loc>https://blog.londogard.com/posts/2022-03-13-timeseries-pt-3/index.html</loc>
-    <lastmod>2023-05-01T15:12:31.893Z</lastmod>
+    <lastmod>2023-05-03T05:32:52.370Z</lastmod>
   </url>
   <url>
     <loc>https://blog.londogard.com/posts/2022-11-06-babymonitor-pt-1.html</loc>
-    <lastmod>2023-05-01T15:12:33.237Z</lastmod>
+    <lastmod>2023-05-03T05:32:53.410Z</lastmod>
   </url>
   <url>
     <loc>https://blog.londogard.com/posts/2020-08-01-faq-search-covid-2/index.html</loc>
-    <lastmod>2023-05-01T15:12:34.577Z</lastmod>
+    <lastmod>2023-05-03T05:32:54.498Z</lastmod>
   </url>
   <url>
     <loc>https://blog.londogard.com/posts/2020-02-23-competence-meeting-imdb-text-classification.html</loc>
-    <lastmod>2023-05-01T15:12:36.225Z</lastmod>
+    <lastmod>2023-05-03T05:32:55.822Z</lastmod>
   </url>
   <url>
     <loc>https://blog.londogard.com/posts/2020-02-10-gradle-github-packages.html</loc>
-    <lastmod>2023-05-01T15:12:37.153Z</lastmod>
+    <lastmod>2023-05-03T05:32:56.590Z</lastmod>
   </url>
   <url>
     <loc>https://blog.londogard.com/posts/2020-11-07-snake-kotlin-multiplatform.html</loc>
-    <lastmod>2023-05-01T15:12:39.137Z</lastmod>
+    <lastmod>2023-05-03T05:32:58.234Z</lastmod>
   </url>
   <url>
     <loc>https://blog.londogard.com/posts/2023-03-20-deepchecks/index.html</loc>
-    <lastmod>2023-05-01T15:12:40.325Z</lastmod>
+    <lastmod>2023-05-03T05:32:59.298Z</lastmod>
   </url>
   <url>
     <loc>https://blog.londogard.com/posts/2020-09-04-til-sdkman.html</loc>
-    <lastmod>2023-05-01T15:12:41.245Z</lastmod>
+    <lastmod>2023-05-03T05:33:00.022Z</lastmod>
   </url>
   <url>
     <loc>https://blog.londogard.com/posts/2022-11-30-why-polars.html</loc>
-    <lastmod>2023-05-01T15:12:42.377Z</lastmod>
+    <lastmod>2023-05-03T05:33:00.910Z</lastmod>
   </url>
   <url>
     <loc>https://blog.londogard.com/posts/2023-04-30-pandera.html</loc>
-    <lastmod>2023-05-01T15:12:43.277Z</lastmod>
+    <lastmod>2023-05-03T05:33:01.634Z</lastmod>
   </url>
   <url>
     <loc>https://blog.londogard.com/posts/2020-03-31-email-generator-kotlin-tipsrundan.html</loc>
-    <lastmod>2023-05-01T15:12:44.461Z</lastmod>
+    <lastmod>2023-05-03T05:33:02.558Z</lastmod>
   </url>
   <url>
     <loc>https://blog.londogard.com/posts/2021-02-18-transformers-explained/transformers-explained.html</loc>
-    <lastmod>2023-05-01T15:12:46.789Z</lastmod>
+    <lastmod>2023-05-03T05:33:04.514Z</lastmod>
   </url>
   <url>
     <loc>https://blog.londogard.com/posts/2021-04-11-til-pwa-github-pages.html</loc>
-    <lastmod>2023-05-01T15:12:48.073Z</lastmod>
+    <lastmod>2023-05-03T05:33:05.514Z</lastmod>
   </url>
   <url>
     <loc>https://blog.londogard.com/posts/2021-03-17-replace-in-string.html</loc>
-    <lastmod>2023-05-01T15:12:49.141Z</lastmod>
+    <lastmod>2023-05-03T05:33:06.470Z</lastmod>
   </url>
   <url>
     <loc>https://blog.londogard.com/posts/2022-11-23-timeseries-learnings/index.html</loc>
-    <lastmod>2023-05-01T15:12:50.385Z</lastmod>
+    <lastmod>2023-05-03T05:33:07.510Z</lastmod>
   </url>
   <url>
     <loc>https://blog.londogard.com/posts/2022-07-07-snapsvisor-generated/2022-07-07-snapsvisor-generator.html</loc>
-    <lastmod>2023-05-01T15:12:51.609Z</lastmod>
+    <lastmod>2023-05-03T05:33:08.530Z</lastmod>
   </url>
   <url>
     <loc>https://blog.londogard.com/posts/2022-03-12-timeseries-pt-2/index.html</loc>
-    <lastmod>2023-05-01T15:12:53.753Z</lastmod>
+    <lastmod>2023-05-03T05:33:10.278Z</lastmod>
   </url>
   <url>
     <loc>https://blog.londogard.com/posts/2023-02-06-baby-monitor-pt-p2/index.html</loc>
-    <lastmod>2023-05-01T15:12:54.873Z</lastmod>
+    <lastmod>2023-05-03T05:33:11.194Z</lastmod>
   </url>
   <url>
     <loc>https://blog.londogard.com/posts/2023-02-17-best-practices.html</loc>
-    <lastmod>2023-05-01T15:12:56.137Z</lastmod>
+    <lastmod>2023-05-03T05:33:12.198Z</lastmod>
   </url>
   <url>
     <loc>https://blog.londogard.com/posts/2020-05-13-faq-search-covid-1.html</loc>
-    <lastmod>2023-05-01T15:12:57.169Z</lastmod>
+    <lastmod>2023-05-03T05:33:13.582Z</lastmod>
   </url>
   <url>
     <loc>https://blog.londogard.com/posts/2022-03-11-timeseries-pt-1/index.html</loc>
-    <lastmod>2023-05-01T15:13:50.101Z</lastmod>
+    <lastmod>2023-05-03T05:34:01.382Z</lastmod>
   </url>
   <url>
     <loc>https://blog.londogard.com/posts/2021-03-29-swedish-named-entity-recognition.html</loc>
-    <lastmod>2023-05-01T15:13:51.389Z</lastmod>
+    <lastmod>2023-05-03T05:34:02.482Z</lastmod>
   </url>
   <url>
     <loc>https://blog.londogard.com/posts/2020-12-16-object-detection-transformer.html</loc>
-    <lastmod>2023-05-01T15:13:52.209Z</lastmod>
+    <lastmod>2023-05-03T05:34:03.122Z</lastmod>
   </url>
   <url>
     <loc>https://blog.londogard.com/posts/2021-04-18-knowledge-distillation-presentation.html</loc>
-    <lastmod>2023-05-01T15:13:52.997Z</lastmod>
+    <lastmod>2023-05-03T05:34:03.782Z</lastmod>
   </url>
   <url>
     <loc>https://blog.londogard.com/posts/2022-01-28-kotlinjs-onnx-deep-learning-in-browser/index.html</loc>
-    <lastmod>2023-05-01T15:13:54.357Z</lastmod>
+    <lastmod>2023-05-03T05:34:04.942Z</lastmod>
   </url>
   <url>
     <loc>https://blog.londogard.com/posts/2022-01-16-nlp-toolkit-release.html</loc>
-    <lastmod>2023-05-01T15:13:55.397Z</lastmod>
+    <lastmod>2023-05-03T05:34:05.778Z</lastmod>
+  </url>
+  <url>
+    <loc>https://blog.londogard.com/posts/2023-05-05-duckdb.html</loc>
+    <lastmod>2023-05-03T05:34:06.606Z</lastmod>
   </url>
   <url>
     <loc>https://blog.londogard.com/posts/2021-05-17-seam-carving.html</loc>
-    <lastmod>2023-05-01T15:13:56.525Z</lastmod>
+    <lastmod>2023-05-03T05:34:07.526Z</lastmod>
   </url>
   <url>
     <loc>https://blog.londogard.com/posts/2020-09-03-til-badass-runtime.html</loc>
-    <lastmod>2023-05-01T15:13:57.605Z</lastmod>
+    <lastmod>2023-05-03T05:34:08.394Z</lastmod>
   </url>
   <url>
     <loc>https://blog.londogard.com/posts/2022-11-28-probabilistic-forecasting/index.html</loc>
-    <lastmod>2023-05-01T15:13:58.550Z</lastmod>
+    <lastmod>2023-05-03T05:34:09.186Z</lastmod>
   </url>
   <url>
     <loc>https://blog.londogard.com/posts/2020-09-03-til-fastutil-primitive-structures.html</loc>
-    <lastmod>2023-05-01T15:13:59.554Z</lastmod>
+    <lastmod>2023-05-03T05:34:09.942Z</lastmod>
   </url>
   <url>
     <loc>https://blog.londogard.com/index.html</loc>
-    <lastmod>2023-05-01T15:14:04.162Z</lastmod>
+    <lastmod>2023-05-03T05:34:13.674Z</lastmod>
   </url>
 </urlset>

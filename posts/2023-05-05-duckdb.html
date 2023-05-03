@@ -7,10 +7,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Hampus Londögård">
-<meta name="dcterms.date" content="2023-04-30">
-<meta name="description" content="Pandera allows you to decorate functions which will make your DataFrame’s run-time typed. This means that developers &amp; data engineers can expect something to be true, awesome!">
+<meta name="dcterms.date" content="2023-05-03">
+<meta name="description" content="DuckDB is particularly well-suited for Online Analytical Processing (OLAP) tasks, which involve analyzing large datasets to gain insights and generate reports. Its columnar storage format and vectorized query engine enable fast and efficient data processing, even on complex analytical queries. Additionally, DuckDB supports a variety of OLAP-specific features, such as window functions, making it a powerful tool for OLAP workloads.">
 
-<title>Londogard Blog - Pandera - Type your Data Pipelines (WIP)</title>
+<title>Londogard Blog - DuckDB - Quacking Data (WIP)</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -65,10 +65,11 @@ ul.task-list li input[type="checkbox"] {
 
 
 <link rel="stylesheet" href="../styles.css">
-<meta name="twitter:title" content="Londogard Blog - Pandera - Type your Data Pipelines (WIP)">
-<meta name="twitter:description" content="Pandera allows you to decorate functions which will make your DataFrame’s run-time typed. This means that developers &amp; data engineers can expect something to be true, awesome!">
+<meta name="twitter:title" content="Londogard Blog - DuckDB - Quacking Data (WIP)">
+<meta name="twitter:description" content="DuckDB is particularly well-suited for Online Analytical Processing (OLAP) tasks, which involve analyzing large datasets to gain insights and generate reports. Its columnar storage format and vectorized query engine enable fast and efficient data processing, even on complex analytical queries. Additionally, DuckDB supports a variety of OLAP-specific features, such as window functions, making it a powerful tool for OLAP workloads.">
+<meta name="twitter:image" content="https://blog.londogard.com/posts/assets/average_load.jpg">
 <meta name="twitter:creator" content="@hlondogard">
-<meta name="twitter:card" content="summary">
+<meta name="twitter:card" content="summary_large_image">
 </head>
 
 <body class="nav-fixed">
@@ -151,16 +152,15 @@ ul.task-list li input[type="checkbox"] {
 <header id="title-block-header" class="quarto-title-block default page-columns page-full">
   <div class="quarto-title-banner page-columns page-full">
     <div class="quarto-title column-body">
-      <h1 class="title">Pandera - Type your Data Pipelines (WIP)</h1>
+      <h1 class="title">DuckDB - Quacking Data (WIP)</h1>
                   <div>
         <div class="description">
-          Pandera allows you to decorate functions which will make your DataFrame’s run-time typed. This means that developers &amp; data engineers can expect something to be true, awesome!
+          DuckDB is particularly well-suited for Online Analytical Processing (OLAP) tasks, which involve analyzing large datasets to gain insights and generate reports. Its columnar storage format and vectorized query engine enable fast and efficient data processing, even on complex analytical queries. Additionally, DuckDB supports a variety of OLAP-specific features, such as window functions, making it a powerful tool for OLAP workloads.
         </div>
       </div>
                           <div class="quarto-categories">
                 <div class="quarto-category">data</div>
                 <div class="quarto-category">pipeline</div>
-                <div class="quarto-category">type</div>
               </div>
                   </div>
   </div>
@@ -178,7 +178,7 @@ ul.task-list li input[type="checkbox"] {
       <div>
       <div class="quarto-title-meta-heading">Published</div>
       <div class="quarto-title-meta-contents">
-        <p class="date">April 30, 2023</p>
+        <p class="date">May 3, 2023</p>
       </div>
     </div>
     
@@ -194,7 +194,13 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#how-im-using-pandera-in-production-setting" id="toc-how-im-using-pandera-in-production-setting" class="nav-link active" data-scroll-target="#how-im-using-pandera-in-production-setting">How I’m using <code>pandera</code> in production setting</a></li>
+  <li><a href="#duckdb---quacking-data" id="toc-duckdb---quacking-data" class="nav-link active" data-scroll-target="#duckdb---quacking-data">DuckDB - Quacking Data</a></li>
+  <li><a href="#how-am-i-using-duckdb-in-my-professional-life" id="toc-how-am-i-using-duckdb-in-my-professional-life" class="nav-link" data-scroll-target="#how-am-i-using-duckdb-in-my-professional-life">How am I using DuckDB in my professional life?</a></li>
+  <li><a href="#how-i-want-to-move-forward-with-duckdb" id="toc-how-i-want-to-move-forward-with-duckdb" class="nav-link" data-scroll-target="#how-i-want-to-move-forward-with-duckdb">How I want to move forward with DuckDB</a>
+  <ul class="collapse">
+  <li><a href="#poor-mans-data-lake" id="toc-poor-mans-data-lake" class="nav-link" data-scroll-target="#poor-mans-data-lake">Poor Mans Data Lake</a></li>
+  <li><a href="#best-practices-write-up" id="toc-best-practices-write-up" class="nav-link" data-scroll-target="#best-practices-write-up">Best Practices Write-Up</a></li>
+  </ul></li>
   </ul>
 </nav>
     </div>
@@ -204,8 +210,9 @@ ul.task-list li input[type="checkbox"] {
 
 
 
-<p>Pandera - a way to type your data pipelines in Python!<br>
-Personally I feel like the documentation is really good, feel free to check <a href="https://pandera.readthedocs.io/en/stable/">it out</a>.</p>
+<blockquote class="blockquote">
+<p>DuckDB is a relational database management system (RDBMS) that is used for managing data stored in relations, which are essentially tables. DuckDB is an in-process OLAP DBMS written in C++. It has no dependencies, is easy to set up, and is optimized to perform queries on data. It is similar to SQLite for Analytics. DuckDB is designed to run on a single machine, and it is not a multi-tenant database. It is perfect for data practitioners that want to perform local analytical workloads easily and quickly.</p>
+</blockquote>
 <div class="callout callout-style-default callout-warning callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -219,29 +226,65 @@ Warning
 <p>This blog is a continuous work and WIP.</p>
 </div>
 </div>
-<p>Through decorators it smoothly integrates into your other Python-code. The validation is done run-time, the only possible way in Python, unlike other typed languages, e.g.&nbsp;Scala.</p>
-<p><strong>What makes me exited</strong> about <code>pandera</code>?</p>
+<section id="duckdb---quacking-data" class="level1">
+<h1>DuckDB - Quacking Data</h1>
+<p>DuckDB is the OLAP-version of SQLite. It’s <em>simple</em>, <em>feature rich</em>, <em>fast</em> and most importantly <em>free</em>. It reall is an incredible tool for quick local analytical workloads. It has very impressive results in the <a href="https://duckdblabs.github.io/db-benchmark/">H2O-benchmark</a> resulting in a jack-of-all-trades for analytics.</p>
+<p>It has neat integration into:</p>
 <ol type="1">
-<li>Robust &amp; Clean Pipelines.</li>
-<li>Reproducible and Testable.</li>
-<li>Integrates with other great ecosystems like <code>pydantic</code>, <code>fastapi</code> &amp; <code>mypy</code>.</li>
+<li><code>pandas</code></li>
+<li><strong><code>polars</code></strong></li>
+<li>Arrow, PostgreSQL, <code>parquet</code>, <code>deltalake</code>, …</li>
 </ol>
-<p>What makes me <strong>not exited</strong> about <code>pandera</code>?</p>
-<ol type="1">
-<li><strong>No <code>polars</code> support yet</strong></li>
-<li>It validates through <strong>run-time crashes</strong> (because of Python)
-<ul>
-<li>It helps that <code>pandera</code> has <code>lazy evaluation</code>, but still it’s runtime!</li>
-</ul></li>
-</ol>
-<section id="how-im-using-pandera-in-production-setting" class="level2">
-<h2 class="anchored" data-anchor-id="how-im-using-pandera-in-production-setting">How I’m using <code>pandera</code> in production setting</h2>
-<p>Because life is how life is a lot of our pipelines, especially ML pipelines, are written fully in Python. I’m really happy to have tools like <code>polars</code> which makes it a tad bit speedier, but in all honesty I’d deeply prefer to use a fully typed language like Kotlin or Scala.</p>
-<p>To build maintainable pipelines we need to know what to expect and what to do in the unexpected, in Python we glue these pieces together unlike strongly typed languages where it’s built into the core itself.</p>
-<p>But because life is how life is we use Python and <code>pandera</code> shines brightly in making the non-typed world a little bit better.</p>
-<p>In our ML pipelines we decorate inputs to make sure we have the right data as expected before training our models. <code>pandera</code> fits really nicely into an organisation that has a structured orchestration tool like <code>dagster</code> or similar.</p>
+<p>Where you simply query on top of the datastructure which makes the query incredibly efficient even if it’s not “DuckDB”-format. It all becomes painless and efficient through the <a href="https://arrow.apache.org">Apache Arrow-protocol</a>. Arrow is a <em>cross-language development platform for in-memory analytics</em> which is very fast, because the underlying structure remains we never copy data between DuckDB and <code>polars</code> as an example. Rather DuckDB operates on <code>polars</code> Arrow dataset. Cool? Yes! 🤓</p>
+<p>Lately they’ve added superb <a href="https://duckdb.org/2023/04/28/spatial.html">Spatial Support</a> where they leverage <a href="https://gdal.org/">GDAL</a>.</p>
+<p>Recently <a href="https://motherduck.com/">Motherduck</a> gave a talk on how <a href="https://motherduck.com/blog/big-data-is-dead/"><em>Big Data is Dead</em></a>, where a BigQuery founding engineer laid out the average customer doesn’t have Big Data. Jordan Tigani notes the following trends.</p>
+<div id="fig-queries" class="quarto-layout-panel">
+<figure class="figure">
+<div class="quarto-layout-row quarto-layout-valign-top">
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="assets/average_load.jpg" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption">Data Sizes at Companies</figcaption>
+</figure>
+</div>
+</div>
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="assets/query_intensity.jpg" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption">Query Intensity on Data by Age</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p></p><figcaption class="figure-caption">Figure&nbsp;1: Jordan Tigani’s ‘Feel of the Industry’</figcaption><p></p>
+</figure>
+</div>
+<p>Further Jordan notes that from 2006 to 2023 we see a huge increase in how powerful single nodes are. In 2006 you could get 2GB RAM, today a standard instance has 256 GB RAM and if you slap your wallet at the problem you can get 24TB (!) RAM.</p>
+<p>Through this power of a single node more than 99.9% of all problems should be possible to solve through a single node where DuckDB can reign supreme.</p>
+</section>
+<section id="how-am-i-using-duckdb-in-my-professional-life" class="level1">
+<h1>How am I using DuckDB in my professional life?</h1>
+<p>DuckDB is integral to my workflow. I use it when <code>polars</code> is not enough. Because DuckDB can easily query <code>parquet</code> we’re good to go in most Machine Learning setups.</p>
+<p>Connecting directly to S3 is as simple as using the official <a href="https://duckdb.org/docs/guides/import/s3_import.html"><code>httpfs</code> extension</a> which is done in the following way:</p>
+<pre><code>INSTALL httpfs; # run once
+
+LOAD httpfs;</code></pre>
+</section>
+<section id="how-i-want-to-move-forward-with-duckdb" class="level1">
+<h1>How I want to move forward with DuckDB</h1>
+<p>I have so many plans on what I wish to achieve.</p>
+<section id="poor-mans-data-lake" class="level2">
+<h2 class="anchored" data-anchor-id="poor-mans-data-lake">Poor Mans Data Lake</h2>
+<p>I have been thinking a lot lately on building my own Data Lake using DuckDB, <code>polars</code> &amp; <code>dagster</code>. This would be greatly inspired by <code>dagster</code>’s <a href="https://dagster.io/blog/duckdb-data-lake">blog - ‘Poor Mans Data Lake’</a>.</p>
+</section>
+<section id="best-practices-write-up" class="level2">
+<h2 class="anchored" data-anchor-id="best-practices-write-up">Best Practices Write-Up</h2>
+<p>Additionally it’d be very interesting to set up a “Best Practices” using “Local First” tooling such as DuckDB &amp; <code>polars</code>. When to use what and how they differentiate.</p>
 
 
+</section>
 </section>
 
 </main> <!-- /main -->

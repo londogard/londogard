@@ -10,6 +10,7 @@
   {
     "listing": "/index.html",
     "items": [
+      "/posts/2023-05-05-duckdb.html",
       "/posts/2023-04-30-pandera.html",
       "/posts/2023-03-31-yelp-reviews.html",
       "/posts/2023-03-20-deepchecks/index.html",

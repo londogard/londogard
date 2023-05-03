@@ -487,7 +487,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>The first step is to improve our vectorization.</p>
 <section id="tf-idf" class="level4">
 <h4 class="anchored" data-anchor-id="tf-idf">TF-IDF</h4>
-<p>If you were at <em>first friday (<span class="citation" data-cites="ÅF">@ÅF</span>)</em> you have heard about TF-IDF earlier. TF-IDF stands for <em>Term Frequence-Inverse Document Frequency</em> and is a measurement that aims to fight imbalances in texts.</p>
+<p>If you were at <em>first friday (<span class="citation" data-cites="ÅF">(<a href="#ref-ÅF" role="doc-biblioref"><strong>ÅF?</strong></a>)</span>)</em> you have heard about TF-IDF earlier. TF-IDF stands for <em>Term Frequence-Inverse Document Frequency</em> and is a measurement that aims to fight imbalances in texts.</p>
 <p>In our vectorization step we look at the word-count meaning that we’ll have some biases to how much a word is present, the longer the text the more the bias. To reduce this we can take the word-count divided by the total amount of words in the text (TF). We also want to downscale the words that are incredibly frequent such as stop words and topic-related words, and upscale unusual words somewhat, e.g.<em>glamorous</em> might not be frequent but it is important to the text most likely. We use <em>IDF</em> for this. We then take these two and combine.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
