@@ -1,0 +1,42 @@
+---
+title: "Kotlin DataFrame vs Polars DataFrame"
+description: "I work using Scala, Kotlin & Python. There's two DataFrame API's (polars & Kotlin DataFrame) which I'd like to benchmark."
+categories: [dataframe]
+date: "2023-05-06"
+---
+
+Benchmarking is notourusly hard, hence I know these results are not fully show-casing possibilities of the JVM. Nontheless, they're results.
+
+## Benchmark Details
+
+1. Pre-downloaded CSV
+2. Use Eager-API as Kotlin DataFrame does not have a Lazy API (this would help `polars` further)
+3. Run 10k times to make sure the JVM isn't a slow starter (one should do this even better using [JMH](https://github.com/openjdk/jmh) and their API to benchmark)
+
+## Results
+
+The results speak clearly.
+
+::: {#fig-dfs layout-ncol=2}
+
+![Kotlin DataFrame (5.4s)](assets/kotlin.png)
+
+![polars DataFrame (2.6s)](assets/polars.png)
+
+DataFrame Comparison of 10k runs.
+:::
+
+1. `polars` is 2x faster (!).
+2. `polars` uses 1GB less RAM.
+3. `polars` actually downloaded the same CSV file 12x faster, and caches the result internally unlike Kotlin for later instant usage.
+
+## Thoughts
+
+I think it's interesting to see how much faster `polars` is, even if I use eager API and don't use any fancy feature(s) like `groupBy` that's optimized like crazy. 
+
+It really showcases what a powerhouse Rust is to run intensive applications with, and now I'm left wondering if perhaps one should wrap `polars` on the JVM. 🤓 This has been done for other platforms, such as [NodeJS](https://pola-rs.github.io/nodejs-polars/index.html), [R](https://rpolars.github.io/index.html) & [Elixir](https://github.com/elixir-nx/explorer).
+
+Wrapping Rust from the JVM isn't easy today though, but with the new progress with [Project Panama](https://developer.okta.com/blog/2022/04/08/state-of-ffi-java) it should be easier. Project Panama introduces a simpler, safer and more efficient way to call Native code from the JVM through the _Foreign Function & Memory API_. I expect it to become even better as it's currently only in preview... 😉
+
+That's all for now.  
+~Hampus
