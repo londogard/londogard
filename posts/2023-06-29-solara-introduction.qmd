@@ -1,0 +1,334 @@
+---
+title: "Solara - 'A new Reactive Streamlit'"
+description: "Solara is fresh and exciting, to me it seems to have more industrial potential than streamlit. In this post I’ll introduce solara and compare it to the more well known streamlit that can be used to build web apps and interactive Data Dashboards."
+categories: [data, dashboard, webapp]
+date: "2023-06-29"
+---
+
+Solara is fresh and exciting, to me it seems to have more industrial potential than streamlit. In this post I’ll introduce solara and compare it to the more well known streamlit that can be used to build web apps and interactive Data Dashboards.
+
+I'm very excited to see where it ends up in the future, very possibly in a bright spot. During my initial tests it seems like a solid framework, there's still some edges to fix but all in all it's really good!  
+
+Here's my small introduction and comparison with streamlit!
+
+
+### Streamlit and why it’s awesome
+
+I’m a huge streamlit fan. There’s so much to love, the first time I tried it everything clicked. It’s simple and good looking, the User Experience (UX) and Developer Experience (DX) is exceptional. Using it I can easily build beautiful web apps, efficient Data Dashboards and small Proof-of-Concepts.
+
+  
+
+With that said everything has a drawback, and streamlit’s is performance once it scales to large. Streamlit works by rerunning everything in the script top-down once a change happens in the webapp. This makes it incredibly simple to reason about and reduces the number of bugs, but it also builds what can become a huge bottleneck and slow down the app. 
+
+Streamlit solves this by introducing `cache`  which allows reusing results from expensive computations and in the UI they reuse components to make the flow smother if nothing changes, this is done using the internal `state`. Once you start modifying `state`  and `cache` the complexity grows quickly and the app becomes much harder to reason about.
+
+  
+
+Streamlit could solve this by enabling better API’s which allows better “data-flow” choices, like the `st.form`  enables non-recalculated views unless submitted.
+
+  
+
+For now though... Let’s try **`solara`** a new exciting framework which does exactly this, but without the same simplicity.
+
+  
+
+### Solara Introduction
+
+Solara is a similar framework to streamlit, but rather than rerunning everything top-down every time it uses a reactive approach through `reacton` ([github.com/widgetti/reacton](https://github.com/widgetti/reacton)) that is a pure Python port of React to `ipywidgets`.
+
+This means that only components that are using the reactive variable is rerun, which is very exciting! The performance improvements becomes great at the cost of a more declarative state-handling.
+
+  
+
+In streamlit state is handled for you, in solara you’ve to solve it yourself – but at least there’s no hidden magic that can become very complex when the app grows.
+
+An example app and deeper introduction can be found in a later section.
+
+## 🥊Solara versus Streamlit
+
+In here I’ll compare solara and streamlit, for a more in-depth usage see later sections.
+
+### TL;DR
+
+Code is on GitHub [lundez/solara_app](https://github.com/Lundez/solara_app) / @sec-appendix, and I added suggested improvements via [PR#180](https://github.com/widgetti/solara/pull/180) and [Issue#177](https://github.com/widgetti/solara/issues/177) to solara.
+
+- **Con** Higher learning curve (floor) as you handle state manually (no magic), but with better DX I see it beating streamlit because of the higher ceiling that brings new possibilities.
+    - **Pro** Bonus: we learn the react paradigm which is widely used in frontend! A win-win for developers.
+- **Pro** A better industrial thinking
+    1. Testing is actually handled E2E by using `playwright`  – [docs](https://solara.dev/docs/howto/testing).
+    2. Routing is first-class citizen – [docs](https://solara.dev/docs/understanding/routing).
+    3. Embeddable, in flask/fastAPI/... – [docs](https://solara.dev/docs/deploying/self-hosted).
+- **Con** UX is not as good as streamlit.
+- **Pro** Embeddable in Notebooks making it simpler to go _really fast_.
+- **Pro** Access to all `ipywidgets` which is an incredible ecosystem. 
+
+  
+
+Additionally compared to another interesting framework like [Panel](https://panel.holoviz.org/ "https://panel.holoviz.org/") it’s much simpler IMO.
+
+  
+
+Most certainly solara has a bright future if the development and maintenance is kept up, with additional marketing it can become a great competitor in the space for Gradio, Streamlit and others.
+
+  
+
+## Solara Introduction  
+
+All code is available on GitHub [lundez/solara\_app](https://github.com/Lundez/solara_app "https://github.com/Lundez/solara_app") and @sec-appendix.
+
+  
+
+### A simple app
+
+Using solara to build a simple app is pretty clean, we can clearly see the `react` -hook being used for `file`  which is cool!
+
+We need to define our logic inside a `component`  and based on my testing the first `component`  in the main-file is the one automatically rendered. To show in a notebook you simply use `display(Page())`. 
+
+```python
+import solara
+import polars as pl
+
+@solara.component
+def Page():
+    file, set_file = solara.use_state(None)
+    solara.Markdown("# Solara Example App (Starbucks Data)")
+    solara.FileDrop(on_file=set_file, lazy=False)
+    if file is not None:
+        df = pl.read_csv(file["data"], null_values="-").drop_nulls()
+        solara.DataFrame(df.to_pandas()) # currently does not support polars
+    else:
+        solara.Text("Make sure to upload a file")
+```
+
+  
+
+And run it through
+
+```bash
+solara run app.py
+# use solara run --host localhost app.py on WSL until PR#180 or other is merged
+```
+
+  
+
+Quite simple right? And incredibly similar to how you run streamlit 😉.
+
+  
+
+### Working more with state
+
+In the previous code we only used the state inside the same component, that’s all fine but it’s not a very good use-case.
+
+Solara introduces 2 other types of state, `reactive`  and `use_reactive`. Both very similar but `use_reactive`  is only possible to use locally inside a `component`. The `reactive`  one will be reset each time the component re-renders, which is not very good.
+
+As such we define a `reactive`  variable `sodium`.
+
+```python
+sodium = solara.reactive(0)
+```
+
+further we bind this to a slider
+
+```python
+solara.SliderInt(value=sodium)
+```
+
+where it’ll automatically update whenever a user changes the slider.  
+We can then send this to a child-component which would be updated as well when it’s changed.
+
+```python
+ChildPage(sodium)
+```
+
+See [lundez/solara\_app](https://github.com/Lundez/solara_app "https://github.com/Lundez/solara_app") to get a little more complex scenario.
+
+And that’s my quick and dirty introduction to Solara!
+
+## Solara and Streamlit comparison
+
+A comparison between the two is available in @sec-appendix, where I use multiple components and share state between them. If you add some logging you can see that **Solara doesn't rerun code that doesn't need to**.
+
+### Quick Facts
+
+|     |     |     |
+| --- | --- | --- |
+| Measurement | Solara | Streamlit |
+| #lines of code (LOC) | 55  | **49** |
+| Simplicity (0-5) | 3   | **4** |
+| Performance (0-5) | **4** | 3   |
+| UX (0-5) | 3   | **5** |
+
+  
+
+Streamlit wins most, but with the performance and possibilities of Solara I still see it as a very capable contender. With, hopefully soon, improved UX and DX `solara`  can grow to be really big!
+
+In the TL;DR section you can see some other nicities of Solara such as Testing, Embeddability and more! 
+
+  
+
+### Deeper Comparison
+
+#### State and ‘pythonicism’
+
+The `react`  paradigm while cool is **certainly not pythonic** at all! I believe that the **initial “PoC”-stage implementation should be simpler** to get started with. To “turn the knobs” and squeeze performance as is possible is great and should certainly be available for the more performance intense sections.
+
+The positive of all this is that we learn the “React-paradigm” and we handle state explicitly, i.e. no streamlit magic! 
+
+**It’s a tie.**
+
+
+#### Embeddability
+
+The embedability of Solara is a clear winner, being able to include it in our FastAPI backend or building an app initially directly in a Jupyter Notebook is insanely good.
+
+**Solara wins.**
+
+#### Components / UX
+
+Streamlits components are better and more beautiful but Solara is not far behind, and with the possibility to use all components from `ipywidget`\-ecosystem makes it incredibily powerful.
+
+I see this as a huge boon.
+
+**It’s a tie,** but streamlit wins the ‘simplicity’ and ‘looks’ with a large margin.
+  
+#### Readability
+
+Because `solara`  has less magic I believe Solara is easier to reason about in a complex app, but in the PoC’s and simple apps streamlit is just as simple.
+
+**It’s a tie**, but solara wins as the app grows.
+
+
+## Outro
+
+I believe that `streamlit`  still is the best framework to get started with, but in 6 months from now on I can see `solara`  as the better option.
+
+If you’re developing a dashboard or app that needs high performance and industrial strength I can see `solara`  as a better choice.
+
+
+I’ll happily try to help solara grow!
+  
+
+~Hampus Londögård
+
+# Appendix {#sec-appendix}
+
+I include full code here as well. These are taken from [lundez/solara_app](https://github.com/Lundez/solara_app) the 29/6 2023.
+
+## Solara App
+
+Run using `solara run <filename>`.
+
+```python
+from dataclasses import dataclass
+import solara
+import polars as pl
+import solara.express as px
+
+@solara.component
+def Page():
+    file, set_file = solara.use_state(None)
+    
+    solara.Markdown("# Solara Example App (Starbucks Data)")
+    solara.FileDrop(on_file=set_file, lazy=False)
+    if file is not None:
+        df = pl.read_csv(file["data"], null_values="-").drop_nulls()
+        DFViews(df)
+    else:
+        solara.Text("Make sure to upload a file")
+
+@dataclass
+class FilterValues:
+    sodium: tuple[int, int]
+    carb: tuple[int, int]
+
+@solara.component
+def Filters(df: pl.DataFrame, filters: solara.Reactive[FilterValues]):
+    with solara.Card("Filter DataFrame"):
+        carbs = solara.use_reactive((df["Carb. (g)"].min(), df["Carb. (g)"].max()))
+        sodium = solara.use_reactive((df["Sodium"].min(), df["Sodium"].max()))
+        solara.SliderRangeInt("Carbs (g)", value=carbs, min=df["Carb. (g)"].min(), max=df["Carb. (g)"].max())
+        solara.SliderRangeInt("Sodium", value=sodium, min=df["Sodium"].min(), max=df["Sodium"].max())
+        
+        with solara.CardActions():
+            solara.Button("Submit", on_click=lambda: filters.set(FilterValues(sodium.value, carbs.value)))
+
+@solara.component
+def FilteredPage(df: pl.DataFrame, filter_values: solara.Reactive[FilterValues]):
+    df = df.filter(pl.col("Sodium").is_between(filter_values.value.sodium[0], filter_values.value.sodium[1]) &
+                   pl.col("Carb. (g)").is_between(filter_values.value.carb[0], filter_values.value.carb[1]))
+    DFVis(df)
+
+@solara.component
+def DFVis(df: pl.DataFrame):
+    solara.Markdown(f"## DataFrame")
+    solara.DataFrame(df.to_pandas(), items_per_page=5)
+    px.histogram(df, x=["Carb. (g)", "Sodium"])
+
+@solara.component
+def DFViews(df: pl.DataFrame):
+    filter_values = solara.use_reactive(FilterValues((df["Carb. (g)"].min(), df["Carb. (g)"].max()), (df["Sodium"].min(), df["Sodium"].max())))
+    Filters(df, filter_values)
+    with solara.Columns():
+        with solara.Column():
+            DFVis(df)
+            
+        with solara.Column():
+            FilteredPage(df, filter_values)
+```
+
+
+## Streamlit App
+
+Run using `streamlit run <filename>`.
+
+```python
+from dataclasses import dataclass
+import streamlit as st
+import polars as pl
+import plotly.express as px
+
+def Page():
+    st.markdown("# Streamlit Example App (Starbucks Data)")
+    file = st.file_uploader("Upload a file")
+    if file is not None:
+        df = pl.read_csv(file, null_values="-").drop_nulls()
+        DFViews(df)
+    else:
+        st.write("Make sure to upload a file")
+
+@dataclass
+class FilterValues:
+    sodium: tuple[int, int]
+    carb: tuple[int, int]
+
+def Filters(df: pl.DataFrame) -> FilterValues:
+    with st.form("df_filer"):
+        st.write("**Filter DataFrame**")
+        carbs = (df["Carb. (g)"].min(), df["Carb. (g)"].max())
+        sodium = (df["Sodium"].min(), df["Sodium"].max())
+        carbs = st.slider("Carb. (g)", min_value=carbs[0], max_value=carbs[1], value=carbs)
+        sodium = st.slider("Sodium", min_value=sodium[0], max_value=sodium[1], value=sodium)
+        
+        st.form_submit_button("Submit")
+    return FilterValues(sodium, carbs)
+
+def FilteredPage(df: pl.DataFrame, filter_values: FilterValues):
+    df = df.filter(pl.col("Sodium").is_between(filter_values.sodium[0], filter_values.sodium[1]) &
+                   pl.col("Carb. (g)").is_between(filter_values.carb[0], filter_values.carb[1]))
+    DFVis(df)
+
+def DFVis(df: pl.DataFrame):
+    st.markdown(f"## DataFrame")
+    st.dataframe(df.to_pandas())
+    st.write(px.histogram(df, x=["Carb. (g)", "Sodium"]))
+
+def DFViews(df: pl.DataFrame):
+    filters = Filters(df)
+    c1, c2 = st.columns(2)
+    with c1:
+        DFVis(df)
+    with c2:
+        FilteredPage(df, filters)
+
+Page()
+```
