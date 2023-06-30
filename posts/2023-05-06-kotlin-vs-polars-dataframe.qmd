@@ -5,11 +5,13 @@ categories: [dataframe]
 date: "2023-05-06"
 ---
 
+**N.B.** added dataset and link to Datalore Notebooks.
+
 Benchmarking is notourusly hard, hence I know these results are not fully show-casing possibilities of the JVM. Nontheless, they're results.
 
 ## Benchmark Details
 
-1. Pre-downloaded CSV
+1. Pre-downloaded CSV (dataset: [Plotly All Stocks 5 Years](https://github.com/plotly/datasets/raw/master/all_stocks_5yr.csv))
 2. Use Eager-API as Kotlin DataFrame does not have a Lazy API (this would help `polars` further)
 3. Run 10k times to make sure the JVM isn't a slow starter (one should do this even better using [JMH](https://github.com/openjdk/jmh) and their API to benchmark)
 
@@ -19,11 +21,11 @@ The results speak clearly.
 
 ::: {#fig-dfs layout-ncol=2}
 
-![Kotlin DataFrame (5.4s)](assets/kotlin.png)
+![Kotlin DataFrame (5.4s) [Datalore Notebook](https://datalore.jetbrains.com/notebook/IpONsMtuU4rzMXd6MwMYnh/PSh1Gzu1kUBrhIrl90nu14)](assets/kotlin.png)
 
-![polars DataFrame (2.6s)](assets/polars.png)
+![polars DataFrame (2.6s) [Datalore Notebook](https://datalore.jetbrains.com/notebook/IpONsMtuU4rzMXd6MwMYnh/iKhywUCjfhXdmQWjwd6eT3)](assets/polars.png)
 
-DataFrame Comparison of 10k runs.
+DataFrame Comparison of 10k runs on [Plotly All Stocks 5 Years](https://github.com/plotly/datasets/raw/master/all_stocks_5yr.csv).
 :::
 
 1. `polars` is 2x faster (!).
