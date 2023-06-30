@@ -2,7 +2,7 @@
 title: "Solara - 'A new Reactive Streamlit'"
 description: "Solara is fresh and exciting, to me it seems to have more industrial potential than streamlit. In this post I’ll introduce solara and compare it to the more well known streamlit that can be used to build web apps and interactive Data Dashboards."
 categories: [data, dashboard, webapp]
-date: "2023-06-29"
+date: "2023-06-30"
 ---
 
 Solara is fresh and exciting, to me it seems to have more industrial potential than streamlit. In this post I’ll introduce solara and compare it to the more well known streamlit that can be used to build web apps and interactive Data Dashboards.
@@ -156,7 +156,7 @@ A comparison between the two is available in @sec-appendix, where I use multiple
 | #lines of code (LOC) | 55  | **49** |
 | Simplicity (0-5) | 3   | **4** |
 | Performance (0-5) | **4** | 3   |
-| UX (0-5) | 3   | **5** |
+| UX (0-5) - images in @sec-ux | 3   | **5** |
 
   
 
@@ -183,13 +183,37 @@ The embedability of Solara is a clear winner, being able to include it in our Fa
 
 **Solara wins.**
 
-#### Components / UX
+#### Components / UX {#sec-ux}
 
 Streamlits components are better and more beautiful but Solara is not far behind, and with the possibility to use all components from `ipywidget`\-ecosystem makes it incredibily powerful.
 
 I see this as a huge boon.
 
-**It’s a tie,** but streamlit wins the ‘simplicity’ and ‘looks’ with a large margin.
+##### Image Comparisons of Components
+
+::: {layout-ncol=2}
+![**Solara No File** -- bad design and too raw](assets/solara_no_file.png)
+
+![**Streamlit No File** -- clear in both drag & select files](assets/streamlit_no_file.png)
+
+![**Solara With File** -- we cannot remove file clearly](assets/solara_file.png)
+
+![**Streamlit With File** -- file can be removed easily](assets/streamlit_file.png)
+
+![**Solara Slider** -- we don't know the values](assets/solara_slider.png)
+
+![**Streamlit Slider** -- values are clear](assets/streamlit_slider.png)
+
+![**Solara Moving Slider** -- we now see values](assets/solara_slider_active.png)
+
+![**Streamlit Moving Slider**](assets/streamlit_slider_active.png)
+
+![**Solara DataFrame** -- great with defaulted pagination, no sorting though.](assets/solara_df.png)
+
+![**Streamlit DataFrame** -- we can sort and the columns are clearly separated, it's also searchable](assets/streamlit_df.png)
+:::
+
+**It’s a small win for streamlit,** streamlit clearly wins the ‘simplicity’, ‘design’ and 'clearness' but solara has a bonus for the amount of widgets available through `ipywidgets` ecosystem.
   
 #### Readability
 
