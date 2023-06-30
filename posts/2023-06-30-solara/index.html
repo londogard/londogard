@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Hampus Londögård">
-<meta name="dcterms.date" content="2023-06-29">
+<meta name="dcterms.date" content="2023-06-30">
 <meta name="description" content="Solara is fresh and exciting, to me it seems to have more industrial potential than streamlit. In this post I’ll introduce solara and compare it to the more well known streamlit that can be used to build web apps and interactive Data Dashboards.">
 
 <title>Londogard Blog - Solara - ‘A new Reactive Streamlit’</title>
@@ -60,23 +60,23 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </style>
 
 
-<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="../site_libs/quarto-nav/headroom.min.js"></script>
-<script src="../site_libs/clipboard/clipboard.min.js"></script>
-<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="../site_libs/quarto-search/fuse.min.js"></script>
-<script src="../site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="../">
-<link href="../favicon.ico" rel="icon">
-<script src="../site_libs/quarto-html/quarto.js"></script>
-<script src="../site_libs/quarto-html/popper.min.js"></script>
-<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="../site_libs/quarto-html/anchor.min.js"></script>
-<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
-<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../../favicon.ico" rel="icon">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -99,11 +99,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 }</script>
 
 
-<link rel="stylesheet" href="../styles.css">
+<link rel="stylesheet" href="../../styles.css">
 <meta name="twitter:title" content="Londogard Blog - Solara - ‘A new Reactive Streamlit’">
 <meta name="twitter:description" content="Solara is fresh and exciting, to me it seems to have more industrial potential than streamlit. In this post I’ll introduce solara and compare it to the more well known streamlit that can be used to build web apps and interactive Data Dashboards.">
+<meta name="twitter:image" content="https://blog.londogard.com/posts/2023-06-30-solara/assets/solara_no_file.png">
 <meta name="twitter:creator" content="@hlondogard">
-<meta name="twitter:card" content="summary">
+<meta name="twitter:image-height" content="127">
+<meta name="twitter:image-width" content="537">
+<meta name="twitter:card" content="summary_large_image">
 </head>
 
 <body class="nav-fixed">
@@ -113,7 +116,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <nav class="navbar navbar-expand-lg navbar-dark ">
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container">
-    <a class="navbar-brand" href="../index.html">
+    <a class="navbar-brand" href="../../index.html">
     <span class="navbar-title">Londogard Blog</span>
     </a>
   </div>
@@ -124,7 +127,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item">
-    <a class="nav-link" href="../pages/presentations.html" rel="" target="">
+    <a class="nav-link" href="../../pages/presentations.html" rel="" target="">
  <span class="menu-text">Presentations</span></a>
   </li>  
   <li class="nav-item">
@@ -134,11 +137,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </ul>
             <ul class="navbar-nav navbar-nav-scroll ms-auto">
   <li class="nav-item">
-    <a class="nav-link" href="../pages/about.html" rel="" target="">
+    <a class="nav-link" href="../../pages/about.html" rel="" target="">
  <span class="menu-text">About</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../pages/code_setup/code_setup.html" rel="" target="">
+    <a class="nav-link" href="../../pages/code_setup/code_setup.html" rel="" target="">
  <span class="menu-text">Dev Setup</span></a>
   </li>  
   <li class="nav-item compact">
@@ -171,7 +174,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     </ul>
   </li>
   <li class="nav-item compact">
-    <a class="nav-link" href="../index.xml" rel="" target=""><i class="bi bi-rss" role="img" aria-label="Londogard Blog RSS">
+    <a class="nav-link" href="../../index.xml" rel="" target=""><i class="bi bi-rss" role="img" aria-label="Londogard Blog RSS">
 </i> 
  <span class="menu-text"></span></a>
   </li>  
@@ -213,7 +216,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <div>
       <div class="quarto-title-meta-heading">Published</div>
       <div class="quarto-title-meta-contents">
-        <p class="date">June 29, 2023</p>
+        <p class="date">June 30, 2023</p>
       </div>
     </div>
     
@@ -371,7 +374,7 @@ We can then send this to a child-component which would be updated as well when i
 <td>3</td>
 </tr>
 <tr class="odd">
-<td>UX (0-5)</td>
+<td>UX (0-5) - images in <a href="#sec-ux">Section&nbsp;0.3.2.3</a></td>
 <td>3</td>
 <td><strong>5</strong></td>
 </tr>
@@ -393,11 +396,106 @@ We can then send this to a child-component which would be updated as well when i
 <p>The embedability of Solara is a clear winner, being able to include it in our FastAPI backend or building an app initially directly in a Jupyter Notebook is insanely good.</p>
 <p><strong>Solara wins.</strong></p>
 </section>
-<section id="components-ux" class="level4">
-<h4 class="anchored" data-anchor-id="components-ux">Components / UX</h4>
+<section id="sec-ux" class="level4">
+<h4 class="anchored" data-anchor-id="sec-ux">Components / UX</h4>
 <p>Streamlits components are better and more beautiful but Solara is not far behind, and with the possibility to use all components from&nbsp;<code>ipywidget</code>-ecosystem makes it incredibily powerful.</p>
 <p>I see this as a huge boon.</p>
-<p><strong>It’s a tie,</strong>&nbsp;but streamlit wins the ‘simplicity’ and ‘looks’ with a large margin.</p>
+<section id="image-comparisons-of-components" class="level5">
+<h5 class="anchored" data-anchor-id="image-comparisons-of-components">Image Comparisons of Components</h5>
+<div class="quarto-layout-panel">
+<div class="quarto-layout-row quarto-layout-valign-top">
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="assets/solara_no_file.png" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption"><strong>Solara No File</strong> – bad design and too raw</figcaption>
+</figure>
+</div>
+</div>
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="assets/streamlit_no_file.png" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption"><strong>Streamlit No File</strong> – clear in both drag &amp; select files</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<div class="quarto-layout-row quarto-layout-valign-top">
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="assets/solara_file.png" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption"><strong>Solara With File</strong> – we cannot remove file clearly</figcaption>
+</figure>
+</div>
+</div>
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="assets/streamlit_file.png" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption"><strong>Streamlit With File</strong> – file can be removed easily</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<div class="quarto-layout-row quarto-layout-valign-top">
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="assets/solara_slider.png" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption"><strong>Solara Slider</strong> – we don’t know the values</figcaption>
+</figure>
+</div>
+</div>
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="assets/streamlit_slider.png" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption"><strong>Streamlit Slider</strong> – values are clear</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<div class="quarto-layout-row quarto-layout-valign-top">
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="assets/solara_slider_active.png" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption"><strong>Solara Moving Slider</strong> – we now see values</figcaption>
+</figure>
+</div>
+</div>
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="assets/streamlit_slider_active.png" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption"><strong>Streamlit Moving Slider</strong></figcaption>
+</figure>
+</div>
+</div>
+</div>
+<div class="quarto-layout-row quarto-layout-valign-top">
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="assets/solara_df.png" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption"><strong>Solara DataFrame</strong> – great with defaulted pagination, no sorting though.</figcaption>
+</figure>
+</div>
+</div>
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="assets/streamlit_df.png" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption"><strong>Streamlit DataFrame</strong> – we can sort and the columns are clearly separated, it’s also searchable</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<p><strong>It’s a small win for streamlit,</strong>&nbsp;streamlit clearly wins the ‘simplicity’, ‘design’ and ‘clearness’ but solara has a bonus for the amount of widgets available through <code>ipywidgets</code> ecosystem.</p>
+</section>
 </section>
 <section id="readability" class="level4">
 <h4 class="anchored" data-anchor-id="readability">Readability</h4>
@@ -784,7 +882,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     <div class="nav-footer-center">
       <ul class="footer-items list-unstyled">
     <li class="nav-item">
-    <a class="nav-link" href="../pages/about.html">About</a>
+    <a class="nav-link" href="../../pages/about.html">About</a>
   </li>  
 </ul>
     </div>
@@ -809,7 +907,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     </a>
   </li>  
     <li class="nav-item compact">
-    <a class="nav-link" href="../index.xml">
+    <a class="nav-link" href="../../index.xml">
       <i class="bi bi-rss" role="img" aria-label="Londogard Blog RSS">
 </i> 
     </a>

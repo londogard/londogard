@@ -2,7 +2,8 @@
   {
     "listing": "/index.html",
     "items": [
-      "/posts/2023-06-29-solara-introduction.html",
+      "/posts/2023-06-30-solara/index.html",
+      "/posts/2023-05-06-kotlin-vs-polars-dataframe.html",
       "/posts/2023-05-05-duckdb.html",
       "/posts/2023-04-30-pandera.html",
       "/posts/2023-03-31-yelp-reviews.html",
@@ -42,11 +43,11 @@
     ]
   },
   {
-    "listing": "/pages/presentations.html",
+    "listing": "/pages/code_setup/code_setup.html",
     "items": []
   },
   {
-    "listing": "/pages/code_setup/code_setup.html",
+    "listing": "/pages/presentations.html",
     "items": []
   }
 ]

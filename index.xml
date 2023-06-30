@@ -10,11 +10,11 @@
 <atom:link href="https://blog.londogard.com/index.xml" rel="self" type="application/rss+xml"/>
 <description>A blog which majorly focuses on Data Science, Data Engineering and sometimes Kotlin / Scala.</description>
 <generator>quarto-1.3.433</generator>
-<lastBuildDate>Thu, 29 Jun 2023 00:00:00 GMT</lastBuildDate>
+<lastBuildDate>Fri, 30 Jun 2023 00:00:00 GMT</lastBuildDate>
 <item>
   <title>Solara - ‘A new Reactive Streamlit’</title>
   <dc:creator>Hampus Londögård</dc:creator>
-  <link>https://blog.londogard.com/posts/2023-06-29-solara-introduction.html</link>
+  <link>https://blog.londogard.com/posts/2023-06-30-solara/index.html</link>
   <description><![CDATA[ 
 
 
@@ -191,7 +191,7 @@ We can then send this to a child-component which would be updated as well when i
 <td>3</td>
 </tr>
 <tr class="odd">
-<td>UX (0-5)</td>
+<td>UX (0-5) - images in Section&nbsp;0.3.2.3</td>
 <td>3</td>
 <td><strong>5</strong></td>
 </tr>
@@ -213,11 +213,106 @@ We can then send this to a child-component which would be updated as well when i
 <p>The embedability of Solara is a clear winner, being able to include it in our FastAPI backend or building an app initially directly in a Jupyter Notebook is insanely good.</p>
 <p><strong>Solara wins.</strong></p>
 </section>
-<section id="components-ux" class="level4">
-<h4 class="anchored" data-anchor-id="components-ux">Components / UX</h4>
+<section id="sec-ux" class="level4">
+<h4 class="anchored" data-anchor-id="sec-ux">Components / UX</h4>
 <p>Streamlits components are better and more beautiful but Solara is not far behind, and with the possibility to use all components from&nbsp;<code>ipywidget</code>-ecosystem makes it incredibily powerful.</p>
 <p>I see this as a huge boon.</p>
-<p><strong>It’s a tie,</strong>&nbsp;but streamlit wins the ‘simplicity’ and ‘looks’ with a large margin.</p>
+<section id="image-comparisons-of-components" class="level5">
+<h5 class="anchored" data-anchor-id="image-comparisons-of-components">Image Comparisons of Components</h5>
+<div class="quarto-layout-panel">
+<div class="quarto-layout-row quarto-layout-valign-top">
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://blog.londogard.com/posts/2023-06-30-solara/assets/solara_no_file.png" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption"><strong>Solara No File</strong> – bad design and too raw</figcaption>
+</figure>
+</div>
+</div>
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://blog.londogard.com/posts/2023-06-30-solara/assets/streamlit_no_file.png" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption"><strong>Streamlit No File</strong> – clear in both drag &amp; select files</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<div class="quarto-layout-row quarto-layout-valign-top">
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://blog.londogard.com/posts/2023-06-30-solara/assets/solara_file.png" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption"><strong>Solara With File</strong> – we cannot remove file clearly</figcaption>
+</figure>
+</div>
+</div>
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://blog.londogard.com/posts/2023-06-30-solara/assets/streamlit_file.png" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption"><strong>Streamlit With File</strong> – file can be removed easily</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<div class="quarto-layout-row quarto-layout-valign-top">
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://blog.londogard.com/posts/2023-06-30-solara/assets/solara_slider.png" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption"><strong>Solara Slider</strong> – we don’t know the values</figcaption>
+</figure>
+</div>
+</div>
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://blog.londogard.com/posts/2023-06-30-solara/assets/streamlit_slider.png" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption"><strong>Streamlit Slider</strong> – values are clear</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<div class="quarto-layout-row quarto-layout-valign-top">
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://blog.londogard.com/posts/2023-06-30-solara/assets/solara_slider_active.png" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption"><strong>Solara Moving Slider</strong> – we now see values</figcaption>
+</figure>
+</div>
+</div>
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://blog.londogard.com/posts/2023-06-30-solara/assets/streamlit_slider_active.png" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption"><strong>Streamlit Moving Slider</strong></figcaption>
+</figure>
+</div>
+</div>
+</div>
+<div class="quarto-layout-row quarto-layout-valign-top">
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://blog.londogard.com/posts/2023-06-30-solara/assets/solara_df.png" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption"><strong>Solara DataFrame</strong> – great with defaulted pagination, no sorting though.</figcaption>
+</figure>
+</div>
+</div>
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://blog.londogard.com/posts/2023-06-30-solara/assets/streamlit_df.png" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption"><strong>Streamlit DataFrame</strong> – we can sort and the columns are clearly separated, it’s also searchable</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<p><strong>It’s a small win for streamlit,</strong>&nbsp;streamlit clearly wins the ‘simplicity’, ‘design’ and ‘clearness’ but solara has a bonus for the amount of widgets available through <code>ipywidgets</code> ecosystem.</p>
+</section>
 </section>
 <section id="readability" class="level4">
 <h4 class="anchored" data-anchor-id="readability">Readability</h4>
@@ -740,8 +835,74 @@ font-style: inherit;">with</span> c2:</span>
   <category>data</category>
   <category>dashboard</category>
   <category>webapp</category>
-  <guid>https://blog.londogard.com/posts/2023-06-29-solara-introduction.html</guid>
-  <pubDate>Thu, 29 Jun 2023 00:00:00 GMT</pubDate>
+  <guid>https://blog.londogard.com/posts/2023-06-30-solara/index.html</guid>
+  <pubDate>Fri, 30 Jun 2023 00:00:00 GMT</pubDate>
+</item>
+<item>
+  <title>Kotlin DataFrame vs Polars DataFrame</title>
+  <dc:creator>Hampus Londögård</dc:creator>
+  <link>https://blog.londogard.com/posts/2023-05-06-kotlin-vs-polars-dataframe.html</link>
+  <description><![CDATA[ 
+
+
+
+
+<p>Benchmarking is notourusly hard, hence I know these results are not fully show-casing possibilities of the JVM. Nontheless, they’re results.</p>
+<section id="benchmark-details" class="level2">
+<h2 class="anchored" data-anchor-id="benchmark-details">Benchmark Details</h2>
+<ol type="1">
+<li>Pre-downloaded CSV</li>
+<li>Use Eager-API as Kotlin DataFrame does not have a Lazy API (this would help <code>polars</code> further)</li>
+<li>Run 10k times to make sure the JVM isn’t a slow starter (one should do this even better using <a href="https://github.com/openjdk/jmh">JMH</a> and their API to benchmark)</li>
+</ol>
+</section>
+<section id="results" class="level2">
+<h2 class="anchored" data-anchor-id="results">Results</h2>
+<p>The results speak clearly.</p>
+<div id="fig-dfs" class="quarto-layout-panel">
+<figure class="figure">
+<div class="quarto-layout-row quarto-layout-valign-top">
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://blog.londogard.com/posts/assets/kotlin.png" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption">Kotlin DataFrame (5.4s)</figcaption>
+</figure>
+</div>
+</div>
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://blog.londogard.com/posts/assets/polars.png" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption">polars DataFrame (2.6s)</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p></p><figcaption class="figure-caption">Figure&nbsp;1: DataFrame Comparison of 10k runs.</figcaption><p></p>
+</figure>
+</div>
+<ol type="1">
+<li><code>polars</code> is 2x faster (!).</li>
+<li><code>polars</code> uses 1GB less RAM.</li>
+<li><code>polars</code> actually downloaded the same CSV file 12x faster, and caches the result internally unlike Kotlin for later instant usage.</li>
+</ol>
+</section>
+<section id="thoughts" class="level2">
+<h2 class="anchored" data-anchor-id="thoughts">Thoughts</h2>
+<p>I think it’s interesting to see how much faster <code>polars</code> is, even if I use eager API and don’t use any fancy feature(s) like <code>groupBy</code> that’s optimized like crazy.</p>
+<p>It really showcases what a powerhouse Rust is to run intensive applications with, and now I’m left wondering if perhaps one should wrap <code>polars</code> on the JVM. 🤓 This has been done for other platforms, such as <a href="https://pola-rs.github.io/nodejs-polars/index.html">NodeJS</a>, <a href="https://rpolars.github.io/index.html">R</a> &amp; <a href="https://github.com/elixir-nx/explorer">Elixir</a>.</p>
+<p>Wrapping Rust from the JVM isn’t easy today though, but with the new progress with <a href="https://developer.okta.com/blog/2022/04/08/state-of-ffi-java">Project Panama</a> it should be easier. Project Panama introduces a simpler, safer and more efficient way to call Native code from the JVM through the <em>Foreign Function &amp; Memory API</em>. I expect it to become even better as it’s currently only in preview… 😉</p>
+<p>That’s all for now.<br>
+~Hampus</p>
+
+
+</section>
+
+ ]]></description>
+  <category>dataframe</category>
+  <guid>https://blog.londogard.com/posts/2023-05-06-kotlin-vs-polars-dataframe.html</guid>
+  <pubDate>Sat, 06 May 2023 00:00:00 GMT</pubDate>
 </item>
 <item>
   <title>DuckDB - Quacking Data (WIP)</title>
@@ -15463,29 +15624,6 @@ font-style: inherit;">)</span></span></code></pre></div>
   <category>workshop</category>
   <guid>https://blog.londogard.com/posts/2021-05-17-seam-carving.html</guid>
   <pubDate>Mon, 17 May 2021 00:00:00 GMT</pubDate>
-</item>
-<item>
-  <title>Knowledge Distillation (Presentation)</title>
-  <dc:creator>Hampus Londögård</dc:creator>
-  <link>https://blog.londogard.com/posts/2021-04-18-knowledge-distillation-presentation.html</link>
-  <description><![CDATA[ 
-
-
-
-
-<p>Just a week ago I did a presentation on Knowledge Distillation and how it can help improve efficiency of models. <!--truncate--></p>
-<p>I simply thought I would share the slides with the world. :)</p>
-<p>(OBS: Presentation in Swedish)</p>
-<div class="quarto-video ratio ratio-16x9"><iframe data-external="1" src="https://www.youtube.com/embed/FUtuAHqPk6o" title="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe></div>
-<embed src="../assets/Knowledge_Distillation.pdf" width="100%" height="720px" type="application/pdf">
-
-
-
- ]]></description>
-  <category>presentation</category>
-  <category>machine-learning</category>
-  <guid>https://blog.londogard.com/posts/2021-04-18-knowledge-distillation-presentation.html</guid>
-  <pubDate>Sun, 18 Apr 2021 00:00:00 GMT</pubDate>
 </item>
 </channel>
 </rss>
