@@ -1047,21 +1047,21 @@
     "href": "posts/2023-05-06-kotlin-vs-polars-dataframe.html",
     "title": "Kotlin DataFrame vs Polars DataFrame",
     "section": "",
-    "text": "Benchmarking is notourusly hard, hence I know these results are not fully show-casing possibilities of the JVM. Nontheless, they’re results."
+    "text": "N.B. added dataset and link to Datalore Notebooks.\nBenchmarking is notourusly hard, hence I know these results are not fully show-casing possibilities of the JVM. Nontheless, they’re results."
   },
   {
     "objectID": "posts/2023-05-06-kotlin-vs-polars-dataframe.html#benchmark-details",
     "href": "posts/2023-05-06-kotlin-vs-polars-dataframe.html#benchmark-details",
     "title": "Kotlin DataFrame vs Polars DataFrame",
     "section": "Benchmark Details",
-    "text": "Benchmark Details\n\nPre-downloaded CSV\nUse Eager-API as Kotlin DataFrame does not have a Lazy API (this would help polars further)\nRun 10k times to make sure the JVM isn’t a slow starter (one should do this even better using JMH and their API to benchmark)"
+    "text": "Benchmark Details\n\nPre-downloaded CSV (dataset: Plotly All Stocks 5 Years)\nUse Eager-API as Kotlin DataFrame does not have a Lazy API (this would help polars further)\nRun 10k times to make sure the JVM isn’t a slow starter (one should do this even better using JMH and their API to benchmark)"
   },
   {
     "objectID": "posts/2023-05-06-kotlin-vs-polars-dataframe.html#results",
     "href": "posts/2023-05-06-kotlin-vs-polars-dataframe.html#results",
     "title": "Kotlin DataFrame vs Polars DataFrame",
     "section": "Results",
-    "text": "Results\nThe results speak clearly.\n\n\n\n\n\n\n\nKotlin DataFrame (5.4s)\n\n\n\n\n\n\n\npolars DataFrame (2.6s)\n\n\n\n\nFigure 1: DataFrame Comparison of 10k runs.\n\n\n\npolars is 2x faster (!).\npolars uses 1GB less RAM.\npolars actually downloaded the same CSV file 12x faster, and caches the result internally unlike Kotlin for later instant usage."
+    "text": "Results\nThe results speak clearly.\n\n\n\n\n\n\n\nKotlin DataFrame (5.4s) Datalore Notebook\n\n\n\n\n\n\n\npolars DataFrame (2.6s) Datalore Notebook\n\n\n\n\nFigure 1: DataFrame Comparison of 10k runs on Plotly All Stocks 5 Years.\n\n\n\npolars is 2x faster (!).\npolars uses 1GB less RAM.\npolars actually downloaded the same CSV file 12x faster, and caches the result internally unlike Kotlin for later instant usage."
   },
   {
     "objectID": "posts/2023-05-06-kotlin-vs-polars-dataframe.html#thoughts",

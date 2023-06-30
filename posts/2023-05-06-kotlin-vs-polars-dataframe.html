@@ -208,11 +208,12 @@ ul.task-list li input[type="checkbox"] {
 
 
 
+<p><strong>N.B.</strong> added dataset and link to Datalore Notebooks.</p>
 <p>Benchmarking is notourusly hard, hence I know these results are not fully show-casing possibilities of the JVM. Nontheless, they’re results.</p>
 <section id="benchmark-details" class="level2">
 <h2 class="anchored" data-anchor-id="benchmark-details">Benchmark Details</h2>
 <ol type="1">
-<li>Pre-downloaded CSV</li>
+<li>Pre-downloaded CSV (dataset: <a href="https://github.com/plotly/datasets/raw/master/all_stocks_5yr.csv">Plotly All Stocks 5 Years</a>)</li>
 <li>Use Eager-API as Kotlin DataFrame does not have a Lazy API (this would help <code>polars</code> further)</li>
 <li>Run 10k times to make sure the JVM isn’t a slow starter (one should do this even better using <a href="https://github.com/openjdk/jmh">JMH</a> and their API to benchmark)</li>
 </ol>
@@ -227,7 +228,7 @@ ul.task-list li input[type="checkbox"] {
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="assets/kotlin.png" class="img-fluid figure-img"></p>
-<figcaption class="figure-caption">Kotlin DataFrame (5.4s)</figcaption>
+<figcaption class="figure-caption">Kotlin DataFrame (5.4s) <a href="https://datalore.jetbrains.com/notebook/IpONsMtuU4rzMXd6MwMYnh/PSh1Gzu1kUBrhIrl90nu14">Datalore Notebook</a></figcaption>
 </figure>
 </div>
 </div>
@@ -235,12 +236,12 @@ ul.task-list li input[type="checkbox"] {
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="assets/polars.png" class="img-fluid figure-img"></p>
-<figcaption class="figure-caption">polars DataFrame (2.6s)</figcaption>
+<figcaption class="figure-caption">polars DataFrame (2.6s) <a href="https://datalore.jetbrains.com/notebook/IpONsMtuU4rzMXd6MwMYnh/iKhywUCjfhXdmQWjwd6eT3">Datalore Notebook</a></figcaption>
 </figure>
 </div>
 </div>
 </div>
-<p></p><figcaption class="figure-caption">Figure&nbsp;1: DataFrame Comparison of 10k runs.</figcaption><p></p>
+<p></p><figcaption class="figure-caption">Figure&nbsp;1: DataFrame Comparison of 10k runs on <a href="https://github.com/plotly/datasets/raw/master/all_stocks_5yr.csv">Plotly All Stocks 5 Years</a>.</figcaption><p></p>
 </figure>
 </div>
 <ol type="1">
