@@ -9,8 +9,740 @@
 <link>https://blog.londogard.com/index.html</link>
 <atom:link href="https://blog.londogard.com/index.xml" rel="self" type="application/rss+xml"/>
 <description>A blog which majorly focuses on Data Science, Data Engineering and sometimes Kotlin / Scala.</description>
-<generator>quarto-1.3.340</generator>
-<lastBuildDate>Wed, 03 May 2023 00:00:00 GMT</lastBuildDate>
+<generator>quarto-1.3.433</generator>
+<lastBuildDate>Thu, 29 Jun 2023 00:00:00 GMT</lastBuildDate>
+<item>
+  <title>Solara - ‘A new Reactive Streamlit’</title>
+  <dc:creator>Hampus Londögård</dc:creator>
+  <link>https://blog.londogard.com/posts/2023-06-29-solara-introduction.html</link>
+  <description><![CDATA[ 
+
+
+
+
+<p>Solara is fresh and exciting, to me it seems to have more industrial potential than streamlit. In this post I’ll introduce solara and compare it to the more well known streamlit that can be used to build web apps and interactive Data Dashboards.</p>
+<p>I’m very excited to see where it ends up in the future, very possibly in a bright spot. During my initial tests it seems like a solid framework, there’s still some edges to fix but all in all it’s really good!</p>
+<p>Here’s my small introduction and comparison with streamlit!</p>
+<section id="streamlit-and-why-its-awesome" class="level3">
+<h3 class="anchored" data-anchor-id="streamlit-and-why-its-awesome">Streamlit and why it’s awesome</h3>
+<p>I’m a huge streamlit fan. There’s so much to love, the first time I tried it everything clicked. It’s simple and good looking, the User Experience (UX) and Developer Experience (DX) is exceptional. Using it I can easily build beautiful web apps, efficient Data Dashboards and small Proof-of-Concepts.</p>
+<p>With that said everything has a drawback, and streamlit’s is performance once it scales to large. Streamlit works by rerunning everything in the script top-down once a change happens in the webapp. This makes it incredibly simple to reason about and reduces the number of bugs, but it also builds what can become a huge bottleneck and slow down the app.&nbsp;</p>
+<p>Streamlit solves this by introducing&nbsp;<code>cache</code>&nbsp; which allows reusing results from expensive computations and in the UI they reuse components to make the flow smother if nothing changes, this is done using the internal&nbsp;<code>state</code>. Once you start modifying&nbsp;<code>state</code>&nbsp; and&nbsp;<code>cache</code>&nbsp;the complexity grows quickly and the app becomes much harder to reason about.</p>
+<p>Streamlit could solve this by enabling better API’s which allows better “data-flow” choices, like the&nbsp;<code>st.form</code>&nbsp; enables non-recalculated views unless submitted.</p>
+<p>For now though… Let’s try&nbsp;<strong><code>solara</code></strong>&nbsp;a new exciting framework which does exactly this, but without the same simplicity.</p>
+</section>
+<section id="solara-introduction" class="level3">
+<h3 class="anchored" data-anchor-id="solara-introduction">Solara Introduction</h3>
+<p>Solara is a similar framework to streamlit, but rather than rerunning everything top-down every time it uses a reactive approach through&nbsp;<code>reacton</code>&nbsp;(<a href="https://github.com/widgetti/reacton">github.com/widgetti/reacton</a>) that is a pure Python port of React to&nbsp;<code>ipywidgets</code>.</p>
+<p>This means that only components that are using the reactive variable is rerun, which is very exciting! The performance improvements becomes great at the cost of a more declarative state-handling.</p>
+<p>In streamlit state is handled for you, in solara you’ve to solve it yourself – but at least there’s no hidden magic that can become very complex when the app grows.</p>
+<p>An example app and deeper introduction can be found in a later section.</p>
+</section>
+<section id="solara-versus-streamlit" class="level2">
+<h2 class="anchored" data-anchor-id="solara-versus-streamlit">🥊Solara versus Streamlit</h2>
+<p>In here I’ll compare solara and streamlit, for a more in-depth usage see later sections.</p>
+<section id="tldr" class="level3">
+<h3 class="anchored" data-anchor-id="tldr">TL;DR</h3>
+<p>Code is on GitHub&nbsp;<a href="https://github.com/Lundez/solara_app">lundez/solara_app</a> / Section&nbsp;1, and I added suggested improvements via&nbsp;<a href="https://github.com/widgetti/solara/pull/180">PR#180</a>&nbsp;and&nbsp;<a href="https://github.com/widgetti/solara/issues/177">Issue#177</a>&nbsp;to solara.</p>
+<ul>
+<li><strong>Con</strong>&nbsp;Higher learning curve (floor) as you handle state manually (no magic), but with better DX I see it beating streamlit because of the higher ceiling that brings new possibilities.
+<ul>
+<li><strong>Pro</strong>&nbsp;Bonus: we learn the react paradigm which is widely used in frontend! A win-win for developers.</li>
+</ul></li>
+<li><strong>Pro</strong>&nbsp;A better industrial thinking
+<ol type="1">
+<li>Testing is actually handled E2E by using&nbsp;<code>playwright</code>&nbsp; –&nbsp;<a href="https://solara.dev/docs/howto/testing">docs</a>.</li>
+<li>Routing is first-class citizen –&nbsp;<a href="https://solara.dev/docs/understanding/routing">docs</a>.</li>
+<li>Embeddable, in flask/fastAPI/… –&nbsp;<a href="https://solara.dev/docs/deploying/self-hosted">docs</a>.</li>
+</ol></li>
+<li><strong>Con</strong>&nbsp;UX is not as good as streamlit.</li>
+<li><strong>Pro</strong>&nbsp;Embeddable in Notebooks making it simpler to go&nbsp;<em>really fast</em>.</li>
+<li><strong>Pro</strong>&nbsp;Access to all&nbsp;<code>ipywidgets</code>&nbsp;which is an incredible ecosystem.&nbsp;</li>
+</ul>
+<p>Additionally compared to another interesting framework like&nbsp;<a href="https://panel.holoviz.org/" title="https://panel.holoviz.org/">Panel</a>&nbsp;it’s much simpler IMO.</p>
+<p>Most certainly solara has a bright future if the development and maintenance is kept up, with additional marketing it can become a great competitor in the space for Gradio, Streamlit and others.</p>
+</section>
+</section>
+<section id="solara-introduction-1" class="level2">
+<h2 class="anchored" data-anchor-id="solara-introduction-1">Solara Introduction</h2>
+<p>All code is available on GitHub&nbsp;<a href="https://github.com/Lundez/solara_app" title="https://github.com/Lundez/solara_app">lundez/solara_app</a> and Section&nbsp;1.</p>
+<section id="a-simple-app" class="level3">
+<h3 class="anchored" data-anchor-id="a-simple-app">A simple app</h3>
+<p>Using solara to build a simple app is pretty clean, we can clearly see the&nbsp;<code>react</code>&nbsp;-hook being used for&nbsp;<code>file</code>&nbsp; which is cool!</p>
+<p>We need to define our logic inside a&nbsp;<code>component</code>&nbsp; and based on my testing the first&nbsp;<code>component</code>&nbsp; in the main-file is the one automatically rendered. To show in a notebook you simply use&nbsp;<code>display(Page())</code>.&nbsp;</p>
+<div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> solara</span>
+<span id="cb1-2"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> polars <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">as</span> pl</span>
+<span id="cb1-3"></span>
+<span id="cb1-4"><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">@solara.component</span></span>
+<span id="cb1-5"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">def</span> Page():</span>
+<span id="cb1-6">    <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">file</span>, set_file <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> solara.use_state(<span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">None</span>)</span>
+<span id="cb1-7">    solara.Markdown(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"# Solara Example App (Starbucks Data)"</span>)</span>
+<span id="cb1-8">    solara.FileDrop(on_file<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>set_file, lazy<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">False</span>)</span>
+<span id="cb1-9">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">if</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">file</span> <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">is</span> <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">not</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">None</span>:</span>
+<span id="cb1-10">        df <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> pl.read_csv(<span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">file</span>[<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"data"</span>], null_values<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"-"</span>).drop_nulls()</span>
+<span id="cb1-11">        solara.DataFrame(df.to_pandas()) <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># currently does not support polars</span></span>
+<span id="cb1-12">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">else</span>:</span>
+<span id="cb1-13">        solara.Text(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Make sure to upload a file"</span>)</span></code></pre></div>
+<p>And run it through</p>
+<div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">solara</span> run app.py</span>
+<span id="cb2-2"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># use solara run --host localhost app.py on WSL until PR#180 or other is merged</span></span></code></pre></div>
+<p>Quite simple right? And incredibly similar to how you run streamlit 😉.</p>
+</section>
+<section id="working-more-with-state" class="level3">
+<h3 class="anchored" data-anchor-id="working-more-with-state">Working more with state</h3>
+<p>In the previous code we only used the state inside the same component, that’s all fine but it’s not a very good use-case.</p>
+<p>Solara introduces 2 other types of state,&nbsp;<code>reactive</code>&nbsp; and&nbsp;<code>use_reactive</code>. Both very similar but&nbsp;<code>use_reactive</code>&nbsp; is only possible to use locally inside a&nbsp;<code>component</code>. The&nbsp;<code>reactive</code>&nbsp; one will be reset each time the component re-renders, which is not very good.</p>
+<p>As such we define a&nbsp;<code>reactive</code>&nbsp; variable&nbsp;<code>sodium</code>.</p>
+<div class="sourceCode" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1">sodium <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> solara.reactive(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>)</span></code></pre></div>
+<p>further we bind this to a slider</p>
+<div class="sourceCode" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1">solara.SliderInt(value<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>sodium)</span></code></pre></div>
+<p>where it’ll automatically update whenever a user changes the slider.<br>
+We can then send this to a child-component which would be updated as well when it’s changed.</p>
+<div class="sourceCode" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1">ChildPage(sodium)</span></code></pre></div>
+<p>See&nbsp;<a href="https://github.com/Lundez/solara_app" title="https://github.com/Lundez/solara_app">lundez/solara_app</a>&nbsp;to get a little more complex scenario.</p>
+<p>And that’s my quick and dirty introduction to Solara!</p>
+</section>
+</section>
+<section id="solara-and-streamlit-comparison" class="level2">
+<h2 class="anchored" data-anchor-id="solara-and-streamlit-comparison">Solara and Streamlit comparison</h2>
+<p>A comparison between the two is available in Section&nbsp;1, where I use multiple components and share state between them. If you add some logging you can see that <strong>Solara doesn’t rerun code that doesn’t need to</strong>.</p>
+<section id="quick-facts" class="level3">
+<h3 class="anchored" data-anchor-id="quick-facts">Quick Facts</h3>
+<table class="table">
+<tbody>
+<tr class="odd">
+<td>Measurement</td>
+<td>Solara</td>
+<td>Streamlit</td>
+</tr>
+<tr class="even">
+<td>#lines of code (LOC)</td>
+<td>55</td>
+<td><strong>49</strong></td>
+</tr>
+<tr class="odd">
+<td>Simplicity (0-5)</td>
+<td>3</td>
+<td><strong>4</strong></td>
+</tr>
+<tr class="even">
+<td>Performance (0-5)</td>
+<td><strong>4</strong></td>
+<td>3</td>
+</tr>
+<tr class="odd">
+<td>UX (0-5)</td>
+<td>3</td>
+<td><strong>5</strong></td>
+</tr>
+</tbody>
+</table>
+<p>Streamlit wins most, but with the performance and possibilities of Solara I still see it as a very capable contender. With, hopefully soon, improved UX and DX&nbsp;<code>solara</code>&nbsp; can grow to be really big!</p>
+<p>In the TL;DR section you can see some other nicities of Solara such as Testing, Embeddability and more!&nbsp;</p>
+</section>
+<section id="deeper-comparison" class="level3">
+<h3 class="anchored" data-anchor-id="deeper-comparison">Deeper Comparison</h3>
+<section id="state-and-pythonicism" class="level4">
+<h4 class="anchored" data-anchor-id="state-and-pythonicism">State and ‘pythonicism’</h4>
+<p>The&nbsp;<code>react</code>&nbsp; paradigm while cool is&nbsp;<strong>certainly not pythonic</strong>&nbsp;at all! I believe that the&nbsp;<strong>initial “PoC”-stage implementation should be simpler</strong>&nbsp;to get started with. To “turn the knobs” and squeeze performance as is possible is great and should certainly be available for the more performance intense sections.</p>
+<p>The positive of all this is that we learn the “React-paradigm” and we handle state explicitly, i.e.&nbsp;no streamlit magic!&nbsp;</p>
+<p><strong>It’s a tie.</strong></p>
+</section>
+<section id="embeddability" class="level4">
+<h4 class="anchored" data-anchor-id="embeddability">Embeddability</h4>
+<p>The embedability of Solara is a clear winner, being able to include it in our FastAPI backend or building an app initially directly in a Jupyter Notebook is insanely good.</p>
+<p><strong>Solara wins.</strong></p>
+</section>
+<section id="components-ux" class="level4">
+<h4 class="anchored" data-anchor-id="components-ux">Components / UX</h4>
+<p>Streamlits components are better and more beautiful but Solara is not far behind, and with the possibility to use all components from&nbsp;<code>ipywidget</code>-ecosystem makes it incredibily powerful.</p>
+<p>I see this as a huge boon.</p>
+<p><strong>It’s a tie,</strong>&nbsp;but streamlit wins the ‘simplicity’ and ‘looks’ with a large margin.</p>
+</section>
+<section id="readability" class="level4">
+<h4 class="anchored" data-anchor-id="readability">Readability</h4>
+<p>Because&nbsp;<code>solara</code>&nbsp; has less magic I believe Solara is easier to reason about in a complex app, but in the PoC’s and simple apps streamlit is just as simple.</p>
+<p><strong>It’s a tie</strong>, but solara wins as the app grows.</p>
+</section>
+</section>
+</section>
+<section id="outro" class="level2">
+<h2 class="anchored" data-anchor-id="outro">Outro</h2>
+<p>I believe that&nbsp;<code>streamlit</code>&nbsp; still is the best framework to get started with, but in 6 months from now on I can see&nbsp;<code>solara</code>&nbsp; as the better option.</p>
+<p>If you’re developing a dashboard or app that needs high performance and industrial strength I can see&nbsp;<code>solara</code>&nbsp; as a better choice.</p>
+<p>I’ll happily try to help solara grow!</p>
+<p>~Hampus Londögård</p>
+</section>
+<section id="sec-appendix" class="level1">
+<h1>Appendix</h1>
+<p>I include full code here as well. These are taken from <a href="https://github.com/Lundez/solara_app">lundez/solara_app</a> the 29/6 2023.</p>
+<section id="solara-app" class="level2">
+<h2 class="anchored" data-anchor-id="solara-app">Solara App</h2>
+<p>Run using <code>solara run &lt;filename&gt;</code>.</p>
+<div class="sourceCode" id="cb6" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">from</span> dataclasses <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> dataclass</span>
+<span id="cb6-2"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> solara</span>
+<span id="cb6-3"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> polars <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">as</span> pl</span>
+<span id="cb6-4"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> solara.express <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">as</span> px</span>
+<span id="cb6-5"></span>
+<span id="cb6-6"><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">@solara.component</span></span>
+<span id="cb6-7"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">def</span> Page():</span>
+<span id="cb6-8">    <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">file</span>, set_file <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> solara.use_state(<span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">None</span>)</span>
+<span id="cb6-9">    </span>
+<span id="cb6-10">    solara.Markdown(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"# Solara Example App (Starbucks Data)"</span>)</span>
+<span id="cb6-11">    solara.FileDrop(on_file<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>set_file, lazy<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">False</span>)</span>
+<span id="cb6-12">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">if</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">file</span> <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">is</span> <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">not</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">None</span>:</span>
+<span id="cb6-13">        df <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> pl.read_csv(<span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">file</span>[<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"data"</span>], null_values<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"-"</span>).drop_nulls()</span>
+<span id="cb6-14">        DFViews(df)</span>
+<span id="cb6-15">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">else</span>:</span>
+<span id="cb6-16">        solara.Text(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Make sure to upload a file"</span>)</span>
+<span id="cb6-17"></span>
+<span id="cb6-18"><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">@dataclass</span></span>
+<span id="cb6-19"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">class</span> FilterValues:</span>
+<span id="cb6-20">    sodium: <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">tuple</span>[<span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">int</span>, <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">int</span>]</span>
+<span id="cb6-21">    carb: <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">tuple</span>[<span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">int</span>, <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">int</span>]</span>
+<span id="cb6-22"></span>
+<span id="cb6-23"><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">@solara.component</span></span>
+<span id="cb6-24"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">def</span> Filters(df: pl.DataFrame, filters: solara.Reactive[FilterValues]):</span>
+<span id="cb6-25">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">with</span> solara.Card(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Filter DataFrame"</span>):</span>
+<span id="cb6-26">        carbs <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> solara.use_reactive((df[<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Carb. (g)"</span>].<span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">min</span>(), df[<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Carb. (g)"</span>].<span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">max</span>()))</span>
+<span id="cb6-27">        sodium <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> solara.use_reactive((df[<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Sodium"</span>].<span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">min</span>(), df[<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Sodium"</span>].<span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">max</span>()))</span>
+<span id="cb6-28">        solara.SliderRangeInt(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Carbs (g)"</span>, value<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>carbs, <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">min</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>df[<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Carb. (g)"</span>].<span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">min</span>(), <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">max</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>df[<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Carb. (g)"</span>].<span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">max</span>())</span>
+<span id="cb6-29">        solara.SliderRangeInt(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Sodium"</span>, value<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>sodium, <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">min</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>df[<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Sodium"</span>].<span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">min</span>(), <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">max</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>df[<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Sodium"</span>].<span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">max</span>())</span>
+<span id="cb6-30">        </span>
+<span id="cb6-31">        <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">with</span> solara.CardActions():</span>
+<span id="cb6-32">            solara.Button(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Submit"</span>, on_click<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">lambda</span>: filters.<span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">set</span>(FilterValues(sodium.value, carbs.value)))</span>
+<span id="cb6-33"></span>
+<span id="cb6-34"><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">@solara.component</span></span>
+<span id="cb6-35"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">def</span> FilteredPage(df: pl.DataFrame, filter_values: solara.Reactive[FilterValues]):</span>
+<span id="cb6-36">    df <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> df.<span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">filter</span>(pl.col(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Sodium"</span>).is_between(filter_values.value.sodium[<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>], filter_values.value.sodium[<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>]) <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&amp;</span></span>
+<span id="cb6-37">                   pl.col(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Carb. (g)"</span>).is_between(filter_values.value.carb[<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>], filter_values.value.carb[<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>]))</span>
+<span id="cb6-38">    DFVis(df)</span>
+<span id="cb6-39"></span>
+<span id="cb6-40"><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">@solara.component</span></span>
+<span id="cb6-41"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">def</span> DFVis(df: pl.DataFrame):</span>
+<span id="cb6-42">    solara.Markdown(<span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">f"## DataFrame"</span>)</span>
+<span id="cb6-43">    solara.DataFrame(df.to_pandas(), items_per_page<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">5</span>)</span>
+<span id="cb6-44">    px.histogram(df, x<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>[<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Carb. (g)"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Sodium"</span>])</span>
+<span id="cb6-45"></span>
+<span id="cb6-46"><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">@solara.component</span></span>
+<span id="cb6-47"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">def</span> DFViews(df: pl.DataFrame):</span>
+<span id="cb6-48">    filter_values <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> solara.use_reactive(FilterValues((df[<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Carb. (g)"</span>].<span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">min</span>(), df[<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Carb. (g)"</span>].<span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">max</span>()), (df[<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Sodium"</span>].<span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">min</span>(), df[<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Sodium"</span>].<span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">max</span>())))</span>
+<span id="cb6-49">    Filters(df, filter_values)</span>
+<span id="cb6-50">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">with</span> solara.Columns():</span>
+<span id="cb6-51">        <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">with</span> solara.Column():</span>
+<span id="cb6-52">            DFVis(df)</span>
+<span id="cb6-53">            </span>
+<span id="cb6-54">        <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">with</span> solara.Column():</span>
+<span id="cb6-55">            FilteredPage(df, filter_values)</span></code></pre></div>
+</section>
+<section id="streamlit-app" class="level2">
+<h2 class="anchored" data-anchor-id="streamlit-app">Streamlit App</h2>
+<p>Run using <code>streamlit run &lt;filename&gt;</code>.</p>
+<div class="sourceCode" id="cb7" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">from</span> dataclasses <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> dataclass</span>
+<span id="cb7-2"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> streamlit <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">as</span> st</span>
+<span id="cb7-3"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> polars <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">as</span> pl</span>
+<span id="cb7-4"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> plotly.express <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">as</span> px</span>
+<span id="cb7-5"></span>
+<span id="cb7-6"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">def</span> Page():</span>
+<span id="cb7-7">    st.markdown(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"# Streamlit Example App (Starbucks Data)"</span>)</span>
+<span id="cb7-8">    <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">file</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> st.file_uploader(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Upload a file"</span>)</span>
+<span id="cb7-9">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">if</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">file</span> <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">is</span> <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">not</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">None</span>:</span>
+<span id="cb7-10">        df <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> pl.read_csv(<span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">file</span>, null_values<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"-"</span>).drop_nulls()</span>
+<span id="cb7-11">        DFViews(df)</span>
+<span id="cb7-12">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">else</span>:</span>
+<span id="cb7-13">        st.write(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Make sure to upload a file"</span>)</span>
+<span id="cb7-14"></span>
+<span id="cb7-15"><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">@dataclass</span></span>
+<span id="cb7-16"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">class</span> FilterValues:</span>
+<span id="cb7-17">    sodium: <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">tuple</span>[<span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">int</span>, <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">int</span>]</span>
+<span id="cb7-18">    carb: <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">tuple</span>[<span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">int</span>, <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">int</span>]</span>
+<span id="cb7-19"></span>
+<span id="cb7-20"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">def</span> Filters(df: pl.DataFrame) <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-&gt;</span> FilterValues:</span>
+<span id="cb7-21">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">with</span> st.form(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"df_filer"</span>):</span>
+<span id="cb7-22">        st.write(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"**Filter DataFrame**"</span>)</span>
+<span id="cb7-23">        carbs <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> (df[<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Carb. (g)"</span>].<span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">min</span>(), df[<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Carb. (g)"</span>].<span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">max</span>())</span>
+<span id="cb7-24">        sodium <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> (df[<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Sodium"</span>].<span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">min</span>(), df[<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Sodium"</span>].<span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">max</span>())</span>
+<span id="cb7-25">        carbs <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> st.slider(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Carb. (g)"</span>, min_value<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>carbs[<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>], max_value<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>carbs[<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>], value<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>carbs)</span>
+<span id="cb7-26">        sodium <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> st.slider(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Sodium"</span>, min_value<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>sodium[<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>], max_value<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>sodium[<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>], value<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>sodium)</span>
+<span id="cb7-27">        </span>
+<span id="cb7-28">        st.form_submit_button(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Submit"</span>)</span>
+<span id="cb7-29">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">return</span> FilterValues(sodium, carbs)</span>
+<span id="cb7-30"></span>
+<span id="cb7-31"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">def</span> FilteredPage(df: pl.DataFrame, filter_values: FilterValues):</span>
+<span id="cb7-32">    df <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> df.<span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">filter</span>(pl.col(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Sodium"</span>).is_between(filter_values.sodium[<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>], filter_values.sodium[<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>]) <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&amp;</span></span>
+<span id="cb7-33">                   pl.col(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Carb. (g)"</span>).is_between(filter_values.carb[<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>], filter_values.carb[<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>]))</span>
+<span id="cb7-34">    DFVis(df)</span>
+<span id="cb7-35"></span>
+<span id="cb7-36"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">def</span> DFVis(df: pl.DataFrame):</span>
+<span id="cb7-37">    st.markdown(<span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">f"## DataFrame"</span>)</span>
+<span id="cb7-38">    st.dataframe(df.to_pandas())</span>
+<span id="cb7-39">    st.write(px.histogram(df, x<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>[<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Carb. (g)"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Sodium"</span>]))</span>
+<span id="cb7-40"></span>
+<span id="cb7-41"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">def</span> DFViews(df: pl.DataFrame):</span>
+<span id="cb7-42">    filters <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> Filters(df)</span>
+<span id="cb7-43">    c1, c2 <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> st.columns(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>)</span>
+<span id="cb7-44">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">with</span> c1:</span>
+<span id="cb7-45">        DFVis(df)</span>
+<span id="cb7-46">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">with</span> c2:</span>
+<span id="cb7-47">        FilteredPage(df, filters)</span>
+<span id="cb7-48"></span>
+<span id="cb7-49">Page()</span></code></pre></div>
+
+
+</section>
+</section>
+
+ ]]></description>
+  <category>data</category>
+  <category>dashboard</category>
+  <category>webapp</category>
+  <guid>https://blog.londogard.com/posts/2023-06-29-solara-introduction.html</guid>
+  <pubDate>Thu, 29 Jun 2023 00:00:00 GMT</pubDate>
+</item>
 <item>
   <title>DuckDB - Quacking Data (WIP)</title>
   <dc:creator>Hampus Londögård</dc:creator>
@@ -14754,355 +15486,6 @@ font-style: inherit;">)</span></span></code></pre></div>
   <category>machine-learning</category>
   <guid>https://blog.londogard.com/posts/2021-04-18-knowledge-distillation-presentation.html</guid>
   <pubDate>Sun, 18 Apr 2021 00:00:00 GMT</pubDate>
-</item>
-<item>
-  <title>TIL: GitHub Pages + Progressive Web App (PWA) = ❤️</title>
-  <dc:creator>Hampus Londögård</dc:creator>
-  <link>https://blog.londogard.com/posts/2021-04-11-til-pwa-github-pages.html</link>
-  <description><![CDATA[ 
-
-
-
-
-<section id="what" class="level3">
-<h3 class="anchored" data-anchor-id="what">What</h3>
-<p>Progressive Web Apps (PWAs) are web applications that are deployed on the Web and available on essentially every platform directly (Android, iOS, Linux, Windows, … you name it).<br>
-<!--truncate--></p>
-<p>They’re created the same way regular Web Apps are, with minor modifications like a new separate <code>.js</code>-file that runs a <code>serviceWorker</code>. This <code>serviceWorker</code> is the core of the PWA and handle things like <em>caching</em> &amp; <em>installation</em>.</p>
-<p>PWAs allows you to: - Share logic between all OS:s - Not have a heavy runtime associated (it uses the bundled browser engine) - On Windows/MacOS/Android/iOS the browser is included as part of OS. On Linux not as much, but who has Linux without a browser? - Use your existing knowledge AND technologies of regular webapps</p>
-<p>The performance is good enough for most apps and you can easily cache content to make the app offline-first. Of course native apps are, and will always be, better but this is a good step in the right direction for simple developer to share their work on multiple platforms.</p>
-<blockquote class="blockquote">
-<p>The best example of an PWA I know of is <a href="http://mobile.twitter.com/">twitter</a>, a PWA I prefer to the native app</p>
-</blockquote>
-<p>You can test my PWA that’s written in Kotlin (targeting JS) with fritz2 on <a href="https://colorkidz.londogard.com/">colorkidz.londogard.com</a>. ColorKidz is a simple app that creates colouring pages out of regular images and I believe it really showcases the possibilities of PWA. ColorKidz is a MVP that was fast &amp; easy and now shared across ALL platforms!</p>
-<blockquote class="blockquote">
-<p><strong>Bonus:</strong> PWAs can be deployed to Android/Google &amp; Windows App Store, just like a regular app</p>
-</blockquote>
-<p>Please note that GitHub TOS prohibits deployment of commercial apps through GitHub pages. If you wish to do that take a look at the alternative section for better alternatives that are free/cheap.</p>
-</section>
-<section id="how" class="level3">
-<h3 class="anchored" data-anchor-id="how">How</h3>
-<p>Building, or transforming, a Web App into a PWA is really easy and has few requirements (depending on browser). The requirements follows: 1. A <em>web manifest</em> file 2. Serve app using HTTPS 3. A Service Worker with a <code>fetch event</code> handler - Allowing the app to work offline (!) 4. (not for all browser) a <code>favicon</code>/icon</p>
-<p>Adding more data makes your PWA even better, like safari/iOS specific icons to improve interoperability.</p>
-<p>These requirements are pretty easy to achieve and I’ll show the two most important, <code>serviceWorker</code> and <code>webmanifest</code>.</p>
-<section id="serviceworker.js" class="level4">
-<h4 class="anchored" data-anchor-id="serviceworker.js">ServiceWorker.js</h4>
-<p>The <code>serviceWorker</code> handles the app caching, installation and potentially some other things if you ask it too. From the docs:</p>
-<blockquote class="blockquote">
-<p>Service workers essentially act as proxy servers that sit between web applications, and the browser and network (when available). They are intended to (amongst other things) enable the creation of effective offline experiences, intercepting network requests and taking appropriate action based on whether the network is available and updated assets reside on the server. They will also allow access to push notifications and background sync APIs.</p>
-</blockquote>
-<p>An example of this can be found on my <a href="https://github.com/londogard/colorkidz/blob/main/serviceWorker.js">GitHub</a>, find the code a little bit below.<br>
-If you wish to deep dive into <code>serviceWorker</code>’s then head over to the (awesome) documentation at <a href="https://developer.mozilla.org/en-US/docs/Web/Progressive_web_apps/Offline_Service_workers">Mozilla</a> &amp; <a href="https://developers.google.com/web/ilt/pwa/introduction-to-service-worker">Google</a>.</p>
-<div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript"><span id="cb1-1"><span class="kw" style="color: #003B4F;
-background-color: null;
-font-style: inherit;">var</span> CACHE_NAME <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> <span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">'londogard-colorkidz'</span><span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">;</span></span>
-<span id="cb1-2"><span class="kw" style="color: #003B4F;
-background-color: null;
-font-style: inherit;">var</span> urlsToCache <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> [</span>
-<span id="cb1-3">  <span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"/index.html"</span><span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">,</span></span>
-<span id="cb1-4">  <span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"/NEW.js"</span><span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">,</span></span>
-<span id="cb1-5">  <span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"/android-chrome-192x192.png"</span><span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">,</span></span>
-<span id="cb1-6">  <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">...</span></span>
-<span id="cb1-7">]<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">;</span></span>
-<span id="cb1-8"></span>
-<span id="cb1-9">self<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">.</span><span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">addEventListener</span>(<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">'install'</span><span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">,</span> <span class="kw" style="color: #003B4F;
-background-color: null;
-font-style: inherit;">function</span>(<span class="bu" style="color: null;
-background-color: null;
-font-style: inherit;">event</span>) {</span>
-<span id="cb1-10">  <span class="co" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">// Perform install steps</span></span>
-<span id="cb1-11">  <span class="bu" style="color: null;
-background-color: null;
-font-style: inherit;">event</span><span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">.</span><span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">waitUntil</span>(</span>
-<span id="cb1-12">    caches<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">.</span><span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">open</span>(CACHE_NAME)</span>
-<span id="cb1-13">      <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">.</span><span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">then</span>(<span class="kw" style="color: #003B4F;
-background-color: null;
-font-style: inherit;">function</span>(cache) {</span>
-<span id="cb1-14">        <span class="bu" style="color: null;
-background-color: null;
-font-style: inherit;">console</span><span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">.</span><span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">log</span>(<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">'Opened cache'</span>)<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">;</span></span>
-<span id="cb1-15">        <span class="cf" style="color: #003B4F;
-background-color: null;
-font-style: inherit;">return</span> cache<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">.</span><span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">addAll</span>(urlsToCache)<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">;</span></span>
-<span id="cb1-16">      })</span>
-<span id="cb1-17">    )<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">;</span></span>
-<span id="cb1-18">  })<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">;</span></span>
-<span id="cb1-19">self<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">.</span><span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">addEventListener</span>(<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">'fetch'</span><span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">,</span>() <span class="kw" style="color: #003B4F;
-background-color: null;
-font-style: inherit;">=&gt;</span> <span class="bu" style="color: null;
-background-color: null;
-font-style: inherit;">console</span><span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">.</span><span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">log</span>(<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"fetch"</span>))<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">;</span></span></code></pre></div>
-</section>
-<section id="webmanifest" class="level4">
-<h4 class="anchored" data-anchor-id="webmanifest">Webmanifest</h4>
-<p>The next step is to create your <code>webmanifest</code> which is the “metadata” of the app. What name should it have once installed? Which icon? Is the orientation locked? There’s a few knobs to tweak and turn.<br>
-My <code>webmanifest</code> ended up something like this:</p>
-<div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode json code-with-copy"><code class="sourceCode json"><span id="cb2-1"><span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">{</span></span>
-<span id="cb2-2">  <span class="dt" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">"short_name"</span><span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">:</span> <span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"ColorKidz"</span><span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">,</span></span>
-<span id="cb2-3">  <span class="dt" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">"name"</span><span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">:</span> <span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"ColorKidz"</span><span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">,</span></span>
-<span id="cb2-4">  <span class="dt" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">"description"</span><span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">:</span> <span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"Turn your images into Colouring Pages"</span><span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">,</span></span>
-<span id="cb2-5">  <span class="dt" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">"icons"</span><span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">:</span> <span class="ot" style="color: #003B4F;
-background-color: null;
-font-style: inherit;">[</span></span>
-<span id="cb2-6">    <span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">{</span></span>
-<span id="cb2-7">      <span class="dt" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">"src"</span><span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">:</span> <span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"/android-chrome-192x192.png"</span><span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">,</span></span>
-<span id="cb2-8">      <span class="dt" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">"sizes"</span><span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">:</span> <span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"192x192"</span><span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">,</span></span>
-<span id="cb2-9">      <span class="dt" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">"type"</span><span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">:</span> <span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"image/png"</span></span>
-<span id="cb2-10">    <span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">}</span><span class="ot" style="color: #003B4F;
-background-color: null;
-font-style: inherit;">,</span></span>
-<span id="cb2-11">    <span class="er" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">...</span></span>
-<span id="cb2-12">  <span class="ot" style="color: #003B4F;
-background-color: null;
-font-style: inherit;">]</span><span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">,</span></span>
-<span id="cb2-13">  <span class="dt" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">"start_url"</span><span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">:</span> <span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"/"</span><span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">,</span></span>
-<span id="cb2-14">  <span class="dt" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">"orientation"</span><span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">:</span> <span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"portrait"</span><span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">,</span></span>
-<span id="cb2-15">  <span class="dt" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">"background_color"</span><span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">:</span> <span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"#FFFFFF"</span><span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">,</span></span>
-<span id="cb2-16">  <span class="dt" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">"display"</span><span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">:</span> <span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"standalone"</span><span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">,</span></span>
-<span id="cb2-17">  <span class="dt" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">"scope"</span><span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">:</span> <span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"/"</span><span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">,</span></span>
-<span id="cb2-18">  <span class="dt" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">"theme_color"</span><span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">:</span> <span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"#FFFFFF"</span></span>
-<span id="cb2-19"><span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">}</span></span></code></pre></div>
-</section>
-<section id="deploying-to-github-pages" class="level4">
-<h4 class="anchored" data-anchor-id="deploying-to-github-pages">Deploying to GitHub Pages</h4>
-<p>For the final step we’re to deploy the PWA!</p>
-<p>First off place all your files in root folder of your GitHub repo. Remember to also have a <code>index.html</code> which contains both your JS app &amp; your <code>serviceWorker.js</code> and reference those scripts in <code>body</code>, e.g.</p>
-<div class="sourceCode" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode html code-with-copy"><code class="sourceCode html"><span id="cb3-1"><span class="kw" style="color: #003B4F;
-background-color: null;
-font-style: inherit;">&lt;body&gt;</span></span>
-<span id="cb3-2">...</span>
-<span id="cb3-3"><span class="kw" style="color: #003B4F;
-background-color: null;
-font-style: inherit;">&lt;script</span> <span class="er" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">src</span><span class="ot" style="color: #003B4F;
-background-color: null;
-font-style: inherit;">=</span><span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"NEW.js"</span><span class="kw" style="color: #003B4F;
-background-color: null;
-font-style: inherit;">&gt;&lt;/script&gt;</span></span>
-<span id="cb3-4"><span class="kw" style="color: #003B4F;
-background-color: null;
-font-style: inherit;">&lt;script</span> <span class="er" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">src</span><span class="ot" style="color: #003B4F;
-background-color: null;
-font-style: inherit;">=</span><span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"serviceWorker.js"</span><span class="kw" style="color: #003B4F;
-background-color: null;
-font-style: inherit;">&gt;&lt;/script&gt;</span></span>
-<span id="cb3-5"><span class="kw" style="color: #003B4F;
-background-color: null;
-font-style: inherit;">&lt;/body&gt;</span></span></code></pre></div>
-<p>Then you need to activate GitHub Pages for the repository, whereas the <a href="https://pages.github.com/">official documentation</a> is great!<br>
-GitHub pages recently got their own tab in settings and all you need to do now is to head over there, <code>https://github.com/&lt;USERNAME&gt;/&lt;REPO_NAME&gt;/settings/pages</code> and activate GitHub pages. Make sure to also activate <code>https</code>-only if possible!</p>
-<p><strong>And that’s it</strong>, simple as that. Now you’ve your PWA deployed through GitHub pages. The PWA should be available @ <code>&lt;repo&gt;.github.io</code>, but better check it in settings to be sure that it’s set up that way.</p>
-</section>
-</section>
-<section id="alternatives" class="level3">
-<h3 class="anchored" data-anchor-id="alternatives">Alternatives</h3>
-<p>There exists a few alternatives that I’m aware off - <a href="https://www.heroku.com/">Heroku</a> - <a href="https://pages.cloudflare.com/">Cloudflare Pages</a> - <a href="https://www.netlify.com/">Netlify</a></p>
-<p>All which are supposed to be great and simple to use. The free versions of everyone is pretty darn good too!</p>
-<p><strong>OBS</strong> Please remember that it’s not allowed to put up applications on GitHub Pages that are commercial according to the ToS.</p>
-
-
-</section>
-
- ]]></description>
-  <category>pwa</category>
-  <category>TIL</category>
-  <guid>https://blog.londogard.com/posts/2021-04-11-til-pwa-github-pages.html</guid>
-  <pubDate>Sun, 11 Apr 2021 00:00:00 GMT</pubDate>
 </item>
 </channel>
 </rss>

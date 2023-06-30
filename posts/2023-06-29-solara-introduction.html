@@ -1,0 +1,824 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.433">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Hampus Londögård">
+<meta name="dcterms.date" content="2023-06-29">
+<meta name="description" content="Solara is fresh and exciting, to me it seems to have more industrial potential than streamlit. In this post I’ll introduce solara and compare it to the more well known streamlit that can be used to build web apps and interactive Data Dashboards.">
+
+<title>Londogard Blog - Solara - ‘A new Reactive Streamlit’</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<link href="../favicon.ico" rel="icon">
+<script src="../site_libs/quarto-html/quarto.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="../styles.css">
+<meta name="twitter:title" content="Londogard Blog - Solara - ‘A new Reactive Streamlit’">
+<meta name="twitter:description" content="Solara is fresh and exciting, to me it seems to have more industrial potential than streamlit. In this post I’ll introduce solara and compare it to the more well known streamlit that can be used to build web apps and interactive Data Dashboards.">
+<meta name="twitter:creator" content="@hlondogard">
+<meta name="twitter:card" content="summary">
+</head>
+
+<body class="nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a class="navbar-brand" href="../index.html">
+    <span class="navbar-title">Londogard Blog</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../pages/presentations.html" rel="" target="">
+ <span class="menu-text">Presentations</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="https://londogard.com/projects" rel="" target="">
+ <span class="menu-text">Londogard Projects↗</span></a>
+  </li>  
+</ul>
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../pages/about.html" rel="" target="">
+ <span class="menu-text">About</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../pages/code_setup/code_setup.html" rel="" target="">
+ <span class="menu-text">Dev Setup</span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://www.linkedin.com/in/hampus-londögård/" rel="" target=""><i class="bi bi-linkedin" role="img" aria-label="LinkedIn">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://twitter.com/hlondogard" rel="" target=""><i class="bi bi-twitter" role="img" aria-label="Twitter">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-bi-github" role="button" data-bs-toggle="dropdown" aria-expanded="false" rel="" target="">
+      <i class="bi bi-github" role="img">
+</i> 
+ <span class="menu-text"></span>
+    </a>
+    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="nav-menu-bi-github">    
+        <li>
+    <a class="dropdown-item" href="https://github.com/lundez" rel="" target=""><i class="bi bi-github" role="img">
+</i> 
+ <span class="dropdown-text">Lundez</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="https://github.com/londogard" rel="" target=""><i class="bi bi-github" role="img">
+</i> 
+ <span class="dropdown-text">Londogard</span></a>
+  </li>  
+    </ul>
+  </li>
+  <li class="nav-item compact">
+    <a class="nav-link" href="../index.xml" rel="" target=""><i class="bi bi-rss" role="img" aria-label="Londogard Blog RSS">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+</ul>
+            <div class="quarto-navbar-tools">
+</div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<header id="title-block-header" class="quarto-title-block default page-columns page-full">
+  <div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-body">
+      <h1 class="title">Solara - ‘A new Reactive Streamlit’</h1>
+                  <div>
+        <div class="description">
+          Solara is fresh and exciting, to me it seems to have more industrial potential than streamlit. In this post I’ll introduce solara and compare it to the more well known streamlit that can be used to build web apps and interactive Data Dashboards.
+        </div>
+      </div>
+                          <div class="quarto-categories">
+                <div class="quarto-category">data</div>
+                <div class="quarto-category">dashboard</div>
+                <div class="quarto-category">webapp</div>
+              </div>
+                  </div>
+  </div>
+    
+  
+  <div class="quarto-title-meta">
+
+      <div>
+      <div class="quarto-title-meta-heading">Author</div>
+      <div class="quarto-title-meta-contents">
+               <p>Hampus Londögård </p>
+            </div>
+    </div>
+      
+      <div>
+      <div class="quarto-title-meta-heading">Published</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date">June 29, 2023</p>
+      </div>
+    </div>
+    
+      
+    </div>
+    
+  
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#streamlit-and-why-its-awesome" id="toc-streamlit-and-why-its-awesome" class="nav-link active" data-scroll-target="#streamlit-and-why-its-awesome">Streamlit and why it’s awesome</a></li>
+  <li><a href="#solara-introduction" id="toc-solara-introduction" class="nav-link" data-scroll-target="#solara-introduction">Solara Introduction</a></li>
+  <li><a href="#solara-versus-streamlit" id="toc-solara-versus-streamlit" class="nav-link" data-scroll-target="#solara-versus-streamlit">🥊Solara versus Streamlit</a>
+  <ul class="collapse">
+  <li><a href="#tldr" id="toc-tldr" class="nav-link" data-scroll-target="#tldr">TL;DR</a></li>
+  </ul></li>
+  <li><a href="#solara-introduction-1" id="toc-solara-introduction-1" class="nav-link" data-scroll-target="#solara-introduction-1">Solara Introduction</a>
+  <ul class="collapse">
+  <li><a href="#a-simple-app" id="toc-a-simple-app" class="nav-link" data-scroll-target="#a-simple-app">A simple app</a></li>
+  <li><a href="#working-more-with-state" id="toc-working-more-with-state" class="nav-link" data-scroll-target="#working-more-with-state">Working more with state</a></li>
+  </ul></li>
+  <li><a href="#solara-and-streamlit-comparison" id="toc-solara-and-streamlit-comparison" class="nav-link" data-scroll-target="#solara-and-streamlit-comparison">Solara and Streamlit comparison</a>
+  <ul class="collapse">
+  <li><a href="#quick-facts" id="toc-quick-facts" class="nav-link" data-scroll-target="#quick-facts">Quick Facts</a></li>
+  <li><a href="#deeper-comparison" id="toc-deeper-comparison" class="nav-link" data-scroll-target="#deeper-comparison">Deeper Comparison</a></li>
+  </ul></li>
+  <li><a href="#outro" id="toc-outro" class="nav-link" data-scroll-target="#outro">Outro</a></li>
+  <li><a href="#sec-appendix" id="toc-sec-appendix" class="nav-link" data-scroll-target="#sec-appendix">Appendix</a>
+  <ul class="collapse">
+  <li><a href="#solara-app" id="toc-solara-app" class="nav-link" data-scroll-target="#solara-app">Solara App</a></li>
+  <li><a href="#streamlit-app" id="toc-streamlit-app" class="nav-link" data-scroll-target="#streamlit-app">Streamlit App</a></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content quarto-banner-title-block" id="quarto-document-content">
+
+
+
+
+<p>Solara is fresh and exciting, to me it seems to have more industrial potential than streamlit. In this post I’ll introduce solara and compare it to the more well known streamlit that can be used to build web apps and interactive Data Dashboards.</p>
+<p>I’m very excited to see where it ends up in the future, very possibly in a bright spot. During my initial tests it seems like a solid framework, there’s still some edges to fix but all in all it’s really good!</p>
+<p>Here’s my small introduction and comparison with streamlit!</p>
+<section id="streamlit-and-why-its-awesome" class="level3">
+<h3 class="anchored" data-anchor-id="streamlit-and-why-its-awesome">Streamlit and why it’s awesome</h3>
+<p>I’m a huge streamlit fan. There’s so much to love, the first time I tried it everything clicked. It’s simple and good looking, the User Experience (UX) and Developer Experience (DX) is exceptional. Using it I can easily build beautiful web apps, efficient Data Dashboards and small Proof-of-Concepts.</p>
+<p>With that said everything has a drawback, and streamlit’s is performance once it scales to large. Streamlit works by rerunning everything in the script top-down once a change happens in the webapp. This makes it incredibly simple to reason about and reduces the number of bugs, but it also builds what can become a huge bottleneck and slow down the app.&nbsp;</p>
+<p>Streamlit solves this by introducing&nbsp;<code>cache</code>&nbsp; which allows reusing results from expensive computations and in the UI they reuse components to make the flow smother if nothing changes, this is done using the internal&nbsp;<code>state</code>. Once you start modifying&nbsp;<code>state</code>&nbsp; and&nbsp;<code>cache</code>&nbsp;the complexity grows quickly and the app becomes much harder to reason about.</p>
+<p>Streamlit could solve this by enabling better API’s which allows better “data-flow” choices, like the&nbsp;<code>st.form</code>&nbsp; enables non-recalculated views unless submitted.</p>
+<p>For now though… Let’s try&nbsp;<strong><code>solara</code></strong>&nbsp;a new exciting framework which does exactly this, but without the same simplicity.</p>
+</section>
+<section id="solara-introduction" class="level3">
+<h3 class="anchored" data-anchor-id="solara-introduction">Solara Introduction</h3>
+<p>Solara is a similar framework to streamlit, but rather than rerunning everything top-down every time it uses a reactive approach through&nbsp;<code>reacton</code>&nbsp;(<a href="https://github.com/widgetti/reacton">github.com/widgetti/reacton</a>) that is a pure Python port of React to&nbsp;<code>ipywidgets</code>.</p>
+<p>This means that only components that are using the reactive variable is rerun, which is very exciting! The performance improvements becomes great at the cost of a more declarative state-handling.</p>
+<p>In streamlit state is handled for you, in solara you’ve to solve it yourself – but at least there’s no hidden magic that can become very complex when the app grows.</p>
+<p>An example app and deeper introduction can be found in a later section.</p>
+</section>
+<section id="solara-versus-streamlit" class="level2">
+<h2 class="anchored" data-anchor-id="solara-versus-streamlit">🥊Solara versus Streamlit</h2>
+<p>In here I’ll compare solara and streamlit, for a more in-depth usage see later sections.</p>
+<section id="tldr" class="level3">
+<h3 class="anchored" data-anchor-id="tldr">TL;DR</h3>
+<p>Code is on GitHub&nbsp;<a href="https://github.com/Lundez/solara_app">lundez/solara_app</a> / <a href="#sec-appendix">Section&nbsp;1</a>, and I added suggested improvements via&nbsp;<a href="https://github.com/widgetti/solara/pull/180">PR#180</a>&nbsp;and&nbsp;<a href="https://github.com/widgetti/solara/issues/177">Issue#177</a>&nbsp;to solara.</p>
+<ul>
+<li><strong>Con</strong>&nbsp;Higher learning curve (floor) as you handle state manually (no magic), but with better DX I see it beating streamlit because of the higher ceiling that brings new possibilities.
+<ul>
+<li><strong>Pro</strong>&nbsp;Bonus: we learn the react paradigm which is widely used in frontend! A win-win for developers.</li>
+</ul></li>
+<li><strong>Pro</strong>&nbsp;A better industrial thinking
+<ol type="1">
+<li>Testing is actually handled E2E by using&nbsp;<code>playwright</code>&nbsp; –&nbsp;<a href="https://solara.dev/docs/howto/testing">docs</a>.</li>
+<li>Routing is first-class citizen –&nbsp;<a href="https://solara.dev/docs/understanding/routing">docs</a>.</li>
+<li>Embeddable, in flask/fastAPI/… –&nbsp;<a href="https://solara.dev/docs/deploying/self-hosted">docs</a>.</li>
+</ol></li>
+<li><strong>Con</strong>&nbsp;UX is not as good as streamlit.</li>
+<li><strong>Pro</strong>&nbsp;Embeddable in Notebooks making it simpler to go&nbsp;<em>really fast</em>.</li>
+<li><strong>Pro</strong>&nbsp;Access to all&nbsp;<code>ipywidgets</code>&nbsp;which is an incredible ecosystem.&nbsp;</li>
+</ul>
+<p>Additionally compared to another interesting framework like&nbsp;<a href="https://panel.holoviz.org/" title="https://panel.holoviz.org/">Panel</a>&nbsp;it’s much simpler IMO.</p>
+<p>Most certainly solara has a bright future if the development and maintenance is kept up, with additional marketing it can become a great competitor in the space for Gradio, Streamlit and others.</p>
+</section>
+</section>
+<section id="solara-introduction-1" class="level2">
+<h2 class="anchored" data-anchor-id="solara-introduction-1">Solara Introduction</h2>
+<p>All code is available on GitHub&nbsp;<a href="https://github.com/Lundez/solara_app" title="https://github.com/Lundez/solara_app">lundez/solara_app</a> and <a href="#sec-appendix">Section&nbsp;1</a>.</p>
+<section id="a-simple-app" class="level3">
+<h3 class="anchored" data-anchor-id="a-simple-app">A simple app</h3>
+<p>Using solara to build a simple app is pretty clean, we can clearly see the&nbsp;<code>react</code>&nbsp;-hook being used for&nbsp;<code>file</code>&nbsp; which is cool!</p>
+<p>We need to define our logic inside a&nbsp;<code>component</code>&nbsp; and based on my testing the first&nbsp;<code>component</code>&nbsp; in the main-file is the one automatically rendered. To show in a notebook you simply use&nbsp;<code>display(Page())</code>.&nbsp;</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> solara</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> polars <span class="im">as</span> pl</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="at">@solara.component</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> Page():</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>    <span class="bu">file</span>, set_file <span class="op">=</span> solara.use_state(<span class="va">None</span>)</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>    solara.Markdown(<span class="st">"# Solara Example App (Starbucks Data)"</span>)</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>    solara.FileDrop(on_file<span class="op">=</span>set_file, lazy<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="bu">file</span> <span class="kw">is</span> <span class="kw">not</span> <span class="va">None</span>:</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>        df <span class="op">=</span> pl.read_csv(<span class="bu">file</span>[<span class="st">"data"</span>], null_values<span class="op">=</span><span class="st">"-"</span>).drop_nulls()</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>        solara.DataFrame(df.to_pandas()) <span class="co"># currently does not support polars</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>        solara.Text(<span class="st">"Make sure to upload a file"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>And run it through</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">solara</span> run app.py</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="co"># use solara run --host localhost app.py on WSL until PR#180 or other is merged</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Quite simple right? And incredibly similar to how you run streamlit 😉.</p>
+</section>
+<section id="working-more-with-state" class="level3">
+<h3 class="anchored" data-anchor-id="working-more-with-state">Working more with state</h3>
+<p>In the previous code we only used the state inside the same component, that’s all fine but it’s not a very good use-case.</p>
+<p>Solara introduces 2 other types of state,&nbsp;<code>reactive</code>&nbsp; and&nbsp;<code>use_reactive</code>. Both very similar but&nbsp;<code>use_reactive</code>&nbsp; is only possible to use locally inside a&nbsp;<code>component</code>. The&nbsp;<code>reactive</code>&nbsp; one will be reset each time the component re-renders, which is not very good.</p>
+<p>As such we define a&nbsp;<code>reactive</code>&nbsp; variable&nbsp;<code>sodium</code>.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>sodium <span class="op">=</span> solara.reactive(<span class="dv">0</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>further we bind this to a slider</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>solara.SliderInt(value<span class="op">=</span>sodium)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>where it’ll automatically update whenever a user changes the slider.<br>
+We can then send this to a child-component which would be updated as well when it’s changed.</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>ChildPage(sodium)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>See&nbsp;<a href="https://github.com/Lundez/solara_app" title="https://github.com/Lundez/solara_app">lundez/solara_app</a>&nbsp;to get a little more complex scenario.</p>
+<p>And that’s my quick and dirty introduction to Solara!</p>
+</section>
+</section>
+<section id="solara-and-streamlit-comparison" class="level2">
+<h2 class="anchored" data-anchor-id="solara-and-streamlit-comparison">Solara and Streamlit comparison</h2>
+<p>A comparison between the two is available in <a href="#sec-appendix">Section&nbsp;1</a>, where I use multiple components and share state between them. If you add some logging you can see that <strong>Solara doesn’t rerun code that doesn’t need to</strong>.</p>
+<section id="quick-facts" class="level3">
+<h3 class="anchored" data-anchor-id="quick-facts">Quick Facts</h3>
+<table class="table">
+<tbody>
+<tr class="odd">
+<td>Measurement</td>
+<td>Solara</td>
+<td>Streamlit</td>
+</tr>
+<tr class="even">
+<td>#lines of code (LOC)</td>
+<td>55</td>
+<td><strong>49</strong></td>
+</tr>
+<tr class="odd">
+<td>Simplicity (0-5)</td>
+<td>3</td>
+<td><strong>4</strong></td>
+</tr>
+<tr class="even">
+<td>Performance (0-5)</td>
+<td><strong>4</strong></td>
+<td>3</td>
+</tr>
+<tr class="odd">
+<td>UX (0-5)</td>
+<td>3</td>
+<td><strong>5</strong></td>
+</tr>
+</tbody>
+</table>
+<p>Streamlit wins most, but with the performance and possibilities of Solara I still see it as a very capable contender. With, hopefully soon, improved UX and DX&nbsp;<code>solara</code>&nbsp; can grow to be really big!</p>
+<p>In the TL;DR section you can see some other nicities of Solara such as Testing, Embeddability and more!&nbsp;</p>
+</section>
+<section id="deeper-comparison" class="level3">
+<h3 class="anchored" data-anchor-id="deeper-comparison">Deeper Comparison</h3>
+<section id="state-and-pythonicism" class="level4">
+<h4 class="anchored" data-anchor-id="state-and-pythonicism">State and ‘pythonicism’</h4>
+<p>The&nbsp;<code>react</code>&nbsp; paradigm while cool is&nbsp;<strong>certainly not pythonic</strong>&nbsp;at all! I believe that the&nbsp;<strong>initial “PoC”-stage implementation should be simpler</strong>&nbsp;to get started with. To “turn the knobs” and squeeze performance as is possible is great and should certainly be available for the more performance intense sections.</p>
+<p>The positive of all this is that we learn the “React-paradigm” and we handle state explicitly, i.e.&nbsp;no streamlit magic!&nbsp;</p>
+<p><strong>It’s a tie.</strong></p>
+</section>
+<section id="embeddability" class="level4">
+<h4 class="anchored" data-anchor-id="embeddability">Embeddability</h4>
+<p>The embedability of Solara is a clear winner, being able to include it in our FastAPI backend or building an app initially directly in a Jupyter Notebook is insanely good.</p>
+<p><strong>Solara wins.</strong></p>
+</section>
+<section id="components-ux" class="level4">
+<h4 class="anchored" data-anchor-id="components-ux">Components / UX</h4>
+<p>Streamlits components are better and more beautiful but Solara is not far behind, and with the possibility to use all components from&nbsp;<code>ipywidget</code>-ecosystem makes it incredibily powerful.</p>
+<p>I see this as a huge boon.</p>
+<p><strong>It’s a tie,</strong>&nbsp;but streamlit wins the ‘simplicity’ and ‘looks’ with a large margin.</p>
+</section>
+<section id="readability" class="level4">
+<h4 class="anchored" data-anchor-id="readability">Readability</h4>
+<p>Because&nbsp;<code>solara</code>&nbsp; has less magic I believe Solara is easier to reason about in a complex app, but in the PoC’s and simple apps streamlit is just as simple.</p>
+<p><strong>It’s a tie</strong>, but solara wins as the app grows.</p>
+</section>
+</section>
+</section>
+<section id="outro" class="level2">
+<h2 class="anchored" data-anchor-id="outro">Outro</h2>
+<p>I believe that&nbsp;<code>streamlit</code>&nbsp; still is the best framework to get started with, but in 6 months from now on I can see&nbsp;<code>solara</code>&nbsp; as the better option.</p>
+<p>If you’re developing a dashboard or app that needs high performance and industrial strength I can see&nbsp;<code>solara</code>&nbsp; as a better choice.</p>
+<p>I’ll happily try to help solara grow!</p>
+<p>~Hampus Londögård</p>
+</section>
+<section id="sec-appendix" class="level1">
+<h1>Appendix</h1>
+<p>I include full code here as well. These are taken from <a href="https://github.com/Lundez/solara_app">lundez/solara_app</a> the 29/6 2023.</p>
+<section id="solara-app" class="level2">
+<h2 class="anchored" data-anchor-id="solara-app">Solara App</h2>
+<p>Run using <code>solara run &lt;filename&gt;</code>.</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> dataclasses <span class="im">import</span> dataclass</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> solara</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> polars <span class="im">as</span> pl</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> solara.express <span class="im">as</span> px</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="at">@solara.component</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> Page():</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>    <span class="bu">file</span>, set_file <span class="op">=</span> solara.use_state(<span class="va">None</span>)</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>    solara.Markdown(<span class="st">"# Solara Example App (Starbucks Data)"</span>)</span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>    solara.FileDrop(on_file<span class="op">=</span>set_file, lazy<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="bu">file</span> <span class="kw">is</span> <span class="kw">not</span> <span class="va">None</span>:</span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>        df <span class="op">=</span> pl.read_csv(<span class="bu">file</span>[<span class="st">"data"</span>], null_values<span class="op">=</span><span class="st">"-"</span>).drop_nulls()</span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>        DFViews(df)</span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:</span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>        solara.Text(<span class="st">"Make sure to upload a file"</span>)</span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a><span class="at">@dataclass</span></span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> FilterValues:</span>
+<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a>    sodium: <span class="bu">tuple</span>[<span class="bu">int</span>, <span class="bu">int</span>]</span>
+<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a>    carb: <span class="bu">tuple</span>[<span class="bu">int</span>, <span class="bu">int</span>]</span>
+<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a><span class="at">@solara.component</span></span>
+<span id="cb6-24"><a href="#cb6-24" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> Filters(df: pl.DataFrame, filters: solara.Reactive[FilterValues]):</span>
+<span id="cb6-25"><a href="#cb6-25" aria-hidden="true" tabindex="-1"></a>    <span class="cf">with</span> solara.Card(<span class="st">"Filter DataFrame"</span>):</span>
+<span id="cb6-26"><a href="#cb6-26" aria-hidden="true" tabindex="-1"></a>        carbs <span class="op">=</span> solara.use_reactive((df[<span class="st">"Carb. (g)"</span>].<span class="bu">min</span>(), df[<span class="st">"Carb. (g)"</span>].<span class="bu">max</span>()))</span>
+<span id="cb6-27"><a href="#cb6-27" aria-hidden="true" tabindex="-1"></a>        sodium <span class="op">=</span> solara.use_reactive((df[<span class="st">"Sodium"</span>].<span class="bu">min</span>(), df[<span class="st">"Sodium"</span>].<span class="bu">max</span>()))</span>
+<span id="cb6-28"><a href="#cb6-28" aria-hidden="true" tabindex="-1"></a>        solara.SliderRangeInt(<span class="st">"Carbs (g)"</span>, value<span class="op">=</span>carbs, <span class="bu">min</span><span class="op">=</span>df[<span class="st">"Carb. (g)"</span>].<span class="bu">min</span>(), <span class="bu">max</span><span class="op">=</span>df[<span class="st">"Carb. (g)"</span>].<span class="bu">max</span>())</span>
+<span id="cb6-29"><a href="#cb6-29" aria-hidden="true" tabindex="-1"></a>        solara.SliderRangeInt(<span class="st">"Sodium"</span>, value<span class="op">=</span>sodium, <span class="bu">min</span><span class="op">=</span>df[<span class="st">"Sodium"</span>].<span class="bu">min</span>(), <span class="bu">max</span><span class="op">=</span>df[<span class="st">"Sodium"</span>].<span class="bu">max</span>())</span>
+<span id="cb6-30"><a href="#cb6-30" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb6-31"><a href="#cb6-31" aria-hidden="true" tabindex="-1"></a>        <span class="cf">with</span> solara.CardActions():</span>
+<span id="cb6-32"><a href="#cb6-32" aria-hidden="true" tabindex="-1"></a>            solara.Button(<span class="st">"Submit"</span>, on_click<span class="op">=</span><span class="kw">lambda</span>: filters.<span class="bu">set</span>(FilterValues(sodium.value, carbs.value)))</span>
+<span id="cb6-33"><a href="#cb6-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-34"><a href="#cb6-34" aria-hidden="true" tabindex="-1"></a><span class="at">@solara.component</span></span>
+<span id="cb6-35"><a href="#cb6-35" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> FilteredPage(df: pl.DataFrame, filter_values: solara.Reactive[FilterValues]):</span>
+<span id="cb6-36"><a href="#cb6-36" aria-hidden="true" tabindex="-1"></a>    df <span class="op">=</span> df.<span class="bu">filter</span>(pl.col(<span class="st">"Sodium"</span>).is_between(filter_values.value.sodium[<span class="dv">0</span>], filter_values.value.sodium[<span class="dv">1</span>]) <span class="op">&amp;</span></span>
+<span id="cb6-37"><a href="#cb6-37" aria-hidden="true" tabindex="-1"></a>                   pl.col(<span class="st">"Carb. (g)"</span>).is_between(filter_values.value.carb[<span class="dv">0</span>], filter_values.value.carb[<span class="dv">1</span>]))</span>
+<span id="cb6-38"><a href="#cb6-38" aria-hidden="true" tabindex="-1"></a>    DFVis(df)</span>
+<span id="cb6-39"><a href="#cb6-39" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-40"><a href="#cb6-40" aria-hidden="true" tabindex="-1"></a><span class="at">@solara.component</span></span>
+<span id="cb6-41"><a href="#cb6-41" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> DFVis(df: pl.DataFrame):</span>
+<span id="cb6-42"><a href="#cb6-42" aria-hidden="true" tabindex="-1"></a>    solara.Markdown(<span class="ss">f"## DataFrame"</span>)</span>
+<span id="cb6-43"><a href="#cb6-43" aria-hidden="true" tabindex="-1"></a>    solara.DataFrame(df.to_pandas(), items_per_page<span class="op">=</span><span class="dv">5</span>)</span>
+<span id="cb6-44"><a href="#cb6-44" aria-hidden="true" tabindex="-1"></a>    px.histogram(df, x<span class="op">=</span>[<span class="st">"Carb. (g)"</span>, <span class="st">"Sodium"</span>])</span>
+<span id="cb6-45"><a href="#cb6-45" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-46"><a href="#cb6-46" aria-hidden="true" tabindex="-1"></a><span class="at">@solara.component</span></span>
+<span id="cb6-47"><a href="#cb6-47" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> DFViews(df: pl.DataFrame):</span>
+<span id="cb6-48"><a href="#cb6-48" aria-hidden="true" tabindex="-1"></a>    filter_values <span class="op">=</span> solara.use_reactive(FilterValues((df[<span class="st">"Carb. (g)"</span>].<span class="bu">min</span>(), df[<span class="st">"Carb. (g)"</span>].<span class="bu">max</span>()), (df[<span class="st">"Sodium"</span>].<span class="bu">min</span>(), df[<span class="st">"Sodium"</span>].<span class="bu">max</span>())))</span>
+<span id="cb6-49"><a href="#cb6-49" aria-hidden="true" tabindex="-1"></a>    Filters(df, filter_values)</span>
+<span id="cb6-50"><a href="#cb6-50" aria-hidden="true" tabindex="-1"></a>    <span class="cf">with</span> solara.Columns():</span>
+<span id="cb6-51"><a href="#cb6-51" aria-hidden="true" tabindex="-1"></a>        <span class="cf">with</span> solara.Column():</span>
+<span id="cb6-52"><a href="#cb6-52" aria-hidden="true" tabindex="-1"></a>            DFVis(df)</span>
+<span id="cb6-53"><a href="#cb6-53" aria-hidden="true" tabindex="-1"></a>            </span>
+<span id="cb6-54"><a href="#cb6-54" aria-hidden="true" tabindex="-1"></a>        <span class="cf">with</span> solara.Column():</span>
+<span id="cb6-55"><a href="#cb6-55" aria-hidden="true" tabindex="-1"></a>            FilteredPage(df, filter_values)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="streamlit-app" class="level2">
+<h2 class="anchored" data-anchor-id="streamlit-app">Streamlit App</h2>
+<p>Run using <code>streamlit run &lt;filename&gt;</code>.</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> dataclasses <span class="im">import</span> dataclass</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> streamlit <span class="im">as</span> st</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> polars <span class="im">as</span> pl</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> plotly.express <span class="im">as</span> px</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> Page():</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>    st.markdown(<span class="st">"# Streamlit Example App (Starbucks Data)"</span>)</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>    <span class="bu">file</span> <span class="op">=</span> st.file_uploader(<span class="st">"Upload a file"</span>)</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="bu">file</span> <span class="kw">is</span> <span class="kw">not</span> <span class="va">None</span>:</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>        df <span class="op">=</span> pl.read_csv(<span class="bu">file</span>, null_values<span class="op">=</span><span class="st">"-"</span>).drop_nulls()</span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>        DFViews(df)</span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:</span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>        st.write(<span class="st">"Make sure to upload a file"</span>)</span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a><span class="at">@dataclass</span></span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> FilterValues:</span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>    sodium: <span class="bu">tuple</span>[<span class="bu">int</span>, <span class="bu">int</span>]</span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>    carb: <span class="bu">tuple</span>[<span class="bu">int</span>, <span class="bu">int</span>]</span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> Filters(df: pl.DataFrame) <span class="op">-&gt;</span> FilterValues:</span>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a>    <span class="cf">with</span> st.form(<span class="st">"df_filer"</span>):</span>
+<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a>        st.write(<span class="st">"**Filter DataFrame**"</span>)</span>
+<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a>        carbs <span class="op">=</span> (df[<span class="st">"Carb. (g)"</span>].<span class="bu">min</span>(), df[<span class="st">"Carb. (g)"</span>].<span class="bu">max</span>())</span>
+<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a>        sodium <span class="op">=</span> (df[<span class="st">"Sodium"</span>].<span class="bu">min</span>(), df[<span class="st">"Sodium"</span>].<span class="bu">max</span>())</span>
+<span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a>        carbs <span class="op">=</span> st.slider(<span class="st">"Carb. (g)"</span>, min_value<span class="op">=</span>carbs[<span class="dv">0</span>], max_value<span class="op">=</span>carbs[<span class="dv">1</span>], value<span class="op">=</span>carbs)</span>
+<span id="cb7-26"><a href="#cb7-26" aria-hidden="true" tabindex="-1"></a>        sodium <span class="op">=</span> st.slider(<span class="st">"Sodium"</span>, min_value<span class="op">=</span>sodium[<span class="dv">0</span>], max_value<span class="op">=</span>sodium[<span class="dv">1</span>], value<span class="op">=</span>sodium)</span>
+<span id="cb7-27"><a href="#cb7-27" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb7-28"><a href="#cb7-28" aria-hidden="true" tabindex="-1"></a>        st.form_submit_button(<span class="st">"Submit"</span>)</span>
+<span id="cb7-29"><a href="#cb7-29" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> FilterValues(sodium, carbs)</span>
+<span id="cb7-30"><a href="#cb7-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-31"><a href="#cb7-31" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> FilteredPage(df: pl.DataFrame, filter_values: FilterValues):</span>
+<span id="cb7-32"><a href="#cb7-32" aria-hidden="true" tabindex="-1"></a>    df <span class="op">=</span> df.<span class="bu">filter</span>(pl.col(<span class="st">"Sodium"</span>).is_between(filter_values.sodium[<span class="dv">0</span>], filter_values.sodium[<span class="dv">1</span>]) <span class="op">&amp;</span></span>
+<span id="cb7-33"><a href="#cb7-33" aria-hidden="true" tabindex="-1"></a>                   pl.col(<span class="st">"Carb. (g)"</span>).is_between(filter_values.carb[<span class="dv">0</span>], filter_values.carb[<span class="dv">1</span>]))</span>
+<span id="cb7-34"><a href="#cb7-34" aria-hidden="true" tabindex="-1"></a>    DFVis(df)</span>
+<span id="cb7-35"><a href="#cb7-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-36"><a href="#cb7-36" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> DFVis(df: pl.DataFrame):</span>
+<span id="cb7-37"><a href="#cb7-37" aria-hidden="true" tabindex="-1"></a>    st.markdown(<span class="ss">f"## DataFrame"</span>)</span>
+<span id="cb7-38"><a href="#cb7-38" aria-hidden="true" tabindex="-1"></a>    st.dataframe(df.to_pandas())</span>
+<span id="cb7-39"><a href="#cb7-39" aria-hidden="true" tabindex="-1"></a>    st.write(px.histogram(df, x<span class="op">=</span>[<span class="st">"Carb. (g)"</span>, <span class="st">"Sodium"</span>]))</span>
+<span id="cb7-40"><a href="#cb7-40" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-41"><a href="#cb7-41" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> DFViews(df: pl.DataFrame):</span>
+<span id="cb7-42"><a href="#cb7-42" aria-hidden="true" tabindex="-1"></a>    filters <span class="op">=</span> Filters(df)</span>
+<span id="cb7-43"><a href="#cb7-43" aria-hidden="true" tabindex="-1"></a>    c1, c2 <span class="op">=</span> st.columns(<span class="dv">2</span>)</span>
+<span id="cb7-44"><a href="#cb7-44" aria-hidden="true" tabindex="-1"></a>    <span class="cf">with</span> c1:</span>
+<span id="cb7-45"><a href="#cb7-45" aria-hidden="true" tabindex="-1"></a>        DFVis(df)</span>
+<span id="cb7-46"><a href="#cb7-46" aria-hidden="true" tabindex="-1"></a>    <span class="cf">with</span> c2:</span>
+<span id="cb7-47"><a href="#cb7-47" aria-hidden="true" tabindex="-1"></a>        FilteredPage(df, filters)</span>
+<span id="cb7-48"><a href="#cb7-48" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-49"><a href="#cb7-49" aria-hidden="true" tabindex="-1"></a>Page()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<script src="https://giscus.app/client.js" data-repo="londogard/londogard" data-repo-id="MDEwOlJlcG9zaXRvcnkyOTcyNzE0MzE=" data-category="General" data-category-id="MDE4OkRpc2N1c3Npb25DYXRlZ29yeTMwODYxNzM4" data-mapping="title" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="top" data-theme="light" data-lang="en" crossorigin="anonymous" async="">
+</script>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+      <ul class="footer-items list-unstyled">
+    <li class="nav-item">
+    <a class="nav-link" href="https://www.buymeacoffee.com/hlondogard"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-blue.png" class="img-fluid" width="100"></a>
+  </li>  
+    <li class="nav-item">
+    <a class="nav-link" href="https://github.com/sponsors/Lundez?o=esb"><img src="https://img.shields.io/static/v1?label=Sponsor&amp;message=%E2%9D%A4&amp;logo=GitHub&amp;color=%23fe8e86.png" class="img-fluid" width="100"></a>
+  </li>  
+</ul>
+    </div>   
+    <div class="nav-footer-center">
+      <ul class="footer-items list-unstyled">
+    <li class="nav-item">
+    <a class="nav-link" href="../pages/about.html">About</a>
+  </li>  
+</ul>
+    </div>
+    <div class="nav-footer-right">
+      <ul class="footer-items list-unstyled">
+    <li class="nav-item compact">
+    <a class="nav-link" href="https://www.linkedin.com/in/hampus-londögård/">
+      <i class="bi bi-linkedin" role="img" aria-label="LinkedIn">
+</i> 
+    </a>
+  </li>  
+    <li class="nav-item compact">
+    <a class="nav-link" href="https://twitter.com/hlondogard">
+      <i class="bi bi-twitter" role="img" aria-label="Twitter">
+</i> 
+    </a>
+  </li>  
+    <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/lundez">
+      <i class="bi bi-github" role="img" aria-label="Lundez GitHub">
+</i> 
+    </a>
+  </li>  
+    <li class="nav-item compact">
+    <a class="nav-link" href="../index.xml">
+      <i class="bi bi-rss" role="img" aria-label="Londogard Blog RSS">
+</i> 
+    </a>
+  </li>  
+</ul>
+    </div>
+  </div>
+</footer>
+
+
+
+</body></html>

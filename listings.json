@@ -1,15 +1,8 @@
 [
   {
-    "listing": "/pages/presentations.html",
-    "items": []
-  },
-  {
-    "listing": "/pages/code_setup/code_setup.html",
-    "items": []
-  },
-  {
     "listing": "/index.html",
     "items": [
+      "/posts/2023-06-29-solara-introduction.html",
       "/posts/2023-05-05-duckdb.html",
       "/posts/2023-04-30-pandera.html",
       "/posts/2023-03-31-yelp-reviews.html",
@@ -38,8 +31,8 @@
       "/posts/2020-12-12-transfer-learning-presentation.html",
       "/posts/2020-11-07-snake-kotlin-multiplatform.html",
       "/posts/2020-09-04-til-sdkman.html",
-      "/posts/2020-09-03-til-badass-runtime.html",
       "/posts/2020-09-03-til-fastutil-primitive-structures.html",
+      "/posts/2020-09-03-til-badass-runtime.html",
       "/posts/2020-08-01-faq-search-covid-2/index.html",
       "/posts/2020-06-01-sqldelight-kotlin.html",
       "/posts/2020-05-13-faq-search-covid-1.html",
@@ -47,5 +40,13 @@
       "/posts/2020-02-10-gradle-github-packages.html",
       "/posts/2020-02-23-competence-meeting-imdb-text-classification.html"
     ]
+  },
+  {
+    "listing": "/pages/presentations.html",
+    "items": []
+  },
+  {
+    "listing": "/pages/code_setup/code_setup.html",
+    "items": []
   }
 ]
