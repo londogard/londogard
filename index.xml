@@ -20,12 +20,12 @@
 
 
 
-<p>Solara is fresh and exciting, to me it seems to have more industrial potential than streamlit. In this post I’ll introduce solara and compare it to the more well known streamlit that can be used to build web apps and interactive Data Dashboards.</p>
+<p>Solara (<a href="https://solara.dev/">solara.dev</a>) is fresh and exciting, to me it seems to have more industrial potential than streamlit (<a href="https://streamlit.io/">streamlit.io</a>). In this post I’ll introduce solara and compare it to the more well known streamlit that can be used to build web apps and interactive Data Dashboards.</p>
 <p>I’m very excited to see where it ends up in the future, very possibly in a bright spot. During my initial tests it seems like a solid framework, there’s still some edges to fix but all in all it’s really good!</p>
-<p>Here’s my small introduction and comparison with streamlit!</p>
+<p>Here’s my quick introduction and comparison with streamlit!</p>
 <section id="streamlit-and-why-its-awesome" class="level3">
 <h3 class="anchored" data-anchor-id="streamlit-and-why-its-awesome">Streamlit and why it’s awesome</h3>
-<p>I’m a huge streamlit fan. There’s so much to love, the first time I tried it everything clicked. It’s simple and good looking, the User Experience (UX) and Developer Experience (DX) is exceptional. Using it I can easily build beautiful web apps, efficient Data Dashboards and small Proof-of-Concepts.</p>
+<p>I’m a huge streamlit fan. There’s so much to love, the first time I tried it everything clicked. It’s simple and good looking, the User Experience (UX) and Developer Experience (DX) is exceptional. Using it I can easily build beautiful web apps, efficient Data Dashboards and small Proof-of-Concepts (PoC).</p>
 <p>With that said everything has a drawback, and streamlit’s is performance once it scales to large. Streamlit works by rerunning everything in the script top-down once a change happens in the webapp. This makes it incredibly simple to reason about and reduces the number of bugs, but it also builds what can become a huge bottleneck and slow down the app.&nbsp;</p>
 <p>Streamlit solves this by introducing&nbsp;<code>cache</code>&nbsp; which allows reusing results from expensive computations and in the UI they reuse components to make the flow smother if nothing changes, this is done using the internal&nbsp;<code>state</code>. Once you start modifying&nbsp;<code>state</code>&nbsp; and&nbsp;<code>cache</code>&nbsp;the complexity grows quickly and the app becomes much harder to reason about.</p>
 <p>Streamlit could solve this by enabling better API’s which allows better “data-flow” choices, like the&nbsp;<code>st.form</code>&nbsp; enables non-recalculated views unless submitted.</p>
@@ -35,7 +35,8 @@
 <h3 class="anchored" data-anchor-id="solara-introduction">Solara Introduction</h3>
 <p>Solara is a similar framework to streamlit, but rather than rerunning everything top-down every time it uses a reactive approach through&nbsp;<code>reacton</code>&nbsp;(<a href="https://github.com/widgetti/reacton">github.com/widgetti/reacton</a>) that is a pure Python port of React to&nbsp;<code>ipywidgets</code>.</p>
 <p>This means that only components that are using the reactive variable is rerun, which is very exciting! The performance improvements becomes great at the cost of a more declarative state-handling.</p>
-<p>In streamlit state is handled for you, in solara you’ve to solve it yourself – but at least there’s no hidden magic that can become very complex when the app grows.</p>
+<p>In streamlit state is handled for you, in Solara state is separated from the component, like react, which means you handle it explicitly and further reduce hidden magic that in the end sometimes leads to a fragile complex app as the app grows.<br>
+<a href="https://shiny.rstudio.com/py/docs/comp-streamlit.html#streamlit-requires-rewriting">shiny.rstudio.com</a> shares examples of how complex state-handling can become in <code>streamlit</code>. What cannot be shared easily is how badly this scales with app size and complexity. The global state can, and probably sometimes will, lead to hard-to-find bugs and a hard time to achieve high-performant apps.</p>
 <p>An example app and deeper introduction can be found in a later section.</p>
 </section>
 <section id="solara-versus-streamlit" class="level2">
@@ -69,7 +70,7 @@
 <section id="a-simple-app" class="level3">
 <h3 class="anchored" data-anchor-id="a-simple-app">A simple app</h3>
 <p>Using solara to build a simple app is pretty clean, we can clearly see the&nbsp;<code>react</code>&nbsp;-hook being used for&nbsp;<code>file</code>&nbsp; which is cool!</p>
-<p>We need to define our logic inside a&nbsp;<code>component</code>&nbsp; and based on my testing the first&nbsp;<code>component</code>&nbsp; in the main-file is the one automatically rendered. To show in a notebook you simply use&nbsp;<code>display(Page())</code>.&nbsp;</p>
+<p>The entry-point in Solara is defined as a <code>component</code> named <code>Page</code>, this is automatically picked up and rendered. To show in a notebook you simply use&nbsp;<code>display(Page())</code>.&nbsp;</p>
 <div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><span class="im" style="color: #00769E;
 background-color: null;
 font-style: inherit;">import</span> solara</span>
@@ -145,7 +146,7 @@ font-style: inherit;"># use solara run --host localhost app.py on WSL until PR#1
 <section id="working-more-with-state" class="level3">
 <h3 class="anchored" data-anchor-id="working-more-with-state">Working more with state</h3>
 <p>In the previous code we only used the state inside the same component, that’s all fine but it’s not a very good use-case.</p>
-<p>Solara introduces 2 other types of state,&nbsp;<code>reactive</code>&nbsp; and&nbsp;<code>use_reactive</code>. Both very similar but&nbsp;<code>use_reactive</code>&nbsp; is only possible to use locally inside a&nbsp;<code>component</code>. The&nbsp;<code>reactive</code>&nbsp; one will be reset each time the component re-renders, which is not very good.</p>
+<p>Solara introduces 2 other types of state,&nbsp;<code>reactive</code>&nbsp; and&nbsp;<code>use_reactive</code>. Both very similar but&nbsp;<code>use_reactive</code>&nbsp; is only possible to use locally inside a&nbsp;<code>component</code>. The&nbsp;<code>reactive</code>&nbsp;function should only be used outside of components, for application wide state. If you use it inside a <code>component</code> it’ll be reset as the re-render happens, which is not what you’d expect.</p>
 <p>As such we define a&nbsp;<code>reactive</code>&nbsp; variable&nbsp;<code>sodium</code>.</p>
 <div class="sourceCode" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1">sodium <span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -177,7 +178,7 @@ We can then send this to a child-component which would be updated as well when i
 </tr>
 <tr class="even">
 <td>#lines of code (LOC)</td>
-<td>55</td>
+<td>53</td>
 <td><strong>49</strong></td>
 </tr>
 <tr class="odd">
@@ -596,15 +597,8 @@ font-style: inherit;">max</span>())))</span>
 <span id="cb6-50">    <span class="cf" style="color: #003B4F;
 background-color: null;
 font-style: inherit;">with</span> solara.Columns():</span>
-<span id="cb6-51">        <span class="cf" style="color: #003B4F;
-background-color: null;
-font-style: inherit;">with</span> solara.Column():</span>
-<span id="cb6-52">            DFVis(df)</span>
-<span id="cb6-53">            </span>
-<span id="cb6-54">        <span class="cf" style="color: #003B4F;
-background-color: null;
-font-style: inherit;">with</span> solara.Column():</span>
-<span id="cb6-55">            FilteredPage(df, filter_values)</span></code></pre></div>
+<span id="cb6-51">            DFVis(df)</span>
+<span id="cb6-52">            FilteredPage(df, filter_values)</span></code></pre></div>
 </section>
 <section id="streamlit-app" class="level2">
 <h2 class="anchored" data-anchor-id="streamlit-app">Streamlit App</h2>
