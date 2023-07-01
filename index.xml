@@ -20,33 +20,35 @@
 
 
 
-<p>Solara (<a href="https://solara.dev/">solara.dev</a>) is fresh and exciting, to me it seems to have more industrial potential than streamlit (<a href="https://streamlit.io/">streamlit.io</a>). In this post I’ll introduce solara and compare it to the more well known streamlit that can be used to build web apps and interactive Data Dashboards.</p>
-<p>I’m very excited to see where it ends up in the future. I believe it has a bright future ahead. During my initial tests it seems like a solid framework, there’s still some edges to fix but all in all it’s really good!</p>
-<p>Here’s my quick introduction and comparison with streamlit!</p>
+<p>Solara (<a href="https://solara.dev/">solara.dev</a>) is a fresh and exciting web framework that enables React-style state-handling while keeping UI (almost) as easy as Streamlit (<a href="https://streamlit.io/">streamlit.io</a>). Further by design it seems to have a bigger industrial potential than Streamlit.<br>
+In this post I’ll introduce Solara and compare it to the more well known Streamlit that can be used to build web apps and interactive Data Dashboards.</p>
+<p>Solara and Streamlit are web frameworks which makes it very easy to write a full-stack app that can be everything from a small Proof-of-Concept to a big complicated Data Dashboard. There exist other competitors such as <a href="https://dash.plotly.com/">Dash</a>, <a href="https://panel.holoviz.org/">Panel</a> and <a href="https://voila.readthedocs.io/en/stable/">Voila</a> which we’ll not include in-depth as comparison between those and Streamlit has been done previously.</p>
+<p>I’m very excited to see where Solara ends up in the future. I believe it has a bright future ahead. During my initial tests it seems like a solid framework, there’s still some rough edges to fix but all in all it’s really good!</p>
+<p>Here’s my quick introduction and comparison with Streamlit!</p>
 <section id="streamlit-and-why-its-awesome" class="level3">
 <h3 class="anchored" data-anchor-id="streamlit-and-why-its-awesome">Streamlit and why it’s awesome</h3>
-<p>I’m a huge streamlit fan. There’s so much to love, the first time I tried it everything clicked. It’s simple and good looking, the User Experience (UX) and Developer Experience (DX) is exceptional. Using it I can easily build beautiful web apps, efficient Data Dashboards and small Proof-of-Concepts (PoC).</p>
-<p>With that said everything has a drawback, and streamlit’s is performance once it scales to large. Streamlit works by rerunning everything in the script top-down once a change happens in the web app. This makes it incredibly simple to reason about and reduces the number of bugs, but it also builds what can become a huge bottleneck and slow down the app.&nbsp;</p>
+<p>I’m a huge Streamlit fan. There’s a lot to love, the first time I tried it everything clicked. It’s simple and good looking, the User Experience (UX) and Developer Experience (DX) is exceptional. Using it I can easily build beautiful web apps in no time, efficient Data Dashboards and small Proof-of-Concepts (PoC).</p>
+<p>With that said everything has a drawback, and Streamlit’s is performance once it scales to large. Streamlit works by rerunning everything in the script top-down once a change happens in the web app. This makes it incredibly simple to reason about and reduces the number of bugs, but it also builds what can become a huge bottleneck and slow down the app.&nbsp;</p>
 <p>Streamlit solves this by introducing&nbsp;<code>cache</code> which allows reusing results from expensive computations and in the UI they reuse components to make the flow smother if nothing changes, this is done using the internal&nbsp;<code>state</code>. Once you start modifying&nbsp;<code>state</code>&nbsp; and&nbsp;<code>cache</code>&nbsp;the complexity grows quickly and the app becomes much harder to reason about.</p>
 <p>Streamlit could solve this by enabling better API’s which allows better “data-flow” choices, like the&nbsp;<code>st.form</code>&nbsp; enables non-recalculated views unless submitted.</p>
 <p>For now though… Let’s try&nbsp;<strong><code>solara</code></strong>&nbsp;a new exciting framework which does exactly this, but without the same simplicity.</p>
 </section>
 <section id="solara-introduction" class="level3">
 <h3 class="anchored" data-anchor-id="solara-introduction">Solara Introduction</h3>
-<p>Solara is a similar framework to streamlit, but rather than rerunning everything top-down every time it uses a reactive approach through&nbsp;<code>reacton</code>&nbsp;(<a href="https://github.com/widgetti/reacton">github.com/widgetti/reacton</a>) that is a pure Python port of React to&nbsp;<code>ipywidgets</code>.</p>
+<p>Solara is a similar framework to Streamlit, but rather than rerunning everything top-down every time it uses a reactive approach through&nbsp;<code>reacton</code>&nbsp;(<a href="https://github.com/widgetti/reacton">github.com/widgetti/reacton</a>) that is a pure Python port of React to&nbsp;<code>ipywidgets</code>.</p>
 <p>This means that only components that are using the reactive variable is rerun, which is very exciting! The performance improvements becomes great at the cost of a more declarative state-handling.</p>
-<p>In streamlit state is handled for you, in Solara state is separated from the component, like react, which means you handle it explicitly and further reduce hidden magic that in the end sometimes leads to a fragile complex app as the app grows.<br>
+<p>In Streamlit state is handled for you, in Solara state is separated from the component, like react, which means you handle it explicitly and further reduce hidden magic that in the end sometimes leads to a fragile complex app as the app grows.<br>
 <a href="https://shiny.rstudio.com/py/docs/comp-streamlit.html#streamlit-requires-rewriting">shiny.rstudio.com</a> shares examples of how complex state-handling can become in <code>streamlit</code>. What cannot be shared easily is how badly this scales with app size and complexity. The global state can, and probably sometimes will, lead to hard-to-find bugs and a hard time to achieve high-performant apps.</p>
 <p>An example app and deeper introduction can be found in a later section.</p>
 </section>
 <section id="solara-versus-streamlit" class="level2">
 <h2 class="anchored" data-anchor-id="solara-versus-streamlit">🥊Solara versus Streamlit</h2>
-<p>In here I’ll compare solara and streamlit, for a more in-depth usage see later sections.</p>
+<p>In here I’ll compare Solara and Streamlit, for a more in-depth usage see later sections.</p>
 <section id="tldr" class="level3">
 <h3 class="anchored" data-anchor-id="tldr">TL;DR</h3>
-<p>Code is on GitHub&nbsp;<a href="https://github.com/Lundez/solara_app">lundez/solara_app</a> / Section&nbsp;1, and I added suggested improvements via&nbsp;<a href="https://github.com/widgetti/solara/pull/180">PR#180</a>&nbsp;and&nbsp;<a href="https://github.com/widgetti/solara/issues/177">Issue#177</a>&nbsp;to solara.</p>
+<p>Code is on GitHub&nbsp;<a href="https://github.com/Lundez/solara_app">lundez/solara_app</a> / Section&nbsp;1, and I added suggested improvements via&nbsp;<a href="https://github.com/widgetti/solara/pull/180">PR#180</a>&nbsp;and&nbsp;<a href="https://github.com/widgetti/solara/issues/177">Issue#177</a>&nbsp;to Solara.</p>
 <ul>
-<li><strong>Con:</strong>&nbsp;Higher learning curve (floor) as you handle state manually (no magic), but with better DX I see it beating streamlit because of the higher ceiling that brings new possibilities.
+<li><strong>Con:</strong>&nbsp;Higher learning curve (floor) as you handle state manually (no magic), but with better DX I see it beating Streamlit because of the higher ceiling that brings new possibilities.
 <ul>
 <li><strong>Pro:</strong>&nbsp;Bonus: we learn the React paradigm which is widely used in frontend! A win-win for developers.</li>
 </ul></li>
@@ -56,12 +58,12 @@
 <li>Routing is first-class citizen –&nbsp;<a href="https://solara.dev/docs/understanding/routing">docs</a>.</li>
 <li>Embeddable, in flask/fastAPI/… –&nbsp;<a href="https://solara.dev/docs/deploying/self-hosted">docs</a>.</li>
 </ol></li>
-<li><strong>Con:</strong>&nbsp;UX is not as good as streamlit.</li>
+<li><strong>Con:</strong>&nbsp;UX is not as good as Streamlit.</li>
 <li><strong>Pro:</strong>&nbsp;Embeddable in Notebooks making it simpler to go&nbsp;<em>really fast</em>.</li>
 <li><strong>Pro:</strong>&nbsp;Access to all&nbsp;<code>ipywidgets</code>&nbsp;which is an incredible ecosystem.&nbsp;</li>
 </ul>
 <p>Additionally compared to another interesting framework like&nbsp;<a href="https://panel.holoviz.org/" title="https://panel.holoviz.org/">Panel</a>&nbsp;it’s much simpler IMO.</p>
-<p>Most certainly solara has a bright future if the development and maintenance is kept up, with additional marketing it can become a great competitor in the space for Gradio, Streamlit and others.</p>
+<p>Most certainly Solara has a bright future if the development and maintenance is kept up, with additional marketing it can become a great competitor in the space for Gradio, Streamlit and others.</p>
 </section>
 </section>
 <section id="solara-introduction-1" class="level2">
@@ -69,7 +71,7 @@
 <p>All code is available on GitHub&nbsp;<a href="https://github.com/Lundez/solara_app" title="https://github.com/Lundez/solara_app">lundez/solara_app</a> and Section&nbsp;1.</p>
 <section id="a-simple-app" class="level3">
 <h3 class="anchored" data-anchor-id="a-simple-app">A simple app</h3>
-<p>Using solara to build a simple app is pretty clean, we can clearly see the&nbsp;<code>react</code>&nbsp;-hook being used for&nbsp;<code>file</code>&nbsp; which is cool!</p>
+<p>Using Solara to build a simple app is pretty clean, we can clearly see the&nbsp;<code>react</code>&nbsp;-hook being used for&nbsp;<code>file</code>&nbsp; which is cool!</p>
 <p>The entry-point in Solara is defined as a <code>component</code> named <code>Page</code>. This is automatically picked up and rendered. To show in a notebook you simply use&nbsp;<code>display(Page())</code>.&nbsp;</p>
 <div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><span class="im" style="color: #00769E;
 background-color: null;
@@ -206,7 +208,7 @@ We can then send this to a child-component which would be updated as well when i
 <section id="state-and-pythonicism" class="level4">
 <h4 class="anchored" data-anchor-id="state-and-pythonicism">State and ‘pythonicism’</h4>
 <p>The&nbsp;<code>React</code> paradigm, while cool, is&nbsp;<strong>certainly not pythonic</strong>&nbsp;at all! I believe that the&nbsp;<strong>initial “PoC”-stage implementation should be simpler</strong>&nbsp;to get started with. To “turn the knobs” and squeeze performance as is possible is great and should certainly be available for the more performance intense sections.</p>
-<p>The positive of all this is that we learn the “React-paradigm” and we handle state explicitly, i.e.&nbsp;no streamlit magic!&nbsp;</p>
+<p>The positive of all this is that we learn the “React-paradigm” and we handle state explicitly, i.e.&nbsp;no Streamlit magic!&nbsp;</p>
 <p><strong>It’s a tie.</strong></p>
 </section>
 <section id="embeddability" class="level4">
@@ -312,13 +314,13 @@ We can then send this to a child-component which would be updated as well when i
 </div>
 </div>
 </div>
-<p><strong>It’s a small win for streamlit,</strong>&nbsp;streamlit clearly wins the ‘simplicity’, ‘design’ and ‘clearness’ but solara has a bonus for the amount of widgets available through <code>ipywidgets</code> ecosystem.</p>
+<p><strong>It’s a small win for Streamlit,</strong>&nbsp;Streamlit clearly wins the ‘simplicity’, ‘design’ and ‘clearness’ but Solara has a bonus for the amount of widgets available through <code>ipywidgets</code> ecosystem.</p>
 </section>
 </section>
 <section id="readability" class="level4">
 <h4 class="anchored" data-anchor-id="readability">Readability</h4>
-<p>Because&nbsp;<code>solara</code>&nbsp; has less magic I believe Solara is easier to reason about in a complex app, but in the PoC’s and simple apps streamlit is just as simple.</p>
-<p><strong>It’s a tie</strong>, but solara wins as the app grows.</p>
+<p>Because&nbsp;<code>solara</code>&nbsp; has less magic I believe Solara is easier to reason about in a complex app, but in the PoC’s and simple apps Streamlit is just as simple.</p>
+<p><strong>It’s a tie</strong>, but Solara wins as the app grows.</p>
 </section>
 </section>
 </section>
@@ -326,7 +328,7 @@ We can then send this to a child-component which would be updated as well when i
 <h2 class="anchored" data-anchor-id="outro">Outro</h2>
 <p>I believe that&nbsp;<code>streamlit</code>&nbsp; still is the best framework to get started with, but in 6 months from now on I can see&nbsp;<code>solara</code>&nbsp; as the better option.</p>
 <p>If you’re developing a dashboard or app that needs high performance and industrial strength I can see&nbsp;<code>solara</code>&nbsp; as a better choice.</p>
-<p>I’ll happily try to help solara grow!</p>
+<p>I’ll happily try to help Solara grow!</p>
 <p>~Hampus Londögård</p>
 <p><strong>P.S.</strong> thanks to <code>@maartenbreddels</code> and <code>@Gordon#1568</code> (Solara’s Discord) for all the help.</p>
 </section>
