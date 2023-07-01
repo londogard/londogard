@@ -5,27 +5,24 @@ categories: [data, dashboard, webapp]
 date: "2023-06-30"
 ---
 
-Solara is fresh and exciting, to me it seems to have more industrial potential than streamlit. In this post I’ll introduce solara and compare it to the more well known streamlit that can be used to build web apps and interactive Data Dashboards.
+Solara ([solara.dev](https://solara.dev/)) is fresh and exciting, to me it seems to have more industrial potential than streamlit ([streamlit.io](https://streamlit.io/)). In this post I’ll introduce solara and compare it to the more well known streamlit that can be used to build web apps and interactive Data Dashboards.
 
 I'm very excited to see where it ends up in the future, very possibly in a bright spot. During my initial tests it seems like a solid framework, there's still some edges to fix but all in all it's really good!  
 
-Here's my small introduction and comparison with streamlit!
+Here's my quick introduction and comparison with streamlit!
 
 
 ### Streamlit and why it’s awesome
 
-I’m a huge streamlit fan. There’s so much to love, the first time I tried it everything clicked. It’s simple and good looking, the User Experience (UX) and Developer Experience (DX) is exceptional. Using it I can easily build beautiful web apps, efficient Data Dashboards and small Proof-of-Concepts.
+I’m a huge streamlit fan. There’s so much to love, the first time I tried it everything clicked. It’s simple and good looking, the User Experience (UX) and Developer Experience (DX) is exceptional. Using it I can easily build beautiful web apps, efficient Data Dashboards and small Proof-of-Concepts (PoC).
 
-  
 
 With that said everything has a drawback, and streamlit’s is performance once it scales to large. Streamlit works by rerunning everything in the script top-down once a change happens in the webapp. This makes it incredibly simple to reason about and reduces the number of bugs, but it also builds what can become a huge bottleneck and slow down the app. 
 
 Streamlit solves this by introducing `cache`  which allows reusing results from expensive computations and in the UI they reuse components to make the flow smother if nothing changes, this is done using the internal `state`. Once you start modifying `state`  and `cache` the complexity grows quickly and the app becomes much harder to reason about.
-
   
 
 Streamlit could solve this by enabling better API’s which allows better “data-flow” choices, like the `st.form`  enables non-recalculated views unless submitted.
-
   
 
 For now though... Let’s try **`solara`** a new exciting framework which does exactly this, but without the same simplicity.
@@ -38,9 +35,8 @@ Solara is a similar framework to streamlit, but rather than rerunning everything
 
 This means that only components that are using the reactive variable is rerun, which is very exciting! The performance improvements becomes great at the cost of a more declarative state-handling.
 
-  
-
-In streamlit state is handled for you, in solara you’ve to solve it yourself – but at least there’s no hidden magic that can become very complex when the app grows.
+In streamlit state is handled for you, in Solara state is separated from the component, like react, which means you handle it explicitly and further reduce hidden magic that in the end sometimes leads to a fragile complex app as the app grows.  
+[shiny.rstudio.com](https://shiny.rstudio.com/py/docs/comp-streamlit.html#streamlit-requires-rewriting) shares examples of how complex state-handling can become in `streamlit`. What cannot be shared easily is how badly this scales with app size and complexity. The global state can, and probably sometimes will, lead to hard-to-find bugs and a hard time to achieve high-performant apps.
 
 An example app and deeper introduction can be found in a later section.
 
@@ -82,7 +78,7 @@ All code is available on GitHub [lundez/solara\_app](https://github.com/Lundez/
 
 Using solara to build a simple app is pretty clean, we can clearly see the `react` -hook being used for `file`  which is cool!
 
-We need to define our logic inside a `component`  and based on my testing the first `component`  in the main-file is the one automatically rendered. To show in a notebook you simply use `display(Page())`. 
+The entry-point in Solara is defined as a `component` named `Page`, this is automatically picked up and rendered. To show in a notebook you simply use `display(Page())`. 
 
 ```python
 import solara
@@ -119,7 +115,7 @@ Quite simple right? And incredibly similar to how you run streamlit 😉.
 
 In the previous code we only used the state inside the same component, that’s all fine but it’s not a very good use-case.
 
-Solara introduces 2 other types of state, `reactive`  and `use_reactive`. Both very similar but `use_reactive`  is only possible to use locally inside a `component`. The `reactive`  one will be reset each time the component re-renders, which is not very good.
+Solara introduces 2 other types of state, `reactive`  and `use_reactive`. Both very similar but `use_reactive`  is only possible to use locally inside a `component`. The `reactive` function should only be used outside of components, for application wide state. If you use it inside a `component` it'll be reset as the re-render happens, which is not what you'd expect.
 
 As such we define a `reactive`  variable `sodium`.
 
@@ -153,18 +149,15 @@ A comparison between the two is available in @sec-appendix, where I use multiple
 |     |     |     |
 | --- | --- | --- |
 | Measurement | Solara | Streamlit |
-| #lines of code (LOC) | 55  | **49** |
+| #lines of code (LOC) | 53  | **49** |
 | Simplicity (0-5) | 3   | **4** |
 | Performance (0-5) | **4** | 3   |
 | UX (0-5) - images in @sec-ux | 3   | **5** |
 
   
-
 Streamlit wins most, but with the performance and possibilities of Solara I still see it as a very capable contender. With, hopefully soon, improved UX and DX `solara`  can grow to be really big!
 
 In the TL;DR section you can see some other nicities of Solara such as Testing, Embeddability and more! 
-
-  
 
 ### Deeper Comparison
 
@@ -293,10 +286,7 @@ def DFViews(df: pl.DataFrame):
     filter_values = solara.use_reactive(FilterValues((df["Carb. (g)"].min(), df["Carb. (g)"].max()), (df["Sodium"].min(), df["Sodium"].max())))
     Filters(df, filter_values)
     with solara.Columns():
-        with solara.Column():
             DFVis(df)
-            
-        with solara.Column():
             FilteredPage(df, filter_values)
 ```
 
