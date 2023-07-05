@@ -35,7 +35,7 @@ In the end what excites me the most is to build actual value by finding patterns
 
 **Honorifics**: Hyperights [Nordic 100 2023](https://www.linkedin.com/feed/update/urn:li:activity:7059486986662744064/?updateEntityUrn=urn%3Ali%3Afs_updateV2%3A%28urn%3Ali%3Aactivity%3A7059486986662744064%2CFEED_DETAIL%2CEMPTY%2CDEFAULT%2Cfalse%29) in Data, AI & Analytics  
 **Presentations**: AFRY x Snowflake[^1], Foo Café[^2][^3], Google DevFest[^4], Industry Day by IEEE[^5], Almedalsveckan[^6]  
-**Open Source**: e.g. [DJL](https://github.com/deepjavalibrary/djl), [flyte](https://flyte.org/) and my own libraries under `/londogard` and `/Lundez`.
+**Open Source**: e.g. [DJL](https://github.com/deepjavalibrary/djl), [flyte](https://flyte.org/), [solara](https://github.com/widgetti/solara) and my own libraries under `/londogard` and `/Lundez`.
 
 [^1]: _"Building ML solutions using Snowpark"_
 [^2]: _"Building Efficient Local-First ML Pipelines"_
