@@ -88,7 +88,9 @@ Analyzing my results was done by a few different things:
 1. Metrics (😅)
 2. LIME
 3. Viewing data that model predicts as non-highlight but is highlight
-4. Timeline chart
+4. ***Timeline chart**
+    - This was the best way to review a "unknown" clip, do the highlight intensities overlap real highlights? Boy they do!
+    - It's also how it'll be used by my brother.
 
 ## Result
 
