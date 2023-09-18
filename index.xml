@@ -120,7 +120,11 @@ For this dataset I could only keep labels in-memory, but doing that makes sense 
 <li>Metrics (😅)</li>
 <li>LIME</li>
 <li>Viewing data that model predicts as non-highlight but is highlight</li>
-<li>Timeline chart</li>
+<li>*<strong>Timeline chart</strong>
+<ul>
+<li>This was the best way to review a “unknown” clip, do the highlight intensities overlap real highlights? Boy they do!</li>
+<li>It’s also how it’ll be used by my brother.</li>
+</ul></li>
 </ol>
 </section>
 <section id="result" class="level2">
@@ -128,7 +132,7 @@ For this dataset I could only keep labels in-memory, but doing that makes sense 
 <p>The results are better than expected! I hit ~80% accuracy which is pretty good based on image-to-image classification, if we did an average of the last few frames I’d bet it’d be better. All in all having non-perfect score in such a subjective task as Highlight Extraction is a strength. We don’t want to overfit the data but rather be able to find highlights in new clips.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://blog.londogard.com/posts/2023-09-10-highlights-lol/val_accuracy.png" class="img-fluid figure-img"></p>
+<p><img src="https://blog.londogard.com/posts/2023-09-10-highlights-lol/imgs/val_accuracy.png" class="img-fluid figure-img"></p>
 <figcaption class="figure-caption">Validation Accuracy</figcaption>
 </figure>
 </div>
@@ -1157,6 +1161,9 @@ font-style: inherit;">=</span>data)</span></code></pre></div>
 
  ]]></description>
   <category>data</category>
+  <category>machine-learning</category>
+  <category>deep-learning</category>
+  <category>fun</category>
   <guid>https://blog.londogard.com/posts/2023-09-10-highlights-lol/index.html</guid>
   <pubDate>Sun, 10 Sep 2023 00:00:00 GMT</pubDate>
 </item>
