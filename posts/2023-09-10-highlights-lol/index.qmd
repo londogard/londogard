@@ -1,7 +1,7 @@
 ---
 title: "Automatic Highlight Detection of League of Legends Streams"
 description: "In this post I share the way I built a Deep Learning tool to extract LoL Highlights"
-categories: [data, ]
+categories: [data, machine-learning, deep-learning, fun]
 date: "2023-09-10"
 ---
 
@@ -94,7 +94,7 @@ Analyzing my results was done by a few different things:
 
 The results are better than expected! I hit ~80% accuracy which is pretty good based on image-to-image classification, if we did an average of the last few frames I'd bet it'd be better. All in all having non-perfect score in such a subjective task as Highlight Extraction is a strength. We don't want to overfit the data but rather be able to find highlights in new clips.
 
-![Validation Accuracy](val_accuracy.png)
+![Validation Accuracy](imgs/val_accuracy.png)
 
 And to build my highlights I did a `rolling_sum` on the last 30 seconds of predictions, giving a _**highlight intensity**_ chart as shown in @fig-intensity.
 
