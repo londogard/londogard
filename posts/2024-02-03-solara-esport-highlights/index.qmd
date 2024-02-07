@@ -2,11 +2,11 @@
 
 Hi all! 👋
 
-Long time since my last blog.. But I’m back with a New Years Resolution to release at least 6 blogs in 2024, focusing on interesting content that’s unique and not simple click-bait.
+I'm back with a New Years Resolution to release at least 6 blogs in 2024, focusing on interesting content that’s unique and not simple click-bait.
 
-Today I'm sharing the continuation of a presentation I did at Foo Café. I have built a complex yet user-friendly *Data App* using [*solara*](https://solara.dev/ "https://solara.dev/")*.* 
+Today I'm sharing the continuation of a presentation I did at Foo Café. I have built a complex yet user-friendly *Data App* using [*solara*](https://solara.dev/ "https://solara.dev/").
 
-What builds this complexity?
+There's two partd that creates this complexity.
 
 1.  **Heavy processing** that requires threading
 
@@ -16,11 +16,11 @@ What builds this complexity?
 
     -   This will be clear when you view the video of the app
 
-My presentation at Foo Café focused more on the training process and exploring option to deploy my tool. This blog rather focuses on the “end result”, if you can say that there ever is one. 😉
+My presentation at Foo Café focused more on the training process and exploring option to deploy my tool. This blog rather focuses on the Data App itself! 🚀
 
 ### Quick Backstory
 
-My kids brother asked me to help him earn some quick bucks through automating a process to build highlight-videos of E-Sports to upload on YouTube. The emphasis was on a single streamer, TheBausFFS who's a famous Swedish streamer in League of Legends (LoL). When I set out my brother had hope to earn cash and I to learn new tools and assist my family with my deep knowledge. 💪
+My kid brother asked me to help him earn some quick bucks through automating a process to build highlight-videos of E-Sports to upload on YouTube. The emphasis was on a single streamer, TheBausFFS who's a famous Swedish streamer in League of Legends (LoL). When I set out my brother had hope to earn cash and I to learn new tools and assist my family with my deep knowledge. 💪
 
 ## Choices during my Journey
 
@@ -48,7 +48,7 @@ I was contemplating three (3) options to deploy my resulting model.
 | Gradio           | -   Simple                                 | -   Complexity grows exponentially                                          |
 +------------------+--------------------------------------------+-----------------------------------------------------------------------------+
 
-Other tools such as Panel was considered and was rejected to test. For technical details such as model and more see my previous [blog](../2023-09-10-highlights-lol)
+Other tools such as Panel was considered and rejected due to time and non-composability. For technical details such as model and more see my previous [blog](../2023-09-10-highlights-lol)
 
 ### Result
 
@@ -79,19 +79,9 @@ I created a component to wrap Progress on top of the `use_thread`  returned `so
 def ProgressDynamic(
     msg: str,
     result: solara.Result[Any],
-    dynamic_progress: solara.Reactive[str | int | float] | None = None,
 ):
     if result.state == solara.ResultState.RUNNING:
         Progress(msg)
-        if dynamic_progress is not None:
-            progress = dynamic_progress.value
-            match progress:
-                case int():
-                    solara.ProgressLinear(progress)
-                case float():
-                    solara.ProgressLinear(int(progress * 100))
-                case str():
-                    solara.Markdown(progress)
 ```
 
 This is a quite simple class, yet it cleans up a lot of code when called like:
@@ -103,10 +93,10 @@ res = write_video.use_thread(
     selected_vid,
     Path(file_name).stem,
 )
-ProgressDynamic("Building Clip...", res)
+Progress("Building Clip...", res)
 ```
 
-![](Files/image.png)
+![Resulting spinner on loads](Files/image.png)
 
 ### Checkpointing / State Management and Parent/Children (Hierarchy)
 
@@ -162,7 +152,9 @@ In this component we can see that we insert `file: solara.Reactive`  which is e
 
 ### Threading to improve UI experience
 
-When working with UI it’s important to not block the main thread, sometimes called rendering thread.  **Why?** Because if you block the thread everything is “frozen” in an awkward state, no progress or anything for the user. **How** is it solved? Using threads. Fortunately in solara it’s simple to apply threading through two choices.
+When working with UI it’s important to not block the main thread, sometimes called rendering thread.  
+**Why?** Because if you block the thread everything is “frozen” in an awkward state, no progress or anything for the user.  
+**How** is it solved? Using threads. Fortunately in solara it’s simple to apply threading through two choices.
 
 ``` python
 # 1. Memoized function
@@ -205,14 +197,6 @@ solara.FigurePlotly(fig, on_relayout=update_vals)
 
 {{< video Files/full_app_use.mp4 >}}
 
-### Best Practices as Developer (DX): 
-
-Develop using either 1. *devcontainer/docker* 2. *micromamba (conda) environment* This simplified environment compatibility.
-
-Add the following tooling: - `⁠pre-commit`
-
--   `.vscode/settings`
-
 # Videos
 
 ## Using App Simple
@@ -220,7 +204,6 @@ Add the following tooling: - `⁠pre-commit`
 
 ## Full Use Button
 {{< video Files/full_vid_btn.mp4 >}}
-
 
 Run application 
 
@@ -231,9 +214,16 @@ Run application 
 
 1.  React state enables almost impossible things from Streamlit, like modifying a list of values one by one
     -   Would require modifying streamlite.state which is very hacky!
-2.  Even if it’s easier to separate UI and Code it’s still easy to end up with a messy code like streamlit. \# Appendix \## Issues in Solara
-    -   Sync to updated filestorage (i.e. downloading Twitch movies, I even tried reloading reactive variable)
-        -    I solved this by not using tabs, to have the user "refresh" site by changing page. \## App Run
+2.  Even if it’s easier to separate UI and Code it’s still easy to end up with a messy code like streamlit. 
+
+# Appendix 
+
+
+## Issues in Solara
+-   Sync to updated filestorage (i.e. downloading Twitch movies, I even tried reloading reactive variable)
+    -    I solved this by not using tabs, to have the user "refresh" site by changing page. 
+
+## App Run
 
 ## Python Dev Setup
 
@@ -242,5 +232,5 @@ Recommended setup for developer.
 1. `⁠.vscode/settings.json`
 2. `pre-commit.yml` 
 3. `⁠.devcontainer`
-4.  `Dockerfile`
-5.  `env.yml`
+4. `Dockerfile`
+5. `env.yml`
