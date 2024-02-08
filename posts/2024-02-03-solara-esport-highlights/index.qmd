@@ -208,20 +208,20 @@ solara.FigurePlotly(fig, on_relayout=update_vals)
 Run application 
 
 1. *podman* (Docker) container to make deployment simple
-2. *Micromamba env*
+2. *micromamba env*
 
 ### Findings
 
 1.  React state enables almost impossible things from Streamlit, like modifying a list of values one by one
     -   Would require modifying streamlite.state which is very hacky!
-2.  Even if it’s easier to separate UI and Code it’s still easy to end up with a messy code like streamlit. 
+2.  Even if solara has a better way to separate UI & logic it's easy to end up with a similar mess as streamlit.
 
 # Appendix 
 
 
 ## Issues in Solara
 -   Sync to updated filestorage (i.e. downloading Twitch movies, I even tried reloading reactive variable)
-    -    I solved this by not using tabs, to have the user "refresh" site by changing page. 
+    -    I solved this by not using tabs. By selecting page through a `Select` you automatically do a refresh of state.
 
 ## App Run
 
