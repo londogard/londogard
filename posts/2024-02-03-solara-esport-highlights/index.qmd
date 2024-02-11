@@ -23,43 +23,44 @@ There's two parts that creates this complexity.
 
 My presentation at Foo Café focused more on the training process and exploring option to deploy my tool. This blog rather focuses on the Data App itself! 🚀
 
-::: column-margin
-You can find the code for the whole app on [github.com/londogard/lol_highlight_detection](https://github.com/londogard/lol_highlight_detection/).
-:::
+Code is available on GitHub[^1].
+
+[^1]:
+    ::: column-margin
+    Code available on [github.com/londogard/lol_highlight_detection](https://github.com/londogard/lol_highlight_detection/).
+    :::
 
 ### Quick Backstory
 
-My kid brother asked me to help him earn some quick bucks through automating a process to build highlight-videos of E-Sports to upload on YouTube. The emphasis was on a single streamer, [TheBausFFS](https://www.twitch.tv/thebausffs/)[^1].
+My kid brother asked me to help him earn some quick bucks through automating a process to build highlight-videos of E-Sports to upload on YouTube. The emphasis was on a single streamer, [TheBausFFS](https://www.twitch.tv/thebausffs/)[^2].
 
-[^1]: TheBausFFS is a famous Swedish streamer in League of Legends (LoL). He's focusing on being fun and speaking as much "swenglish" (svengelska) as possible.
+[^2]: TheBausFFS is a famous Swedish streamer in League of Legends (LoL). He's focusing on being fun and speaking as much "swenglish" (svengelska) as possible.
 
-When I set out my brother had hope to earn cash and I to learn new tools and assist my family with my deep knowledge. 💪
+When I set out my brother had a hope to earn cash, myself I was happy to learn more about new tools and being able assist my family with my expertise in Deep Learning. 💪
 
 ## Choices during my Journey
 
 I was contemplating four (4) options to deploy my resulting model.
 
-+------------------+-----------------------+-----------------------------------------------------------------------------+----------------------------------------+
-| # Tool           | # Pro                 | # Con                                                                       |                                        |
-|                  |                       |                                                                             |                                        |
-| Streamlit        | -   (I'm) Experienced | -   Doesn't support the dynamic nature of app without extreme state hacking |                                        |
-|                  |                       |                                                                             |                                        |
-|                  | -   Beautiful         |                                                                             |                                        |
-|                  |                       |                                                                             |                                        |
-|                  | -   Simple            |                                                                             |                                        |
-+------------------+-----------------------+-----------------------------------------------------------------------------+----------------------------------------+
-|                  |                       |                                                                             |                                        |
-+------------------+-----------------------+-----------------------------------------------------------------------------+----------------------------------------+
-|                  | Solara                | -   React Data Flow, supports our use-case                                  | -   Uglier \| \|                       |
-|                  |                       |                                                                             | -   (I'm) less experienced \|          |
-|                  |                       | -   Complexity grows logarithmically                                        | -   It's the "new kid on the block" \| |
-+------------------+-----------------------+-----------------------------------------------------------------------------+----------------------------------------+
-| Jupyter Notebook | -   Easy GPU          | -   Not User-Friendly (for non-tech persons)                                |                                        |
-|                  |                       |                                                                             |                                        |
-|                  |                       | -   Not as dynamic/stateful as needed (i.e. everything is a flow)           |                                        |
-+------------------+-----------------------+-----------------------------------------------------------------------------+----------------------------------------+
-| Gradio           | -   Simple            | -   Complexity grows exponentially                                          |                                        |
-+------------------+-----------------------+-----------------------------------------------------------------------------+----------------------------------------+
++------------------+--------------------------------------------+-----------------------------------------------------------------------------+
+| # Tool           | # Pro                                      | # Con                                                                       |
+|                  |                                            |                                                                             |
+| Streamlit        | -   (I'm) Experienced                      | -   Doesn't support the dynamic nature of app without extreme state hacking |
+|                  |                                            |                                                                             |
+|                  | -   Beautiful                              |                                                                             |
+|                  |                                            |                                                                             |
+|                  | -   Simple                                 |                                                                             |
++------------------+--------------------------------------------+-----------------------------------------------------------------------------+
+| Solara           | -   React Data Flow, supports our use-case | -   Uglier                                                                  |
+|                  |                                            | -   (I'm) less experienced                                                  |
+|                  | -   Complexity grows logarithmically       | -   It's the "new kid on the block"                                         |
++------------------+--------------------------------------------+-----------------------------------------------------------------------------+
+| Jupyter Notebook | -   Easy GPU                               | -   \@ where I coNot User-Friendly (for non-tech persons)                   |
+|                  |                                            |                                                                             |
+|                  |                                            | -   Not as dynamic/stateful as needed (i.e. everything is a flow)           |
++------------------+--------------------------------------------+-----------------------------------------------------------------------------+
+| Gradio           | -   Simple                                 | -   Complexity grows exponentially                                          |
++------------------+--------------------------------------------+-----------------------------------------------------------------------------+
 
 Other tools such as Panel was briefly considered and rejected due to time and non-composability. For technical details such as model and more see my previous [blog](../2023-09-10-highlights-lol).
 
@@ -79,13 +80,16 @@ Most important to me I learned a lot, especially by playing around with Solara i
 
 I built an exciting *Data App* that's simple to use, applies automatic Video Processing and Deep Learning Inference for non-tech users.
 
-Following from here I'll share some building blocks to create an exciting *Data App*. To learn more about Solara basics I refer to my [previous blog](../2023-06-30-solara), \@ where I compare it with Streamlit and introduce how to build a simple solara app. I'll share code snippets and videos of the app. The resulting code covers most of the building blocks required to build everything from basic to complex Data Apps!
+Following from here I'll share some building blocks to create an exciting *Data App*. To learn more about Solara basics I refer to my [previous blog](../2023-06-30-solara) where I compare with Streamlit and introduce how to build a simple app. I'll share code snippets and videos of the app.
+
+The resulting code covers most of the building blocks required to build everything from basic to complex Data Apps!
 
 # App show case
 
 See [previous blog](../2023-09-10-highlights-lol) to learn more about model training.
 
 ## Videos
+
 ::: {.column-page-inset layout-ncol="3"}
 ![Full App Interaction (Button & Load)](imgs/using_app_simple.mp4)
 
@@ -94,22 +98,21 @@ See [previous blog](../2023-09-10-highlights-lol) to learn more about model trai
 ![Build Full Video Button](imgs/full_vid_btn.mp4)
 :::
 
-
 ## Screenshots
-::: {.callout-tip collapse="true"}
 
+::: {.callout-tip collapse="true"}
 ### Inference Page
+
 ::: {.column-page-inset layout-ncol="2"}
 ![Inference Page 1](imgs/image-1.png)
 
 ![Inference Page 2](images/paste-1.png)
 :::
-
-::: 
+:::
 
 ::: {.callout-tip collapse="true"}
-
 ### Other Pages
+
 ::: {.column-page-inset layout-ncol="3"}
 ![Download Twitch/Kick Video Page](images/paste-2.png)
 
@@ -117,9 +120,7 @@ See [previous blog](../2023-09-10-highlights-lol) to learn more about model trai
 
 ![Title Generation (Local LLM) Page](images/paste-4.png)
 :::
-
-::: 
-
+:::
 
 ## Building Blocks / Code-Snippets
 
@@ -234,7 +235,11 @@ result = solara.use_thread(lambda: slow_func_2(...), dependencies=...)
 
 Both approaches results in `solara.Result` value that updates itself as it progress.
 
-> `solara.Result[T]` has two important values. `state` which is one of the following: `[..., RUNNING, FINISHED]`. Once finished `value` will be filled of the result `T`.
+> `solara.Result[T]` has two important values.
+>
+> 1.  `state` which is one of the following: `[..., RUNNING, FINISHED]`.
+>
+> 2.  Once finished `value` will be filled of the result `T`.
 
 The result is a smooth experience through threads. The developer side is not as perfect and feels underdeveloped, I end up writing something that feels almost like an anti-pattern with a bunch of if-elses to figure if result is done.
 
