@@ -1,11 +1,8 @@
 [
   {
-    "listing": "/pages/code_setup/code_setup.html",
-    "items": []
-  },
-  {
     "listing": "/index.html",
     "items": [
+      "/posts/2024-02-11-solara-esport-highlights/index.html",
       "/posts/2023-09-10-highlights-lol/index.html",
       "/posts/2023-06-30-solara/index.html",
       "/posts/2023-05-06-kotlin-vs-polars-dataframe.html",
@@ -46,9 +43,5 @@
       "/posts/2020-02-10-gradle-github-packages.html",
       "/posts/2020-02-23-competence-meeting-imdb-text-classification.html"
     ]
-  },
-  {
-    "listing": "/pages/presentations.html",
-    "items": []
   }
 ]

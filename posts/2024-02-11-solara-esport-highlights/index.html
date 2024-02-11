@@ -1,0 +1,1137 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.4.549">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Hampus Londögård">
+<meta name="dcterms.date" content="2024-02-11">
+<meta name="description" content="I share my journey developing a user-friendly Data App using Solara, where I tackle challenges, gain insights, and implement improvements in threading and Plotly callbacks.">
+
+<title>Londogard Blog - Solara, League of Legends and Deep Learning to extract E-Sport Highlights</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../../favicon.ico" rel="icon">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="../../styles.css">
+<meta name="twitter:title" content="Londogard Blog - Solara, League of Legends and Deep Learning to extract E-Sport Highlights">
+<meta name="twitter:description" content="I share my journey developing a user-friendly Data App using Solara, where I tackle challenges, gain insights, and implement improvements in threading and Plotly callbacks.">
+<meta name="twitter:creator" content="@hlondogard">
+<meta name="twitter:card" content="summary">
+</head>
+
+<body class="nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top quarto-banner">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">Londogard Blog</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../"> 
+<span class="menu-text">Blogs</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../pages/presentations.html"> 
+<span class="menu-text">Presentations</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="https://londogard.com/projects"> 
+<span class="menu-text">Londogard Projects↗</span></a>
+  </li>  
+</ul>
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../pages/about.html"> 
+<span class="menu-text">About</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../pages/code_setup/code_setup.html"> 
+<span class="menu-text">Dev Setup</span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://www.linkedin.com/in/hampus-londögård/"> <i class="bi bi-linkedin" role="img" aria-label="LinkedIn">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://twitter.com/hlondogard"> <i class="bi bi-twitter" role="img" aria-label="Twitter">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-bi-github" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+      <i class="bi bi-github" role="img">
+</i> 
+ <span class="menu-text"></span>
+    </a>
+    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="nav-menu-bi-github">    
+        <li>
+    <a class="dropdown-item" href="https://github.com/lundez"><i class="bi bi-github" role="img">
+</i> 
+ <span class="dropdown-text">Lundez</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="https://github.com/londogard"><i class="bi bi-github" role="img">
+</i> 
+ <span class="dropdown-text">Londogard</span></a>
+  </li>  
+    </ul>
+  </li>
+  <li class="nav-item compact">
+    <a class="nav-link" href="../../index.xml"> <i class="bi bi-rss" role="img" aria-label="Londogard Blog RSS">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+          <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<header id="title-block-header" class="quarto-title-block default page-columns page-full">
+  <div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-body">
+      <h1 class="title">Solara, League of Legends and Deep Learning to extract E-Sport Highlights</h1>
+                  <div>
+        <div class="description">
+          I share my journey developing a user-friendly <em>Data App</em> using Solara, where I tackle challenges, gain insights, and implement improvements in threading and Plotly callbacks.
+        </div>
+      </div>
+                          <div class="quarto-categories">
+                <div class="quarto-category">data</div>
+                <div class="quarto-category">machine-learning</div>
+                <div class="quarto-category">deep-learning</div>
+                <div class="quarto-category">fun</div>
+                <div class="quarto-category">solara</div>
+              </div>
+                  </div>
+  </div>
+    
+  
+  <div class="quarto-title-meta">
+
+      <div>
+      <div class="quarto-title-meta-heading">Author</div>
+      <div class="quarto-title-meta-contents">
+               <p>Hampus Londögård </p>
+            </div>
+    </div>
+      
+      <div>
+      <div class="quarto-title-meta-heading">Published</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date">February 11, 2024</p>
+      </div>
+    </div>
+    
+      
+    </div>
+    
+  
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#solara-league-of-legends-and-deep-learning-to-extract-e-sport-highlights" id="toc-solara-league-of-legends-and-deep-learning-to-extract-e-sport-highlights" class="nav-link active" data-scroll-target="#solara-league-of-legends-and-deep-learning-to-extract-e-sport-highlights">Solara, League of Legends and Deep Learning to extract E-Sport Highlights</a>
+  <ul class="collapse">
+  <li><a href="#quick-backstory" id="toc-quick-backstory" class="nav-link" data-scroll-target="#quick-backstory">Quick Backstory</a></li>
+  </ul></li>
+  <li><a href="#choices-during-my-journey" id="toc-choices-during-my-journey" class="nav-link" data-scroll-target="#choices-during-my-journey">Choices during my Journey</a>
+  <ul class="collapse">
+  <li><a href="#result" id="toc-result" class="nav-link" data-scroll-target="#result">Result</a></li>
+  </ul></li>
+  <li><a href="#app-show-case" id="toc-app-show-case" class="nav-link" data-scroll-target="#app-show-case">App show case</a>
+  <ul class="collapse">
+  <li><a href="#videos" id="toc-videos" class="nav-link" data-scroll-target="#videos">Videos</a></li>
+  <li><a href="#screenshots" id="toc-screenshots" class="nav-link" data-scroll-target="#screenshots">Screenshots</a></li>
+  <li><a href="#building-blocks-code-snippets" id="toc-building-blocks-code-snippets" class="nav-link" data-scroll-target="#building-blocks-code-snippets">Building Blocks / Code-Snippets</a>
+  <ul class="collapse">
+  <li><a href="#building-progress-loaders-in-solara" id="toc-building-progress-loaders-in-solara" class="nav-link" data-scroll-target="#building-progress-loaders-in-solara">Building Progress Loaders in Solara</a></li>
+  <li><a href="#checkpointing-state-management-and-parentchildren-hierarchy" id="toc-checkpointing-state-management-and-parentchildren-hierarchy" class="nav-link" data-scroll-target="#checkpointing-state-management-and-parentchildren-hierarchy">Checkpointing / State Management and Parent/Children (Hierarchy)</a></li>
+  <li><a href="#threading-to-improve-ui-experience" id="toc-threading-to-improve-ui-experience" class="nav-link" data-scroll-target="#threading-to-improve-ui-experience">Threading to improve UI experience</a></li>
+  <li><a href="#plotly-callbacks" id="toc-plotly-callbacks" class="nav-link" data-scroll-target="#plotly-callbacks">Plotly Callbacks</a></li>
+  </ul></li>
+  <li><a href="#how-to-run-app" id="toc-how-to-run-app" class="nav-link" data-scroll-target="#how-to-run-app">How To Run App</a></li>
+  </ul></li>
+  <li><a href="#solara-findings" id="toc-solara-findings" class="nav-link" data-scroll-target="#solara-findings">Solara findings</a>
+  <ul class="collapse">
+  <li><a href="#solara.reactive-is-awesome" id="toc-solara.reactive-is-awesome" class="nav-link" data-scroll-target="#solara.reactive-is-awesome"><code>solara.reactive</code> is awesome</a></li>
+  <li><a href="#solaras-uilogic-separation-is-better-but-not-perfect" id="toc-solaras-uilogic-separation-is-better-but-not-perfect" class="nav-link" data-scroll-target="#solaras-uilogic-separation-is-better-but-not-perfect">Solaras UI/logic separation is better but not perfect</a></li>
+  <li><a href="#solara-issues" id="toc-solara-issues" class="nav-link" data-scroll-target="#solara-issues">Solara Issues</a></li>
+  </ul></li>
+  <li><a href="#outro" id="toc-outro" class="nav-link" data-scroll-target="#outro">Outro</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content quarto-banner-title-block page-columns page-full" id="quarto-document-content">
+
+
+
+
+
+<section id="solara-league-of-legends-and-deep-learning-to-extract-e-sport-highlights" class="level2 page-columns page-full">
+<h2 class="anchored" data-anchor-id="solara-league-of-legends-and-deep-learning-to-extract-e-sport-highlights">Solara, League of Legends and Deep Learning to extract E-Sport Highlights</h2>
+<p>Hi all! 👋</p>
+<p>I’m back with a New Years Resolution to release at least 6 blogs in 2024, focusing on interesting content that’s unique and not simple click-bait.</p>
+<p>Today I’m sharing the continuation of a presentation I did at Foo Café. I have built a complex yet user-friendly <em>Data App</em> using <a href="https://solara.dev/"><em>solara</em></a>.</p>
+<p>There’s two parts that creates this complexity.</p>
+<ol type="1">
+<li><strong>Heavy processing</strong> that requires threading
+<ul>
+<li>Deep Learning &amp; ffmpeg processing</li>
+</ul></li>
+<li><strong>Multi-stage app</strong>&nbsp;that requires state
+<ul>
+<li>This will be clear when you view the video of the app</li>
+</ul></li>
+</ol>
+<p>My presentation at Foo Café focused more on the training process and exploring option to deploy my tool. This blog rather focuses on the Data App itself! 🚀</p>
+<p>Code is available on GitHub<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>.</p>
+<div class="no-row-height column-margin column-container"><div class=""><sup>1</sup>&nbsp;
+<p>Code available on <a href="https://github.com/londogard/lol_highlight_detection/">github.com/londogard/lol_highlight_detection</a>.</p>
+</div>
+</div><section id="quick-backstory" class="level3 page-columns page-full">
+<h3 class="anchored" data-anchor-id="quick-backstory">Quick Backstory</h3>
+<p>My kid brother asked me to help him earn some quick bucks through automating a process to build highlight-videos of E-Sports to upload on YouTube. The emphasis was on a single streamer,&nbsp;<a href="https://www.twitch.tv/thebausffs/">TheBausFFS</a><a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>.</p>
+<div class="no-row-height column-margin column-container"><p><sup>2</sup>&nbsp;TheBausFFS is a famous Swedish streamer in League of Legends (LoL). He’s focusing on being fun and speaking as much “swenglish” (svengelska) as possible.</p></div><p>When I set out my brother had a hope to earn cash, myself I was happy to learn more about new tools and being able assist my family with my expertise in Deep Learning. 💪</p>
+</section>
+</section>
+<section id="choices-during-my-journey" class="level2">
+<h2 class="anchored" data-anchor-id="choices-during-my-journey">Choices during my Journey</h2>
+<p>I was contemplating four (4) options to deploy my resulting model.</p>
+<table class="table">
+<colgroup>
+<col style="width: 13%">
+<col style="width: 31%">
+<col style="width: 54%">
+</colgroup>
+<tbody>
+<tr class="odd">
+<td><h1 id="tool">Tool</h1>
+<p>Streamlit</p></td>
+<td><h1 id="pro">Pro</h1>
+<ul>
+<li><p>(I’m) Experienced</p></li>
+<li><p>Beautiful</p></li>
+<li><p>Simple</p></li>
+</ul></td>
+<td><h1 id="con">Con</h1>
+<ul>
+<li>Doesn’t support the dynamic nature of app without extreme state hacking</li>
+</ul></td>
+</tr>
+<tr class="even">
+<td>Solara</td>
+<td><ul>
+<li><p>React Data Flow, supports our use-case</p></li>
+<li><p>Complexity grows logarithmically</p></li>
+</ul></td>
+<td><ul>
+<li>Uglier</li>
+<li>(I’m) less experienced</li>
+<li>It’s the “new kid on the block”</li>
+</ul></td>
+</tr>
+<tr class="odd">
+<td>Jupyter Notebook</td>
+<td><ul>
+<li>Easy GPU</li>
+</ul></td>
+<td><ul>
+<li><p>@ where I coNot User-Friendly (for non-tech persons)</p></li>
+<li><p>Not as dynamic/stateful as needed (i.e.&nbsp;everything is a flow)</p></li>
+</ul></td>
+</tr>
+<tr class="even">
+<td>Gradio</td>
+<td><ul>
+<li>Simple</li>
+</ul></td>
+<td><ul>
+<li>Complexity grows exponentially</li>
+</ul></td>
+</tr>
+</tbody>
+</table>
+<p>Other tools such as Panel was briefly considered and rejected due to time and non-composability. For technical details such as model and more see my previous <a href="../2023-09-10-highlights-lol">blog</a>.</p>
+<section id="result" class="level3">
+<h3 class="anchored" data-anchor-id="result">Result</h3>
+<p>The whole process gave me two results.</p>
+<section id="knowledge" class="level4">
+<h4 class="anchored" data-anchor-id="knowledge">1. Knowledge</h4>
+<p>Most important to me I learned a lot, especially by playing around with Solara in both complex and siple use-cases.</p>
+<ol type="1">
+<li><strong>Intimate knowledge about <em>Solara</em></strong> and complex <em>Data Apps</em> that require high performance and efficiency.</li>
+<li><strong>Insights in <em>Video Classification</em></strong> and how it differentiates from <em>Image Classification.</em></li>
+<li>Experimentation in <strong>how to build <em>Data Apps</em>&nbsp;to non-domain-experts</strong> that have no technical expertise nor willingness to learn new things.</li>
+</ol>
+</section>
+<section id="a-data-app" class="level4">
+<h4 class="anchored" data-anchor-id="a-data-app">2. A <em>Data App</em></h4>
+<p>I built an exciting <em>Data App</em> that’s simple to use, applies automatic Video Processing and Deep Learning Inference for non-tech users.</p>
+<p>Following from here I’ll share some building blocks to create an exciting <em>Data App</em>. To learn more about Solara basics I refer to my <a href="../2023-06-30-solara">previous blog</a> where I compare with Streamlit and introduce how to build a simple app. I’ll share code snippets and videos of the app.</p>
+<p>The resulting code covers most of the building blocks required to build everything from&nbsp;basic to complex Data Apps!</p>
+</section>
+</section>
+</section>
+<section id="app-show-case" class="level1 page-columns page-full">
+<h1>App show case</h1>
+<p>See <a href="../2023-09-10-highlights-lol">previous blog</a> to learn more about model training.</p>
+<section id="videos" class="level2 page-columns page-full">
+<h2 class="anchored" data-anchor-id="videos">Videos</h2>
+<div>
+
+</div>
+<div class="column-page-inset quarto-layout-panel" data-layout-ncol="3">
+<div class="quarto-layout-row">
+<div class="quarto-layout-cell" style="flex-basis: 33.3%;justify-content: flex-start;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><video src="imgs/using_app_simple.mp4" class="img-fluid" controls=""><a href="imgs/using_app_simple.mp4">Video</a></video></p>
+<figcaption>Full App Interaction (Button &amp; Load)</figcaption>
+</figure>
+</div>
+</div>
+<div class="quarto-layout-cell" style="flex-basis: 33.3%;justify-content: flex-start;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><video src="imgs/full_app_use.mp4" class="img-fluid" controls=""><a href="imgs/full_app_use.mp4">Video</a></video></p>
+<figcaption>Plotly Callback Display</figcaption>
+</figure>
+</div>
+</div>
+<div class="quarto-layout-cell" style="flex-basis: 33.3%;justify-content: flex-start;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><video src="imgs/full_vid_btn.mp4" class="img-fluid" controls=""><a href="imgs/full_vid_btn.mp4">Video</a></video></p>
+<figcaption>Build Full Video Button</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="screenshots" class="level2 page-columns page-full">
+<h2 class="anchored" data-anchor-id="screenshots">Screenshots</h2>
+<div class="callout callout-style-default callout-tip callout-titled page-columns page-full">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Inference Page
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-1" class="callout-1-contents callout-collapse collapse page-columns page-full">
+<div class="callout-body-container callout-body page-columns page-full">
+<div>
+
+</div>
+<div class="column-page-inset quarto-layout-panel" data-layout-ncol="2">
+<div class="quarto-layout-row">
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: flex-start;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="imgs/image-1.png" class="img-fluid figure-img"></p>
+<figcaption>Inference Page 1</figcaption>
+</figure>
+</div>
+</div>
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: flex-start;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/paste-1.png" class="img-fluid figure-img"></p>
+<figcaption>Inference Page 2</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled page-columns page-full">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Other Pages
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-2" class="callout-2-contents callout-collapse collapse page-columns page-full">
+<div class="callout-body-container callout-body page-columns page-full">
+<div>
+
+</div>
+<div class="column-page-inset quarto-layout-panel" data-layout-ncol="3">
+<div class="quarto-layout-row">
+<div class="quarto-layout-cell" style="flex-basis: 33.3%;justify-content: flex-start;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/paste-2.png" class="img-fluid figure-img"></p>
+<figcaption>Download Twitch/Kick Video Page</figcaption>
+</figure>
+</div>
+</div>
+<div class="quarto-layout-cell" style="flex-basis: 33.3%;justify-content: flex-start;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/paste-3.png" class="img-fluid figure-img"></p>
+<figcaption>Download Model(s) Page</figcaption>
+</figure>
+</div>
+</div>
+<div class="quarto-layout-cell" style="flex-basis: 33.3%;justify-content: flex-start;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/paste-4.png" class="img-fluid figure-img"></p>
+<figcaption>Title Generation (Local LLM) Page</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="building-blocks-code-snippets" class="level2">
+<h2 class="anchored" data-anchor-id="building-blocks-code-snippets">Building Blocks / Code-Snippets</h2>
+<p>I share some of the more interesting parts of Solara and how it can simplify your Data App.</p>
+<section id="building-progress-loaders-in-solara" class="level3">
+<h3 class="anchored" data-anchor-id="building-progress-loaders-in-solara">Building Progress Loaders in Solara</h3>
+<p>I created a component to wrap Progress on top of the <code>use_thread</code>&nbsp; returned <code>solara.Result</code>&nbsp; class. This is very useful when you’re writing code and want a “prettier” spinner with some text.</p>
+<p>The possibility to create re-usable components which are stateful like this is exciting!</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="at">@solara.component</span>()</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> ProgressDynamic(</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    msg: <span class="bu">str</span>,</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>    result: solara.Result[Any],</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>):</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> result.state <span class="op">==</span> solara.ResultState.RUNNING:</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>        Progress(msg)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>This is a quite simple class, yet it cleans up a lot of code when called like:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>res <span class="op">=</span> write_video.use_thread(</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    tstamp[<span class="st">"start"</span>],</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    tstamp[<span class="st">"end"</span>],</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>    selected_vid,</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>    Path(file_name).stem,</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>Progress(<span class="st">"Building Clip..."</span>, res)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="imgs/image.png" class="img-fluid figure-img"></p>
+<figcaption>Resulting spinner on loads</figcaption>
+</figure>
+</div>
+</section>
+<section id="checkpointing-state-management-and-parentchildren-hierarchy" class="level3">
+<h3 class="anchored" data-anchor-id="checkpointing-state-management-and-parentchildren-hierarchy">Checkpointing / State Management and Parent/Children (Hierarchy)</h3>
+<p>State in Solara is managed through <code>solara.reactive</code>’s. These enable a clean representation of UI &amp; backend state. Adding hierarchy it becomes even better, it’s just as React! State trickles both up and down through the tree.</p>
+<section id="trickle-down-to-child" class="level4">
+<h4 class="anchored" data-anchor-id="trickle-down-to-child">Trickle Down to Child</h4>
+<p>One way to use state hierarchy is to provide from parent to child a <code>solara.reactive</code> which enables downstream users to atomically update as parent, or anyone, updates said state variable.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="at">@solara.component</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> CutOffChartSelection(</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    cut_off: solara.Reactive[<span class="bu">int</span>],</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>    df: pl.DataFrame,</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>): <span class="co"># this method is simplified to show-case important parts.</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>    div <span class="op">=</span> solara.Column()</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>    solara.SliderInt(</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>        <span class="st">"Highlight Y-Cutoff"</span>,</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>        cut_off,</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>        <span class="bu">min</span><span class="op">=</span>df[<span class="st">"preds"</span>].<span class="bu">min</span>() <span class="op">+</span> <span class="dv">1</span>,</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>        <span class="bu">max</span><span class="op">=</span>df[<span class="st">"preds"</span>].<span class="bu">max</span>(),</span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>        thumb_label<span class="op">=</span><span class="st">"always"</span>,</span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>        tick_labels<span class="op">=</span><span class="st">"end_points"</span>,</span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>    <span class="cf">with</span> div:</span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>        fig <span class="op">=</span> px.line(df, x<span class="op">=</span><span class="st">"timestamp"</span>, y<span class="op">=</span><span class="st">"preds"</span>, line_shape<span class="op">=</span><span class="st">"hv"</span>)</span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>        fig.add_hline(y<span class="op">=</span>cut_off.value, line_color<span class="op">=</span><span class="st">"red"</span>)</span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>        solara.FigurePlotly(fig)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>What’s important here?</p>
+<ol type="1">
+<li>Note how I set <code>div = solara.Column()</code>&nbsp; this lets me re-order UI and disregard execution flow.&nbsp;</li>
+<li>Note <code>cut_off</code>&nbsp; is <code>solara.Reactive</code>, whenever this is updated in parent the child will be updated additionally. And the reverse is also true.</li>
+</ol>
+</section>
+<section id="trickle-up-to-parent" class="level4">
+<h4 class="anchored" data-anchor-id="trickle-up-to-parent">Trickle Up to Parent</h4>
+<p>State does not only trickle up, as the <code>solara.reactive</code> is the same as every other use we can change state in a child and trickle up to parent and other consumers!</p>
+<p>It’s a very simple and clean approach to state, kudos React and Solara!</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="at">@solara.component</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> ModelFileSelectComponent(</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    <span class="bu">file</span>: solara.Reactive[<span class="bu">str</span>],</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    model: solara.Reactive[<span class="bu">str</span>],</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>):</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>    files <span class="op">=</span> ...</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>    models <span class="op">=</span> ...</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">with</span> solara.Card(<span class="st">"Select Video/Model"</span>):</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>        <span class="cf">with</span> solara.Columns():</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>            solara.Select(<span class="st">"Select File"</span>, values<span class="op">=</span>files, value<span class="op">=</span><span class="bu">file</span>)</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>            solara.Select(<span class="st">"Select Model"</span>, values<span class="op">=</span>models, value<span class="op">=</span>model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>In this component we can see that we insert <code>file: solara.Reactive</code>&nbsp; which is edited through the <code>solara.Select</code>. This creates a clean trickle-up flow and allow us to hide details.</p>
+<blockquote class="blockquote">
+<p>⚠️ It would be even cleaner if our component could return this reactive variable, rather than declaring it in parent.</p>
+</blockquote>
+</section>
+</section>
+<section id="threading-to-improve-ui-experience" class="level3">
+<h3 class="anchored" data-anchor-id="threading-to-improve-ui-experience">Threading to improve UI experience</h3>
+<p>When working with UI it’s important to not block the main thread, sometimes called <em>the rendering thread</em>.&nbsp;</p>
+<p>If we block the main thread <strong>the app becomes frozen</strong> and doesn’t respond. This becomes a bad user experience.</p>
+<p><strong>It’s solved by using threads</strong> which fortunately Solara makes a breeze. There’s two ways to apply threading.</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 1. Memoized function</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="at">@solara.memoize</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> slow_func(...): ...</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>result <span class="op">=</span> slove_func.use_thread(...)</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="co"># 2. Run thread directly</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> slow_func_2(...): ...</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>result <span class="op">=</span> solara.use_thread(<span class="kw">lambda</span>: slow_func_2(...), dependencies<span class="op">=</span>...)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Both approaches results in <code>solara.Result</code> value that updates itself as it progress.</p>
+<blockquote class="blockquote">
+<p><code>solara.Result[T]</code> has two important values.</p>
+<ol type="1">
+<li><p><code>state</code> which is one of the following: <code>[..., RUNNING, FINISHED]</code>.</p></li>
+<li><p>Once finished <code>value</code> will be filled of the result <code>T</code>.</p></li>
+</ol>
+</blockquote>
+<p>The result is a smooth experience through threads. The developer side is not as perfect and feels underdeveloped, I end up writing something that feels almost like an anti-pattern with a bunch of if-elses to figure if result is done.</p>
+<p>I can see a future where you call a <code>.use_thread</code> with something like <code>apply_progress=True</code> and also inject your own <code>solara.Reactive</code> to allow a more reactive approach to the result. The current result is clear code though, that’s explainable even on GitHub - as shared below.</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>res <span class="op">=</span> write_video.use_thread(...)</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> res.state <span class="op">==</span> solara.ResultState.RUNNING:</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>    Progress(<span class="st">"Writing video..."</span>)</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="cf">elif</span> res.state <span class="op">==</span> solara.ResultState.FINISHED:</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>    show_finished_ui(...)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Again, this is no problem once-in-a-while, but if you’re using threads heavily it becomes a if-else craze.</p>
+<p><strong>All in all it’s a good experience to include threading though, something unimaginable in Streamlit!</strong></p>
+</section>
+<section id="plotly-callbacks" class="level3">
+<h3 class="anchored" data-anchor-id="plotly-callbacks">Plotly Callbacks</h3>
+<p>I implemented a really cool Plotly Callback through Solara’s integration. It allows the user to select a subset of the video by “zooming”/”dragging”. It’s a clean approach to selecting sub-parts of videos to build the full video, i.e.&nbsp;one game at a time and not the full stream! See <a href="#fig-plotly" class="quarto-xref">Figure&nbsp;1</a>.</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> update_vals(relayout_dict: <span class="bu">dict</span>[<span class="bu">str</span>, Any] <span class="op">|</span> <span class="va">None</span>):</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> relayout_dict <span class="kw">is</span> <span class="kw">not</span> <span class="va">None</span>:</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>        layout <span class="op">=</span> relayout_dict[<span class="st">"relayout_data"</span>]</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>        start_stop.value <span class="op">=</span> [</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>            parser.parse(layout[<span class="st">"xaxis.range[0]"</span>], ignoretz<span class="op">=</span><span class="va">True</span>),</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>            parser.parse(layout[<span class="st">"xaxis.range[1]"</span>], ignoretz<span class="op">=</span><span class="va">True</span>),</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>        ]</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>solara.FigurePlotly(fig, on_relayout<span class="op">=</span>update_vals)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="fig-plotly" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-plotly-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<video src="imgs/full_app_use.mp4" class="img-fluid" controls=""><a href="imgs/full_app_use.mp4">Video</a></video>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-plotly-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1: Plotly Callback Display
+</figcaption>
+</figure>
+</div>
+</section>
+</section>
+<section id="how-to-run-app" class="level2">
+<h2 class="anchored" data-anchor-id="how-to-run-app">How To Run App</h2>
+<p>I have added two ways to run the app. Either through Docker/podman containers or through Python invocation.</p>
+<p>For Python I opted for a <code>conda</code> env using <a href="https://mamba.readthedocs.io/en/latest/user_guide/micromamba.html"><code>micromamba</code></a> which is really awesome and simple to get a environment that’s reproducible.</p>
+</section>
+</section>
+<section id="solara-findings" class="level1">
+<h1>Solara findings</h1>
+<section id="solara.reactive-is-awesome" class="level2">
+<h2 class="anchored" data-anchor-id="solara.reactive-is-awesome"><code>solara.reactive</code> is awesome</h2>
+<p>This simple tool enables things that are essentially impossible or creates unmaintainable code in Streamlit. To do similar things you’d need to hack the state.</p>
+<p>Having a multi-stage app like this app where you checkpoint each step into the state would be such a impossibility.</p>
+</section>
+<section id="solaras-uilogic-separation-is-better-but-not-perfect" class="level2">
+<h2 class="anchored" data-anchor-id="solaras-uilogic-separation-is-better-but-not-perfect">Solaras UI/logic separation is better but not perfect</h2>
+<p>This might be on myself as I started using Streamlit before Solara. But Solara states that they separate UI and logic better than competitors through <em>reactive</em> state. My experience is that it’s almost as easy to create the same interdependent mess as in Streamlit.</p>
+<blockquote class="blockquote">
+<p>Perhaps Reacts “clean” separation is more because of having a clear boundary between backend/frontend rather than React itself.</p>
+</blockquote>
+</section>
+<section id="solara-issues" class="level2">
+<h2 class="anchored" data-anchor-id="solara-issues">Solara Issues</h2>
+<p>I found myself having big problems with “resetting” state of variables that depend on the Operating System. In Streamlit you can use <code>st.reload()</code> to reload the whole UI, Solara does not have something similar.</p>
+<p>My problem was that I have model/video download as part of the UI, and <code>solara.reactive</code> variables that has these variables. It’s not really possible to update these when changing tabs.<br>
+For now there was a decent work-around, rather than using Tabs I use Select to change page. By changing page this way the <code>solara.reactive</code> variables are reloaded.</p>
+</section>
+</section>
+<section id="outro" class="level1">
+<h1>Outro</h1>
+<p>This is it for today! I hope you enjoyed and potentially became intrigued to test Solara.</p>
+<p>I hope to be back within 2 months, to make sure I keep my New Years Resolution 😉.</p>
+<p>~Hampus Londögård</p>
+
+
+</section>
+
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<script src="https://giscus.app/client.js" data-repo="londogard/londogard" data-repo-id="MDEwOlJlcG9zaXRvcnkyOTcyNzE0MzE=" data-category="General" data-category-id="MDE4OkRpc2N1c3Npb25DYXRlZ29yeTMwODYxNzM4" data-mapping="title" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="top" data-theme="light" data-lang="en" crossorigin="anonymous" async="">
+</script>
+<input type="hidden" id="giscus-base-theme" value="light">
+<input type="hidden" id="giscus-alt-theme" value="dark">
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+      <ul class="footer-items list-unstyled">
+    <li class="nav-item">
+    <a class="nav-link" href="https://www.buymeacoffee.com/hlondogard">
+<p><img src="https://cdn.buymeacoffee.com/buttons/v2/default-blue.png" class="img-fluid" width="100"></p>
+</a>
+  </li>  
+    <li class="nav-item">
+    <a class="nav-link" href="https://github.com/sponsors/Lundez?o=esb">
+<p><img src="https://img.shields.io/static/v1?label=Sponsor&amp;message=%E2%9D%A4&amp;logo=GitHub&amp;color=%23fe8e86.png" class="img-fluid" width="100"></p>
+</a>
+  </li>  
+</ul>
+    </div>   
+    <div class="nav-footer-center">
+      <ul class="footer-items list-unstyled">
+    <li class="nav-item">
+    <a class="nav-link" href="../../pages/about.html">
+<p>About</p>
+</a>
+  </li>  
+</ul>
+    </div>
+    <div class="nav-footer-right">
+      <ul class="footer-items list-unstyled">
+    <li class="nav-item compact">
+    <a class="nav-link" href="https://www.linkedin.com/in/hampus-londögård/">
+      <i class="bi bi-linkedin" role="img" aria-label="LinkedIn">
+</i> 
+    </a>
+  </li>  
+    <li class="nav-item compact">
+    <a class="nav-link" href="https://twitter.com/hlondogard">
+      <i class="bi bi-twitter" role="img" aria-label="Twitter">
+</i> 
+    </a>
+  </li>  
+    <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/lundez">
+      <i class="bi bi-github" role="img" aria-label="Lundez GitHub">
+</i> 
+    </a>
+  </li>  
+    <li class="nav-item compact">
+    <a class="nav-link" href="../../index.xml">
+      <i class="bi bi-rss" role="img" aria-label="Londogard Blog RSS">
+</i> 
+    </a>
+  </li>  
+</ul>
+    </div>
+  </div>
+</footer>
+
+
+
+
+</body></html>

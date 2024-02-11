@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.3.450">
+<meta name="generator" content="quarto-1.4.549">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -25,7 +25,7 @@ ul.task-list li input[type="checkbox"] {
 }
 /* CSS for syntax highlighting */
 pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span { line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
@@ -60,7 +60,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </style>
 
 
-<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script><script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
 <script src="../../site_libs/quarto-nav/headroom.min.js"></script>
 <script src="../../site_libs/clipboard/clipboard.min.js"></script>
 <script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
@@ -83,7 +83,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   "collapse-after": 3,
   "panel-placement": "end",
   "type": "overlay",
-  "limit": 20,
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
   "language": {
     "search-no-results-text": "No results",
     "search-matching-documents-text": "matching documents",
@@ -92,33 +98,60 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-more-match-text": "more match in this document",
     "search-more-matches-text": "more matches in this document",
     "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
     "search-detached-cancel-button-title": "Cancel",
     "search-submit-button-title": "Submit",
     "search-label": "Search"
   }
 }</script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" integrity="sha512-c3Nl8+7g4LMSTdrm621y7kf9v3SDPnhxLNhcjFJbKECVnmZHTdo+IRO05sNLTH/D3vA6u1X32ehoLC7WFVdheg==" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script>
+
 <script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
 
   <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
 <link rel="stylesheet" href="../../styles.css">
 <meta name="twitter:title" content="Londogard Blog - Predicting Stock Prices using classical machine Learning (Time Series #2)">
 <meta name="twitter:description" content="In this post/Jupyter Notebook we’ll look at stocks, forecasting and predictions using classical machine learning (sklearn) approaches.">
-<meta name="twitter:image" content="https://colab.research.google.com/assets/colab-badge.svg">
 <meta name="twitter:creator" content="@hlondogard">
-<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:card" content="summary">
 </head>
 
 <body class="nav-fixed">
 
 <div id="quarto-search-results"></div>
-  <header id="quarto-header" class="headroom fixed-top">
-    <nav class="navbar navbar-expand-lg navbar-dark ">
+  <header id="quarto-header" class="headroom fixed-top quarto-banner">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
-      <div class="navbar-brand-container">
+      <div class="navbar-brand-container mx-auto">
     <a class="navbar-brand" href="../../index.html">
     <span class="navbar-title">Londogard Blog</span>
     </a>
@@ -130,61 +163,65 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item">
-    <a class="nav-link" href="../../pages/presentations.html" rel="" target="">
- <span class="menu-text">Presentations</span></a>
+    <a class="nav-link" href="../../"> 
+<span class="menu-text">Blogs</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="https://londogard.com/projects" rel="" target="">
- <span class="menu-text">Londogard Projects↗</span></a>
+    <a class="nav-link" href="../../pages/presentations.html"> 
+<span class="menu-text">Presentations</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="https://londogard.com/projects"> 
+<span class="menu-text">Londogard Projects↗</span></a>
   </li>  
 </ul>
             <ul class="navbar-nav navbar-nav-scroll ms-auto">
   <li class="nav-item">
-    <a class="nav-link" href="../../pages/about.html" rel="" target="">
- <span class="menu-text">About</span></a>
+    <a class="nav-link" href="../../pages/about.html"> 
+<span class="menu-text">About</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../../pages/code_setup/code_setup.html" rel="" target="">
- <span class="menu-text">Dev Setup</span></a>
+    <a class="nav-link" href="../../pages/code_setup/code_setup.html"> 
+<span class="menu-text">Dev Setup</span></a>
   </li>  
   <li class="nav-item compact">
-    <a class="nav-link" href="https://www.linkedin.com/in/hampus-londögård/" rel="" target=""><i class="bi bi-linkedin" role="img" aria-label="LinkedIn">
+    <a class="nav-link" href="https://www.linkedin.com/in/hampus-londögård/"> <i class="bi bi-linkedin" role="img" aria-label="LinkedIn">
 </i> 
- <span class="menu-text"></span></a>
+<span class="menu-text"></span></a>
   </li>  
   <li class="nav-item compact">
-    <a class="nav-link" href="https://twitter.com/hlondogard" rel="" target=""><i class="bi bi-twitter" role="img" aria-label="Twitter">
+    <a class="nav-link" href="https://twitter.com/hlondogard"> <i class="bi bi-twitter" role="img" aria-label="Twitter">
 </i> 
- <span class="menu-text"></span></a>
+<span class="menu-text"></span></a>
   </li>  
   <li class="nav-item dropdown ">
-    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-bi-github" role="button" data-bs-toggle="dropdown" aria-expanded="false" rel="" target="">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-bi-github" role="button" data-bs-toggle="dropdown" aria-expanded="false">
       <i class="bi bi-github" role="img">
 </i> 
  <span class="menu-text"></span>
     </a>
     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="nav-menu-bi-github">    
         <li>
-    <a class="dropdown-item" href="https://github.com/lundez" rel="" target=""><i class="bi bi-github" role="img">
+    <a class="dropdown-item" href="https://github.com/lundez"><i class="bi bi-github" role="img">
 </i> 
  <span class="dropdown-text">Lundez</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="https://github.com/londogard" rel="" target=""><i class="bi bi-github" role="img">
+    <a class="dropdown-item" href="https://github.com/londogard"><i class="bi bi-github" role="img">
 </i> 
  <span class="dropdown-text">Londogard</span></a>
   </li>  
     </ul>
   </li>
   <li class="nav-item compact">
-    <a class="nav-link" href="../../index.xml" rel="" target=""><i class="bi bi-rss" role="img" aria-label="Londogard Blog RSS">
+    <a class="nav-link" href="../../index.xml"> <i class="bi bi-rss" role="img" aria-label="Londogard Blog RSS">
 </i> 
- <span class="menu-text"></span></a>
+<span class="menu-text"></span></a>
   </li>  
 </ul>
-            <div class="quarto-navbar-tools">
-</div>
           </div> <!-- /navcollapse -->
+          <div class="quarto-navbar-tools">
+</div>
       </div> <!-- /container-fluid -->
     </nav>
 </header>
@@ -253,6 +290,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 
 
+
 <p><a href="https://colab.research.google.com/github/londogard/londogard/blob/master/blog/2022-03-12-timeseries-pt-2/index.ipynb" target="_parent"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"></a></p>
 <section id="ca-time-series-2---predicting-stock-prices-time-series-using-classical-machine-learning" class="level1">
 <h1>[CA]: Time Series #2 - Predicting Stock Prices (Time Series) using classical Machine Learning</h1>
@@ -273,7 +311,7 @@ In <a href="https://blog.londogard.com/blog/timeseries-pt-3">part #3</a> we’ll
 <h3 class="anchored" data-anchor-id="installation-imports">Installation &amp; Imports</h3>
 <p>Feel free to ignore the cells and simply run them, the lazy style 🥱</p>
 <p>Installing the important libraries…</p>
-<div class="cell" data-execution_count="45">
+<div id="cell-5" class="cell" data-execution_count="45">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> IPython.display <span class="im">import</span> clear_output</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>pip install <span class="op">-</span>U pandas_datareader</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>pip install plotly</span>
@@ -282,7 +320,7 @@ In <a href="https://blog.londogard.com/blog/timeseries-pt-3">part #3</a> we’ll
 <span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>clear_output()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>And importing them…</p>
-<div class="cell" data-execution_count="46">
+<div id="cell-7" class="cell" data-execution_count="46">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd <span class="co"># data processing, CSV file I/O (e.g. pd.read_csv)</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np  <span class="co"># linear algebra</span></span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas_datareader <span class="im">as</span> pdr</span>
@@ -293,7 +331,7 @@ In <a href="https://blog.londogard.com/blog/timeseries-pt-3">part #3</a> we’ll
 </section>
 <section id="minor-analysis" class="level3">
 <h3 class="anchored" data-anchor-id="minor-analysis">Minor Analysis</h3>
-<div class="cell" data-outputid="30c02dfc-a3f9-4827-c563-305ab92bd0a0" data-execution_count="47">
+<div id="cell-9" class="cell" data-outputid="30c02dfc-a3f9-4827-c563-305ab92bd0a0" data-execution_count="47">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pdr.get_data_yahoo([<span class="st">'AAPL'</span>, <span class="st">'GOOGL'</span>, <span class="st">'AMZN'</span>, <span class="st">'MSFT'</span>, <span class="st">'GE'</span>])</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>df.head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="47">
@@ -486,7 +524,6 @@ In <a href="https://blog.londogard.com/blog/timeseries-pt-3">part #3</a> we’ll
 </tbody>
 </table>
 
-
 <p>5 rows × 30 columns</p>
 </div>
       <button class="colab-df-convert" onclick="convertToInteractive('df-927c0c71-d45f-4ed9-9876-1638997ddaf0')" title="Convert this dataframe to an interactive table." style="display:none;">
@@ -566,7 +603,7 @@ In <a href="https://blog.londogard.com/blog/timeseries-pt-3">part #3</a> we’ll
 </div>
 <p>Looks fine, but how much data did we download?<br>
 We can view the <code>.index</code> which is a <code>DateTimeIndex</code> and figure out how it stretches.</p>
-<div class="cell" data-outputid="815a3040-f46d-4ca6-ca9c-339ef3244d96" data-execution_count="48">
+<div id="cell-11" class="cell" data-outputid="815a3040-f46d-4ca6-ca9c-339ef3244d96" data-execution_count="48">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>df.index[<span class="dv">0</span>],df.index[<span class="op">-</span><span class="dv">1</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="48">
 <pre><code>(Timestamp('2017-03-13 00:00:00'), Timestamp('2022-03-11 00:00:00'))</code></pre>
@@ -577,7 +614,7 @@ Now let us analyze this data further by looking at if the stocks correlate someh
 <blockquote class="blockquote">
 <p><strong>N.B.</strong> this analysis was first done by Heidi Mach, it’s something I would never have done myself. Really cool results incoming!</p>
 </blockquote>
-<div class="cell" data-outputid="294b3e74-cfc1-4d6c-971c-d88b4dfdee8c" data-execution_count="49">
+<div id="cell-13" class="cell" data-outputid="294b3e74-cfc1-4d6c-971c-d88b4dfdee8c" data-execution_count="49">
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>df[<span class="st">'Adj Close'</span>].corr().style.background_gradient(cmap<span class="op">=</span><span class="st">"Blues"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="49">
 
@@ -648,14 +685,18 @@ Now let us analyze this data further by looking at if the stocks correlate someh
 </div>
 <p>Holy macaron, that’s a lot more correlated data than I expected! 🙀</p>
 <p>The <code>seaborn</code> library has a function called <code>pairplot</code> which plots this correlation, but using the points which is visually interesting in comparison to simply seeing the table above.</p>
-<div class="cell" data-execution_count="50">
+<div id="cell-15" class="cell" data-execution_count="50">
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> df[<span class="st">'Adj Close'</span>]</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> df.drop(columns<span class="op">=</span><span class="st">"GE"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell" data-outputid="23dadb4b-2411-4611-9146-e89bfdec20b3" data-execution_count="51">
+<div id="cell-16" class="cell" data-outputid="23dadb4b-2411-4611-9146-e89bfdec20b3" data-execution_count="51">
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>sns.pairplot(df)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
-<p><img src="index_files/figure-html/cell-8-output-1.png" class="img-fluid"></p>
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/cell-8-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
 </div>
 </div>
 <p>Does this in fact mean what that we can predict prices of a stock based on their competition? The correlation does suggest so.</p>
@@ -666,7 +707,7 @@ Now let us analyze this data further by looking at if the stocks correlate someh
 <p>Whenever you test your Machine Learning or Deep Learning Models you never want to test it on data that it has trained on, as you might’ve overfitted the data and have a really good result until you see new data points.</p>
 <p>The end-goal of a model is to generalize a problem and find the local minima which optimizes the funtion for the data points. By only looking at the same data we can’t be sure we generalized correctly.</p>
 <p>And the code 👩‍💻</p>
-<div class="cell" data-execution_count="52">
+<div id="cell-18" class="cell" data-execution_count="52">
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.linear_model <span class="im">import</span> LinearRegression</span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> train_test_split</span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> r2_score, mean_absolute_error</span>
@@ -684,7 +725,7 @@ Now let us analyze this data further by looking at if the stocks correlate someh
 Best possible score is 1.0 and it can be negative (because the model can be arbitrarily worse). A constant model that always predicts the expected value of y, disregarding the input features, would get a score of 0.0.</p>
 <p><strong>mean_absolute_error:</strong> <em>Mean absolute error regression loss.</em></p>
 </blockquote>
-<div class="cell" data-outputid="bbfa8ca2-1236-46e8-cb5b-9b7b7331f395" data-execution_count="53">
+<div id="cell-20" class="cell" data-outputid="bbfa8ca2-1236-46e8-cb5b-9b7b7331f395" data-execution_count="53">
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>clf.fit(X_train, y_train)</span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>preds <span class="op">=</span> clf.predict(X_valid)</span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -696,7 +737,7 @@ Best possible score is 1.0 and it can be negative (because the model can be arbi
 <p><strong><span class="math inline">\(R^2 = 93 \%\)</span></strong> 🥳</p>
 <p>That’s actually not bad at all, the <code>mean_absolute_error</code> being 129.7 is not very telling. Either we have to view the data to understand the magnituide, or we can apply <code>MAPE</code> which is the <em>Mean Absolute Percentage Error</em>.</p>
 <p>Not sure if I’m lazy or simply want to show you the other function 🤔, but I’ll use <code>MAPE</code>!</p>
-<div class="cell" data-outputid="59815881-bd03-45ea-c4b8-be820589ecc0" data-execution_count="54">
+<div id="cell-22" class="cell" data-outputid="59815881-bd03-45ea-c4b8-be820589ecc0" data-execution_count="54">
 <div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> mean_absolute_percentage_error</span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>mean_absolute_percentage_error(y_valid, preds)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -707,12 +748,11 @@ Best possible score is 1.0 and it can be negative (because the model can be arbi
 <p><span class="math inline">\(&lt; 9\%\)</span><br>
 Pretty acceptable considering we have not done anything except deliver data to one of the simplest models that exists!</p>
 <p>Let’s show this visually!</p>
-<div class="cell" data-outputid="e3a2586b-8588-4d7d-f6ea-0fed94b2c9c8" data-execution_count="55">
+<div id="cell-24" class="cell" data-outputid="e3a2586b-8588-4d7d-f6ea-0fed94b2c9c8" data-execution_count="55">
 <div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> plotly.express <span class="im">as</span> px</span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>px.line(y<span class="op">=</span>[y_valid, preds])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
-
 
 <meta charset="utf-8">
 
@@ -754,23 +794,25 @@ Show Plotly Chart (code cell only visible in active notebook)
 </details>
 <p>Looks pretty good, but it is very messy… Something is off right?</p>
 <p>The index is not a <code>DateTimeIndex</code> anymore because we shuffled the data in <code>train_test_split</code> – a big difference is thereby applied.</p>
-<div class="cell" data-outputid="8b839cd7-ff15-438f-cd80-159ac6729e56" data-execution_count="56">
+<div id="cell-27" class="cell" data-outputid="8b839cd7-ff15-438f-cd80-159ac6729e56" data-execution_count="56">
 <div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>y_valid.plot()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="56">
-<pre><code>&lt;matplotlib.axes._subplots.AxesSubplot at 0x7f784b45c8d0&gt;</code></pre>
-</div>
 <div class="cell-output cell-output-display">
-<p><img src="index_files/figure-html/cell-13-output-2.png" class="img-fluid"></p>
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/cell-13-output-1.png" class="img-fluid figure-img"></p>
+</figure>
 </div>
 </div>
-<div class="cell" data-outputid="777de95c-94e6-46ae-bc1f-e1a157dfe52f" data-execution_count="57">
-<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>y_valid.plot(legend<span class="op">=</span><span class="st">"Valid"</span>)</span>
-<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>pd.Series(preds, index<span class="op">=</span>y_valid.index).plot(legend<span class="op">=</span><span class="st">"Pred"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="57">
-<pre><code>&lt;matplotlib.axes._subplots.AxesSubplot at 0x7f784b3206d0&gt;</code></pre>
 </div>
+<div id="cell-28" class="cell" data-outputid="777de95c-94e6-46ae-bc1f-e1a157dfe52f" data-execution_count="57">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>y_valid.plot(legend<span class="op">=</span><span class="st">"Valid"</span>)</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>pd.Series(preds, index<span class="op">=</span>y_valid.index).plot(legend<span class="op">=</span><span class="st">"Pred"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
-<p><img src="index_files/figure-html/cell-14-output-2.png" class="img-fluid"></p>
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/cell-14-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
 </div>
 </div>
 <p>Looks pretty fly, but can we take it further?<br>
@@ -781,14 +823,14 @@ Show Plotly Chart (code cell only visible in active notebook)
 <li><code>LinearRegression</code> is a very simple yet efficient model that we can try to replace.</li>
 </ol>
 <p>Let’s start with the second point, <code>scikit-learn</code> has a multitude of regression-models, one being <code>RandomForestRegressor</code> that’s pretty strong.</p>
-<div class="cell" data-outputid="33608654-a20f-489e-9a91-5cbbfa0d824e" data-execution_count="58">
-<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.ensemble <span class="im">import</span> RandomForestRegressor</span>
-<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>clf <span class="op">=</span> RandomForestRegressor()</span>
-<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>clf.fit(X_train, y_train)</span>
-<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>preds <span class="op">=</span> clf.predict(X_valid)</span>
-<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>r2_score(y_valid, preds), mean_absolute_percentage_error(y_valid, preds)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="cell-30" class="cell" data-outputid="33608654-a20f-489e-9a91-5cbbfa0d824e" data-execution_count="58">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.ensemble <span class="im">import</span> RandomForestRegressor</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>clf <span class="op">=</span> RandomForestRegressor()</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>clf.fit(X_train, y_train)</span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>preds <span class="op">=</span> clf.predict(X_valid)</span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>r2_score(y_valid, preds), mean_absolute_percentage_error(y_valid, preds)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="58">
 <pre><code>(0.9963567300739637, 0.016329169939121136)</code></pre>
 </div>
@@ -796,14 +838,15 @@ Show Plotly Chart (code cell only visible in active notebook)
 <p>😲<span class="math inline">\(R^2 &gt;99\%\)</span></p>
 <p>That’s actually crazy. And <code>MAPE</code> is not even 2%.</p>
 <p>Let’s view it!</p>
-<div class="cell" data-outputid="627760c9-f103-4948-86bc-a9bc1b5162e9" data-execution_count="59">
-<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>y_valid.plot(legend<span class="op">=</span><span class="st">"Valid"</span>)</span>
-<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>pd.Series(preds, index<span class="op">=</span>y_valid.index).plot(legend<span class="op">=</span><span class="st">"Pred"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="59">
-<pre><code>&lt;matplotlib.axes._subplots.AxesSubplot at 0x7f7849f82190&gt;</code></pre>
-</div>
+<div id="cell-32" class="cell" data-outputid="627760c9-f103-4948-86bc-a9bc1b5162e9" data-execution_count="59">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>y_valid.plot(legend<span class="op">=</span><span class="st">"Valid"</span>)</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>pd.Series(preds, index<span class="op">=</span>y_valid.index).plot(legend<span class="op">=</span><span class="st">"Pred"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
-<p><img src="index_files/figure-html/cell-16-output-2.png" class="img-fluid"></p>
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/cell-16-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
 </div>
 </div>
 <p>That’s an incredibly fitted curve.</p>
@@ -822,26 +865,26 @@ We should make use of the previous days data to make sure we are not “cheating
 <p>ℹ️<br>
 <a href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.shift.html"><code>pd.DataFrame.shift</code></a>: <em>Shift index by desired number of periods with an optional time freq.</em></p>
 </blockquote>
-<div class="cell" data-execution_count="60">
-<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> fit_validate_plot(X_train, X_valid, y_train, y_valid):</span>
-<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>  clf <span class="op">=</span> RandomForestRegressor()</span>
-<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>  clf.fit(X_train, y_train)</span>
-<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>  preds <span class="op">=</span> clf.predict(X_valid)</span>
-<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a>  pd.DataFrame({<span class="st">'Valid'</span>: y_valid, <span class="st">'Preds'</span>: preds}, index<span class="op">=</span>y_valid.index).plot()</span>
-<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a>  <span class="bu">print</span>(<span class="ss">f"""</span></span>
-<span id="cb23-9"><a href="#cb23-9" aria-hidden="true" tabindex="-1"></a><span class="ss">  $R^2$: </span><span class="sc">{</span>r2_score(y_valid, preds)<span class="sc">}</span></span>
-<span id="cb23-10"><a href="#cb23-10" aria-hidden="true" tabindex="-1"></a><span class="ss">  MAPE: </span><span class="sc">{</span>mean_absolute_percentage_error(y_valid, preds)<span class="sc">}</span></span>
-<span id="cb23-11"><a href="#cb23-11" aria-hidden="true" tabindex="-1"></a><span class="ss">  MAE: </span><span class="sc">{</span>mean_absolute_error(y_valid, preds)<span class="sc">}</span></span>
-<span id="cb23-12"><a href="#cb23-12" aria-hidden="true" tabindex="-1"></a><span class="ss">  """</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="cell-34" class="cell" data-execution_count="60">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> fit_validate_plot(X_train, X_valid, y_train, y_valid):</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>  clf <span class="op">=</span> RandomForestRegressor()</span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>  clf.fit(X_train, y_train)</span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>  preds <span class="op">=</span> clf.predict(X_valid)</span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>  pd.DataFrame({<span class="st">'Valid'</span>: y_valid, <span class="st">'Preds'</span>: preds}, index<span class="op">=</span>y_valid.index).plot()</span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a>  <span class="bu">print</span>(<span class="ss">f"""</span></span>
+<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a><span class="ss">  $R^2$: </span><span class="sc">{</span>r2_score(y_valid, preds)<span class="sc">}</span></span>
+<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a><span class="ss">  MAPE: </span><span class="sc">{</span>mean_absolute_percentage_error(y_valid, preds)<span class="sc">}</span></span>
+<span id="cb20-11"><a href="#cb20-11" aria-hidden="true" tabindex="-1"></a><span class="ss">  MAE: </span><span class="sc">{</span>mean_absolute_error(y_valid, preds)<span class="sc">}</span></span>
+<span id="cb20-12"><a href="#cb20-12" aria-hidden="true" tabindex="-1"></a><span class="ss">  """</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>And making use of it will now be easy! 😍<br>
 <em>Refactoring</em> and <em>abstractions</em> are incredibly important.</p>
-<div class="cell" data-outputid="ca9d91bf-db54-45dc-bdff-416d71946606" data-execution_count="61">
-<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>X_train, X_valid, y_train, y_valid <span class="op">=</span> train_test_split(df.drop(columns<span class="op">=</span><span class="st">"GOOGL"</span>).shift(<span class="dv">1</span>).iloc[<span class="dv">1</span>:], df[<span class="st">'GOOGL'</span>].iloc[<span class="dv">1</span>:], test_size<span class="op">=</span><span class="fl">0.2</span>)</span>
-<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>fit_validate_plot(X_train, X_valid, y_train, y_valid)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="cell-36" class="cell" data-outputid="ca9d91bf-db54-45dc-bdff-416d71946606" data-execution_count="61">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>X_train, X_valid, y_train, y_valid <span class="op">=</span> train_test_split(df.drop(columns<span class="op">=</span><span class="st">"GOOGL"</span>).shift(<span class="dv">1</span>).iloc[<span class="dv">1</span>:], df[<span class="st">'GOOGL'</span>].iloc[<span class="dv">1</span>:], test_size<span class="op">=</span><span class="fl">0.2</span>)</span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>fit_validate_plot(X_train, X_valid, y_train, y_valid)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
   $R^2$: 0.993020486528333
@@ -850,17 +893,21 @@ We should make use of the previous days data to make sure we are not “cheating
   </code></pre>
 </div>
 <div class="cell-output cell-output-display">
-<p><img src="index_files/figure-html/cell-18-output-2.png" class="img-fluid"></p>
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/cell-18-output-2.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
 </div>
 </div>
 <p>🤯 this is crazy impressive!</p>
 <p>We made the task at hands legit by only using historical data of <code>GOOGL</code>’s competitors. The <span class="math inline">\(R^2\)</span> and <code>MAPE</code> is incredible.</p>
 <p>It’d be interesting to investigate how badly we overfit the data, but that’s for another day.</p>
 <p>And how about if we <strong>don’t</strong> shuffle the data? E.g. we do an actual forecast and not regression!</p>
-<div class="cell" data-outputid="a7a1a8f0-81db-42e1-9626-3fe373bcff36" data-execution_count="62">
-<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>X_train, X_valid, y_train, y_valid <span class="op">=</span> train_test_split(df.drop(columns<span class="op">=</span><span class="st">"GOOGL"</span>).shift(<span class="dv">1</span>).iloc[<span class="dv">1</span>:], df[<span class="st">'GOOGL'</span>].iloc[<span class="dv">1</span>:], test_size<span class="op">=</span><span class="fl">0.2</span>, shuffle<span class="op">=</span><span class="va">False</span>)</span>
-<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>fit_validate_plot(X_train, X_valid, y_train, y_valid)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="cell-38" class="cell" data-outputid="a7a1a8f0-81db-42e1-9626-3fe373bcff36" data-execution_count="62">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>X_train, X_valid, y_train, y_valid <span class="op">=</span> train_test_split(df.drop(columns<span class="op">=</span><span class="st">"GOOGL"</span>).shift(<span class="dv">1</span>).iloc[<span class="dv">1</span>:], df[<span class="st">'GOOGL'</span>].iloc[<span class="dv">1</span>:], test_size<span class="op">=</span><span class="fl">0.2</span>, shuffle<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>fit_validate_plot(X_train, X_valid, y_train, y_valid)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
   $R^2$: -7.266054917956771
@@ -869,7 +916,11 @@ We should make use of the previous days data to make sure we are not “cheating
   </code></pre>
 </div>
 <div class="cell-output cell-output-display">
-<p><img src="index_files/figure-html/cell-19-output-2.png" class="img-fluid"></p>
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/cell-19-output-2.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
 </div>
 </div>
 <p>🤯😭</p>
@@ -882,11 +933,11 @@ How will we try to achieve this practically? <strong>LogReturn</strong></p>
 <blockquote class="blockquote">
 <p>💡 You can also take the %-difference, which according to Taylors Theorem will approximate the LogReturn.</p>
 </blockquote>
-<div class="cell" data-outputid="766ad31a-0bc3-40c9-c7f1-cc8cae8b02a1" data-execution_count="64">
-<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> log_return(x: pd.DataFrame) <span class="op">-&gt;</span> pd.DataFrame:</span>
-<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> x.<span class="bu">apply</span>(<span class="kw">lambda</span> x: np.log(x<span class="op">/</span>x.shift(<span class="dv">1</span>))).dropna()</span>
-<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a>log_return(df).head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="cell-42" class="cell" data-outputid="766ad31a-0bc3-40c9-c7f1-cc8cae8b02a1" data-execution_count="64">
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> log_return(x: pd.DataFrame) <span class="op">-&gt;</span> pd.DataFrame:</span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> x.<span class="bu">apply</span>(<span class="kw">lambda</span> x: np.log(x<span class="op">/</span>x.shift(<span class="dv">1</span>))).dropna()</span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>log_return(df).head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="64">
 
   <div id="df-9ca86099-a642-4dc3-a989-8b49e39801fa">
@@ -949,7 +1000,6 @@ How will we try to achieve this practically? <strong>LogReturn</strong></p>
 </tr>
 </tbody>
 </table>
-
 
 </div>
       <button class="colab-df-convert" onclick="convertToInteractive('df-9ca86099-a642-4dc3-a989-8b49e39801fa')" title="Convert this dataframe to an interactive table." style="display:none;">
@@ -1027,11 +1077,11 @@ How will we try to achieve this practically? <strong>LogReturn</strong></p>
   
 </div>
 </div>
-<div class="cell" data-outputid="0c9b45ed-6a15-4659-f22e-459a61bd611a" data-execution_count="65">
-<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>df_lr <span class="op">=</span> log_return(df)</span>
-<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>X_train, X_valid, y_train, y_valid <span class="op">=</span> train_test_split(df_lr.drop(columns<span class="op">=</span><span class="st">"GOOGL"</span>).shift(<span class="dv">1</span>).iloc[<span class="dv">1</span>:], df_lr[<span class="st">'GOOGL'</span>].iloc[<span class="dv">1</span>:], test_size<span class="op">=</span><span class="fl">0.2</span>, shuffle<span class="op">=</span><span class="va">False</span>)</span>
-<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a>fit_validate_plot(X_train, X_valid, y_train, y_valid)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="cell-43" class="cell" data-outputid="0c9b45ed-6a15-4659-f22e-459a61bd611a" data-execution_count="65">
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>df_lr <span class="op">=</span> log_return(df)</span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>X_train, X_valid, y_train, y_valid <span class="op">=</span> train_test_split(df_lr.drop(columns<span class="op">=</span><span class="st">"GOOGL"</span>).shift(<span class="dv">1</span>).iloc[<span class="dv">1</span>:], df_lr[<span class="st">'GOOGL'</span>].iloc[<span class="dv">1</span>:], test_size<span class="op">=</span><span class="fl">0.2</span>, shuffle<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>fit_validate_plot(X_train, X_valid, y_train, y_valid)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
   $R^2$: -0.13772674709610588
@@ -1040,7 +1090,11 @@ How will we try to achieve this practically? <strong>LogReturn</strong></p>
   </code></pre>
 </div>
 <div class="cell-output cell-output-display">
-<p><img src="index_files/figure-html/cell-21-output-2.png" class="img-fluid"></p>
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/cell-21-output-2.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
 </div>
 </div>
 <p>Most certainly <strong>not</strong> perfect… Forecasting seems harder than expected based on our initial results…<br>
@@ -1050,8 +1104,8 @@ And that’s really because we weren’t forecasting before, we were solving a <
 <section id="predicting-based-on-historical-performance" class="level3">
 <h3 class="anchored" data-anchor-id="predicting-based-on-historical-performance">Predicting Based on historical performance</h3>
 <p>We might predict based on historical performance.</p>
-<div class="cell" data-outputid="15808f37-33f9-4405-efbd-de5d82182d00" data-execution_count="66">
-<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>df.head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="cell-46" class="cell" data-outputid="15808f37-33f9-4405-efbd-de5d82182d00" data-execution_count="66">
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>df.head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="66">
 
   <div id="df-3fd0b1f9-d206-428c-b3e3-560e4d5e8f7b">
@@ -1114,7 +1168,6 @@ And that’s really because we weren’t forecasting before, we were solving a <
 </tr>
 </tbody>
 </table>
-
 
 </div>
       <button class="colab-df-convert" onclick="convertToInteractive('df-3fd0b1f9-d206-428c-b3e3-560e4d5e8f7b')" title="Convert this dataframe to an interactive table." style="display:none;">
@@ -1192,9 +1245,9 @@ And that’s really because we weren’t forecasting before, we were solving a <
   
 </div>
 </div>
-<div class="cell" data-outputid="86915b90-fad6-446f-aeda-b7e0eda643d2" data-execution_count="67">
-<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> df[[<span class="st">'GOOGL'</span>]]</span>
-<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>df.head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="cell-47" class="cell" data-outputid="86915b90-fad6-446f-aeda-b7e0eda643d2" data-execution_count="67">
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> df[[<span class="st">'GOOGL'</span>]]</span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>df.head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="67">
 
   <div id="df-be52915c-d990-43e5-8399-f66a09540cef">
@@ -1236,7 +1289,6 @@ And that’s really because we weren’t forecasting before, we were solving a <
 </tr>
 </tbody>
 </table>
-
 
 </div>
       <button class="colab-df-convert" onclick="convertToInteractive('df-be52915c-d990-43e5-8399-f66a09540cef')" title="Convert this dataframe to an interactive table." style="display:none;">
@@ -1317,14 +1369,14 @@ And that’s really because we weren’t forecasting before, we were solving a <
 <p>✅ Only Google Data<br>
 ❌ Historical Data</p>
 <p>So what should we do? One way to solve this is to use <code>shift</code> multiple times.</p>
-<div class="cell" data-outputid="8ba470d3-4e33-4328-dfda-6a3e342168fe" data-execution_count="68">
-<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> build_history(df: pd.DataFrame, num_back: <span class="bu">int</span>) <span class="op">-&gt;</span> pd.DataFrame:</span>
-<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(num_back):</span>
-<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a>    df.loc[:, <span class="ss">f"t_</span><span class="sc">{</span>i<span class="sc">}</span><span class="ss">"</span>] <span class="op">=</span> df[<span class="st">'GOOGL'</span>].shift(i <span class="op">+</span> <span class="dv">1</span>)</span>
-<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> df</span>
-<span id="cb33-6"><a href="#cb33-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-7"><a href="#cb33-7" aria-hidden="true" tabindex="-1"></a>build_history(df, <span class="dv">3</span>).head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="cell-49" class="cell" data-outputid="8ba470d3-4e33-4328-dfda-6a3e342168fe" data-execution_count="68">
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> build_history(df: pd.DataFrame, num_back: <span class="bu">int</span>) <span class="op">-&gt;</span> pd.DataFrame:</span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(num_back):</span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>    df.loc[:, <span class="ss">f"t_</span><span class="sc">{</span>i<span class="sc">}</span><span class="ss">"</span>] <span class="op">=</span> df[<span class="st">'GOOGL'</span>].shift(i <span class="op">+</span> <span class="dv">1</span>)</span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> df</span>
+<span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-7"><a href="#cb30-7" aria-hidden="true" tabindex="-1"></a>build_history(df, <span class="dv">3</span>).head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>/usr/local/lib/python3.7/dist-packages/pandas/core/indexing.py:1667: SettingWithCopyWarning:
 
@@ -1397,7 +1449,6 @@ See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stab
 </tr>
 </tbody>
 </table>
-
 
 </div>
       <button class="colab-df-convert" onclick="convertToInteractive('df-10abe19b-1e75-4cdb-b56f-61bd945303d2')" title="Convert this dataframe to an interactive table." style="display:none;">
@@ -1483,10 +1534,10 @@ This is actually <em>very</em> memory intense as our data grows X times, one tim
 <a href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.dropna.html"><code>pd.DataFrame.dropna</code></a>: <em>Remove missing values.</em><br>
 <code>axis</code> attribute tells if you wish to drop rows or columns based on <code>NaN</code>, default is row.</p>
 </blockquote>
-<div class="cell" data-outputid="4be0a6dc-e417-4145-bbe1-7dd62598d1c4" data-execution_count="69">
-<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> build_history(df, <span class="dv">7</span>)</span>
-<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> df.dropna()</span>
-<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a>df.head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="cell-51" class="cell" data-outputid="4be0a6dc-e417-4145-bbe1-7dd62598d1c4" data-execution_count="69">
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> build_history(df, <span class="dv">7</span>)</span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> df.dropna()</span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a>df.head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="69">
 
   <div id="df-59e1b8c6-bd27-48b0-ae16-4353faa11715">
@@ -1578,7 +1629,6 @@ This is actually <em>very</em> memory intense as our data grows X times, one tim
 </tbody>
 </table>
 
-
 </div>
       <button class="colab-df-convert" onclick="convertToInteractive('df-59e1b8c6-bd27-48b0-ae16-4353faa11715')" title="Convert this dataframe to an interactive table." style="display:none;">
         
@@ -1666,11 +1716,11 @@ As previously,</p>
 <li>Predict data</li>
 <li>Validate</li>
 </ol>
-<div class="cell" data-outputid="47455138-565c-4b79-df0f-50b0991f6c05" data-execution_count="70">
-<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>df_lr <span class="op">=</span> log_return(df)</span>
-<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>X_train, X_valid, y_train, y_valid <span class="op">=</span> train_test_split(df_lr.iloc[:, <span class="dv">1</span>:], df_lr[<span class="st">'GOOGL'</span>], test_size<span class="op">=</span><span class="fl">0.2</span>, shuffle<span class="op">=</span><span class="va">False</span>)</span>
-<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-4"><a href="#cb36-4" aria-hidden="true" tabindex="-1"></a>fit_validate_plot(X_train, X_valid, y_train, y_valid)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="cell-53" class="cell" data-outputid="47455138-565c-4b79-df0f-50b0991f6c05" data-execution_count="70">
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>df_lr <span class="op">=</span> log_return(df)</span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>X_train, X_valid, y_train, y_valid <span class="op">=</span> train_test_split(df_lr.iloc[:, <span class="dv">1</span>:], df_lr[<span class="st">'GOOGL'</span>], test_size<span class="op">=</span><span class="fl">0.2</span>, shuffle<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a>fit_validate_plot(X_train, X_valid, y_train, y_valid)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
   $R^2$: -0.12436497765470134
@@ -1679,7 +1729,11 @@ As previously,</p>
   </code></pre>
 </div>
 <div class="cell-output cell-output-display">
-<p><img src="index_files/figure-html/cell-26-output-2.png" class="img-fluid"></p>
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/cell-26-output-2.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
 </div>
 </div>
 <p>Not great, not awful. Some self-exercises:</p>
@@ -1688,8 +1742,8 @@ As previously,</p>
 <li>How would we do without shuffling?</li>
 <li>Any other ideas? Try ’em out!</li>
 </ol>
-<div class="cell" data-execution_count="71">
-<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Test your own ideas</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="cell-55" class="cell" data-execution_count="71">
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Test your own ideas</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>If you didn’t try previously, try appling a rolling mean and rerun <code>fit_validate_plot</code> as this should reduce the “swings” and thereby be a little bit more predictable.</p>
 <blockquote class="blockquote">
@@ -1697,23 +1751,23 @@ As previously,</p>
 In other words: We slide a window on our data and do calculations, in our case <code>mean</code>. This window includes <code>window</code>, <code>min_periods</code>, <code>center</code> &amp; more attributes which impacts size of window, how large minimal window can be, and more.</p>
 </blockquote>
 <p>Validating what <code>rolling.mean()</code> does to our data:</p>
-<div class="cell" data-outputid="1e6adef2-8c43-47e5-81be-08490febfe05" data-execution_count="79">
-<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a>df[<span class="st">'GOOGL_ROLLING'</span>] <span class="op">=</span> df[<span class="st">'GOOGL'</span>].rolling(<span class="dv">3</span>).mean()  <span class="co"># Rolling over 3 days mean</span></span>
-<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a>df[<span class="op">-</span><span class="dv">100</span>:].plot(y<span class="op">=</span>[<span class="st">'GOOGL'</span>, <span class="st">'GOOGL_ROLLING'</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="79">
-<pre><code>&lt;matplotlib.axes._subplots.AxesSubplot at 0x7f7848008410&gt;</code></pre>
-</div>
+<div id="cell-57" class="cell" data-outputid="1e6adef2-8c43-47e5-81be-08490febfe05" data-execution_count="79">
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>df[<span class="st">'GOOGL_ROLLING'</span>] <span class="op">=</span> df[<span class="st">'GOOGL'</span>].rolling(<span class="dv">3</span>).mean()  <span class="co"># Rolling over 3 days mean</span></span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>df[<span class="op">-</span><span class="dv">100</span>:].plot(y<span class="op">=</span>[<span class="st">'GOOGL'</span>, <span class="st">'GOOGL_ROLLING'</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
-<p><img src="index_files/figure-html/cell-28-output-2.png" class="img-fluid"></p>
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/cell-28-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
 </div>
 </div>
 <p>Zooming 🔍</p>
-<div class="cell" data-outputid="e4b57a80-83b2-4578-849c-46a337e3516d" data-execution_count="73">
-<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a>df_last_months <span class="op">=</span> df[df.index <span class="op">&gt;</span> datetime(<span class="dv">2021</span>, <span class="dv">6</span>, <span class="dv">6</span>)]</span>
-<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb41-3"><a href="#cb41-3" aria-hidden="true" tabindex="-1"></a>df_last_months.plot(y<span class="op">=</span>[<span class="st">'GOOGL'</span>, <span class="st">'GOOGL_ROLLING'</span>], backend<span class="op">=</span><span class="st">'plotly'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="cell-59" class="cell" data-outputid="e4b57a80-83b2-4578-849c-46a337e3516d" data-execution_count="73">
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a>df_last_months <span class="op">=</span> df[df.index <span class="op">&gt;</span> datetime(<span class="dv">2021</span>, <span class="dv">6</span>, <span class="dv">6</span>)]</span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a>df_last_months.plot(y<span class="op">=</span>[<span class="st">'GOOGL'</span>, <span class="st">'GOOGL_ROLLING'</span>], backend<span class="op">=</span><span class="st">'plotly'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
-
 
 <meta charset="utf-8">
 
@@ -1758,11 +1812,11 @@ Show Plotly Chart (code cell only visible in active notebook)
 <p><strong>Self-exercise</strong>: Test applying different functions like <code>min</code>, <code>max</code> and expanding window size into more days.</p>
 </blockquote>
 <p>And validating what this does to our prediction.</p>
-<div class="cell" data-outputid="c14c216a-0032-4e35-e74e-5cd8ffdc55d9" data-execution_count="74">
-<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a>df_lr <span class="op">=</span> df.pct_change().dropna().rolling(<span class="dv">3</span>).mean().dropna()</span>
-<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a>X_train, X_valid, y_train, y_valid <span class="op">=</span> train_test_split(df_lr.iloc[:, <span class="dv">1</span>:], df_lr[<span class="st">'GOOGL'</span>], test_size<span class="op">=</span><span class="fl">0.2</span>, shuffle<span class="op">=</span><span class="va">False</span>)</span>
-<span id="cb42-3"><a href="#cb42-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb42-4"><a href="#cb42-4" aria-hidden="true" tabindex="-1"></a>fit_validate_plot(X_train, X_valid, y_train, y_valid)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="cell-62" class="cell" data-outputid="c14c216a-0032-4e35-e74e-5cd8ffdc55d9" data-execution_count="74">
+<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a>df_lr <span class="op">=</span> df.pct_change().dropna().rolling(<span class="dv">3</span>).mean().dropna()</span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>X_train, X_valid, y_train, y_valid <span class="op">=</span> train_test_split(df_lr.iloc[:, <span class="dv">1</span>:], df_lr[<span class="st">'GOOGL'</span>], test_size<span class="op">=</span><span class="fl">0.2</span>, shuffle<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb38-4"><a href="#cb38-4" aria-hidden="true" tabindex="-1"></a>fit_validate_plot(X_train, X_valid, y_train, y_valid)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
   $R^2$: 0.8925898146393952
@@ -1771,7 +1825,11 @@ Show Plotly Chart (code cell only visible in active notebook)
   </code></pre>
 </div>
 <div class="cell-output cell-output-display">
-<p><img src="index_files/figure-html/cell-30-output-2.png" class="img-fluid"></p>
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/cell-30-output-2.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
 </div>
 </div>
 <p>We’re back! 🥳</p>
@@ -1780,21 +1838,20 @@ Show Plotly Chart (code cell only visible in active notebook)
 <p><strong>Self-exercise</strong>: Validat how <code>rolling</code> would affect our non-history-based forecasting</p>
 </blockquote>
 <p>Let’s reverse our transformation to see what we’d actually predict in the end.</p>
-<div class="cell" data-execution_count="75">
-<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a>y_rolling <span class="op">=</span> df[<span class="st">'GOOGL'</span>].rolling(<span class="dv">3</span>).mean().dropna()</span>
-<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a>y_train_non_scaled, y_valid_non_scaled <span class="op">=</span> train_test_split(y_rolling, test_size<span class="op">=</span><span class="fl">0.2</span>, shuffle<span class="op">=</span><span class="va">False</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="cell-64" class="cell" data-execution_count="75">
+<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a>y_rolling <span class="op">=</span> df[<span class="st">'GOOGL'</span>].rolling(<span class="dv">3</span>).mean().dropna()</span>
+<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a>y_train_non_scaled, y_valid_non_scaled <span class="op">=</span> train_test_split(y_rolling, test_size<span class="op">=</span><span class="fl">0.2</span>, shuffle<span class="op">=</span><span class="va">False</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell" data-outputid="c2ec153b-c5fa-4a23-8caf-cdc29d22e93e" data-execution_count="80">
-<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a>clf <span class="op">=</span> RandomForestRegressor()</span>
-<span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a>clf.fit(X_train, y_train)</span>
-<span id="cb45-3"><a href="#cb45-3" aria-hidden="true" tabindex="-1"></a>preds <span class="op">=</span> clf.predict(X_valid)</span>
-<span id="cb45-4"><a href="#cb45-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb45-5"><a href="#cb45-5" aria-hidden="true" tabindex="-1"></a>preds <span class="op">=</span> (preds <span class="op">+</span> <span class="dv">1</span>).cumprod() <span class="co"># Cummulative multiplication, first day + 1%, but then we got -1%, that's 1.01 * 0.99</span></span>
-<span id="cb45-6"><a href="#cb45-6" aria-hidden="true" tabindex="-1"></a>preds <span class="op">=</span> preds <span class="op">*</span> y_train_non_scaled.iloc[<span class="op">-</span><span class="dv">1</span>] <span class="co"># Scaling it up based on the last training value</span></span>
-<span id="cb45-7"><a href="#cb45-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb45-8"><a href="#cb45-8" aria-hidden="true" tabindex="-1"></a>pd.DataFrame({<span class="st">'Preds'</span>: preds, <span class="st">'Valid Rolling'</span>: y_valid_non_scaled[<span class="dv">1</span>:], <span class="st">'Valid'</span>: df[<span class="st">'GOOGL'</span>].iloc[<span class="op">-</span><span class="bu">len</span>(preds):]}).plot(backend<span class="op">=</span><span class="st">'plotly'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="cell-65" class="cell" data-outputid="c2ec153b-c5fa-4a23-8caf-cdc29d22e93e" data-execution_count="80">
+<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a>clf <span class="op">=</span> RandomForestRegressor()</span>
+<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a>clf.fit(X_train, y_train)</span>
+<span id="cb41-3"><a href="#cb41-3" aria-hidden="true" tabindex="-1"></a>preds <span class="op">=</span> clf.predict(X_valid)</span>
+<span id="cb41-4"><a href="#cb41-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-5"><a href="#cb41-5" aria-hidden="true" tabindex="-1"></a>preds <span class="op">=</span> (preds <span class="op">+</span> <span class="dv">1</span>).cumprod() <span class="co"># Cummulative multiplication, first day + 1%, but then we got -1%, that's 1.01 * 0.99</span></span>
+<span id="cb41-6"><a href="#cb41-6" aria-hidden="true" tabindex="-1"></a>preds <span class="op">=</span> preds <span class="op">*</span> y_train_non_scaled.iloc[<span class="op">-</span><span class="dv">1</span>] <span class="co"># Scaling it up based on the last training value</span></span>
+<span id="cb41-7"><a href="#cb41-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-8"><a href="#cb41-8" aria-hidden="true" tabindex="-1"></a>pd.DataFrame({<span class="st">'Preds'</span>: preds, <span class="st">'Valid Rolling'</span>: y_valid_non_scaled[<span class="dv">1</span>:], <span class="st">'Valid'</span>: df[<span class="st">'GOOGL'</span>].iloc[<span class="op">-</span><span class="bu">len</span>(preds):]}).plot(backend<span class="op">=</span><span class="st">'plotly'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
-
 
 <meta charset="utf-8">
 
@@ -1949,10 +2006,9 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     // clear code selection
     e.clearSelection();
   });
-  function tippyHover(el, contentFn) {
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
     const config = {
       allowHTML: true,
-      content: contentFn,
       maxWidth: 500,
       delay: 100,
       arrow: false,
@@ -1962,8 +2018,17 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       interactive: true,
       interactiveBorder: 10,
       theme: 'quarto',
-      placement: 'bottom-start'
+      placement: 'bottom-start',
     };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
     window.tippy(el, config); 
   }
   const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
@@ -1976,6 +2041,125 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       const id = href.replace(/^#\/?/, "");
       const note = window.document.getElementById(id);
       return note.innerHTML;
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
     });
   }
       let selectedAnnoteEl;
@@ -2019,6 +2203,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
             }
             div.style.top = top - 2 + "px";
             div.style.height = height + 4 + "px";
+            div.style.left = 0;
             let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
             if (gutterDiv === null) {
               gutterDiv = window.document.createElement("div");
@@ -2044,6 +2229,32 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
         });
         selectedAnnoteEl = undefined;
       };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
       // Attach click handler to the DT
       const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
       for (const annoteDlNode of annoteDls) {
@@ -2105,23 +2316,31 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <script src="https://giscus.app/client.js" data-repo="londogard/londogard" data-repo-id="MDEwOlJlcG9zaXRvcnkyOTcyNzE0MzE=" data-category="General" data-category-id="MDE4OkRpc2N1c3Npb25DYXRlZ29yeTMwODYxNzM4" data-mapping="title" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="top" data-theme="light" data-lang="en" crossorigin="anonymous" async="">
 </script>
+<input type="hidden" id="giscus-base-theme" value="light">
+<input type="hidden" id="giscus-alt-theme" value="dark">
 </div> <!-- /content -->
 <footer class="footer">
   <div class="nav-footer">
     <div class="nav-footer-left">
       <ul class="footer-items list-unstyled">
     <li class="nav-item">
-    <a class="nav-link" href="https://www.buymeacoffee.com/hlondogard"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-blue.png" class="img-fluid" width="100"></a>
+    <a class="nav-link" href="https://www.buymeacoffee.com/hlondogard">
+<p><img src="https://cdn.buymeacoffee.com/buttons/v2/default-blue.png" class="img-fluid" width="100"></p>
+</a>
   </li>  
     <li class="nav-item">
-    <a class="nav-link" href="https://github.com/sponsors/Lundez?o=esb"><img src="https://img.shields.io/static/v1?label=Sponsor&amp;message=%E2%9D%A4&amp;logo=GitHub&amp;color=%23fe8e86.png" class="img-fluid" width="100"></a>
+    <a class="nav-link" href="https://github.com/sponsors/Lundez?o=esb">
+<p><img src="https://img.shields.io/static/v1?label=Sponsor&amp;message=%E2%9D%A4&amp;logo=GitHub&amp;color=%23fe8e86.png" class="img-fluid" width="100"></p>
+</a>
   </li>  
 </ul>
     </div>   
     <div class="nav-footer-center">
       <ul class="footer-items list-unstyled">
     <li class="nav-item">
-    <a class="nav-link" href="../../pages/about.html">About</a>
+    <a class="nav-link" href="../../pages/about.html">
+<p>About</p>
+</a>
   </li>  
 </ul>
     </div>
@@ -2155,6 +2374,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     </div>
   </div>
 </footer>
+
 
 
 

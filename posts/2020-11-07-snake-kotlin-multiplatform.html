@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.3.450">
+<meta name="generator" content="quarto-1.4.549">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -25,7 +25,7 @@ ul.task-list li input[type="checkbox"] {
 }
 /* CSS for syntax highlighting */
 pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span { line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
@@ -83,7 +83,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   "collapse-after": 3,
   "panel-placement": "end",
   "type": "overlay",
-  "limit": 20,
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
   "language": {
     "search-no-results-text": "No results",
     "search-matching-documents-text": "matching documents",
@@ -92,6 +98,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-more-match-text": "more match in this document",
     "search-more-matches-text": "more matches in this document",
     "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
     "search-detached-cancel-button-title": "Cancel",
     "search-submit-button-title": "Submit",
     "search-label": "Search"
@@ -102,18 +109,17 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link rel="stylesheet" href="../styles.css">
 <meta name="twitter:title" content="Londogard Blog - How to build and play Snake via Native Binary, JVM and JS/Browser (Kotlin)">
 <meta name="twitter:description" content="A three part blog (all included in this one) that goes through 1) How Kotlin Multiplatform works, 2) How to build a game (Snake) and finally 3) how to make it multiplatform.">
-<meta name="twitter:image" content="https://user-images.githubusercontent.com/7490199/218269627-e1ed024c-05f5-4755-a8d5-944f46bcbea8.png">
 <meta name="twitter:creator" content="@hlondogard">
-<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:card" content="summary">
 </head>
 
 <body class="nav-fixed">
 
 <div id="quarto-search-results"></div>
-  <header id="quarto-header" class="headroom fixed-top">
-    <nav class="navbar navbar-expand-lg navbar-dark ">
+  <header id="quarto-header" class="headroom fixed-top quarto-banner">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
-      <div class="navbar-brand-container">
+      <div class="navbar-brand-container mx-auto">
     <a class="navbar-brand" href="../index.html">
     <span class="navbar-title">Londogard Blog</span>
     </a>
@@ -125,61 +131,65 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item">
-    <a class="nav-link" href="../pages/presentations.html" rel="" target="">
- <span class="menu-text">Presentations</span></a>
+    <a class="nav-link" href="../"> 
+<span class="menu-text">Blogs</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="https://londogard.com/projects" rel="" target="">
- <span class="menu-text">Londogard Projects↗</span></a>
+    <a class="nav-link" href="../pages/presentations.html"> 
+<span class="menu-text">Presentations</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="https://londogard.com/projects"> 
+<span class="menu-text">Londogard Projects↗</span></a>
   </li>  
 </ul>
             <ul class="navbar-nav navbar-nav-scroll ms-auto">
   <li class="nav-item">
-    <a class="nav-link" href="../pages/about.html" rel="" target="">
- <span class="menu-text">About</span></a>
+    <a class="nav-link" href="../pages/about.html"> 
+<span class="menu-text">About</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../pages/code_setup/code_setup.html" rel="" target="">
- <span class="menu-text">Dev Setup</span></a>
+    <a class="nav-link" href="../pages/code_setup/code_setup.html"> 
+<span class="menu-text">Dev Setup</span></a>
   </li>  
   <li class="nav-item compact">
-    <a class="nav-link" href="https://www.linkedin.com/in/hampus-londögård/" rel="" target=""><i class="bi bi-linkedin" role="img" aria-label="LinkedIn">
+    <a class="nav-link" href="https://www.linkedin.com/in/hampus-londögård/"> <i class="bi bi-linkedin" role="img" aria-label="LinkedIn">
 </i> 
- <span class="menu-text"></span></a>
+<span class="menu-text"></span></a>
   </li>  
   <li class="nav-item compact">
-    <a class="nav-link" href="https://twitter.com/hlondogard" rel="" target=""><i class="bi bi-twitter" role="img" aria-label="Twitter">
+    <a class="nav-link" href="https://twitter.com/hlondogard"> <i class="bi bi-twitter" role="img" aria-label="Twitter">
 </i> 
- <span class="menu-text"></span></a>
+<span class="menu-text"></span></a>
   </li>  
   <li class="nav-item dropdown ">
-    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-bi-github" role="button" data-bs-toggle="dropdown" aria-expanded="false" rel="" target="">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-bi-github" role="button" data-bs-toggle="dropdown" aria-expanded="false">
       <i class="bi bi-github" role="img">
 </i> 
  <span class="menu-text"></span>
     </a>
     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="nav-menu-bi-github">    
         <li>
-    <a class="dropdown-item" href="https://github.com/lundez" rel="" target=""><i class="bi bi-github" role="img">
+    <a class="dropdown-item" href="https://github.com/lundez"><i class="bi bi-github" role="img">
 </i> 
  <span class="dropdown-text">Lundez</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="https://github.com/londogard" rel="" target=""><i class="bi bi-github" role="img">
+    <a class="dropdown-item" href="https://github.com/londogard"><i class="bi bi-github" role="img">
 </i> 
  <span class="dropdown-text">Londogard</span></a>
   </li>  
     </ul>
   </li>
   <li class="nav-item compact">
-    <a class="nav-link" href="../index.xml" rel="" target=""><i class="bi bi-rss" role="img" aria-label="Londogard Blog RSS">
+    <a class="nav-link" href="../index.xml"> <i class="bi bi-rss" role="img" aria-label="Londogard Blog RSS">
 </i> 
- <span class="menu-text"></span></a>
+<span class="menu-text"></span></a>
   </li>  
 </ul>
-            <div class="quarto-navbar-tools">
-</div>
           </div> <!-- /navcollapse -->
+          <div class="quarto-navbar-tools">
+</div>
       </div> <!-- /container-fluid -->
     </nav>
 </header>
@@ -267,6 +277,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 
 
+
 <p>A three part blog (all included in this one) that goes through</p>
 <ol type="1">
 <li>How Kotlin Multiplatform works (compiler and everything)</li>
@@ -288,7 +299,7 @@ It’s also required that your Kotlin version is above 1.4 (some huge Multiplatf
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="https://user-images.githubusercontent.com/7490199/218269627-e1ed024c-05f5-4755-a8d5-944f46bcbea8.png" class="img-fluid figure-img"></p>
-<figcaption class="figure-caption">Image from <a href="https://kotlinlang.org/">kotlinlang.org</a></figcaption>
+<figcaption>Image from <a href="https://kotlinlang.org/">kotlinlang.org</a></figcaption>
 </figure>
 </div>
 <p>By my own account it’s a language that has learned from many mistakes done in the past and tries to extend and embrace the good ones!</p>
@@ -334,7 +345,7 @@ The Kotlin Compiler first compiles Kotlin code into a <em>Intermediate Represent
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="https://user-images.githubusercontent.com/7490199/97027300-d2095900-155a-11eb-9d18-6fb58a0a9699.png" class="img-fluid figure-img"></p>
-<figcaption class="figure-caption">Compiler Chain</figcaption>
+<figcaption>Compiler Chain</figcaption>
 </figure>
 </div>
 <p>The first part is called the <strong>Compiler Frontend</strong></p>
@@ -343,7 +354,7 @@ The Kotlin Compiler first compiles Kotlin code into a <em>Intermediate Represent
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="https://user-images.githubusercontent.com/7490199/97027463-1137aa00-155b-11eb-9c31-a60e3e25af87.png" class="img-fluid figure-img"></p>
-<figcaption class="figure-caption">Compiler Frontend</figcaption>
+<figcaption>Compiler Frontend</figcaption>
 </figure>
 </div>
 <p>The <em>Compiler Frontend</em> turns the Kotlin code into a <em>Intermediate Representation</em> of the code which is represented by a <a href="https://en.wikipedia.org/wiki/Abstract_syntax_tree">abstract syntax tree</a>. The <em>abstract syntax tree</em> in turn is built from concrete syntax, e.g.&nbsp;strings.<br>
@@ -356,7 +367,7 @@ For those interested this could be a really fun challenge and learning lesson to
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="https://user-images.githubusercontent.com/7490199/97077672-ddee2d00-15e5-11eb-9f71-916c5b2a0544.png" class="img-fluid figure-img"></p>
-<figcaption class="figure-caption">Compiler Backend</figcaption>
+<figcaption>Compiler Backend</figcaption>
 </figure>
 </div>
 <p>The <em>Compiler Backend</em> turns this abstract syntax tree, or <em>IR</em>, into computer output language.<br>
@@ -366,7 +377,7 @@ Just as with the frontend it’s a really good challenge to either implement a b
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="https://user-images.githubusercontent.com/7490199/97077776-b8155800-15e6-11eb-8ae6-a83a77253087.png" class="img-fluid figure-img"></p>
-<figcaption class="figure-caption">Different Kotlin Compiler Backends</figcaption>
+<figcaption>Different Kotlin Compiler Backends</figcaption>
 </figure>
 </div>
 <blockquote class="blockquote">
@@ -383,7 +394,7 @@ During the final step in LLVM all the optimizations applied to C, C++, Swift &am
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="https://user-images.githubusercontent.com/7490199/97077938-2dcdf380-15e8-11eb-8282-873d80f6178e.png" class="img-fluid figure-img"></p>
-<figcaption class="figure-caption">How Kotlin types are compiled</figcaption>
+<figcaption>How Kotlin types are compiled</figcaption>
 </figure>
 </div>
 <p>By using <code>Kotlin.String</code> rather than the usual <code>Java.lang.String</code> you do when programming Java you get a type that works on multiple platforms, including some awesome convenience functions. Imagine, you can write native code using <code>.substring</code>, <code>.take(n)</code> &amp; <code>.replace</code> - amazing compared to <code>c</code> right? :happy:</p>
@@ -432,7 +443,7 @@ The final, and perhaps obvious, one I’d like to mention straight away is that 
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="https://kotlinlang.org/assets/images/reference/mpp/mpp-project-1.png" class="img-fluid figure-img"></p>
-<figcaption class="figure-caption">Select a project template</figcaption>
+<figcaption>Select a project template</figcaption>
 </figure>
 </div>
 <p>Run the build.</p>
@@ -583,7 +594,7 @@ The next step is to actually draw the <code>Cell</code>’s and wrap the <code>C
 <span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a><span class="kw">data</span> <span class="kw">class</span> Game<span class="op">(</span></span>
 <span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>    <span class="kw">val</span> <span class="va">width</span><span class="op">:</span> <span class="dt">Int</span><span class="op">,</span></span>
 <span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>    <span class="kw">val</span> <span class="va">height</span><span class="op">:</span> <span class="dt">Int</span><span class="op">,</span></span>
-<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>    <span class="kw">val</span> <span class="va">snake</span><span class="op">:</span> <span class="dt">Snake</span><span class="op">,</span>   // <span class="va">Adding</span> <span class="va">snake</span> <span class="va">and</span> <span class="va">apples</span></span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>    <span class="kw">val</span> <span class="va">snake</span><span class="op">:</span> <span class="dt">Snake</span><span class="op">,</span>   <span class="co">// Adding snake and apples</span></span>
 <span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>    <span class="kw">val</span> <span class="va">apples</span><span class="op">:</span> <span class="dt">Apples</span></span>
 <span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a><span class="op">)</span></span>
 <span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a></span>
@@ -618,7 +629,7 @@ The next step is to actually draw the <code>Cell</code>’s and wrap the <code>C
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="https://user-images.githubusercontent.com/7490199/97808473-5c427300-1c67-11eb-9fa9-9110f596533b.png" class="img-fluid figure-img"></p>
-<figcaption class="figure-caption">Snake Game</figcaption>
+<figcaption>Snake Game</figcaption>
 </figure>
 </div>
 <p>Pretty cool right!? We’ve got<br>
@@ -657,7 +668,7 @@ Enums in Kotlin are pretty awesome, they can both keep values and have methods! 
 <span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="kw">data</span> <span class="kw">class</span> Snake<span class="op">(</span></span>
 <span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>    <span class="kw">val</span> <span class="va">cells</span><span class="op">:</span> <span class="dt">List</span>&lt;<span class="va">Cell</span>&gt;<span class="op">,</span></span>
-<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>    <span class="kw">val</span> <span class="va">direction</span><span class="op">:</span> <span class="dt">Direction</span><span class="op">,</span> // <span class="va">new</span> <span class="va">attribute</span></span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>    <span class="kw">val</span> <span class="va">direction</span><span class="op">:</span> <span class="dt">Direction</span><span class="op">,</span> <span class="co">// new attribute</span></span>
 <span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>    <span class="kw">val</span> <span class="va">eatenApples</span><span class="op">:</span> <span class="dt">Int</span> <span class="op">=</span> <span class="dv">0</span> <span class="co">// new attribute</span></span>
 <span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a><span class="op">)</span> <span class="op">{</span></span>
 <span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>    <span class="kw">fun</span> <span class="fu">move</span><span class="op">():</span> <span class="dt">Snake</span> <span class="op">{</span></span>
@@ -736,7 +747,7 @@ I mentioned that Kotlin <code>Enums</code> can have methods, which is awesome. W
 <span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">val</span> <span class="va">width</span><span class="op">:</span> <span class="dt">Int</span><span class="op">,</span></span>
 <span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>    <span class="kw">val</span> <span class="va">height</span><span class="op">:</span> <span class="dt">Int</span><span class="op">,</span></span>
 <span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>    <span class="kw">val</span> <span class="va">cells</span><span class="op">:</span> <span class="dt">Set</span>&lt;<span class="va">Cell</span>&gt; <span class="op">=</span> emptySet<span class="op">(),</span></span>
-<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>    <span class="kw">val</span> <span class="va">growthSpeed</span><span class="op">:</span> <span class="dt">Int</span> <span class="op">=</span> <span class="dv">3</span><span class="op">,</span> // <span class="va">this</span> <span class="va">could</span> <span class="va">actually</span> <span class="va">be</span> <span class="va">to</span> <span class="va">only</span> <span class="va">spawn</span> <span class="va">apple</span> <span class="va">when</span> <span class="va">there</span> <span class="kw">is</span> <span class="va">no</span> <span class="va">other</span> <span class="va">apple</span>. <span class="va">Up</span> <span class="va">to</span> <span class="va">user</span></span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>    <span class="kw">val</span> <span class="va">growthSpeed</span><span class="op">:</span> <span class="dt">Int</span> <span class="op">=</span> <span class="dv">3</span><span class="op">,</span> <span class="co">// this could actually be to only spawn apple when there is no other apple. Up to user</span></span>
 <span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>    <span class="kw">val</span> <span class="va">random</span><span class="op">:</span> <span class="dt">Random</span> <span class="op">=</span> Random <span class="co">// Once again, Kotlin provides a superb class, in this case a Random wrapper that works on JVM, JS &amp; Native - cool right?</span></span>
 <span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a><span class="op">)</span> <span class="op">{</span></span>
 <span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a>    <span class="kw">fun</span> <span class="fu">grow</span><span class="op">():</span> <span class="dt">Apples</span> <span class="op">{</span></span>
@@ -958,10 +969,9 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     // clear code selection
     e.clearSelection();
   });
-  function tippyHover(el, contentFn) {
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
     const config = {
       allowHTML: true,
-      content: contentFn,
       maxWidth: 500,
       delay: 100,
       arrow: false,
@@ -971,8 +981,17 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       interactive: true,
       interactiveBorder: 10,
       theme: 'quarto',
-      placement: 'bottom-start'
+      placement: 'bottom-start',
     };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
     window.tippy(el, config); 
   }
   const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
@@ -985,6 +1004,125 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       const id = href.replace(/^#\/?/, "");
       const note = window.document.getElementById(id);
       return note.innerHTML;
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
     });
   }
       let selectedAnnoteEl;
@@ -1028,6 +1166,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
             }
             div.style.top = top - 2 + "px";
             div.style.height = height + 4 + "px";
+            div.style.left = 0;
             let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
             if (gutterDiv === null) {
               gutterDiv = window.document.createElement("div");
@@ -1053,6 +1192,32 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
         });
         selectedAnnoteEl = undefined;
       };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
       // Attach click handler to the DT
       const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
       for (const annoteDlNode of annoteDls) {
@@ -1114,23 +1279,31 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <script src="https://giscus.app/client.js" data-repo="londogard/londogard" data-repo-id="MDEwOlJlcG9zaXRvcnkyOTcyNzE0MzE=" data-category="General" data-category-id="MDE4OkRpc2N1c3Npb25DYXRlZ29yeTMwODYxNzM4" data-mapping="title" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="top" data-theme="light" data-lang="en" crossorigin="anonymous" async="">
 </script>
+<input type="hidden" id="giscus-base-theme" value="light">
+<input type="hidden" id="giscus-alt-theme" value="dark">
 </div> <!-- /content -->
 <footer class="footer">
   <div class="nav-footer">
     <div class="nav-footer-left">
       <ul class="footer-items list-unstyled">
     <li class="nav-item">
-    <a class="nav-link" href="https://www.buymeacoffee.com/hlondogard"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-blue.png" class="img-fluid" width="100"></a>
+    <a class="nav-link" href="https://www.buymeacoffee.com/hlondogard">
+<p><img src="https://cdn.buymeacoffee.com/buttons/v2/default-blue.png" class="img-fluid" width="100"></p>
+</a>
   </li>  
     <li class="nav-item">
-    <a class="nav-link" href="https://github.com/sponsors/Lundez?o=esb"><img src="https://img.shields.io/static/v1?label=Sponsor&amp;message=%E2%9D%A4&amp;logo=GitHub&amp;color=%23fe8e86.png" class="img-fluid" width="100"></a>
+    <a class="nav-link" href="https://github.com/sponsors/Lundez?o=esb">
+<p><img src="https://img.shields.io/static/v1?label=Sponsor&amp;message=%E2%9D%A4&amp;logo=GitHub&amp;color=%23fe8e86.png" class="img-fluid" width="100"></p>
+</a>
   </li>  
 </ul>
     </div>   
     <div class="nav-footer-center">
       <ul class="footer-items list-unstyled">
     <li class="nav-item">
-    <a class="nav-link" href="../pages/about.html">About</a>
+    <a class="nav-link" href="../pages/about.html">
+<p>About</p>
+</a>
   </li>  
 </ul>
     </div>
@@ -1164,6 +1337,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     </div>
   </div>
 </footer>
+
 
 
 

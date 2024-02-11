@@ -1,175 +1,179 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://blog.londogard.com/pages/code_setup/code_setup.html</loc>
-    <lastmod>2023-09-18T05:34:59.252Z</lastmod>
-  </url>
-  <url>
-    <loc>https://blog.londogard.com/pages/about.html</loc>
-    <lastmod>2023-09-18T05:34:57.687Z</lastmod>
-  </url>
-  <url>
-    <loc>https://blog.londogard.com/posts/2020-09-03-til-fastutil-primitive-structures.html</loc>
-    <lastmod>2023-09-18T05:34:55.995Z</lastmod>
-  </url>
-  <url>
-    <loc>https://blog.londogard.com/posts/2022-11-28-probabilistic-forecasting/index.html</loc>
-    <lastmod>2023-09-18T05:34:53.419Z</lastmod>
-  </url>
-  <url>
-    <loc>https://blog.londogard.com/posts/2020-09-03-til-badass-runtime.html</loc>
-    <lastmod>2023-09-18T05:34:51.503Z</lastmod>
-  </url>
-  <url>
-    <loc>https://blog.londogard.com/posts/2023-06-30-solara/index.html</loc>
-    <lastmod>2023-09-18T05:34:49.787Z</lastmod>
-  </url>
-  <url>
-    <loc>https://blog.londogard.com/posts/2023-05-05-duckdb.html</loc>
-    <lastmod>2023-09-18T05:34:47.599Z</lastmod>
-  </url>
-  <url>
-    <loc>https://blog.londogard.com/posts/2023-09-10-highlights-lol/index.html</loc>
-    <lastmod>2023-09-18T05:34:45.379Z</lastmod>
-  </url>
-  <url>
-    <loc>https://blog.londogard.com/posts/2020-12-16-object-detection-transformer.html</loc>
-    <lastmod>2023-09-18T05:34:43.331Z</lastmod>
-  </url>
-  <url>
-    <loc>https://blog.londogard.com/posts/2020-08-01-faq-search-covid-2/index.html</loc>
-    <lastmod>2023-09-18T05:34:41.823Z</lastmod>
-  </url>
-  <url>
-    <loc>https://blog.londogard.com/posts/2020-11-07-snake-kotlin-multiplatform.html</loc>
-    <lastmod>2023-09-18T05:34:38.959Z</lastmod>
-  </url>
-  <url>
-    <loc>https://blog.londogard.com/posts/2022-01-16-nlp-toolkit-release.html</loc>
-    <lastmod>2023-09-18T05:34:36.523Z</lastmod>
-  </url>
-  <url>
-    <loc>https://blog.londogard.com/posts/2022-03-13-timeseries-pt-3/index.html</loc>
-    <lastmod>2023-09-18T05:34:35.003Z</lastmod>
-  </url>
-  <url>
-    <loc>https://blog.londogard.com/posts/2022-11-30-why-polars.html</loc>
-    <lastmod>2023-09-18T05:34:31.695Z</lastmod>
-  </url>
-  <url>
-    <loc>https://blog.londogard.com/posts/2023-02-17-best-practices.html</loc>
-    <lastmod>2023-09-18T05:34:29.755Z</lastmod>
-  </url>
-  <url>
-    <loc>https://blog.londogard.com/posts/2023-05-06-kotlin-vs-polars-dataframe.html</loc>
-    <lastmod>2023-09-18T05:34:27.655Z</lastmod>
-  </url>
-  <url>
-    <loc>https://blog.londogard.com/posts/2021-03-17-replace-in-string.html</loc>
-    <lastmod>2023-09-18T05:34:25.859Z</lastmod>
-  </url>
-  <url>
-    <loc>https://blog.londogard.com/posts/2021-02-18-transformers-explained/transformers-explained.html</loc>
-    <lastmod>2023-09-18T05:34:23.571Z</lastmod>
-  </url>
-  <url>
-    <loc>https://blog.londogard.com/posts/2023-03-31-yelp-reviews.html</loc>
-    <lastmod>2023-09-18T05:34:20.351Z</lastmod>
-  </url>
-  <url>
-    <loc>https://blog.londogard.com/posts/2022-09-07-docker-simplified-presentation.html</loc>
-    <lastmod>2023-09-18T05:34:18.015Z</lastmod>
-  </url>
-  <url>
-    <loc>https://blog.londogard.com/posts/2022-01-28-kotlinjs-onnx-deep-learning-in-browser/index.html</loc>
-    <lastmod>2023-09-18T05:34:16.207Z</lastmod>
-  </url>
-  <url>
-    <loc>https://blog.londogard.com/index.html</loc>
-    <lastmod>2023-09-18T05:33:02.373Z</lastmod>
-  </url>
-  <url>
     <loc>https://blog.londogard.com/posts/2022-03-11-timeseries-pt-1/index.html</loc>
-    <lastmod>2023-09-18T05:34:15.039Z</lastmod>
-  </url>
-  <url>
-    <loc>https://blog.londogard.com/posts/2022-11-23-timeseries-learnings/index.html</loc>
-    <lastmod>2023-09-18T05:34:17.319Z</lastmod>
-  </url>
-  <url>
-    <loc>https://blog.londogard.com/posts/2021-04-18-knowledge-distillation-presentation.html</loc>
-    <lastmod>2023-09-18T05:34:18.723Z</lastmod>
-  </url>
-  <url>
-    <loc>https://blog.londogard.com/posts/2021-01-21-til-gitpod-kotlin-jvm.html</loc>
-    <lastmod>2023-09-18T05:34:21.471Z</lastmod>
-  </url>
-  <url>
-    <loc>https://blog.londogard.com/posts/2023-03-20-deepchecks/index.html</loc>
-    <lastmod>2023-09-18T05:34:24.619Z</lastmod>
-  </url>
-  <url>
-    <loc>https://blog.londogard.com/posts/2023-04-30-pandera.html</loc>
-    <lastmod>2023-09-18T05:34:26.975Z</lastmod>
-  </url>
-  <url>
-    <loc>https://blog.londogard.com/posts/2022-07-07-snapsvisor-generated/2022-07-07-snapsvisor-generator.html</loc>
-    <lastmod>2023-09-18T05:34:28.715Z</lastmod>
-  </url>
-  <url>
-    <loc>https://blog.londogard.com/posts/2020-03-31-email-generator-kotlin-tipsrundan.html</loc>
-    <lastmod>2023-09-18T05:34:30.675Z</lastmod>
+    <lastmod>2024-02-11T14:29:12.487Z</lastmod>
   </url>
   <url>
     <loc>https://blog.londogard.com/posts/2022-11-06-babymonitor-pt-1.html</loc>
-    <lastmod>2023-09-18T05:34:32.747Z</lastmod>
+    <lastmod>2024-02-11T14:29:12.559Z</lastmod>
   </url>
   <url>
-    <loc>https://blog.londogard.com/posts/2020-12-12-transfer-learning-presentation.html</loc>
-    <lastmod>2023-09-18T05:34:35.703Z</lastmod>
-  </url>
-  <url>
-    <loc>https://blog.londogard.com/posts/2020-02-10-gradle-github-packages.html</loc>
-    <lastmod>2023-09-18T05:34:37.315Z</lastmod>
+    <loc>https://blog.londogard.com/posts/2020-11-07-snake-kotlin-multiplatform.html</loc>
+    <lastmod>2024-02-11T14:29:12.483Z</lastmod>
   </url>
   <url>
     <loc>https://blog.londogard.com/posts/2020-06-01-sqldelight-kotlin.html</loc>
-    <lastmod>2023-09-18T05:34:40.219Z</lastmod>
+    <lastmod>2024-02-11T14:29:12.479Z</lastmod>
   </url>
   <url>
-    <loc>https://blog.londogard.com/posts/2020-09-04-til-sdkman.html</loc>
-    <lastmod>2023-09-18T05:34:42.571Z</lastmod>
+    <loc>https://blog.londogard.com/posts/2022-11-23-timeseries-learnings/index.html</loc>
+    <lastmod>2024-02-11T14:29:12.695Z</lastmod>
   </url>
   <url>
-    <loc>https://blog.londogard.com/posts/2020-05-13-faq-search-covid-1.html</loc>
-    <lastmod>2023-09-18T05:34:44.287Z</lastmod>
+    <loc>https://blog.londogard.com/posts/2020-09-03-til-fastutil-primitive-structures.html</loc>
+    <lastmod>2024-02-11T14:29:12.479Z</lastmod>
   </url>
   <url>
-    <loc>https://blog.londogard.com/posts/2020-02-23-competence-meeting-imdb-text-classification.html</loc>
-    <lastmod>2023-09-18T05:34:46.783Z</lastmod>
+    <loc>https://blog.londogard.com/posts/2023-03-31-yelp-reviews.html</loc>
+    <lastmod>2024-02-11T14:29:12.771Z</lastmod>
+  </url>
+  <url>
+    <loc>https://blog.londogard.com/posts/2020-09-03-til-badass-runtime.html</loc>
+    <lastmod>2024-02-11T14:29:12.479Z</lastmod>
+  </url>
+  <url>
+    <loc>https://blog.londogard.com/posts/2024-02-11-solara-esport-highlights/index.html</loc>
+    <lastmod>2024-02-11T14:29:12.799Z</lastmod>
+  </url>
+  <url>
+    <loc>https://blog.londogard.com/posts/2023-04-30-pandera.html</loc>
+    <lastmod>2024-02-11T14:29:12.771Z</lastmod>
+  </url>
+  <url>
+    <loc>https://blog.londogard.com/posts/2022-09-07-docker-simplified-presentation.html</loc>
+    <lastmod>2024-02-11T14:29:12.559Z</lastmod>
+  </url>
+  <url>
+    <loc>https://blog.londogard.com/posts/2022-07-07-snapsvisor-generated/2022-07-07-snapsvisor-generator.html</loc>
+    <lastmod>2024-02-11T14:29:12.555Z</lastmod>
   </url>
   <url>
     <loc>https://blog.londogard.com/posts/2021-04-11-til-pwa-github-pages.html</loc>
-    <lastmod>2023-09-18T05:34:48.699Z</lastmod>
+    <lastmod>2024-02-11T14:29:12.483Z</lastmod>
   </url>
   <url>
-    <loc>https://blog.londogard.com/posts/2021-05-17-seam-carving.html</loc>
-    <lastmod>2023-09-18T05:34:50.663Z</lastmod>
+    <loc>https://blog.londogard.com/posts/2020-12-12-transfer-learning-presentation.html</loc>
+    <lastmod>2024-02-11T14:29:12.483Z</lastmod>
   </url>
   <url>
-    <loc>https://blog.londogard.com/posts/2021-03-29-swedish-named-entity-recognition.html</loc>
-    <lastmod>2023-09-18T05:34:52.667Z</lastmod>
+    <loc>https://blog.londogard.com/posts/2022-01-28-kotlinjs-onnx-deep-learning-in-browser/index.html</loc>
+    <lastmod>2024-02-11T14:29:12.483Z</lastmod>
   </url>
   <url>
-    <loc>https://blog.londogard.com/posts/2022-03-12-timeseries-pt-2/index.html</loc>
-    <lastmod>2023-09-18T05:34:55.239Z</lastmod>
+    <loc>https://blog.londogard.com/posts/2023-09-10-highlights-lol/index.html</loc>
+    <lastmod>2024-02-11T14:29:12.771Z</lastmod>
   </url>
   <url>
-    <loc>https://blog.londogard.com/posts/2023-02-06-baby-monitor-pt-p2/index.html</loc>
-    <lastmod>2023-09-18T05:34:56.875Z</lastmod>
+    <loc>https://blog.londogard.com/posts/2022-03-13-timeseries-pt-3/index.html</loc>
+    <lastmod>2024-02-11T14:29:12.555Z</lastmod>
+  </url>
+  <url>
+    <loc>https://blog.londogard.com/posts/2021-01-21-til-gitpod-kotlin-jvm.html</loc>
+    <lastmod>2024-02-11T14:29:12.483Z</lastmod>
+  </url>
+  <url>
+    <loc>https://blog.londogard.com/posts/2021-02-18-transformers-explained/transformers-explained.html</loc>
+    <lastmod>2024-02-11T14:29:12.483Z</lastmod>
+  </url>
+  <url>
+    <loc>https://blog.londogard.com/posts/2021-03-17-replace-in-string.html</loc>
+    <lastmod>2024-02-11T14:29:12.483Z</lastmod>
+  </url>
+  <url>
+    <loc>https://blog.londogard.com/index.html</loc>
+    <lastmod>2024-02-11T14:29:12.479Z</lastmod>
   </url>
   <url>
     <loc>https://blog.londogard.com/pages/presentations.html</loc>
-    <lastmod>2023-09-18T05:34:58.475Z</lastmod>
+    <lastmod>2024-02-11T14:29:12.479Z</lastmod>
+  </url>
+  <url>
+    <loc>https://blog.londogard.com/pages/about.html</loc>
+    <lastmod>2024-02-11T14:29:12.479Z</lastmod>
+  </url>
+  <url>
+    <loc>https://blog.londogard.com/pages/code_setup/code_setup.html</loc>
+    <lastmod>2024-02-11T14:29:12.479Z</lastmod>
+  </url>
+  <url>
+    <loc>https://blog.londogard.com/posts/2023-02-06-baby-monitor-pt-p2/index.html</loc>
+    <lastmod>2024-02-11T14:29:12.743Z</lastmod>
+  </url>
+  <url>
+    <loc>https://blog.londogard.com/posts/2023-05-06-kotlin-vs-polars-dataframe.html</loc>
+    <lastmod>2024-02-11T14:29:12.771Z</lastmod>
+  </url>
+  <url>
+    <loc>https://blog.londogard.com/posts/2021-04-18-knowledge-distillation-presentation.html</loc>
+    <lastmod>2024-02-11T14:29:12.483Z</lastmod>
+  </url>
+  <url>
+    <loc>https://blog.londogard.com/posts/2023-05-05-duckdb.html</loc>
+    <lastmod>2024-02-11T14:29:12.771Z</lastmod>
+  </url>
+  <url>
+    <loc>https://blog.londogard.com/posts/2021-05-17-seam-carving.html</loc>
+    <lastmod>2024-02-11T14:29:12.483Z</lastmod>
+  </url>
+  <url>
+    <loc>https://blog.londogard.com/posts/2022-03-12-timeseries-pt-2/index.html</loc>
+    <lastmod>2024-02-11T14:29:12.495Z</lastmod>
+  </url>
+  <url>
+    <loc>https://blog.londogard.com/posts/2020-09-04-til-sdkman.html</loc>
+    <lastmod>2024-02-11T14:29:12.479Z</lastmod>
+  </url>
+  <url>
+    <loc>https://blog.londogard.com/posts/2020-08-01-faq-search-covid-2/index.html</loc>
+    <lastmod>2024-02-11T14:29:12.479Z</lastmod>
+  </url>
+  <url>
+    <loc>https://blog.londogard.com/posts/2023-03-20-deepchecks/index.html</loc>
+    <lastmod>2024-02-11T14:29:12.747Z</lastmod>
+  </url>
+  <url>
+    <loc>https://blog.londogard.com/posts/2022-01-16-nlp-toolkit-release.html</loc>
+    <lastmod>2024-02-11T14:29:12.483Z</lastmod>
+  </url>
+  <url>
+    <loc>https://blog.londogard.com/posts/2020-03-31-email-generator-kotlin-tipsrundan.html</loc>
+    <lastmod>2024-02-11T14:29:12.479Z</lastmod>
+  </url>
+  <url>
+    <loc>https://blog.londogard.com/posts/2023-02-17-best-practices.html</loc>
+    <lastmod>2024-02-11T14:29:12.743Z</lastmod>
+  </url>
+  <url>
+    <loc>https://blog.londogard.com/posts/2020-05-13-faq-search-covid-1.html</loc>
+    <lastmod>2024-02-11T14:29:12.479Z</lastmod>
+  </url>
+  <url>
+    <loc>https://blog.londogard.com/posts/2020-02-10-gradle-github-packages.html</loc>
+    <lastmod>2024-02-11T14:29:12.479Z</lastmod>
+  </url>
+  <url>
+    <loc>https://blog.londogard.com/posts/2023-06-30-solara/index.html</loc>
+    <lastmod>2024-02-11T14:29:12.771Z</lastmod>
+  </url>
+  <url>
+    <loc>https://blog.londogard.com/posts/2020-12-16-object-detection-transformer.html</loc>
+    <lastmod>2024-02-11T14:29:12.483Z</lastmod>
+  </url>
+  <url>
+    <loc>https://blog.londogard.com/posts/2021-03-29-swedish-named-entity-recognition.html</loc>
+    <lastmod>2024-02-11T14:29:12.483Z</lastmod>
+  </url>
+  <url>
+    <loc>https://blog.londogard.com/posts/2022-11-30-why-polars.html</loc>
+    <lastmod>2024-02-11T14:29:12.695Z</lastmod>
+  </url>
+  <url>
+    <loc>https://blog.londogard.com/posts/2022-11-28-probabilistic-forecasting/index.html</loc>
+    <lastmod>2024-02-11T14:29:12.695Z</lastmod>
+  </url>
+  <url>
+    <loc>https://blog.londogard.com/posts/2020-02-23-competence-meeting-imdb-text-classification.html</loc>
+    <lastmod>2024-02-11T14:29:12.479Z</lastmod>
   </url>
 </urlset>
