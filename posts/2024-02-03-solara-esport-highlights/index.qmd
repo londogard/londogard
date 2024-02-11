@@ -1,78 +1,135 @@
+---
+title: "Solara, League of Legends and Deep Learning to extract E-Sport Highlights"
+description: "I share my journey developing a user-friendly _Data App_ using Solara, where I tackle challenges, gain insights, and implement improvements in threading and Plotly callbacks."
+categories: [data, machine-learning, deep-learning, fun, solara]
+reference-location: margin
+date: "2024-02-11"
+---
+
 ## Solara, League of Legends and Deep Learning to extract E-Sport Highlights
 
 Hi all! 👋
 
 I'm back with a New Years Resolution to release at least 6 blogs in 2024, focusing on interesting content that’s unique and not simple click-bait.
 
-Today I'm sharing the continuation of a presentation I did at Foo Café. I have built a complex yet user-friendly *Data App* using [*solara*](https://solara.dev/ "https://solara.dev/").
+Today I'm sharing the continuation of a presentation I did at Foo Café. I have built a complex yet user-friendly *Data App* using [*solara*](https://solara.dev/).
 
-There's two partd that creates this complexity.
+There's two parts that creates this complexity.
 
 1.  **Heavy processing** that requires threading
-
     -   Deep Learning & ffmpeg processing
-
 2.  **Multi-stage app** that requires state
-
     -   This will be clear when you view the video of the app
 
 My presentation at Foo Café focused more on the training process and exploring option to deploy my tool. This blog rather focuses on the Data App itself! 🚀
 
+::: column-margin
+You can find the code for the whole app on [github.com/londogard/lol_highlight_detection](https://github.com/londogard/lol_highlight_detection/).
+:::
+
 ### Quick Backstory
 
-My kid brother asked me to help him earn some quick bucks through automating a process to build highlight-videos of E-Sports to upload on YouTube. The emphasis was on a single streamer, TheBausFFS who's a famous Swedish streamer in League of Legends (LoL). When I set out my brother had hope to earn cash and I to learn new tools and assist my family with my deep knowledge. 💪
+My kid brother asked me to help him earn some quick bucks through automating a process to build highlight-videos of E-Sports to upload on YouTube. The emphasis was on a single streamer, [TheBausFFS](https://www.twitch.tv/thebausffs/)[^1].
+
+[^1]: TheBausFFS is a famous Swedish streamer in League of Legends (LoL). He's focusing on being fun and speaking as much "swenglish" (svengelska) as possible.
+
+When I set out my brother had hope to earn cash and I to learn new tools and assist my family with my deep knowledge. 💪
 
 ## Choices during my Journey
 
-I was contemplating three (3) options to deploy my resulting model.
+I was contemplating four (4) options to deploy my resulting model.
 
-+------------------+--------------------------------------------+-----------------------------------------------------------------------------+
-| Tool             | Pro                                        | Con                                                                         |
-+==================+============================================+=============================================================================+
-| Streamlit        | -   (I'm) Experienced                      | -   Doesn't support the dynamic nature of app without extreme state hacking |
-|                  |                                            |                                                                             |
-|                  | -   Beautiful                              |                                                                             |
-|                  |                                            |                                                                             |
-|                  | -   Simple                                 |                                                                             |
-+------------------+--------------------------------------------+-----------------------------------------------------------------------------+
-| Solara           | -   React Data Flow, supports our use-case | -   Uglier                                                                  |
-|                  |                                            |                                                                             |
-|                  | -   Complexity grows logarithmically       | -   I'm in-experienced                                                      |
-|                  |                                            |                                                                             |
-|                  |                                            | -   It's the "new kid on the block"                                         |
-+------------------+--------------------------------------------+-----------------------------------------------------------------------------+
-| Jupyter Notebook | -   Easy GPU                               | -   Not User-Friendly (for non-tech persons)                                |
-|                  |                                            |                                                                             |
-|                  |                                            | -   Not as dynamic/stateful as needed (i.e. everything is a flow)           |
-+------------------+--------------------------------------------+-----------------------------------------------------------------------------+
-| Gradio           | -   Simple                                 | -   Complexity grows exponentially                                          |
-+------------------+--------------------------------------------+-----------------------------------------------------------------------------+
++------------------+-----------------------+-----------------------------------------------------------------------------+----------------------------------------+
+| # Tool           | # Pro                 | # Con                                                                       |                                        |
+|                  |                       |                                                                             |                                        |
+| Streamlit        | -   (I'm) Experienced | -   Doesn't support the dynamic nature of app without extreme state hacking |                                        |
+|                  |                       |                                                                             |                                        |
+|                  | -   Beautiful         |                                                                             |                                        |
+|                  |                       |                                                                             |                                        |
+|                  | -   Simple            |                                                                             |                                        |
++------------------+-----------------------+-----------------------------------------------------------------------------+----------------------------------------+
+|                  |                       |                                                                             |                                        |
++------------------+-----------------------+-----------------------------------------------------------------------------+----------------------------------------+
+|                  | Solara                | -   React Data Flow, supports our use-case                                  | -   Uglier \| \|                       |
+|                  |                       |                                                                             | -   (I'm) less experienced \|          |
+|                  |                       | -   Complexity grows logarithmically                                        | -   It's the "new kid on the block" \| |
++------------------+-----------------------+-----------------------------------------------------------------------------+----------------------------------------+
+| Jupyter Notebook | -   Easy GPU          | -   Not User-Friendly (for non-tech persons)                                |                                        |
+|                  |                       |                                                                             |                                        |
+|                  |                       | -   Not as dynamic/stateful as needed (i.e. everything is a flow)           |                                        |
++------------------+-----------------------+-----------------------------------------------------------------------------+----------------------------------------+
+| Gradio           | -   Simple            | -   Complexity grows exponentially                                          |                                        |
++------------------+-----------------------+-----------------------------------------------------------------------------+----------------------------------------+
 
-Other tools such as Panel was considered and rejected due to time and non-composability. For technical details such as model and more see my previous [blog](../2023-09-10-highlights-lol)
+Other tools such as Panel was briefly considered and rejected due to time and non-composability. For technical details such as model and more see my previous [blog](../2023-09-10-highlights-lol).
 
 ### Result
 
-What did the whole process net me?
+The whole process gave me two results.
 
-1.  Intimate knowledge about *Solara* and complex *Data Apps* that require high performance and efficiency.
+#### 1. Knowledge
 
-2.  Insights in *Video Classification* and how it differentiates from *Image Classification.*
+Most important to me I learned a lot, especially by playing around with Solara in both complex and siple use-cases.
 
-3.  Experimentation in providing *Data Apps* to non-domain-experts that have no technical expertise nor willingness to learn new things.
+1.  **Intimate knowledge about *Solara*** and complex *Data Apps* that require high performance and efficiency.
+2.  **Insights in *Video Classification*** and how it differentiates from *Image Classification.*
+3.  Experimentation in **how to build *Data Apps* to non-domain-experts** that have no technical expertise nor willingness to learn new things.
 
-All of this resulted in a Solara Data App that doesn't look shit and is smooth to use thanks to state management and threading.
+#### 2. A *Data App*
 
-The resulting code covers most of the building blocks required to build everything from basic to complex Data Apps!
+I built an exciting *Data App* that's simple to use, applies automatic Video Processing and Deep Learning Inference for non-tech users.
+
+Following from here I'll share some building blocks to create an exciting *Data App*. To learn more about Solara basics I refer to my [previous blog](../2023-06-30-solara), \@ where I compare it with Streamlit and introduce how to build a simple solara app. I'll share code snippets and videos of the app. The resulting code covers most of the building blocks required to build everything from basic to complex Data Apps!
 
 # App show case
 
-## Implementation
+See [previous blog](../2023-09-10-highlights-lol) to learn more about model training.
 
-See blog X for model training.
+## Videos
+::: {.column-page-inset layout-ncol="3"}
+![Full App Interaction (Button & Load)](imgs/using_app_simple.mp4)
+
+![Plotly Callback Display](imgs/full_app_use.mp4)
+
+![Build Full Video Button](imgs/full_vid_btn.mp4)
+:::
+
+
+## Screenshots
+::: {.callout-tip collapse="true"}
+
+### Inference Page
+::: {.column-page-inset layout-ncol="2"}
+![Inference Page 1](imgs/image-1.png)
+
+![Inference Page 2](images/paste-1.png)
+:::
+
+::: 
+
+::: {.callout-tip collapse="true"}
+
+### Other Pages
+::: {.column-page-inset layout-ncol="3"}
+![Download Twitch/Kick Video Page](images/paste-2.png)
+
+![Download Model(s) Page](images/paste-3.png)
+
+![Title Generation (Local LLM) Page](images/paste-4.png)
+:::
+
+::: 
+
+
+## Building Blocks / Code-Snippets
+
+I share some of the more interesting parts of Solara and how it can simplify your Data App.
 
 ### Building Progress Loaders in Solara
 
-I created a component to wrap Progress on top of the `use_thread`  returned `solara.Result`  class.
+I created a component to wrap Progress on top of the `use_thread`  returned `solara.Result`  class. This is very useful when you're writing code and want a "prettier" spinner with some text.
+
+The possibility to create re-usable components which are stateful like this is exciting!
 
 ``` python
 @solara.component()
@@ -96,13 +153,15 @@ res = write_video.use_thread(
 Progress("Building Clip...", res)
 ```
 
-![Resulting spinner on loads](Files/image.png)
+![Resulting spinner on loads](imgs/image.png)
 
 ### Checkpointing / State Management and Parent/Children (Hierarchy)
 
-State is managed through `solara.reactive`  variables, this enables a quite clean UI. It becomes very clean using hierarchy, like in React. State trickles up and down.
+State in Solara is managed through `solara.reactive`'s. These enable a clean representation of UI & backend state. Adding hierarchy it becomes even better, it's just as React! State trickles both up and down through the tree.
 
 #### Trickle Down to Child
+
+One way to use state hierarchy is to provide from parent to child a `solara.reactive` which enables downstream users to atomically update as parent, or anyone, updates said state variable.
 
 ``` python
 @solara.component
@@ -132,6 +191,10 @@ What’s important here?
 
 #### Trickle Up to Parent
 
+State does not only trickle up, as the `solara.reactive` is the same as every other use we can change state in a child and trickle up to parent and other consumers!
+
+It's a very simple and clean approach to state, kudos React and Solara!
+
 ``` python
 @solara.component
 def ModelFileSelectComponent(
@@ -152,37 +215,47 @@ In this component we can see that we insert `file: solara.Reactive`  which is e
 
 ### Threading to improve UI experience
 
-When working with UI it’s important to not block the main thread, sometimes called rendering thread.  
-**Why?** Because if you block the thread everything is “frozen” in an awkward state, no progress or anything for the user.  
-**How** is it solved? Using threads. Fortunately in solara it’s simple to apply threading through two choices.
+When working with UI it’s important to not block the main thread, sometimes called *the rendering thread*. 
+
+If we block the main thread **the app becomes frozen** and doesn't respond. This becomes a bad user experience.
+
+**It's solved by using threads** which fortunately Solara makes a breeze. There's two ways to apply threading.
 
 ``` python
 # 1. Memoized function
 @solara.memoize
 def slow_func(...): ...
 result = slove_func.use_thread(...)
+
 # 2. Run thread directly
 def slow_func_2(...): ...
 result = solara.use_thread(lambda: slow_func_2(...), dependencies=...)
 ```
 
-Applying either returns a `solara.Result`  class, which will be updated during progress of the function and can be parsed by looking at `result.state`  which is among other things `solara.ResultState.RUNNING`  and `solara.ResultState.FINISHED`.
+Both approaches results in `solara.Result` value that updates itself as it progress.
 
-This creates a smooth experience for the end-user, alas it’s not perfect for the developer themself. I often end up with the following, almost anti-pattern, of if-elses:
+> `solara.Result[T]` has two important values. `state` which is one of the following: `[..., RUNNING, FINISHED]`. Once finished `value` will be filled of the result `T`.
+
+The result is a smooth experience through threads. The developer side is not as perfect and feels underdeveloped, I end up writing something that feels almost like an anti-pattern with a bunch of if-elses to figure if result is done.
+
+I can see a future where you call a `.use_thread` with something like `apply_progress=True` and also inject your own `solara.Reactive` to allow a more reactive approach to the result. The current result is clear code though, that's explainable even on GitHub - as shared below.
 
 ``` python
 res = write_video.use_thread(...)
+
 if res.state == solara.ResultState.RUNNING:
     Progress("Writing video...")
 elif res.state == solara.ResultState.FINISHED:
     show_finished_ui(...)
 ```
 
-One time not time, but I have this written in multiple places of the app and the flow itself feels cumbersome. I’m looking into how I can help solara fix the situation. **All in all it’s a good experience to include threading though, something unimaginable in Streamlit!**
+Again, this is no problem once-in-a-while, but if you're using threads heavily it becomes a if-else craze.
+
+**All in all it’s a good experience to include threading though, something unimaginable in Streamlit!**
 
 ### Plotly Callbacks
 
-I’ve implemented a really cool Plotly Callback through the relayout, allowing a person to select a subset of the video by “zooming”/”dragging”. It’s a smooth approach to selecting sub-parts of videos to build the full video, i.e. one game at a time and not the full stream!
+I implemented a really cool Plotly Callback through Solara's integration. It allows the user to select a subset of the video by “zooming”/”dragging”. It’s a clean approach to selecting sub-parts of videos to build the full video, i.e. one game at a time and not the full stream! See @fig-plotly.
 
 ``` python
 def update_vals(relayout_dict: dict[str, Any] | None):
@@ -192,45 +265,43 @@ def update_vals(relayout_dict: dict[str, Any] | None):
             parser.parse(layout["xaxis.range[0]"], ignoretz=True),
             parser.parse(layout["xaxis.range[1]"], ignoretz=True),
         ]
+
 solara.FigurePlotly(fig, on_relayout=update_vals)
 ```
 
-{{< video Files/full_app_use.mp4 >}}
+![Plotly Callback Display](imgs/full_app_use.mp4){#fig-plotly}
 
-# Videos
+## How To Run App
 
-## Using App Simple
-{{< video Files/using_app_simple.mp4 >}}
+I have added two ways to run the app. Either through Docker/podman containers or through Python invocation.
 
-## Full Use Button
-{{< video Files/full_vid_btn.mp4 >}}
+For Python I opted for a `conda` env using [`micromamba`](https://mamba.readthedocs.io/en/latest/user_guide/micromamba.html) which is really awesome and simple to get a environment that's reproducible.
 
-Run application 
+# Solara findings
 
-1. *podman* (Docker) container to make deployment simple
-2. *micromamba env*
+## `solara.reactive` is awesome
 
-### Findings
+This simple tool enables things that are essentially impossible or creates unmaintainable code in Streamlit. To do similar things you'd need to hack the state.
 
-1.  React state enables almost impossible things from Streamlit, like modifying a list of values one by one
-    -   Would require modifying streamlite.state which is very hacky!
-2.  Even if solara has a better way to separate UI & logic it's easy to end up with a similar mess as streamlit.
+Having a multi-stage app like this app where you checkpoint each step into the state would be such a impossibility.
 
-# Appendix 
+## Solaras UI/logic separation is better but not perfect
 
+This might be on myself as I started using Streamlit before Solara. But Solara states that they separate UI and logic better than competitors through *reactive* state. My experience is that it's almost as easy to create the same interdependent mess as in Streamlit.
 
-## Issues in Solara
--   Sync to updated filestorage (i.e. downloading Twitch movies, I even tried reloading reactive variable)
-    -    I solved this by not using tabs. By selecting page through a `Select` you automatically do a refresh of state.
+> Perhaps Reacts "clean" separation is more because of having a clear boundary between backend/frontend rather than React itself.
 
-## App Run
+## Solara Issues
 
-## Python Dev Setup
+I found myself having big problems with "resetting" state of variables that depend on the Operating System. In Streamlit you can use `st.reload()` to reload the whole UI, Solara does not have something similar.
 
-Recommended setup for developer. 
+My problem was that I have model/video download as part of the UI, and `solara.reactive` variables that has these variables. It's not really possible to update these when changing tabs.\
+For now there was a decent work-around, rather than using Tabs I use Select to change page. By changing page this way the `solara.reactive` variables are reloaded.
 
-1. `⁠.vscode/settings.json`
-2. `pre-commit.yml` 
-3. `⁠.devcontainer`
-4. `Dockerfile`
-5. `env.yml`
+# Outro
+
+This is it for today! I hope you enjoyed and potentially became intrigued to test Solara.
+
+I hope to be back within 2 months, to make sure I keep my New Years Resolution 😉.
+
+\~Hampus Londögård

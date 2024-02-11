@@ -62,5 +62,6 @@ bibliography: references.bib
 
 format:
   html:
+    highlight-style: github
     theme: cosmo
     css: styles.css
