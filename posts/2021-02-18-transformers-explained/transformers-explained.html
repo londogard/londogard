@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.4.549">
+<meta name="generator" content="quarto-1.4.550">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -1006,6 +1006,7 @@ Do note that the depth should probably be increased as should the amount of data
 <div id="cell-60" class="cell" data-outputid="64f23374-5fe5-49b0-98b2-a99d822cfb0c">
 <div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>dls.show_batch(max_n<span class="op">=</span><span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
+<div>
 <table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
 <thead>
 <tr class="header">
@@ -1027,6 +1028,7 @@ Do note that the depth should probably be increased as should the amount of data
 </tr>
 </tbody>
 </table>
+</div>
 </div>
 </div>
 <div id="cell-61" class="cell" data-outputid="57ecd05a-1d88-4b08-9ca0-ee66ba28524f">
@@ -1058,6 +1060,7 @@ Do note that the depth should probably be increased as should the amount of data
 <div id="cell-64" class="cell" data-outputid="1b8322ee-08d7-4fcc-9cfd-cee2c0fc34bb">
 <div class="sourceCode cell-code" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>learn.fit_one_cycle(<span class="dv">6</span>, <span class="fl">5.7e-5</span>) <span class="co"># We can increase depth &amp; more to improve the result</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
+<div>
 <table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
 <thead>
 <tr class="header">
@@ -1115,6 +1118,7 @@ Do note that the depth should probably be increased as should the amount of data
 </table>
 </div>
 </div>
+</div>
 <p>Fast.AI approach</p>
 <div id="cell-66" class="cell" data-outputid="b48420dd-edcd-4bfa-e95e-996089e29266">
 <div class="sourceCode cell-code" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>learn <span class="op">=</span> text_classifier_learner(dls, AWD_LSTM, drop_mult<span class="op">=</span><span class="fl">0.5</span>, metrics<span class="op">=</span>accuracy)</span>
@@ -1123,6 +1127,7 @@ Do note that the depth should probably be increased as should the amount of data
 
 </div>
 <div class="cell-output cell-output-display">
+<div>
 <table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
 <thead>
 <tr class="header">
@@ -1144,7 +1149,9 @@ Do note that the depth should probably be increased as should the amount of data
 </tbody>
 </table>
 </div>
+</div>
 <div class="cell-output cell-output-display">
+<div>
 <table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
 <thead>
 <tr class="header">
@@ -1186,6 +1193,7 @@ Do note that the depth should probably be increased as should the amount of data
 </tr>
 </tbody>
 </table>
+</div>
 </div>
 </div>
 <div id="cell-67" class="cell">
@@ -1341,6 +1349,7 @@ Do note that the depth should probably be increased as should the amount of data
 <div class="sourceCode cell-code" id="cb36"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>df.head(<span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="22">
 <div>
+<div>
 
 
 <table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
@@ -1365,6 +1374,7 @@ Do note that the depth should probably be increased as should the amount of data
 </div>
 </div>
 </div>
+</div>
 <div id="cell-77" class="cell" data-outputid="e5b3156e-86bb-4f4f-8475-98b32d12a49c">
 <div class="sourceCode cell-code" id="cb37"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a>dls <span class="op">=</span> TextDataLoaders.from_df(df, path<span class="op">=</span>path, text_col<span class="op">=</span><span class="st">'text'</span>, is_lm<span class="op">=</span><span class="va">True</span>, valid_col<span class="op">=</span><span class="st">'is_valid'</span>, seq_len<span class="op">=</span><span class="dv">256</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
@@ -1378,6 +1388,7 @@ Do note that the depth should probably be increased as should the amount of data
 <div id="cell-78" class="cell" data-outputid="d2f8842e-64f7-405c-f689-9ffe8ad2f713">
 <div class="sourceCode cell-code" id="cb39"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a>dls.show_batch(max_n<span class="op">=</span><span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
+<div>
 <table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
 <thead>
 <tr class="header">
@@ -1394,6 +1405,7 @@ Do note that the depth should probably be increased as should the amount of data
 </tr>
 </tbody>
 </table>
+</div>
 </div>
 </div>
 <div id="cell-79" class="cell" data-outputid="29e0f3e4-c092-4136-de05-83a05307bff5">
@@ -1430,6 +1442,7 @@ Do note that the depth should probably be increased as should the amount of data
 <span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a>learn.fit_one_cycle(<span class="dv">4</span>)</span>
 <span id="cb46-3"><a href="#cb46-3" aria-hidden="true" tabindex="-1"></a>learn.fit_one_cycle(<span class="dv">4</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
+<div>
 <table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
 <thead>
 <tr class="header">
@@ -1467,7 +1480,9 @@ Do note that the depth should probably be increased as should the amount of data
 </tbody>
 </table>
 </div>
+</div>
 <div class="cell-output cell-output-display">
+<div>
 <table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
 <thead>
 <tr class="header">
@@ -1505,7 +1520,9 @@ Do note that the depth should probably be increased as should the amount of data
 </tbody>
 </table>
 </div>
+</div>
 <div class="cell-output cell-output-display">
+<div>
 <table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
 <thead>
 <tr class="header">
@@ -1542,6 +1559,7 @@ Do note that the depth should probably be increased as should the amount of data
 </tr>
 </tbody>
 </table>
+</div>
 </div>
 </div>
 <div id="cell-84" class="cell">

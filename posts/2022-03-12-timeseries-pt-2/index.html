@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.4.549">
+<meta name="generator" content="quarto-1.4.550">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -335,6 +335,7 @@ In <a href="https://blog.londogard.com/blog/timeseries-pt-3">part #3</a> we’ll
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pdr.get_data_yahoo([<span class="st">'AAPL'</span>, <span class="st">'GOOGL'</span>, <span class="st">'AMZN'</span>, <span class="st">'MSFT'</span>, <span class="st">'GE'</span>])</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>df.head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="47">
+<div>
 
   <div id="df-927c0c71-d45f-4ed9-9876-1638997ddaf0">
     <div class="colab-df-container">
@@ -601,6 +602,7 @@ In <a href="https://blog.londogard.com/blog/timeseries-pt-3">part #3</a> we’ll
   
 </div>
 </div>
+</div>
 <p>Looks fine, but how much data did we download?<br>
 We can view the <code>.index</code> which is a <code>DateTimeIndex</code> and figure out how it stretches.</p>
 <div id="cell-11" class="cell" data-outputid="815a3040-f46d-4ca6-ca9c-339ef3244d96" data-execution_count="48">
@@ -617,6 +619,7 @@ Now let us analyze this data further by looking at if the stocks correlate someh
 <div id="cell-13" class="cell" data-outputid="294b3e74-cfc1-4d6c-971c-d88b4dfdee8c" data-execution_count="49">
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>df[<span class="st">'Adj Close'</span>].corr().style.background_gradient(cmap<span class="op">=</span><span class="st">"Blues"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="49">
+<div>
 
 
 <table id="T_126ef_" class="dataframe table table-sm table-striped small" data-quarto-postprocess="true">
@@ -681,6 +684,7 @@ Now let us analyze this data further by looking at if the stocks correlate someh
 </tr>
 </tbody>
 </table>
+</div>
 </div>
 </div>
 <p>Holy macaron, that’s a lot more correlated data than I expected! 🙀</p>
@@ -939,6 +943,7 @@ How will we try to achieve this practically? <strong>LogReturn</strong></p>
 <span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>log_return(df).head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="64">
+<div>
 
   <div id="df-9ca86099-a642-4dc3-a989-8b49e39801fa">
     <div class="colab-df-container">
@@ -1077,6 +1082,7 @@ How will we try to achieve this practically? <strong>LogReturn</strong></p>
   
 </div>
 </div>
+</div>
 <div id="cell-43" class="cell" data-outputid="0c9b45ed-6a15-4659-f22e-459a61bd611a" data-execution_count="65">
 <div class="sourceCode cell-code" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>df_lr <span class="op">=</span> log_return(df)</span>
 <span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>X_train, X_valid, y_train, y_valid <span class="op">=</span> train_test_split(df_lr.drop(columns<span class="op">=</span><span class="st">"GOOGL"</span>).shift(<span class="dv">1</span>).iloc[<span class="dv">1</span>:], df_lr[<span class="st">'GOOGL'</span>].iloc[<span class="dv">1</span>:], test_size<span class="op">=</span><span class="fl">0.2</span>, shuffle<span class="op">=</span><span class="va">False</span>)</span>
@@ -1107,6 +1113,7 @@ And that’s really because we weren’t forecasting before, we were solving a <
 <div id="cell-46" class="cell" data-outputid="15808f37-33f9-4405-efbd-de5d82182d00" data-execution_count="66">
 <div class="sourceCode cell-code" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>df.head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="66">
+<div>
 
   <div id="df-3fd0b1f9-d206-428c-b3e3-560e4d5e8f7b">
     <div class="colab-df-container">
@@ -1245,10 +1252,12 @@ And that’s really because we weren’t forecasting before, we were solving a <
   
 </div>
 </div>
+</div>
 <div id="cell-47" class="cell" data-outputid="86915b90-fad6-446f-aeda-b7e0eda643d2" data-execution_count="67">
 <div class="sourceCode cell-code" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> df[[<span class="st">'GOOGL'</span>]]</span>
 <span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>df.head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="67">
+<div>
 
   <div id="df-be52915c-d990-43e5-8399-f66a09540cef">
     <div class="colab-df-container">
@@ -1366,6 +1375,7 @@ And that’s really because we weren’t forecasting before, we were solving a <
   
 </div>
 </div>
+</div>
 <p>✅ Only Google Data<br>
 ❌ Historical Data</p>
 <p>So what should we do? One way to solve this is to use <code>shift</code> multiple times.</p>
@@ -1388,6 +1398,7 @@ See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stab
 </code></pre>
 </div>
 <div class="cell-output cell-output-display" data-execution_count="68">
+<div>
 
   <div id="df-10abe19b-1e75-4cdb-b56f-61bd945303d2">
     <div class="colab-df-container">
@@ -1526,6 +1537,7 @@ See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stab
   
 </div>
 </div>
+</div>
 <p>Notice how <span class="math inline">\(t_0\)</span> is the previous value, <span class="math inline">\(t_1\)</span> two steps back, and so on.<br>
 This is actually <em>very</em> memory intense as our data grows X times, one time per time step we build. In <a href="INSERT">part #3</a> we’ll go through how one can solve this issue.</p>
 <p>No we need to drop all places where we don’t have any history. That is easily achieved by dropping <code>NaN</code>.</p>
@@ -1539,6 +1551,7 @@ This is actually <em>very</em> memory intense as our data grows X times, one tim
 <span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> df.dropna()</span>
 <span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a>df.head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="69">
+<div>
 
   <div id="df-59e1b8c6-bd27-48b0-ae16-4353faa11715">
     <div class="colab-df-container">
@@ -1703,6 +1716,7 @@ This is actually <em>very</em> memory intense as our data grows X times, one tim
     </div>
   </div>
   
+</div>
 </div>
 </div>
 <p>LGTM ✅</p>

@@ -6,8 +6,11 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="author" content="Hampus Londögård">
+<meta name="dcterms.date" content="2024-02-18">
+<meta name="description" content="Some instructions on how to use multiple remotes">
 
-<title>Londogard Blog - Presentations</title>
+<title>Londogard Blog - TIL: Multiple Git Remotes</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -70,8 +73,8 @@ ul.task-list li input[type="checkbox"] {
 
 
 <link rel="stylesheet" href="../styles.css">
-<meta name="twitter:title" content="Londogard Blog - Presentations">
-<meta name="twitter:description" content="A blog which majorly focuses on Data Science, Data Engineering and sometimes Kotlin / Scala.">
+<meta name="twitter:title" content="Londogard Blog - TIL: Multiple Git Remotes">
+<meta name="twitter:description" content="Some instructions on how to use multiple remotes">
 <meta name="twitter:creator" content="@hlondogard">
 <meta name="twitter:card" content="summary">
 </head>
@@ -98,7 +101,7 @@ ul.task-list li input[type="checkbox"] {
 <span class="menu-text">Blogs</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link active" href="../pages/presentations.html" aria-current="page"> 
+    <a class="nav-link" href="../pages/presentations.html"> 
 <span class="menu-text">Presentations</span></a>
   </li>  
   <li class="nav-item">
@@ -159,49 +162,58 @@ ul.task-list li input[type="checkbox"] {
 <!-- content -->
 <header id="title-block-header" class="quarto-title-block default page-columns page-full">
   <div class="quarto-title-banner page-columns page-full">
-    <div class="quarto-title column-page">
-      <h1 class="title">Presentations</h1>
-                      </div>
+    <div class="quarto-title column-body">
+      <h1 class="title">TIL: Multiple Git Remotes</h1>
+                  <div>
+        <div class="description">
+          Some instructions on how to use multiple remotes
+        </div>
+      </div>
+                          <div class="quarto-categories">
+                <div class="quarto-category">TIL</div>
+              </div>
+                  </div>
   </div>
     
   
-  <div class="quarto-title-meta column-page">
+  <div class="quarto-title-meta">
 
+      <div>
+      <div class="quarto-title-meta-heading">Author</div>
+      <div class="quarto-title-meta-contents">
+               <p>Hampus Londögård </p>
+            </div>
+    </div>
       
+      <div>
+      <div class="quarto-title-meta-heading">Published</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date">February 18, 2024</p>
+      </div>
+    </div>
     
       
     </div>
     
   
-  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full page-navbar">
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
-    
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        
+    </div>
 <!-- main -->
-<main class="content quarto-banner-title-block column-page" id="quarto-document-content">
+<main class="content quarto-banner-title-block" id="quarto-document-content">
 
 
 
 
 
-<p>During the years I’ve done a few presentations and workshops.</p>
-<hr>
-<ul>
-<li><strong>Nov 12th 2021 - <a href="https://www.youtube.com/watch?v=0eWEzwUnDkc">Managing the ML Lifecycle without a headache</a></strong>
-<ul>
-<li>Unfortunately I had to re-record the recording at home because the video recorder crashed during the live presentation.</li>
-<li>Presenting how to streamline your ML development through MLOps, showcased through using <a href="https://dvc.org/">DVC</a> &amp; <a href="https://cml.dev/">CML</a>.</li>
-</ul></li>
-<li><strong>Sep 7th 2021 - <a href="https://www.youtube.com/watch?v=F1mlmUbmAw0&amp;t=7009s">Panel: How can we accelerate the industry forward? #IndustryDay</a></strong>
-<ul>
-<li>I was asked to join as a expert on AI with focus on how to accelerate the industry forward.</li>
-</ul></li>
-<li><strong>Jul 5th 2021 - <a href="https://www.youtube.com/watch?v=yl6B3X6PwCk">Vikten av att verkligen förstå AI</a></strong> (swe)
-<ul>
-<li>Presenting the importance of understanding model. A light talk that requires no prior experience in ML.</li>
-<li>A blend of Ethical AI and Explainable AI (XAI)</li>
-</ul></li>
-</ul>
+<p>It is really simple actually. Simply call the following command:</p>
+<p><code>git remote add &lt;ALIAS&gt; &lt;GIT_URL_SSH&gt;</code></p>
+<p>To then push it is as simple as <code>git push &lt;ALIAS&gt;</code>.</p>
+<p>I use this to keep my repository in HuggingFace Spaces and GitHub at the same time.</p>
+<p>That’s it!</p>
 
 
 

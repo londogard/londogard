@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.4.549">
+<meta name="generator" content="quarto-1.4.550">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -620,6 +620,7 @@ Let’s use <code>pl.LazyFrame.limit</code> to make sure we only read 3 samples 
 <div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>df_business <span class="op">=</span> pl.scan_ndjson(<span class="st">"/kaggle/input/yelp-dataset/yelp_academic_dataset_business.json"</span>)</span>
 <span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>df_business.limit(<span class="dv">3</span>).collect()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="9">
+<div>
 <div><style>
 .dataframe > thead > tr > th,
 .dataframe > tbody > tr > td {
@@ -716,11 +717,13 @@ Let’s use <code>pl.LazyFrame.limit</code> to make sure we only read 3 samples 
 </div>
 </div>
 </div>
+</div>
 <p>Interesting, there’s a lot of things we don’t really care about. But <code>stars</code> &amp; <code>review_count</code> is relevant.</p>
 <p>So which restaurant has the most stars? What is their count?</p>
 <div id="cell-36" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2023-03-29T17:41:57.551243Z&quot;,&quot;iopub.status.busy&quot;:&quot;2023-03-29T17:41:57.550854Z&quot;,&quot;iopub.status.idle&quot;:&quot;2023-03-29T17:41:58.047163Z&quot;,&quot;shell.execute_reply&quot;:&quot;2023-03-29T17:41:58.046163Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2023-03-29T17:41:57.551209Z&quot;}" data-trusted="true" data-execution_count="14">
 <div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>df_business.sort(<span class="st">"review_count"</span>, descending<span class="op">=</span><span class="va">True</span>).select([<span class="st">"business_id"</span>, <span class="st">"stars"</span>, <span class="st">"review_count"</span>]).limit(<span class="dv">3</span>).collect()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="14">
+<div>
 <div><style>
 .dataframe > thead > tr > th,
 .dataframe > tbody > tr > td {
@@ -762,6 +765,7 @@ Let’s use <code>pl.LazyFrame.limit</code> to make sure we only read 3 samples 
 </div>
 </div>
 </div>
+</div>
 <p>The most reviewed business has 7.5k reviews (!) and is averaging 4 stars, which is pretty great!<br>
 I’ll later choose this restaurant as the basis of my “Helpful” or “Not Helpful” review.</p>
 <section id="ydata-profiler-analysis" class="level4">
@@ -778,6 +782,7 @@ I’ll later choose this restaurant as the basis of my “Helpful” or “Not H
 <span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>df_review <span class="op">=</span> df_review_all.<span class="bu">filter</span>(pl.col(<span class="st">"business_id"</span>) <span class="op">==</span> b_id).collect(streaming<span class="op">=</span><span class="va">True</span>)</span>
 <span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>df_review.head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="16">
+<div>
 <div><style>
 .dataframe > thead > tr > th,
 .dataframe > tbody > tr > td {
@@ -868,6 +873,7 @@ I’ll later choose this restaurant as the basis of my “Helpful” or “Not H
 </tr>
 </tbody>
 </table>
+</div>
 </div>
 </div>
 </div>

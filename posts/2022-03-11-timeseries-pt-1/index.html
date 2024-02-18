@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.4.549">
+<meta name="generator" content="quarto-1.4.550">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -410,6 +410,7 @@ Yahoo as a financial API that follows stocks, currencies, cryptocurrencies and m
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>df.head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="20">
 <div>
+<div>
 
 
 <table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
@@ -482,6 +483,7 @@ Yahoo as a financial API that follows stocks, currencies, cryptocurrencies and m
 </tbody>
 </table>
 
+</div>
 </div>
 </div>
 </div>
@@ -566,6 +568,7 @@ Graphs might be missing some values that are not clearly visible as there’s so
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>df.isna().head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="23">
 <div>
+<div>
 
 
 <table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
@@ -638,6 +641,7 @@ Graphs might be missing some values that are not clearly visible as there’s so
 </tbody>
 </table>
 
+</div>
 </div>
 </div>
 </div>
@@ -757,6 +761,7 @@ Name: Close, dtype: float64</code></pre>
 <div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pdr.get_data_yahoo([<span class="st">'BTC-USD'</span>, <span class="st">'ETH-USD'</span>], start<span class="op">=</span>datetime(<span class="dv">2020</span>, <span class="dv">1</span>, <span class="dv">1</span>), end<span class="op">=</span>datetime(<span class="dv">2022</span>, <span class="dv">1</span>, <span class="dv">1</span>))</span>
 <span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>df.head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="31">
+<div>
 <div>
 
 
@@ -884,11 +889,13 @@ Name: Close, dtype: float64</code></pre>
 </div>
 </div>
 </div>
+</div>
 <p>And retrieving only the <code>Close</code> to have something to compare.</p>
 <div id="cell-40" class="cell" data-outputid="c626cdff-2756-4d39-c6c9-4da39062ca97" data-execution_count="33">
 <div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> df[<span class="st">'Close'</span>]</span>
 <span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>df.head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="33">
+<div>
 <div>
 
 
@@ -937,10 +944,12 @@ Name: Close, dtype: float64</code></pre>
 </div>
 </div>
 </div>
+</div>
 <p>Let’s validate the correlation, e.g.&nbsp;how our values correlate to each other!</p>
 <div id="cell-42" class="cell" data-outputid="8f231cde-640a-4fd3-a7aa-d54f90f6a794" data-execution_count="34">
 <div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>df.corr().style.background_gradient(cmap<span class="op">=</span><span class="st">"Blues"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="34">
+<div>
 <style type="text/css">
 #T_b0b3a_row0_col0, #T_b0b3a_row1_col1 {
   background-color: #08306b;
@@ -978,6 +987,7 @@ Name: Close, dtype: float64</code></pre>
 </tr>
 </tbody>
 </table>
+</div>
 </div>
 </div>
 <p>The correlation looks pretty high… We can use <code>seaborn</code> to show even better data by adding the plots.</p>

@@ -2,6 +2,8 @@
   {
     "listing": "/index.html",
     "items": [
+      "/posts/2024-02-18-git-remote.html",
+      "/posts/2024-02-18-docker-build.html",
       "/posts/2024-02-11-solara-esport-highlights/index.html",
       "/posts/2023-09-10-highlights-lol/index.html",
       "/posts/2023-06-30-solara/index.html",
@@ -34,8 +36,8 @@
       "/posts/2020-12-12-transfer-learning-presentation.html",
       "/posts/2020-11-07-snake-kotlin-multiplatform.html",
       "/posts/2020-09-04-til-sdkman.html",
-      "/posts/2020-09-03-til-badass-runtime.html",
       "/posts/2020-09-03-til-fastutil-primitive-structures.html",
+      "/posts/2020-09-03-til-badass-runtime.html",
       "/posts/2020-08-01-faq-search-covid-2/index.html",
       "/posts/2020-06-01-sqldelight-kotlin.html",
       "/posts/2020-05-13-faq-search-covid-1.html",
