@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.4.550">
+<meta name="generator" content="quarto-1.4.551">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -298,13 +298,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </ol>
 <p>My presentation at Foo Café focused more on the training process and exploring option to deploy my tool. This blog rather focuses on the Data App itself! 🚀</p>
 <p>Code is available on GitHub<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>.</p>
-<div class="no-row-height column-margin column-container"><div class=""><sup>1</sup>&nbsp;
+<div class="no-row-height column-margin column-container"><div id="fn1"><div class=""><sup>1</sup>&nbsp;
 <p>Code available on <a href="https://github.com/londogard/lol_highlight_detection/">github.com/londogard/lol_highlight_detection</a>.</p>
 </div>
-</div><section id="quick-backstory" class="level3 page-columns page-full">
+</div></div><section id="quick-backstory" class="level3 page-columns page-full">
 <h3 class="anchored" data-anchor-id="quick-backstory">Quick Backstory</h3>
 <p>My kid brother asked me to help him earn some quick bucks through automating a process to build highlight-videos of E-Sports to upload on YouTube. The emphasis was on a single streamer,&nbsp;<a href="https://www.twitch.tv/thebausffs/">TheBausFFS</a><a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>.</p>
-<div class="no-row-height column-margin column-container"><p><sup>2</sup>&nbsp;TheBausFFS is a famous Swedish streamer in League of Legends (LoL). He’s focusing on being fun and speaking as much “swenglish” (svengelska) as possible.</p></div><p>When I set out my brother had a hope to earn cash, myself I was happy to learn more about new tools and being able assist my family with my expertise in Deep Learning. 💪</p>
+<div class="no-row-height column-margin column-container"><div id="fn2"><p><sup>2</sup>&nbsp;TheBausFFS is a famous Swedish streamer in League of Legends (LoL). He’s focusing on being fun and speaking as much “swenglish” (svengelska) as possible.</p></div></div><p>When I set out my brother had a hope to earn cash, myself I was happy to learn more about new tools and being able assist my family with my expertise in Deep Learning. 💪</p>
 </section>
 </section>
 <section id="choices-during-my-journey" class="level2">
@@ -762,6 +762,24 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     // clear code selection
     e.clearSelection();
   });
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp("https:\/\/blog\.londogard\.com\/");
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
   function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
     const config = {
       allowHTML: true,
@@ -796,7 +814,11 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       try { href = new URL(href).hash; } catch {}
       const id = href.replace(/^#\/?/, "");
       const note = window.document.getElementById(id);
-      return note.innerHTML;
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
     });
   }
   const xrefs = window.document.querySelectorAll('a.quarto-xref');

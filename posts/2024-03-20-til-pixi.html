@@ -7,10 +7,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Hampus Londögård">
-<meta name="dcterms.date" content="2023-05-03">
-<meta name="description" content="DuckDB is particularly well-suited for Online Analytical Processing (OLAP) tasks, which involve analyzing large datasets to gain insights and generate reports. Its columnar storage format and vectorized query engine enable fast and efficient data processing, even on complex analytical queries. Additionally, DuckDB supports a variety of OLAP-specific features, such as window functions, making it a powerful tool for OLAP workloads.">
+<meta name="dcterms.date" content="2024-03-20">
+<meta name="description" content="I love micromamba, but pixi seems like the natural next step moving forward!">
 
-<title>Londogard Blog - DuckDB - Quacking Data (WIP)</title>
+<title>Londogard Blog - TIL: Pixi by prefix.dev</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -22,6 +22,40 @@ ul.task-list li input[type="checkbox"] {
   width: 0.8em;
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 </style>
 
@@ -73,8 +107,8 @@ ul.task-list li input[type="checkbox"] {
 
 
 <link rel="stylesheet" href="../styles.css">
-<meta name="twitter:title" content="Londogard Blog - DuckDB - Quacking Data (WIP)">
-<meta name="twitter:description" content="DuckDB is particularly well-suited for Online Analytical Processing (OLAP) tasks, which involve analyzing large datasets to gain insights and generate reports. Its columnar storage format and vectorized query engine enable fast and efficient data processing, even on complex analytical queries. Additionally, DuckDB supports a variety of OLAP-specific features, such as window functions, making it a powerful tool for OLAP workloads.">
+<meta name="twitter:title" content="Londogard Blog - TIL: Pixi by prefix.dev">
+<meta name="twitter:description" content="I love micromamba, but pixi seems like the natural next step moving forward!">
 <meta name="twitter:creator" content="@hlondogard">
 <meta name="twitter:card" content="summary">
 </head>
@@ -163,15 +197,14 @@ ul.task-list li input[type="checkbox"] {
 <header id="title-block-header" class="quarto-title-block default page-columns page-full">
   <div class="quarto-title-banner page-columns page-full">
     <div class="quarto-title column-body">
-      <h1 class="title">DuckDB - Quacking Data (WIP)</h1>
+      <h1 class="title">TIL: Pixi by prefix.dev</h1>
                   <div>
         <div class="description">
-          DuckDB is particularly well-suited for Online Analytical Processing (OLAP) tasks, which involve analyzing large datasets to gain insights and generate reports. Its columnar storage format and vectorized query engine enable fast and efficient data processing, even on complex analytical queries. Additionally, DuckDB supports a variety of OLAP-specific features, such as window functions, making it a powerful tool for OLAP workloads.
+          I love micromamba, but pixi seems like the natural next step moving forward!
         </div>
       </div>
                           <div class="quarto-categories">
-                <div class="quarto-category">data</div>
-                <div class="quarto-category">pipeline</div>
+                <div class="quarto-category">TIL</div>
               </div>
                   </div>
   </div>
@@ -189,7 +222,7 @@ ul.task-list li input[type="checkbox"] {
       <div>
       <div class="quarto-title-meta-heading">Published</div>
       <div class="quarto-title-meta-contents">
-        <p class="date">May 3, 2023</p>
+        <p class="date">March 20, 2024</p>
       </div>
     </div>
     
@@ -205,13 +238,9 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#duckdb---quacking-data" id="toc-duckdb---quacking-data" class="nav-link active" data-scroll-target="#duckdb---quacking-data">DuckDB - Quacking Data</a></li>
-  <li><a href="#how-am-i-using-duckdb-in-my-professional-life" id="toc-how-am-i-using-duckdb-in-my-professional-life" class="nav-link" data-scroll-target="#how-am-i-using-duckdb-in-my-professional-life">How am I using DuckDB in my professional life?</a></li>
-  <li><a href="#how-i-want-to-move-forward-with-duckdb" id="toc-how-i-want-to-move-forward-with-duckdb" class="nav-link" data-scroll-target="#how-i-want-to-move-forward-with-duckdb">How I want to move forward with DuckDB</a>
-  <ul class="collapse">
-  <li><a href="#poor-mans-data-lake" id="toc-poor-mans-data-lake" class="nav-link" data-scroll-target="#poor-mans-data-lake">Poor Mans Data Lake</a></li>
-  <li><a href="#best-practices-write-up" id="toc-best-practices-write-up" class="nav-link" data-scroll-target="#best-practices-write-up">Best Practices Write-Up</a></li>
-  </ul></li>
+  <li><a href="#simple-get-started" id="toc-simple-get-started" class="nav-link active" data-scroll-target="#simple-get-started">Simple get-started</a></li>
+  <li><a href="#add-task" id="toc-add-task" class="nav-link" data-scroll-target="#add-task">Add Task</a></li>
+  <li><a href="#outro" id="toc-outro" class="nav-link" data-scroll-target="#outro">Outro</a></li>
   </ul>
 </nav>
     </div>
@@ -222,85 +251,39 @@ ul.task-list li input[type="checkbox"] {
 
 
 
-<blockquote class="blockquote">
-<p>DuckDB is a relational database management system (RDBMS) that is used for managing data stored in relations, which are essentially tables. DuckDB is an in-process OLAP DBMS written in C++. It has no dependencies, is easy to set up, and is optimized to perform queries on data. It is similar to SQLite for Analytics. DuckDB is designed to run on a single machine, and it is not a multi-tenant database. It is perfect for data practitioners that want to perform local analytical workloads easily and quickly.</p>
-</blockquote>
-<div class="callout callout-style-default callout-warning callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Warning
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>This blog is a continuous work and WIP.</p>
-</div>
-</div>
-<section id="duckdb---quacking-data" class="level1">
-<h1>DuckDB - Quacking Data</h1>
-<p>DuckDB is the OLAP-version of SQLite. It’s <em>simple</em>, <em>feature rich</em>, <em>fast</em> and most importantly <em>free</em>. It reall is an incredible tool for quick local analytical workloads. It has very impressive results in the <a href="https://duckdblabs.github.io/db-benchmark/">H2O-benchmark</a> resulting in a jack-of-all-trades for analytics.</p>
-<p>It has neat integration into:</p>
+<p>This is a very short one. Keeping it for myself!</p>
+<p>For my recent minor projects I’ve been utilizing Pixi to run my virtual environments and it actually works great!</p>
+<p>It’s simple to start and keep going. What’s even better?</p>
 <ol type="1">
-<li><code>pandas</code></li>
-<li><strong><code>polars</code></strong></li>
-<li>Arrow, PostgreSQL, <code>parquet</code>, <code>deltalake</code>, …</li>
+<li>Supports <a href="https://prefix.dev/blog/introducing_multi_env_pixi">multiple environments</a> (e.g.&nbsp;CUDA + CPU)</li>
+<li>Supports <a href="https://pixi.sh/latest/advanced/multi_platform_configuration/">multiple platforms</a> (e.g.&nbsp;osx-arm64 and linux-64)!</li>
+<li>Fast (3x faster than micromamba, 10x faster than conda!)</li>
+<li>Integrates better with pypi</li>
+<li>Has tasks (e.g.&nbsp;<code>pixi run test</code> or <code>pixi run inference</code>) that you define yourself</li>
+<li>Lockfiles, it’s painful to use micromambas lockfiles. Hence dual file system as in poetry/nodeJS etc is great!</li>
 </ol>
-<p>Where you simply query on top of the datastructure which makes the query incredibly efficient even if it’s not “DuckDB”-format. It all becomes painless and efficient through the <a href="https://arrow.apache.org">Apache Arrow-protocol</a>. Arrow is a <em>cross-language development platform for in-memory analytics</em> which is very fast, because the underlying structure remains we never copy data between DuckDB and <code>polars</code> as an example. Rather DuckDB operates on <code>polars</code> Arrow dataset. Cool? Yes! 🤓</p>
-<p>Lately they’ve added superb <a href="https://duckdb.org/2023/04/28/spatial.html">Spatial Support</a> where they leverage <a href="https://gdal.org/">GDAL</a>.</p>
-<p>Recently <a href="https://motherduck.com/">Motherduck</a> gave a talk on how <a href="https://motherduck.com/blog/big-data-is-dead/"><em>Big Data is Dead</em></a>, where a BigQuery founding engineer laid out the average customer doesn’t have Big Data. Jordan Tigani notes the following trends.</p>
-<div id="fig-queries" class="quarto-layout-panel">
-<figure class="quarto-float quarto-float-fig figure">
-<div aria-describedby="fig-queries-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<div class="quarto-layout-row">
-<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: flex-start;">
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="assets/average_load.jpg" class="img-fluid figure-img"></p>
-<figcaption>Data Sizes at Companies</figcaption>
-</figure>
-</div>
-</div>
-<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: flex-start;">
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="assets/query_intensity.jpg" class="img-fluid figure-img"></p>
-<figcaption>Query Intensity on Data by Age</figcaption>
-</figure>
-</div>
-</div>
-</div>
-</div>
-<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-queries-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;1: Jordan Tigani’s ‘Feel of the Industry’
-</figcaption>
-</figure>
-</div>
-<p>Further Jordan notes that from 2006 to 2023 we see a huge increase in how powerful single nodes are. In 2006 you could get 2GB RAM, today a standard instance has 256 GB RAM and if you slap your wallet at the problem you can get 24TB (!) RAM.</p>
-<p>Through this power of a single node more than 99.9% of all problems should be possible to solve through a single node where DuckDB can reign supreme.</p>
+<p>Helpful right? Indeed!</p>
+<section id="simple-get-started" class="level1">
+<h1>Simple get-started</h1>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">pixi</span> init <span class="co"># create toml and lock files</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="ex">pixi</span> add python polars <span class="co"># add python and polars as dependencies</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="ex">pixi</span> shell <span class="co"># activates the virtual environment</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Alternatively, "pixi run python ..."</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
-<section id="how-am-i-using-duckdb-in-my-professional-life" class="level1">
-<h1>How am I using DuckDB in my professional life?</h1>
-<p>DuckDB is integral to my workflow. I use it when <code>polars</code> is not enough. Because DuckDB can easily query <code>parquet</code> we’re good to go in most Machine Learning setups.</p>
-<p>Connecting directly to S3 is as simple as using the official <a href="https://duckdb.org/docs/guides/import/s3_import.html"><code>httpfs</code> extension</a> which is done in the following way:</p>
-<pre><code>INSTALL httpfs; # run once
-
-LOAD httpfs;</code></pre>
+<section id="add-task" class="level1">
+<h1>Add Task</h1>
+<p>Tasks are really awesome to reduce the threshold to enter projects. It’s simpler than a spread of bash-scripts or other things.</p>
+<p>One standardized way to do things! :)</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">pixi</span> task add gui <span class="st">"solara run app.py"</span> <span class="co"># Adds task</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="ex">pixi</span> run gui <span class="co"># runs Solara App</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
-<section id="how-i-want-to-move-forward-with-duckdb" class="level1">
-<h1>How I want to move forward with DuckDB</h1>
-<p>I have so many plans on what I wish to achieve.</p>
-<section id="poor-mans-data-lake" class="level2">
-<h2 class="anchored" data-anchor-id="poor-mans-data-lake">Poor Mans Data Lake</h2>
-<p>I have been thinking a lot lately on building my own Data Lake using DuckDB, <code>polars</code> &amp; <code>dagster</code>. This would be greatly inspired by <code>dagster</code>’s <a href="https://dagster.io/blog/duckdb-data-lake">blog - ‘Poor Mans Data Lake’</a>.</p>
-</section>
-<section id="best-practices-write-up" class="level2">
-<h2 class="anchored" data-anchor-id="best-practices-write-up">Best Practices Write-Up</h2>
-<p>Additionally it’d be very interesting to set up a “Best Practices” using “Local First” tooling such as DuckDB &amp; <code>polars</code>. When to use what and how they differentiate.</p>
+<section id="outro" class="level1">
+<h1>Outro</h1>
+<p>Please read the <a href="https://pixi.sh/latest/">docs</a> to learn more!</p>
 
 
-</section>
 </section>
 
 </main> <!-- /main -->
