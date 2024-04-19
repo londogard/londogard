@@ -9,8 +9,514 @@
 <link>https://blog.londogard.com/</link>
 <atom:link href="https://blog.londogard.com/index.xml" rel="self" type="application/rss+xml"/>
 <description>A blog which majorly focuses on Data Science, Data Engineering and sometimes Kotlin / Scala.</description>
-<generator>quarto-1.4.551</generator>
-<lastBuildDate>Wed, 20 Mar 2024 00:00:00 GMT</lastBuildDate>
+<generator>quarto-1.4.553</generator>
+<lastBuildDate>Wed, 17 Apr 2024 00:00:00 GMT</lastBuildDate>
+<item>
+  <title>Streamlit Fragments - Make the Dashboard Dream come true</title>
+  <dc:creator>Hampus Londögård</dc:creator>
+  <link>https://blog.londogard.com/posts/2024-04-17-streamlit-fragments/</link>
+  <description><![CDATA[ 
+
+
+
+
+
+<p>An old coworker gave me a shout-out that <a href="https://docs.streamlit.io/develop/quick-reference/changelog">Streamlits latest (1.33.0)</a> release added Fragments.</p>
+<p>Fragments simply put enables creation of <em>indepedently updated</em> fragments inside your streamlit application. Further they add a simple <code>run_every</code>which simplify dashboards (continuously fetching data).</p>
+<p>As always, the <a href="https://docs.streamlit.io/develop/api-reference/execution-flow/st.fragment">documentation</a> explains a lot of how it works.</p>
+<section id="play-around" class="level2">
+<h2 class="anchored" data-anchor-id="play-around">Play Around</h2>
+<p>First I play around with fragments, testing the most simple use-case – and I’m sold!</p>
+<blockquote class="blockquote">
+<p><strong>N.B.</strong> this is already possible in other tools such as Solara that has a better reactive approach, but streamlit has a bigger user-base and I love to see a solution to this long-standing problem!</p>
+</blockquote>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+The code
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-1" class="callout-1-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> numpy <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">as</span> np</span>
+<span id="cb1-2"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> streamlit <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">as</span> st</span>
+<span id="cb1-3"></span>
+<span id="cb1-4"></span>
+<span id="cb1-5"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">def</span> main():</span>
+<span id="cb1-6">    st.write(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"# Main Function"</span>)</span>
+<span id="cb1-7">    st.write(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Hello, World! (main)"</span>)</span>
+<span id="cb1-8">    st.toggle(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Toggle me!"</span>)</span>
+<span id="cb1-9"></span>
+<span id="cb1-10"></span>
+<span id="cb1-11"><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">@st.experimental_fragment</span>()</span>
+<span id="cb1-12"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">def</span> first_fragment():</span>
+<span id="cb1-13">    st.write(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"## First Fragment"</span>)</span>
+<span id="cb1-14">    random_choice <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> np.random.choice([<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"a"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"b"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"c"</span>])</span>
+<span id="cb1-15">    st.write(<span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">f"Random choice: </span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">{</span>random_choice<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">}</span><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"</span>)</span>
+<span id="cb1-16">    st.toggle(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Toggle me! (1st Fragment)"</span>)</span>
+<span id="cb1-17"></span>
+<span id="cb1-18"></span>
+<span id="cb1-19"><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">@st.experimental_fragment</span>(run_every<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"2s"</span>)</span>
+<span id="cb1-20"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">def</span> second_fragment():</span>
+<span id="cb1-21">    st.write(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"## Second Fragment"</span>)</span>
+<span id="cb1-22">    st.write(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Hello, World! (2nd Fragment)"</span>)</span>
+<span id="cb1-23">    random_choice <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> np.random.choice([<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"a"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"b"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"c"</span>])</span>
+<span id="cb1-24">    st.write(<span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">f"Random choice: </span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">{</span>random_choice<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">}</span><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"</span>)</span>
+<span id="cb1-25">    st.toggle(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Toggle me! (2nd Fragment)"</span>)</span>
+<span id="cb1-26"></span>
+<span id="cb1-27"></span>
+<span id="cb1-28"><span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">if</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">__name__</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">==</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"__main__"</span>:</span>
+<span id="cb1-29">    main()</span>
+<span id="cb1-30">    c1, c2 <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> st.columns(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>)</span>
+<span id="cb1-31"></span>
+<span id="cb1-32">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">with</span> c1:</span>
+<span id="cb1-33">        first_fragment()</span>
+<span id="cb1-34">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">with</span> c2:</span>
+<span id="cb1-35">        second_fragment()</span></code></pre></div>
+</div>
+</div>
+</div>
+<p>This enables the following behavior:</p>
+<ol type="1">
+<li>Toggling “main” will refresh everything</li>
+<li>Toggling a fragment will <em>only</em> refresh that fragment</li>
+<li>Second fragment will refresh every 2 seconds</li>
+</ol>
+<blockquote class="blockquote">
+<p><strong>What is refreshed?</strong> The <em>Random choice</em> letter is updated to a random letter (a, b, or c).</p>
+</blockquote>
+<p>All in all this is what we’d probably do in a Dashboard. See the following GIF’s:</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://blog.londogard.com/posts/2024-04-17-streamlit-fragments/assets/toggle_fragments.gif" class="img-fluid figure-img"></p>
+<figcaption>Streamlit Fragments and Toggling (simplest use-case) - note the ‘Random Choice’ changing.</figcaption>
+</figure>
+</div>
+</section>
+<section id="adding-complexity" class="level2">
+<h2 class="anchored" data-anchor-id="adding-complexity">Adding Complexity</h2>
+<p>As always it’s a lot more fun to test these things in scenarios that are closer to real-life, and that’s what I intend to do!</p>
+<ol type="1">
+<li>Fetching data from a data storage</li>
+<li>Displaying different graphs</li>
+<li>Sharing state from main</li>
+</ol>
+<p>In this graph we have a <em>Amplitude Multiplier</em> (main) that affects both fragments, additionally we have a sine wave where the frequency is editable and will only re-render (re-compute) that fragment (first). Finally there’s a Stock Fragment (second) which automatically updates every 2 seconds, unless locked it’ll randomly select a stock, if locked we can still change stock and it’ll only re-render that fragment (second).</p>
+<p>See the GIF below! 👇</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://blog.londogard.com/posts/2024-04-17-streamlit-fragments/assets/complex_fragments.gif" class="img-fluid figure-img"></p>
+<figcaption>Sine wave and Stocks, with automatic Stock Refresh</figcaption>
+</figure>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Code
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-2" class="callout-2-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> numpy <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">as</span> np</span>
+<span id="cb2-2"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> streamlit <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">as</span> st</span>
+<span id="cb2-3"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> polars <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">as</span> pl</span>
+<span id="cb2-4"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> plotly.express <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">as</span> px</span>
+<span id="cb2-5"></span>
+<span id="cb2-6"></span>
+<span id="cb2-7"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">def</span> main() <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-&gt;</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">float</span>:</span>
+<span id="cb2-8">    st.write(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"# Main Function"</span>)</span>
+<span id="cb2-9">    st.write(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Hello, World! (main)"</span>)</span>
+<span id="cb2-10">    multiplier <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> st.slider(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Amplitude Multiplier"</span>, <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.0</span>, <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">10.0</span>, <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1.0</span>, <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.1</span>)</span>
+<span id="cb2-11"></span>
+<span id="cb2-12">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">return</span> multiplier</span>
+<span id="cb2-13"></span>
+<span id="cb2-14"></span>
+<span id="cb2-15"><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">@st.cache_resource</span></span>
+<span id="cb2-16"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">def</span> get_stocks() <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-&gt;</span> pl.DataFrame:</span>
+<span id="cb2-17">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">return</span> pl.read_csv(</span>
+<span id="cb2-18">        <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"https://raw.githubusercontent.com/vega/datalib/master/test/data/stocks.csv"</span></span>
+<span id="cb2-19">    )</span>
+<span id="cb2-20"></span>
+<span id="cb2-21"></span>
+<span id="cb2-22"><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">@st.experimental_fragment</span>()</span>
+<span id="cb2-23"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">def</span> first_fragment(multiplier: <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">float</span>):</span>
+<span id="cb2-24">    st.write(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"## First Fragment"</span>)</span>
+<span id="cb2-25">    sine_frequency <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> st.slider(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Sine Frequency"</span>, <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.0</span>, <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">10.0</span>, <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1.0</span>, <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.1</span>)</span>
+<span id="cb2-26">    <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># create sine wave with multiplier height and sine_frequency as frequency</span></span>
+<span id="cb2-27">    t <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> np.linspace(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span> np.pi <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span> sine_frequency, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">100</span>)</span>
+<span id="cb2-28">    y <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> multiplier <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span> np.sin(t)</span>
+<span id="cb2-29"></span>
+<span id="cb2-30">    df <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> pl.DataFrame({<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"t"</span>: t, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"y"</span>: y})</span>
+<span id="cb2-31">    st.plotly_chart(</span>
+<span id="cb2-32">        px.line(df, x<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"t"</span>, y<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"y"</span>, title<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Sine wave"</span>), use_container_width<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">True</span></span>
+<span id="cb2-33">    )</span>
+<span id="cb2-34"></span>
+<span id="cb2-35"></span>
+<span id="cb2-36"><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">@st.experimental_fragment</span>(run_every<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"2s"</span>)</span>
+<span id="cb2-37"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">def</span> second_fragment(multiplier: <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">float</span>):</span>
+<span id="cb2-38">    st.write(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"## Second Fragment"</span>)</span>
+<span id="cb2-39">    c1, c2 <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> st.columns(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>)</span>
+<span id="cb2-40"></span>
+<span id="cb2-41">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">with</span> c1:</span>
+<span id="cb2-42">        <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">if</span> <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">not</span> st.checkbox(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Lock company"</span>):</span>
+<span id="cb2-43">            st.session_state[<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"ticker_select"</span>] <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> np.random.choice(</span>
+<span id="cb2-44">                [<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"AAPL"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"GOOG"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"AMZN"</span>]</span>
+<span id="cb2-45">            )</span>
+<span id="cb2-46">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">with</span> c2:</span>
+<span id="cb2-47">        ticker <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> st.selectbox(</span>
+<span id="cb2-48">            <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Company (symbol)"</span>, [<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"AAPL"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"GOOG"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"AMZN"</span>], key<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"ticker_select"</span></span>
+<span id="cb2-49">        )</span>
+<span id="cb2-50">    stocks <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> get_stocks()</span>
+<span id="cb2-51">    stocks <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> stocks.<span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">filter</span>(pl.col(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"symbol"</span>) <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">==</span> ticker).with_columns(</span>
+<span id="cb2-52">        pl.col(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"price"</span>) <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span> multiplier</span>
+<span id="cb2-53">    )</span>
+<span id="cb2-54"></span>
+<span id="cb2-55">    st.plotly_chart(</span>
+<span id="cb2-56">        px.line(stocks, x<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"date"</span>, y<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"price"</span>, title<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">f"Stock price (</span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">{</span>ticker<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">}</span><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">)"</span>),</span>
+<span id="cb2-57">        use_container_width<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">True</span>,</span>
+<span id="cb2-58">    )</span>
+<span id="cb2-59"></span>
+<span id="cb2-60"></span>
+<span id="cb2-61"><span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">if</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">__name__</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">==</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"__main__"</span>:</span>
+<span id="cb2-62">    multiplier <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> main()</span>
+<span id="cb2-63">    c1, c2 <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> st.columns(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>)</span>
+<span id="cb2-64"></span>
+<span id="cb2-65">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">with</span> c1:</span>
+<span id="cb2-66">        first_fragment(multiplier)</span>
+<span id="cb2-67">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">with</span> c2:</span>
+<span id="cb2-68">        second_fragment(multiplier)</span></code></pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="drawbacks" class="level2">
+<h2 class="anchored" data-anchor-id="drawbacks">Drawbacks</h2>
+<p>This solution doesn’t fit every scenario, and as usual with Streamlit, integrating it introduces complexity via state management. Fragments add another level atop the existing <code>st.state</code>, potentially introducing more intricacies and headaches.</p>
+<p>Other solutions such as Solara and Panel has this more built into the solution, but then again their entry threshold is a lot higher!</p>
+</section>
+<section id="outro" class="level1">
+<h1>Outro</h1>
+<p>Any other questions? Please go ahead and ask!</p>
+<p>This development is exciting and will for sure give Streamlit new life in “efficiency”. I, for one, am happy to see all new Data Apps fighting!</p>
+<p>Finally, all the code is available on this blogs <a href="https://github.com/londogard/londogard">github</a> under <em>code_snippets</em>.</p>
+<p>/ Hampus Londögård</p>
+
+
+</section>
+
+ ]]></description>
+  <category>streamlit</category>
+  <guid>https://blog.londogard.com/posts/2024-04-17-streamlit-fragments/</guid>
+  <pubDate>Wed, 17 Apr 2024 00:00:00 GMT</pubDate>
+</item>
 <item>
   <title>TIL: Pixi by prefix.dev</title>
   <dc:creator>Hampus Londögård</dc:creator>
@@ -84,42 +590,6 @@ font-style: inherit;"># runs Solara App</span></span></code></pre></div>
   <category>TIL</category>
   <guid>https://blog.londogard.com/posts/2024-03-20-til-pixi.html</guid>
   <pubDate>Wed, 20 Mar 2024 00:00:00 GMT</pubDate>
-</item>
-<item>
-  <title>TIL: Stlite - running streamlit in WASM through b64-encoded URL’s</title>
-  <dc:creator>Hampus Londögård</dc:creator>
-  <link>https://blog.londogard.com/posts/2024-02-22-stlite/</link>
-  <description><![CDATA[ 
-
-
-
-
-
-<p><strong>Amazing one-off tools deployed as a URL that embeds a WASM app is officially here! 🤯</strong></p>
-<p>Wow, that was a mouthful! There’s a mini-breakdown of the tech utilized to enable this at the bottom.👇</p>
-<p>What does this mean? It means that I can build assistive apps that has the following properties:</p>
-<ol type="1">
-<li>Deplyed as a URL - <strong>no server, no nothing</strong>, simply share away 🦸</li>
-<li>Runs completely inside browser, on the user-device 💻</li>
-<li>Requires NO developer or developer environment to run! 😇</li>
-</ol>
-<p>This is what I call truly Serverless! Because code and everything is embedded in the URL and runs inside a contained environemnt in the browser it cannot be simpler to share one-off tools! I’m excited to utilize this a lot more to enable my colleagues in sister-teams!</p>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="https://blog.londogard.com/posts/2024-02-22-stlite/sample.jpeg" class="img-fluid figure-img"></p>
-<figcaption>Sample image of internal app I made</figcaption>
-</figure>
-</div>
-<p>Here is a URL for a tool that does real-time image processing <strong>in the browser</strong>: <a href="https://edit.share.stlite.net/?sampleAppId=realtime_image_processing">stlite.net</a>! Here’s where you can work inside the browser to build a script: <a href="https://edit.share.stlite.net/">edit.share.stlite.net</a>.</p>
-<p><strong>Tech breakdown that enables everything:</strong> 1. Emscripten/WASM enables C code running efficiently in the browser 2. Pyodide is a cPython port to Emscripten/WASM that works brilliantly, including micropip that enables a bunch of libraries 3. Stlite is a Streamlit port to Pyodide (with few caveats)</p>
-<p>P.S. I heard that Solara is potentially working on the same functionality natively 😉</p>
-
-
-
- ]]></description>
-  <category>TIL</category>
-  <guid>https://blog.londogard.com/posts/2024-02-22-stlite/</guid>
-  <pubDate>Sun, 18 Feb 2024 00:00:00 GMT</pubDate>
 </item>
 <item>
   <title>TIL: Multiple Git Remotes</title>
@@ -295,6 +765,42 @@ font-style: inherit;">"--host=0.0.0.0"</span>]</span></code></pre></div>
  ]]></description>
   <category>TIL</category>
   <guid>https://blog.londogard.com/posts/2024-02-18-docker-build.html</guid>
+  <pubDate>Sun, 18 Feb 2024 00:00:00 GMT</pubDate>
+</item>
+<item>
+  <title>TIL: Stlite - running streamlit in WASM through b64-encoded URL’s</title>
+  <dc:creator>Hampus Londögård</dc:creator>
+  <link>https://blog.londogard.com/posts/2024-02-22-stlite/</link>
+  <description><![CDATA[ 
+
+
+
+
+
+<p><strong>Amazing one-off tools deployed as a URL that embeds a WASM app is officially here! 🤯</strong></p>
+<p>Wow, that was a mouthful! There’s a mini-breakdown of the tech utilized to enable this at the bottom.👇</p>
+<p>What does this mean? It means that I can build assistive apps that has the following properties:</p>
+<ol type="1">
+<li>Deplyed as a URL - <strong>no server, no nothing</strong>, simply share away 🦸</li>
+<li>Runs completely inside browser, on the user-device 💻</li>
+<li>Requires NO developer or developer environment to run! 😇</li>
+</ol>
+<p>This is what I call truly Serverless! Because code and everything is embedded in the URL and runs inside a contained environemnt in the browser it cannot be simpler to share one-off tools! I’m excited to utilize this a lot more to enable my colleagues in sister-teams!</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://blog.londogard.com/posts/2024-02-22-stlite/sample.jpeg" class="img-fluid figure-img"></p>
+<figcaption>Sample image of internal app I made</figcaption>
+</figure>
+</div>
+<p>Here is a URL for a tool that does real-time image processing <strong>in the browser</strong>: <a href="https://edit.share.stlite.net/?sampleAppId=realtime_image_processing">stlite.net</a>! Here’s where you can work inside the browser to build a script: <a href="https://edit.share.stlite.net/">edit.share.stlite.net</a>.</p>
+<p><strong>Tech breakdown that enables everything:</strong> 1. Emscripten/WASM enables C code running efficiently in the browser 2. Pyodide is a cPython port to Emscripten/WASM that works brilliantly, including micropip that enables a bunch of libraries 3. Stlite is a Streamlit port to Pyodide (with few caveats)</p>
+<p>P.S. I heard that Solara is potentially working on the same functionality natively 😉</p>
+
+
+
+ ]]></description>
+  <category>TIL</category>
+  <guid>https://blog.londogard.com/posts/2024-02-22-stlite/</guid>
   <pubDate>Sun, 18 Feb 2024 00:00:00 GMT</pubDate>
 </item>
 <item>
@@ -7051,419 +7557,6 @@ Hampus Londögård</p>
   <category>docker</category>
   <guid>https://blog.londogard.com/posts/2022-09-07-docker-simplified-presentation.html</guid>
   <pubDate>Wed, 07 Sep 2022 00:00:00 GMT</pubDate>
-</item>
-<item>
-  <title>GPT2-snapsvisor - Generating Swedish Drinking Songs</title>
-  <dc:creator>Hampus Londögård</dc:creator>
-  <link>https://blog.londogard.com/posts/2022-07-07-snapsvisor-generated/2022-07-07-snapsvisor-generator.html</link>
-  <description><![CDATA[ 
-
-
-
-
-
-<p>This midsummer my friends gave me the idea that I should generate Swedish Drinking Songs, or&nbsp;<em>Snapsvisor</em>,&nbsp;using Machine Learning and I thought it&nbsp;could be a lot of fun! 🍻&nbsp;&nbsp;</p>
-<p>To achieve the best results I’d need access to GPT-3, or equivalent model, alas I don’t and as such I needed&nbsp; to do some extra work! Fun work though! 🤓</p>
-<p>First some examples: <img src="https://blog.londogard.com/posts/2022-07-07-snapsvisor-generated/snapsvisor.png" class="img-fluid"></p>
-<!--truncate-->
-<p>Why GPT-3?</p>
-<ul>
-<li>Possible to do&nbsp;<em>prompt engineering</em>, which gwern has a great&nbsp;<a href="https://www.gwern.net/GPT-3#prompts-as-programming">blog on</a>
-<ul>
-<li>TL;DR prompt engineering allows you to write a prompt and get a response, e.g.&nbsp;“step-by-step how to write a blog” and the return the step-by-step.</li>
-</ul></li>
-<li>Much better zero-/one-/few-shot learning
-<ul>
-<li>Because the model has a ton more parameters and trained on a larger dataset</li>
-</ul></li>
-</ul>
-<p>Drawbacks with GPT-2: - The performance is noticable worse because of the lower parameters and less data, sometimes called tokens, used to train the model.</p>
-<p>As such the result is not amazing, but it’s capable and really funny - based on the premise that you know Swedish!</p>
-<p><strong>It’s available on the <a href="https://huggingface.co/lunde/gpt2-snapsvisor">HuggingFace Hub</a></strong> with a <strong>inference widget</strong> and <strong>as a pre-trained model</strong>, which can generate your own <em>Snapsvisor</em> - N.B. it removes newlines.</p>
-<div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><span class="im" style="color: #00769E;
-background-color: null;
-font-style: inherit;">from</span> transformers <span class="im" style="color: #00769E;
-background-color: null;
-font-style: inherit;">import</span> AutoTokenizer, AutoModelForCausalLM</span>
-<span id="cb1-2"></span>
-<span id="cb1-3">tokenizer <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> AutoTokenizer.from_pretrained(<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"lunde/gpt2-snapsvisor"</span>)</span>
-<span id="cb1-4">model <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> AutoModelForCausalLM.from_pretrained(<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"lunde/gpt2-snapsvisor"</span>)</span></code></pre></div>
-<section id="gpt-3-few-shot-learning-and-prompt-engineering" class="level3">
-<h3 class="anchored" data-anchor-id="gpt-3-few-shot-learning-and-prompt-engineering">GPT-3: Few-Shot Learning and Prompt Engineering</h3>
-<p>Few-Shot Learning is the capability to solve an unknown task using either very few or no (training) data points at all to solve, which can successfully be done today.</p>
-<p>In other words, we can achieve great accuracy with little or no data att all!</p>
-<p>Few-Shot Learning reminds me of how human learns, we are very fast at generalizing knowledge. By knowing the difference between a cat, dog and tiger we can very fast learn that a lion is a unique animal and if we are told the name we know that this unique animal is a lion!</p>
-<p>We are also able to make up words that we don’t know about, like “car wheel” by seeing a wheel on a car!</p>
-</section>
-<section id="few-shot-learning-explained" class="level3">
-<h3 class="anchored" data-anchor-id="few-shot-learning-explained">Few-Shot Learning Explained</h3>
-<p>Less theory, more examples!</p>
-<p><em>Prompt Engineering</em>&nbsp; is a Few-Shot technique that grew increasingly powerful with each generation of Large Language Models (LLM) and with GPT-3 it became incredibly good.</p>
-<ul>
-<li><strong>Model:</strong>&nbsp;The Large Language Model (LLM) being used, e.g.&nbsp;GPT-3 .</li>
-<li><strong>Prompt:</strong>&nbsp;The text given to the LLM to generate an answer from, or complete.</li>
-<li><strong>Zero-shot:</strong>&nbsp;A prompt with no examples, e.g.&nbsp;<code>The name of a character from Star Wars is:</code>&nbsp;or&nbsp;<code>[Swedish: "Snaps!", English: "</code></li>
-<li><strong>Few-shot:</strong>&nbsp;A prompt with one (1-shot) or more (n-shot, few-shot) examples. See example below</li>
-</ul>
-<p>To then give a example of few-shot (4) prompt:</p>
-<pre><code>This is a list of startup ideas:
-1. [Tag: Internet] A website that lets you post articles you've written, and other people can help you edit them.
-2. [Tag: Home] A website that lets you share a photo of something broken in your house, and then local people can offer to fix it for you.
-3. [Tag: Children] An online service that teaches children how to code.
-4. [Tag: Financial] An online service that allows people to rent out their unused durable goods to people who need them.
-5. [Tag: Machine Learning]</code></pre>
-<p>Using&nbsp;<em>Prompt Engineering</em>&nbsp;and GPT-3 I’m certain that it’d be possible to generate&nbsp;<em>Snapsvisor</em>&nbsp;with little data, i.e.&nbsp;Few-Shot Learning.</p>
-<p>GPT-2’s few-shot capabilities are much smaller as such I need to&nbsp;<em>Fine Tune</em>&nbsp;the model.</p>
-</section>
-<section id="fine-tuning-a-model" class="level3">
-<h3 class="anchored" data-anchor-id="fine-tuning-a-model">Fine-Tuning a model</h3>
-<p>Fine-Tuning a model can be done in multiple ways, three examples of fine-tuning is</p>
-<ol type="1">
-<li><em>Training</em>&nbsp;(like normally)</li>
-<li><em>Freezing</em></li>
-<li><em>Dynamic Learning Rate</em></li>
-</ol>
-<p><strong>Training</strong></p>
-<p>Simply train your pre-trailed model with the new dataset. The Language Models parameters is already encoded with knowledge about language, structure and semantic meaning. This efficient representation and initiation means that it faster learns about new, similar, tasks&nbsp;than a pseudo-random weight initialization.&nbsp;&nbsp;</p>
-<p>It has to be noted that the pre-training task, scheme and data impacts the later fine-tuning.</p>
-<p><strong>Freezing</strong>&nbsp;</p>
-<p>Freezing layers is one of the most common approaches, usually freezing all layers except the&nbsp;<em>head</em>&nbsp;- the head is the final layer(s) and the rest is the&nbsp;<em>backbone</em>. Usually the head is equal to the classification layer.&nbsp;</p>
-<p>In other words, the head takes an internal representation, embedding, and learns to decode&nbsp;it in the optimal way to solve the task.</p>
-<p>By only changing your head and training that part we train the model faster and don’t risk forgetting important information in the network.</p>
-<p><img src="https://blog.londogard.com/posts/2022-07-07-snapsvisor-generated/06406d83-410b-4e79-b2c8-025c53dbf9b2.png" class="img-fluid"></p>
-<blockquote class="blockquote">
-<p><strong>Important info early in the network:</strong><br>
-Early in the network important information is chopped into large pieces and unimportant information is largely removed.<br>
-Like carpeting you first chop the large pieces and the further you get the smaller and finer details are built. The same can be said about neural networks.&nbsp;<br>
-This means that if we learn to remove important information at the early stages we’ll loose it. This is catastrophic forgetting.</p>
-</blockquote>
-<p>Once the head is trained we can improve the results further by gradually unfreezing the last layers, one at a time. But make sure to have a low learning rate as otherwise the model might forget important information.</p>
-<p><img src="https://blog.londogard.com/posts/2022-07-07-snapsvisor-generated/ed771f34-3726-43f3-8d73-194f9e94e42d.png" class="img-fluid"></p>
-<p><strong>Dynamic Learning Rate</strong>&nbsp;</p>
-<p>Rather than freezing and unfreezing layer there’s a technique where you apply different learning rates, lower in early layers and larger at the final ones.</p>
-<p>This means that we don’t risk forgetting important information in the early layers.</p>
-<p><img src="https://blog.londogard.com/posts/2022-07-07-snapsvisor-generated/e449ace7-df38-4bda-bc44-38a8cad9ad18.png" class="img-fluid"></p>
-</section>
-<section id="building-the-dataset-of-snapsvisor" class="level3">
-<h3 class="anchored" data-anchor-id="building-the-dataset-of-snapsvisor">Building the dataset of Snapsvisor</h3>
-<p>Because only GPT-2 was accessible we must&nbsp;<em>Fine-Tune</em>&nbsp;the model. Gathering the data becomes the first and most important step, and we need many&nbsp;<em>Snapsvisor</em>.</p>
-<p>To build this dataset I decided to do what most software developers decide to do in this stage,&nbsp;<em>scrape the internet</em>. The internet is really a wonderful source of data and I found multiple sites that had&nbsp;<em>Snapsvisor</em>.</p>
-<p>To query and parse these I needed my necessary tools, which in Python naturally is&nbsp;</p>
-<ol type="1">
-<li><code>requests</code></li>
-<li><code>BeautifulSoup4</code></li>
-</ol>
-<section id="requests" class="level5">
-<h5 class="anchored" data-anchor-id="requests">Requests</h5>
-<p>It’s very easy to do HTTP-requests using&nbsp;<code>requests</code>, simply call&nbsp;<code>.get</code>&nbsp;or&nbsp;<code>.post</code></p>
-<div class="sourceCode" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><span class="im" style="color: #00769E;
-background-color: null;
-font-style: inherit;">import</span> requests</span>
-<span id="cb3-2"></span>
-<span id="cb3-3">url <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> <span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"https://www.website.com/path/to/query"</span></span>
-<span id="cb3-4">resp <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> requests.get(url)</span>
-<span id="cb3-5">resp.status_code, resp.text <span class="co" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;"># also possible to run resp.json</span></span></code></pre></div>
-<p>And if the web-page blocks you by some reason most of the times it can be solved by updating the&nbsp;<code>headers</code>&nbsp; supplied.</p>
-<div class="sourceCode" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1">headers <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> { <span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"User-Agent"</span>: <span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:20.0) Gecko/20100101 Firefox/20.0"</span> }</span>
-<span id="cb4-2">resp <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> requests.get(url, headers<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span>headers).text</span></code></pre></div>
-<p>That’s all we need to learn about&nbsp;<code>requests</code>&nbsp;for now!</p>
-</section>
-<section id="beautifulsoup" class="level5">
-<h5 class="anchored" data-anchor-id="beautifulsoup">BeautifulSoup</h5>
-<p>And how about BeautifulSoup, or bs4 as it’s sometimes called?</p>
-<p>It’s also rather easy, the webpage is returned almost like a dictionary with tools to query in-memory.</p>
-<div class="sourceCode" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1">resp <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> requests.get(url).text</span>
-<span id="cb5-2">soup <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> BeautifulSoup(resp, <span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"html.parser"</span>)</span>
-<span id="cb5-3"></span>
-<span id="cb5-4"><span class="co" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;"># now you can query `soup.find_all("a")` to get all a-elements in the HTML page etc</span></span></code></pre></div>
-<p>To learn more see the documentation at&nbsp;<a href="https://www.crummy.com/software/BeautifulSoup/bs4/doc/">https://www.crummy.com/software/BeautifulSoup/bs4/doc/</a>.</p>
-</section>
-</section>
-<section id="fine-tuning-the-model" class="level3">
-<h3 class="anchored" data-anchor-id="fine-tuning-the-model">Fine-Tuning the model</h3>
-<p>I found a swedish version of GPT-2 in the HuggingFace Hub 🥳</p>
-<p>Fine-Tuning the model on my data to generate&nbsp;<em>Snapsvisor</em>&nbsp;is not far away! 😎</p>
-<p>To move fast and make it easy I chose to use&nbsp;the HuggingFace Trainer-API. A better tutorial than this one is available in the HuggingFace documentation.</p>
-<div class="sourceCode" id="cb6" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><span class="im" style="color: #00769E;
-background-color: null;
-font-style: inherit;">from</span> transformers <span class="im" style="color: #00769E;
-background-color: null;
-font-style: inherit;">import</span> AutoTokenizer, TextDataset, DataCollatorForLanguageModeling</span>
-<span id="cb6-2"><span class="im" style="color: #00769E;
-background-color: null;
-font-style: inherit;">from</span> transformers <span class="im" style="color: #00769E;
-background-color: null;
-font-style: inherit;">import</span> Trainer, TrainingArguments, AutoModelForCausalLM</span>
-<span id="cb6-3"></span>
-<span id="cb6-4">model_name <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> <span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"flax-community/swe-gpt-wiki"</span> <span class="co" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;"># replace with your model</span></span>
-<span id="cb6-5">tokenizer <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> AutoTokenizer.from_pretrained(model_name)</span>
-<span id="cb6-6">model <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> AutoModelForCausalLM.from_pretrained(gpt_model)</span></code></pre></div>
-<p>With the pretrained model and tokenizer locked and loaded we’re ready to fine-tune with our own data.&nbsp;</p>
-<p>Loading our dataset can be done in multiple ways, but the easiest is most likely to either use HuggingFace&nbsp;<code>[datasets](https://huggingface.co/docs/datasets)</code>&nbsp;or through their&nbsp;<code>DataCollatorForLanguageModelling</code>&nbsp;.</p>
-<div class="sourceCode" id="cb7" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><span class="kw" style="color: #003B4F;
-background-color: null;
-font-style: inherit;">def</span> load_dataset(train_path, tokenizer):</span>
-<span id="cb7-2">    train_dataset <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> TextDataset(</span>
-<span id="cb7-3">          tokenizer<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span>tokenizer,</span>
-<span id="cb7-4">          file_path<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span>train_path,</span>
-<span id="cb7-5">          block_size<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span><span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">128</span>)</span>
-<span id="cb7-6"></span>
-<span id="cb7-7">    data_collator <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> DataCollatorForLanguageModeling(</span>
-<span id="cb7-8">         tokenizer<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span>tokenizer, mlm<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span><span class="va" style="color: #111111;
-background-color: null;
-font-style: inherit;">False</span>,</span>
-<span id="cb7-9">    )</span>
-<span id="cb7-10">    <span class="cf" style="color: #003B4F;
-background-color: null;
-font-style: inherit;">return</span> train_dataset, data_collator</span>
-<span id="cb7-11"></span>
-<span id="cb7-12">train_path <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> <span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"all_text.txt"</span> <span class="co" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;"># replace with your training file</span></span>
-<span id="cb7-13">train_dataset, data_collator <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> load_dataset(train_path, tokenizer)</span></code></pre></div>
-<p>With our model, tokenizer and (training) dataset ready we can start fine-tuning the model! This is easiest done using HuggingFace’s&nbsp;<code>Trainer</code>&nbsp;.</p>
-<p>HuggingFace has used a&nbsp;<em>Argument-Object</em>&nbsp;pattern to reduce the number of arguments to the&nbsp;<code>Trainer</code>. The&nbsp;<code>TrainingArguments</code>&nbsp; class wraps a lot of the arguments, fully typed. 👌</p>
-<div class="sourceCode" id="cb8" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1">training_args <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> TrainingArguments(</span>
-<span id="cb8-2">    output_dir<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span><span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"./gpt2-snaps"</span>, <span class="co" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;"># The output directory</span></span>
-<span id="cb8-3">    overwrite_output_dir<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span><span class="va" style="color: #111111;
-background-color: null;
-font-style: inherit;">True</span>, <span class="co" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;"># Overwrite the content of the output directory</span></span>
-<span id="cb8-4">    num_train_epochs<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span><span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">300</span>, <span class="co" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;"># Number of training epochs</span></span>
-<span id="cb8-5">    per_device_train_batch_size<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span><span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">8</span>, <span class="co" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;"># Batch size for training</span></span>
-<span id="cb8-6">    save_steps<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span><span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">1000</span>, <span class="co" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;"># After # steps model is saved</span></span>
-<span id="cb8-7">    warmup_steps<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span><span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">500</span>, <span class="co" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;"># Number of warmup steps for learning rate scheduler</span></span>
-<span id="cb8-8">    fp16<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span><span class="va" style="color: #111111;
-background-color: null;
-font-style: inherit;">True</span> <span class="co" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;"># Activate float-point=16 precision to train faster</span></span>
-<span id="cb8-9">    )</span>
-<span id="cb8-10"></span>
-<span id="cb8-11">trainer <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> Trainer(</span>
-<span id="cb8-12">    model<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span>model,</span>
-<span id="cb8-13">    args<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span>training_args,</span>
-<span id="cb8-14">    data_collator<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span>data_collator,</span>
-<span id="cb8-15">    train_dataset<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span>train_dataset,</span>
-<span id="cb8-16">)</span></code></pre></div>
-<p>Training is one click away!&nbsp;<strong>But we don’t have a validation dataset?</strong></p>
-<p>As I have little data I chose to train with all data, I don’t really care if we overfit the data (unless it looks bad) for this small task. As such we use all the data to train our Language Model.</p>
-<div class="sourceCode" id="cb9" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1">trainer.train(resume_from_checkpoint<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span><span class="va" style="color: #111111;
-background-color: null;
-font-style: inherit;">True</span>)</span>
-<span id="cb9-2">trainer.save_model()</span></code></pre></div>
-<p>Generating text, or&nbsp;<code>inference</code>, is smooth using HuggingFace&nbsp;<code>pipelines</code>.</p>
-<div class="sourceCode" id="cb10" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><span class="im" style="color: #00769E;
-background-color: null;
-font-style: inherit;">from</span> transformers <span class="im" style="color: #00769E;
-background-color: null;
-font-style: inherit;">import</span> pipeline</span>
-<span id="cb10-2"></span>
-<span id="cb10-3">trainer.model.cpu()</span>
-<span id="cb10-4">snaps <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> pipeline(<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">'text-generation'</span>, model<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span>trainer.model, tokenizer<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span>gpt_model)</span>
-<span id="cb10-5"></span>
-<span id="cb10-6">result <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> snaps(<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">'Nu tar vi en nubbe'</span>)</span></code></pre></div>
-<p>That’s all there is really!</p>
-<p>Some examples:</p>
-<blockquote class="blockquote">
-<p>Nu tar vi en nubbe,&nbsp;<br>
-Den ska hellre krypa och bränna upp.&nbsp;<br>
-Vi bränna, men inte mjölka oss,&nbsp;<br>
-och bränner till bords</p>
-</blockquote>
-<blockquote class="blockquote">
-<p>Nu tar vi en nubbe – slåss här i ett svep.<br>
-Byssa luderorgon, snapsar!<br>
-När den evigt låga solen tar oss en ljus natt,<br>
-ingen blir så dragen vid näsan</p>
-</blockquote>
-</section>
-<section id="tldr-too-long-didnt-read" class="level2">
-<h2 class="anchored" data-anchor-id="tldr-too-long-didnt-read">TL;DR (Too Long; Didn’t Read)</h2>
-<p>For those that are not interested in details or writeups I thought I’d leave a small TL;DR</p>
-<ol type="1">
-<li>Find a pre-trained Language Model (e.g.&nbsp;GPT-2) (<a href="https://huggingface.co/flax-community/swe-gpt-wiki">link</a>)</li>
-<li>Scrape the web for text data (in my case “Snapsvisor”) using&nbsp;<code>requests</code>&nbsp; (<a href="https://requests.readthedocs.io/">link</a>) and&nbsp;<code>beautifulsoup4</code>&nbsp;(<a href="https://www.crummy.com/software/BeautifulSoup/bs4/doc/">link</a>)</li>
-<li>Fine-Tune the model using HuggingFace&nbsp;<code>Trainer</code>-api (<a href="https://huggingface.co/docs/transformers/main_classes/trainer">link</a>)</li>
-<li>Generate text using HuggingFace&nbsp;<code>pipelines</code>&nbsp;(<a href="https://huggingface.co/docs/transformers/main_classes/pipelines">link</a>)</li>
-</ol>
-<p>And in the end we can generate some&nbsp;<em>Snapsvisor</em>, like the following examples</p>
-<blockquote class="blockquote">
-<p>Snälla skålar till en nubbe, buguperrens till en skål.<br>
-Snapsen får ta en nubbe,<br>
-när nubben inte tagit visdomsträngar,<br>
-sen får ta nubben hellre.<br>
-Hinka lilla magen, ta nubben,<br>
-där ska det gå till en nubbe.</p>
-</blockquote>
-<blockquote class="blockquote">
-<p>Nu tar vi en nubbe,&nbsp;<br>
-Den ska hellre krypa och bränna upp.&nbsp;<br>
-Vi bränna, men inte mjölka oss,&nbsp;<br>
-och bränner till bords</p>
-</blockquote>
-<blockquote class="blockquote">
-<p>Nu tar vi en nubbe – slåss här i ett svep.<br>
-Byssa luderorgon, snapsar!<br>
-När den evigt låga solen tar oss en ljus natt,<br>
-ingen blir så dragen vid näsan</p>
-</blockquote>
-<p>And <strong>it’s available on the <a href="https://huggingface.co/lunde/gpt2-snapsvisor">HuggingFace Hub</a></strong> with a <strong>inference widget</strong>, which can generate your own <em>Snapsvisor</em> - N.B. it removes newlines.</p>
-<div class="sourceCode" id="cb11" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><span class="im" style="color: #00769E;
-background-color: null;
-font-style: inherit;">from</span> transformers <span class="im" style="color: #00769E;
-background-color: null;
-font-style: inherit;">import</span> AutoTokenizer, AutoModelForCausalLM</span>
-<span id="cb11-2"></span>
-<span id="cb11-3">tokenizer <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> AutoTokenizer.from_pretrained(<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"lunde/gpt2-snapsvisor"</span>)</span>
-<span id="cb11-4">model <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> AutoModelForCausalLM.from_pretrained(<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"lunde/gpt2-snapsvisor"</span>)</span></code></pre></div>
-<p>Until next time!</p>
-<p>~Hampus Londögård</p>
-
-
-</section>
-
- ]]></description>
-  <category>machine-learning</category>
-  <category>nlp</category>
-  <category>fun</category>
-  <guid>https://blog.londogard.com/posts/2022-07-07-snapsvisor-generated/2022-07-07-snapsvisor-generator.html</guid>
-  <pubDate>Thu, 07 Jul 2022 00:00:00 GMT</pubDate>
 </item>
 </channel>
 </rss>
