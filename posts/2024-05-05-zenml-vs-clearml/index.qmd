@@ -1,0 +1,156 @@
+---
+title: "ZenML or ClearML? Which MLOps tool strikes best?"
+description: "There's a ton of MLOps tool and I gathered into two open source version that I wanted to try"
+categories: [mlops]
+date: "2024-05-05"
+---
+
+Making it as few words as possible.
+
+| **Tool** | **Pro** | **Con** |
+|---|---|---|
+|**ClearML**| Simple & Everything "fits"|Locked into ClearML, i.e. cannot use best tool for the job|
+|**ZenML**|Composable & Extendable|Multiple tools to get job done (e.g. MLFlow not visualized in UI)|
+
+## Similarities:
+There's a lot of similarities, it's quite easy to get started. 
+
+### Building Pipelines
+They both have the possibility to use decorators which makes the code very simple to read, alas the ClearML way of doing things is not quite as smooth as ZenML.
+
+> **ZenML** builds _pipelines_ and _tasks/components_ in a simpler better way.
+
+### Tracking Experiments
+To track experiments I believe both solutions got you covered.
+ClearML's experiment tracker is quite good and works as you'd expect, while ZenML you decide which tool you want to use (I opted to MLFlow).
+
+ZenML supports: Comet, MLFlow, Neptune, WandB, & Custom.
+ClearML supports: ClearML.
+
+> It's a **draw**, ZenML supports "better" trackers BUT **ClearML has a native integration which makes things a lot easier.**
+
+### Orchestrators
+Both have a simple to use orchestrator. Once again ZenML leans back towards the giants while ClearML uses a built-in native orchestrator that binds everything together.
+
+> It's a **draw**.
+
+## UI
+
+One of the more important parts of a tool is the UI. Here I believe in a way ZenML is strong as they "off-load" each components UI to the component itself, i.e. MLFlow tracing is shown in MLFlow UI.
+
+The UI itself of each tool, i.e. WandB, is much better than ClearML's offering in my opinion.  
+**But** the integration of ClearML as a tool "solve all" is a HUGE timesaver and I think could outweigh using the "better" tooling. Integrating everything from Experiment Comparison to Report Building is an quite amazing feat that I think is worthwhile applauding.
+
+# Conclusion
+
+First and foremost, I see both Open Source offering moving more and more towards a SaaS. This is clearly visible by locking certain features in the UI (ZenML, the new UI is beautiful but locked down without your Cloud offering). It's also shown by supplying additional superb features even when self-hosted. I do understand the need to pay your bills, but it's sad to see Open Source moving to this either way.
+
+See [ZenML comparison (Open Source <> Cloud)](https://www.zenml.io/open-source-vs-cloud) and [ClearML one](https://clear.ml/pricing).
+
+Sometimes the best option is to opt for the "cloud-native" one, i.e. AWS/Azure/GCP tools. But I love open source... :)
+
+**Anyhow, to finalize here's my judgement:**
+
+* If you prefer to keep your stack as simple as possible: ClearML.
+* If you prefer to keep your stack customized having the best tool for each part: ZenML.
+
+I cannot pick a winner, ZenML enables simpler transition and better tooling all in all, but the full-on integration of ClearML with "everything working together" is quite magical and similar to the cloud-native options (AWS Sagemaker/Azure MLStudio/GCP Vertex).
+
+Find the code for each framework running MNIST: ....
+
+Thanks for this time,
+Hampus
+
+### ClearML
+```python
+task = Task.init(
+    project_name="MNIST Digit Recognition",
+    task_name="Simple NN model with PyTorch Lightning",
+    task_type=Task.TaskTypes.training,
+    output_uri=None,
+)
+
+
+class SimpleNN(pl.LightningModule):
+    def __init__(self):
+        super(SimpleNN, self).__init__()
+        self.fc1 = nn.Linear(784, 512)
+        self.dropout = nn.Dropout(0.2)
+        self.fc2 = nn.Linear(512, 10)
+
+    def forward(self, x):
+        x = torch.flatten(x, 1)
+        x = self.fc1(x)
+        x = torch.relu(x)
+        x = self.dropout(x)
+        x = self.fc2(x)
+        return torch.log_softmax(x, dim=1)
+
+    def training_step(self, batch, batch_idx):
+        data, target = batch
+        output = self(data)
+        loss = nn.functional.cross_entropy(output, target)
+        self.log("train_loss", loss)
+        return loss
+
+    def test_step(self, batch, batch_idx):
+        return self(batch[0])
+
+    def configure_optimizers(self):
+        return optim.Adam(self.parameters(), lr=0.001)
+
+
+params_dictionary = {"epochs": 3}
+task.connect(params_dictionary)
+
+transform = transforms.Compose(
+    [transforms.ToTensor(), transforms.Normalize((0.5,), (0.5,))]
+)
+
+train_dataset = datasets.MNIST(
+    root="./data", train=True, transform=transform, download=True
+)
+test_dataset = datasets.MNIST(root="./data", train=False, transform=transform)
+
+train_loader = torch.utils.data.DataLoader(
+    dataset=train_dataset, batch_size=128, shuffle=True
+)
+test_loader = torch.utils.data.DataLoader(
+    dataset=test_dataset, batch_size=128, shuffle=False
+)
+
+model = SimpleNN()
+trainer = pl.Trainer(max_epochs=params_dictionary["epochs"])
+trainer.fit(model, train_loader)
+trainer.test(dataloaders=test_loader)
+```
+
+### ZenML
+```python
+@zenml.step
+def load_mnist() -> Tuple[
+    Annotated[torch.utils.data.DataLoader, "train_loader"],
+    Annotated[torch.utils.data.DataLoader, "test_loader"],
+]:
+    ...
+    return train_loader, test_loader
+
+@zenml.step
+def train_model(
+    train_loader: torch.utils.data.DataLoader, test_loader: torch.utils.data.DataLoader
+):
+    model = SimpleNN()
+    trainer = pl.Trainer()
+    trainer.fit(model, train_loader)
+    trainer.test(dataloaders=test_loader)
+
+
+@zenml.pipeline
+def train_pipeline():
+    train_loader, test_loader = load_mnist()
+    train_model(train_loader, test_loader)
+
+
+if __name__ == "__main__":
+    train_pipeline()
+```
