@@ -7,10 +7,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Hampus Londögård">
-<meta name="dcterms.date" content="2023-05-03">
-<meta name="description" content="DuckDB is particularly well-suited for Online Analytical Processing (OLAP) tasks, which involve analyzing large datasets to gain insights and generate reports. Its columnar storage format and vectorized query engine enable fast and efficient data processing, even on complex analytical queries. Additionally, DuckDB supports a variety of OLAP-specific features, such as window functions, making it a powerful tool for OLAP workloads.">
+<meta name="dcterms.date" content="2024-05-05">
+<meta name="description" content="There’s a ton of MLOps tool and I gathered into two open source version that I wanted to try">
 
-<title>Londogard Blog - DuckDB - Quacking Data (WIP)</title>
+<title>Londogard Blog - ZenML or ClearML? Which MLOps tool strikes best?</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -23,26 +23,60 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
-<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="../site_libs/quarto-nav/headroom.min.js"></script>
-<script src="../site_libs/clipboard/clipboard.min.js"></script>
-<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="../site_libs/quarto-search/fuse.min.js"></script>
-<script src="../site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="../">
-<link href="../favicon.ico" rel="icon">
-<script src="../site_libs/quarto-html/quarto.js"></script>
-<script src="../site_libs/quarto-html/popper.min.js"></script>
-<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="../site_libs/quarto-html/anchor.min.js"></script>
-<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
-<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../../favicon.ico" rel="icon">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -72,9 +106,9 @@ ul.task-list li input[type="checkbox"] {
 }</script>
 
 
-<link rel="stylesheet" href="../styles.css">
-<meta name="twitter:title" content="Londogard Blog - DuckDB - Quacking Data (WIP)">
-<meta name="twitter:description" content="DuckDB is particularly well-suited for Online Analytical Processing (OLAP) tasks, which involve analyzing large datasets to gain insights and generate reports. Its columnar storage format and vectorized query engine enable fast and efficient data processing, even on complex analytical queries. Additionally, DuckDB supports a variety of OLAP-specific features, such as window functions, making it a powerful tool for OLAP workloads.">
+<link rel="stylesheet" href="../../styles.css">
+<meta name="twitter:title" content="Londogard Blog - ZenML or ClearML? Which MLOps tool strikes best?">
+<meta name="twitter:description" content="There’s a ton of MLOps tool and I gathered into two open source version that I wanted to try">
 <meta name="twitter:creator" content="@hlondogard">
 <meta name="twitter:card" content="summary">
 </head>
@@ -86,7 +120,7 @@ ul.task-list li input[type="checkbox"] {
     <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
-    <a class="navbar-brand" href="../index.html">
+    <a class="navbar-brand" href="../../index.html">
     <span class="navbar-title">Londogard Blog</span>
     </a>
   </div>
@@ -97,11 +131,11 @@ ul.task-list li input[type="checkbox"] {
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item">
-    <a class="nav-link" href="../"> 
+    <a class="nav-link" href="../../"> 
 <span class="menu-text">Blogs</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../pages/presentations.html"> 
+    <a class="nav-link" href="../../pages/presentations.html"> 
 <span class="menu-text">Presentations</span></a>
   </li>  
   <li class="nav-item">
@@ -111,11 +145,11 @@ ul.task-list li input[type="checkbox"] {
 </ul>
             <ul class="navbar-nav navbar-nav-scroll ms-auto">
   <li class="nav-item">
-    <a class="nav-link" href="../pages/about.html"> 
+    <a class="nav-link" href="../../pages/about.html"> 
 <span class="menu-text">About</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../pages/code_setup/code_setup.html"> 
+    <a class="nav-link" href="../../pages/code_setup/code_setup.html"> 
 <span class="menu-text">Dev Setup</span></a>
   </li>  
   <li class="nav-item compact">
@@ -148,7 +182,7 @@ ul.task-list li input[type="checkbox"] {
     </ul>
   </li>
   <li class="nav-item compact">
-    <a class="nav-link" href="../index.xml"> <i class="bi bi-rss" role="img" aria-label="Londogard Blog RSS">
+    <a class="nav-link" href="../../index.xml"> <i class="bi bi-rss" role="img" aria-label="Londogard Blog RSS">
 </i> 
 <span class="menu-text"></span></a>
   </li>  
@@ -163,15 +197,14 @@ ul.task-list li input[type="checkbox"] {
 <header id="title-block-header" class="quarto-title-block default page-columns page-full">
   <div class="quarto-title-banner page-columns page-full">
     <div class="quarto-title column-body">
-      <h1 class="title">DuckDB - Quacking Data (WIP)</h1>
+      <h1 class="title">ZenML or ClearML? Which MLOps tool strikes best?</h1>
                   <div>
         <div class="description">
-          DuckDB is particularly well-suited for Online Analytical Processing (OLAP) tasks, which involve analyzing large datasets to gain insights and generate reports. Its columnar storage format and vectorized query engine enable fast and efficient data processing, even on complex analytical queries. Additionally, DuckDB supports a variety of OLAP-specific features, such as window functions, making it a powerful tool for OLAP workloads.
+          There’s a ton of MLOps tool and I gathered into two open source version that I wanted to try
         </div>
       </div>
                           <div class="quarto-categories">
-                <div class="quarto-category">data</div>
-                <div class="quarto-category">pipeline</div>
+                <div class="quarto-category">mlops</div>
               </div>
                   </div>
   </div>
@@ -189,7 +222,7 @@ ul.task-list li input[type="checkbox"] {
       <div>
       <div class="quarto-title-meta-heading">Published</div>
       <div class="quarto-title-meta-contents">
-        <p class="date">May 3, 2023</p>
+        <p class="date">May 5, 2024</p>
       </div>
     </div>
     
@@ -205,12 +238,17 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#duckdb---quacking-data" id="toc-duckdb---quacking-data" class="nav-link active" data-scroll-target="#duckdb---quacking-data">DuckDB - Quacking Data</a></li>
-  <li><a href="#how-am-i-using-duckdb-in-my-professional-life" id="toc-how-am-i-using-duckdb-in-my-professional-life" class="nav-link" data-scroll-target="#how-am-i-using-duckdb-in-my-professional-life">How am I using DuckDB in my professional life?</a></li>
-  <li><a href="#how-i-want-to-move-forward-with-duckdb" id="toc-how-i-want-to-move-forward-with-duckdb" class="nav-link" data-scroll-target="#how-i-want-to-move-forward-with-duckdb">How I want to move forward with DuckDB</a>
+  <li><a href="#similarities" id="toc-similarities" class="nav-link active" data-scroll-target="#similarities">Similarities:</a>
   <ul class="collapse">
-  <li><a href="#poor-mans-data-lake" id="toc-poor-mans-data-lake" class="nav-link" data-scroll-target="#poor-mans-data-lake">Poor Mans Data Lake</a></li>
-  <li><a href="#best-practices-write-up" id="toc-best-practices-write-up" class="nav-link" data-scroll-target="#best-practices-write-up">Best Practices Write-Up</a></li>
+  <li><a href="#building-pipelines" id="toc-building-pipelines" class="nav-link" data-scroll-target="#building-pipelines">Building Pipelines</a></li>
+  <li><a href="#tracking-experiments" id="toc-tracking-experiments" class="nav-link" data-scroll-target="#tracking-experiments">Tracking Experiments</a></li>
+  <li><a href="#orchestrators" id="toc-orchestrators" class="nav-link" data-scroll-target="#orchestrators">Orchestrators</a></li>
+  </ul></li>
+  <li><a href="#ui" id="toc-ui" class="nav-link" data-scroll-target="#ui">UI</a></li>
+  <li><a href="#conclusion" id="toc-conclusion" class="nav-link" data-scroll-target="#conclusion">Conclusion</a>
+  <ul class="collapse">
+  <li><a href="#clearml" id="toc-clearml" class="nav-link" data-scroll-target="#clearml">ClearML</a></li>
+  <li><a href="#zenml" id="toc-zenml" class="nav-link" data-scroll-target="#zenml">ZenML</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -222,82 +260,169 @@ ul.task-list li input[type="checkbox"] {
 
 
 
+<p>Making it as few words as possible.</p>
+<table class="table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th><strong>Tool</strong></th>
+<th><strong>Pro</strong></th>
+<th><strong>Con</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>ClearML</strong></td>
+<td>Simple &amp; Everything “fits”</td>
+<td>Locked into ClearML, i.e.&nbsp;cannot use best tool for the job</td>
+</tr>
+<tr class="even">
+<td><strong>ZenML</strong></td>
+<td>Composable &amp; Extendable</td>
+<td>Multiple tools to get job done (e.g.&nbsp;MLFlow not visualized in UI)</td>
+</tr>
+</tbody>
+</table>
+<section id="similarities" class="level2">
+<h2 class="anchored" data-anchor-id="similarities">Similarities:</h2>
+<p>There’s a lot of similarities, it’s quite easy to get started.</p>
+<section id="building-pipelines" class="level3">
+<h3 class="anchored" data-anchor-id="building-pipelines">Building Pipelines</h3>
+<p>They both have the possibility to use decorators which makes the code very simple to read, alas the ClearML way of doing things is not quite as smooth as ZenML.</p>
 <blockquote class="blockquote">
-<p>DuckDB is a relational database management system (RDBMS) that is used for managing data stored in relations, which are essentially tables. DuckDB is an in-process OLAP DBMS written in C++. It has no dependencies, is easy to set up, and is optimized to perform queries on data. It is similar to SQLite for Analytics. DuckDB is designed to run on a single machine, and it is not a multi-tenant database. It is perfect for data practitioners that want to perform local analytical workloads easily and quickly.</p>
+<p><strong>ZenML</strong> builds <em>pipelines</em> and <em>tasks/components</em> in a simpler better way.</p>
 </blockquote>
-<div class="callout callout-style-default callout-warning callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Warning
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>This blog is a continuous work and WIP.</p>
-</div>
-</div>
-<section id="duckdb---quacking-data" class="level1">
-<h1>DuckDB - Quacking Data</h1>
-<p>DuckDB is the OLAP-version of SQLite. It’s <em>simple</em>, <em>feature rich</em>, <em>fast</em> and most importantly <em>free</em>. It reall is an incredible tool for quick local analytical workloads. It has very impressive results in the <a href="https://duckdblabs.github.io/db-benchmark/">H2O-benchmark</a> resulting in a jack-of-all-trades for analytics.</p>
-<p>It has neat integration into:</p>
-<ol type="1">
-<li><code>pandas</code></li>
-<li><strong><code>polars</code></strong></li>
-<li>Arrow, PostgreSQL, <code>parquet</code>, <code>deltalake</code>, …</li>
-</ol>
-<p>Where you simply query on top of the datastructure which makes the query incredibly efficient even if it’s not “DuckDB”-format. It all becomes painless and efficient through the <a href="https://arrow.apache.org">Apache Arrow-protocol</a>. Arrow is a <em>cross-language development platform for in-memory analytics</em> which is very fast, because the underlying structure remains we never copy data between DuckDB and <code>polars</code> as an example. Rather DuckDB operates on <code>polars</code> Arrow dataset. Cool? Yes! 🤓</p>
-<p>Lately they’ve added superb <a href="https://duckdb.org/2023/04/28/spatial.html">Spatial Support</a> where they leverage <a href="https://gdal.org/">GDAL</a>.</p>
-<p>Recently <a href="https://motherduck.com/">Motherduck</a> gave a talk on how <a href="https://motherduck.com/blog/big-data-is-dead/"><em>Big Data is Dead</em></a>, where a BigQuery founding engineer laid out the average customer doesn’t have Big Data. Jordan Tigani notes the following trends.</p>
-<div id="fig-queries" class="quarto-layout-panel">
-<figure class="quarto-float quarto-float-fig figure">
-<div aria-describedby="fig-queries-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<div class="quarto-layout-row">
-<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: flex-start;">
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="assets/average_load.jpg" class="img-fluid figure-img"></p>
-<figcaption>Data Sizes at Companies</figcaption>
-</figure>
-</div>
-</div>
-<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: flex-start;">
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="assets/query_intensity.jpg" class="img-fluid figure-img"></p>
-<figcaption>Query Intensity on Data by Age</figcaption>
-</figure>
-</div>
-</div>
-</div>
-</div>
-<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-queries-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;1: Jordan Tigani’s ‘Feel of the Industry’
-</figcaption>
-</figure>
-</div>
-<p>Further Jordan notes that from 2006 to 2023 we see a huge increase in how powerful single nodes are. In 2006 you could get 2GB RAM, today a standard instance has 256 GB RAM and if you slap your wallet at the problem you can get 24TB (!) RAM.</p>
-<p>Through this power of a single node more than 99.9% of all problems should be possible to solve through a single node where DuckDB can reign supreme.</p>
 </section>
-<section id="how-am-i-using-duckdb-in-my-professional-life" class="level1">
-<h1>How am I using DuckDB in my professional life?</h1>
-<p>DuckDB is integral to my workflow. I use it when <code>polars</code> is not enough. Because DuckDB can easily query <code>parquet</code> we’re good to go in most Machine Learning setups.</p>
-<p>Connecting directly to S3 is as simple as using the official <a href="https://duckdb.org/docs/guides/import/s3_import.html"><code>httpfs</code> extension</a> which is done in the following way:</p>
-<pre><code>INSTALL httpfs; # run once
-
-LOAD httpfs;</code></pre>
+<section id="tracking-experiments" class="level3">
+<h3 class="anchored" data-anchor-id="tracking-experiments">Tracking Experiments</h3>
+<p>To track experiments I believe both solutions got you covered. ClearML’s experiment tracker is quite good and works as you’d expect, while ZenML you decide which tool you want to use (I opted to MLFlow).</p>
+<p>ZenML supports: Comet, MLFlow, Neptune, WandB, &amp; Custom. ClearML supports: ClearML.</p>
+<blockquote class="blockquote">
+<p>It’s a <strong>draw</strong>, ZenML supports “better” trackers BUT <strong>ClearML has a native integration which makes things a lot easier.</strong></p>
+</blockquote>
 </section>
-<section id="how-i-want-to-move-forward-with-duckdb" class="level1">
-<h1>How I want to move forward with DuckDB</h1>
-<p>I have so many plans on what I wish to achieve.</p>
-<section id="poor-mans-data-lake" class="level2">
-<h2 class="anchored" data-anchor-id="poor-mans-data-lake">Poor Mans Data Lake</h2>
-<p>I have been thinking a lot lately on building my own Data Lake using DuckDB, <code>polars</code> &amp; <code>dagster</code>. This would be greatly inspired by <code>dagster</code>’s <a href="https://dagster.io/blog/duckdb-data-lake">blog - ‘Poor Mans Data Lake’</a>.</p>
+<section id="orchestrators" class="level3">
+<h3 class="anchored" data-anchor-id="orchestrators">Orchestrators</h3>
+<p>Both have a simple to use orchestrator. Once again ZenML leans back towards the giants while ClearML uses a built-in native orchestrator that binds everything together.</p>
+<blockquote class="blockquote">
+<p>It’s a <strong>draw</strong>.</p>
+</blockquote>
 </section>
-<section id="best-practices-write-up" class="level2">
-<h2 class="anchored" data-anchor-id="best-practices-write-up">Best Practices Write-Up</h2>
-<p>Additionally it’d be very interesting to set up a “Best Practices” using “Local First” tooling such as DuckDB &amp; <code>polars</code>. When to use what and how they differentiate.</p>
+</section>
+<section id="ui" class="level2">
+<h2 class="anchored" data-anchor-id="ui">UI</h2>
+<p>One of the more important parts of a tool is the UI. Here I believe in a way ZenML is strong as they “off-load” each components UI to the component itself, i.e.&nbsp;MLFlow tracing is shown in MLFlow UI.</p>
+<p>The UI itself of each tool, i.e.&nbsp;WandB, is much better than ClearML’s offering in my opinion.<br>
+<strong>But</strong> the integration of ClearML as a tool “solve all” is a HUGE timesaver and I think could outweigh using the “better” tooling. Integrating everything from Experiment Comparison to Report Building is an quite amazing feat that I think is worthwhile applauding.</p>
+</section>
+<section id="conclusion" class="level1">
+<h1>Conclusion</h1>
+<p>First and foremost, I see both Open Source offering moving more and more towards a SaaS. This is clearly visible by locking certain features in the UI (ZenML, the new UI is beautiful but locked down without your Cloud offering). It’s also shown by supplying additional superb features even when self-hosted. I do understand the need to pay your bills, but it’s sad to see Open Source moving to this either way.</p>
+<p>See <a href="https://www.zenml.io/open-source-vs-cloud">ZenML comparison (Open Source &lt;&gt; Cloud)</a> and <a href="https://clear.ml/pricing">ClearML one</a>.</p>
+<p>Sometimes the best option is to opt for the “cloud-native” one, i.e.&nbsp;AWS/Azure/GCP tools. But I love open source… :)</p>
+<p><strong>Anyhow, to finalize here’s my judgement:</strong></p>
+<ul>
+<li>If you prefer to keep your stack as simple as possible: ClearML.</li>
+<li>If you prefer to keep your stack customized having the best tool for each part: ZenML.</li>
+</ul>
+<p>I cannot pick a winner, ZenML enables simpler transition and better tooling all in all, but the full-on integration of ClearML with “everything working together” is quite magical and similar to the cloud-native options (AWS Sagemaker/Azure MLStudio/GCP Vertex).</p>
+<p>Find the code for each framework running MNIST: ….</p>
+<p>Thanks for this time, Hampus</p>
+<section id="clearml" class="level3">
+<h3 class="anchored" data-anchor-id="clearml">ClearML</h3>
+<div class="sourceCode" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>task <span class="op">=</span> Task.init(</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>    project_name<span class="op">=</span><span class="st">"MNIST Digit Recognition"</span>,</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    task_name<span class="op">=</span><span class="st">"Simple NN model with PyTorch Lightning"</span>,</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>    task_type<span class="op">=</span>Task.TaskTypes.training,</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>    output_uri<span class="op">=</span><span class="va">None</span>,</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> SimpleNN(pl.LightningModule):</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>):</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>        <span class="bu">super</span>(SimpleNN, <span class="va">self</span>).<span class="fu">__init__</span>()</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.fc1 <span class="op">=</span> nn.Linear(<span class="dv">784</span>, <span class="dv">512</span>)</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.dropout <span class="op">=</span> nn.Dropout(<span class="fl">0.2</span>)</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.fc2 <span class="op">=</span> nn.Linear(<span class="dv">512</span>, <span class="dv">10</span>)</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> forward(<span class="va">self</span>, x):</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>        x <span class="op">=</span> torch.flatten(x, <span class="dv">1</span>)</span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>        x <span class="op">=</span> <span class="va">self</span>.fc1(x)</span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>        x <span class="op">=</span> torch.relu(x)</span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>        x <span class="op">=</span> <span class="va">self</span>.dropout(x)</span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>        x <span class="op">=</span> <span class="va">self</span>.fc2(x)</span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> torch.log_softmax(x, dim<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> training_step(<span class="va">self</span>, batch, batch_idx):</span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>        data, target <span class="op">=</span> batch</span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>        output <span class="op">=</span> <span class="va">self</span>(data)</span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a>        loss <span class="op">=</span> nn.functional.cross_entropy(output, target)</span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.log(<span class="st">"train_loss"</span>, loss)</span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> loss</span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> test_step(<span class="va">self</span>, batch, batch_idx):</span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="va">self</span>(batch[<span class="dv">0</span>])</span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> configure_optimizers(<span class="va">self</span>):</span>
+<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> optim.Adam(<span class="va">self</span>.parameters(), lr<span class="op">=</span><span class="fl">0.001</span>)</span>
+<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a>params_dictionary <span class="op">=</span> {<span class="st">"epochs"</span>: <span class="dv">3</span>}</span>
+<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a>task.<span class="ex">connect</span>(params_dictionary)</span>
+<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a>transform <span class="op">=</span> transforms.Compose(</span>
+<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a>    [transforms.ToTensor(), transforms.Normalize((<span class="fl">0.5</span>,), (<span class="fl">0.5</span>,))]</span>
+<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-45"><a href="#cb1-45" aria-hidden="true" tabindex="-1"></a>train_dataset <span class="op">=</span> datasets.MNIST(</span>
+<span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a>    root<span class="op">=</span><span class="st">"./data"</span>, train<span class="op">=</span><span class="va">True</span>, transform<span class="op">=</span>transform, download<span class="op">=</span><span class="va">True</span></span>
+<span id="cb1-47"><a href="#cb1-47" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb1-48"><a href="#cb1-48" aria-hidden="true" tabindex="-1"></a>test_dataset <span class="op">=</span> datasets.MNIST(root<span class="op">=</span><span class="st">"./data"</span>, train<span class="op">=</span><span class="va">False</span>, transform<span class="op">=</span>transform)</span>
+<span id="cb1-49"><a href="#cb1-49" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-50"><a href="#cb1-50" aria-hidden="true" tabindex="-1"></a>train_loader <span class="op">=</span> torch.utils.data.DataLoader(</span>
+<span id="cb1-51"><a href="#cb1-51" aria-hidden="true" tabindex="-1"></a>    dataset<span class="op">=</span>train_dataset, batch_size<span class="op">=</span><span class="dv">128</span>, shuffle<span class="op">=</span><span class="va">True</span></span>
+<span id="cb1-52"><a href="#cb1-52" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb1-53"><a href="#cb1-53" aria-hidden="true" tabindex="-1"></a>test_loader <span class="op">=</span> torch.utils.data.DataLoader(</span>
+<span id="cb1-54"><a href="#cb1-54" aria-hidden="true" tabindex="-1"></a>    dataset<span class="op">=</span>test_dataset, batch_size<span class="op">=</span><span class="dv">128</span>, shuffle<span class="op">=</span><span class="va">False</span></span>
+<span id="cb1-55"><a href="#cb1-55" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb1-56"><a href="#cb1-56" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-57"><a href="#cb1-57" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> SimpleNN()</span>
+<span id="cb1-58"><a href="#cb1-58" aria-hidden="true" tabindex="-1"></a>trainer <span class="op">=</span> pl.Trainer(max_epochs<span class="op">=</span>params_dictionary[<span class="st">"epochs"</span>])</span>
+<span id="cb1-59"><a href="#cb1-59" aria-hidden="true" tabindex="-1"></a>trainer.fit(model, train_loader)</span>
+<span id="cb1-60"><a href="#cb1-60" aria-hidden="true" tabindex="-1"></a>trainer.test(dataloaders<span class="op">=</span>test_loader)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="zenml" class="level3">
+<h3 class="anchored" data-anchor-id="zenml">ZenML</h3>
+<div class="sourceCode" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="at">@zenml.step</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> load_mnist() <span class="op">-&gt;</span> Tuple[</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    Annotated[torch.utils.data.DataLoader, <span class="st">"train_loader"</span>],</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>    Annotated[torch.utils.data.DataLoader, <span class="st">"test_loader"</span>],</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>]:</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>    ...</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> train_loader, test_loader</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="at">@zenml.step</span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> train_model(</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>    train_loader: torch.utils.data.DataLoader, test_loader: torch.utils.data.DataLoader</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>):</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>    model <span class="op">=</span> SimpleNN()</span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>    trainer <span class="op">=</span> pl.Trainer()</span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>    trainer.fit(model, train_loader)</span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>    trainer.test(dataloaders<span class="op">=</span>test_loader)</span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a><span class="at">@zenml.pipeline</span></span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> train_pipeline():</span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>    train_loader, test_loader <span class="op">=</span> load_mnist()</span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a>    train_model(train_loader, test_loader)</span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="va">__name__</span> <span class="op">==</span> <span class="st">"__main__"</span>:</span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a>    train_pipeline()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 
 
 </section>
@@ -737,7 +862,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     <div class="nav-footer-center">
       <ul class="footer-items list-unstyled">
     <li class="nav-item">
-    <a class="nav-link" href="../pages/about.html">
+    <a class="nav-link" href="../../pages/about.html">
 <p>About</p>
 </a>
   </li>  
@@ -764,7 +889,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     </a>
   </li>  
     <li class="nav-item compact">
-    <a class="nav-link" href="../index.xml">
+    <a class="nav-link" href="../../index.xml">
       <i class="bi bi-rss" role="img" aria-label="Londogard Blog RSS">
 </i> 
     </a>

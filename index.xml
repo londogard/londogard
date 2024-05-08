@@ -9,8 +9,423 @@
 <link>https://blog.londogard.com/</link>
 <atom:link href="https://blog.londogard.com/index.xml" rel="self" type="application/rss+xml"/>
 <description>A blog which majorly focuses on Data Science, Data Engineering and sometimes Kotlin / Scala.</description>
-<generator>quarto-1.4.553</generator>
-<lastBuildDate>Wed, 17 Apr 2024 00:00:00 GMT</lastBuildDate>
+<generator>quarto-1.4.554</generator>
+<lastBuildDate>Sun, 05 May 2024 00:00:00 GMT</lastBuildDate>
+<item>
+  <title>ZenML or ClearML? Which MLOps tool strikes best?</title>
+  <dc:creator>Hampus Londögård</dc:creator>
+  <link>https://blog.londogard.com/posts/2024-05-05-zenml-vs-clearml/</link>
+  <description><![CDATA[ 
+
+
+
+
+
+<p>Making it as few words as possible.</p>
+<table class="table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th><strong>Tool</strong></th>
+<th><strong>Pro</strong></th>
+<th><strong>Con</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>ClearML</strong></td>
+<td>Simple &amp; Everything “fits”</td>
+<td>Locked into ClearML, i.e.&nbsp;cannot use best tool for the job</td>
+</tr>
+<tr class="even">
+<td><strong>ZenML</strong></td>
+<td>Composable &amp; Extendable</td>
+<td>Multiple tools to get job done (e.g.&nbsp;MLFlow not visualized in UI)</td>
+</tr>
+</tbody>
+</table>
+<section id="similarities" class="level2">
+<h2 class="anchored" data-anchor-id="similarities">Similarities:</h2>
+<p>There’s a lot of similarities, it’s quite easy to get started.</p>
+<section id="building-pipelines" class="level3">
+<h3 class="anchored" data-anchor-id="building-pipelines">Building Pipelines</h3>
+<p>They both have the possibility to use decorators which makes the code very simple to read, alas the ClearML way of doing things is not quite as smooth as ZenML.</p>
+<blockquote class="blockquote">
+<p><strong>ZenML</strong> builds <em>pipelines</em> and <em>tasks/components</em> in a simpler better way.</p>
+</blockquote>
+</section>
+<section id="tracking-experiments" class="level3">
+<h3 class="anchored" data-anchor-id="tracking-experiments">Tracking Experiments</h3>
+<p>To track experiments I believe both solutions got you covered. ClearML’s experiment tracker is quite good and works as you’d expect, while ZenML you decide which tool you want to use (I opted to MLFlow).</p>
+<p>ZenML supports: Comet, MLFlow, Neptune, WandB, &amp; Custom. ClearML supports: ClearML.</p>
+<blockquote class="blockquote">
+<p>It’s a <strong>draw</strong>, ZenML supports “better” trackers BUT <strong>ClearML has a native integration which makes things a lot easier.</strong></p>
+</blockquote>
+</section>
+<section id="orchestrators" class="level3">
+<h3 class="anchored" data-anchor-id="orchestrators">Orchestrators</h3>
+<p>Both have a simple to use orchestrator. Once again ZenML leans back towards the giants while ClearML uses a built-in native orchestrator that binds everything together.</p>
+<blockquote class="blockquote">
+<p>It’s a <strong>draw</strong>.</p>
+</blockquote>
+</section>
+</section>
+<section id="ui" class="level2">
+<h2 class="anchored" data-anchor-id="ui">UI</h2>
+<p>One of the more important parts of a tool is the UI. Here I believe in a way ZenML is strong as they “off-load” each components UI to the component itself, i.e.&nbsp;MLFlow tracing is shown in MLFlow UI.</p>
+<p>The UI itself of each tool, i.e.&nbsp;WandB, is much better than ClearML’s offering in my opinion.<br>
+<strong>But</strong> the integration of ClearML as a tool “solve all” is a HUGE timesaver and I think could outweigh using the “better” tooling. Integrating everything from Experiment Comparison to Report Building is an quite amazing feat that I think is worthwhile applauding.</p>
+</section>
+<section id="conclusion" class="level1">
+<h1>Conclusion</h1>
+<p>First and foremost, I see both Open Source offering moving more and more towards a SaaS. This is clearly visible by locking certain features in the UI (ZenML, the new UI is beautiful but locked down without your Cloud offering). It’s also shown by supplying additional superb features even when self-hosted. I do understand the need to pay your bills, but it’s sad to see Open Source moving to this either way.</p>
+<p>See <a href="https://www.zenml.io/open-source-vs-cloud">ZenML comparison (Open Source &lt;&gt; Cloud)</a> and <a href="https://clear.ml/pricing">ClearML one</a>.</p>
+<p>Sometimes the best option is to opt for the “cloud-native” one, i.e.&nbsp;AWS/Azure/GCP tools. But I love open source… :)</p>
+<p><strong>Anyhow, to finalize here’s my judgement:</strong></p>
+<ul>
+<li>If you prefer to keep your stack as simple as possible: ClearML.</li>
+<li>If you prefer to keep your stack customized having the best tool for each part: ZenML.</li>
+</ul>
+<p>I cannot pick a winner, ZenML enables simpler transition and better tooling all in all, but the full-on integration of ClearML with “everything working together” is quite magical and similar to the cloud-native options (AWS Sagemaker/Azure MLStudio/GCP Vertex).</p>
+<p>Find the code for each framework running MNIST: ….</p>
+<p>Thanks for this time, Hampus</p>
+<section id="clearml" class="level3">
+<h3 class="anchored" data-anchor-id="clearml">ClearML</h3>
+<div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1">task <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> Task.init(</span>
+<span id="cb1-2">    project_name<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"MNIST Digit Recognition"</span>,</span>
+<span id="cb1-3">    task_name<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Simple NN model with PyTorch Lightning"</span>,</span>
+<span id="cb1-4">    task_type<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>Task.TaskTypes.training,</span>
+<span id="cb1-5">    output_uri<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">None</span>,</span>
+<span id="cb1-6">)</span>
+<span id="cb1-7"></span>
+<span id="cb1-8"></span>
+<span id="cb1-9"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">class</span> SimpleNN(pl.LightningModule):</span>
+<span id="cb1-10">    <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">def</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">__init__</span>(<span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>):</span>
+<span id="cb1-11">        <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">super</span>(SimpleNN, <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>).<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">__init__</span>()</span>
+<span id="cb1-12">        <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.fc1 <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> nn.Linear(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">784</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">512</span>)</span>
+<span id="cb1-13">        <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.dropout <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> nn.Dropout(<span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.2</span>)</span>
+<span id="cb1-14">        <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.fc2 <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> nn.Linear(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">512</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">10</span>)</span>
+<span id="cb1-15"></span>
+<span id="cb1-16">    <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">def</span> forward(<span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>, x):</span>
+<span id="cb1-17">        x <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> torch.flatten(x, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>)</span>
+<span id="cb1-18">        x <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.fc1(x)</span>
+<span id="cb1-19">        x <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> torch.relu(x)</span>
+<span id="cb1-20">        x <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.dropout(x)</span>
+<span id="cb1-21">        x <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.fc2(x)</span>
+<span id="cb1-22">        <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">return</span> torch.log_softmax(x, dim<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>)</span>
+<span id="cb1-23"></span>
+<span id="cb1-24">    <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">def</span> training_step(<span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>, batch, batch_idx):</span>
+<span id="cb1-25">        data, target <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> batch</span>
+<span id="cb1-26">        output <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>(data)</span>
+<span id="cb1-27">        loss <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> nn.functional.cross_entropy(output, target)</span>
+<span id="cb1-28">        <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.log(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"train_loss"</span>, loss)</span>
+<span id="cb1-29">        <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">return</span> loss</span>
+<span id="cb1-30"></span>
+<span id="cb1-31">    <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">def</span> test_step(<span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>, batch, batch_idx):</span>
+<span id="cb1-32">        <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">return</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>(batch[<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>])</span>
+<span id="cb1-33"></span>
+<span id="cb1-34">    <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">def</span> configure_optimizers(<span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>):</span>
+<span id="cb1-35">        <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">return</span> optim.Adam(<span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.parameters(), lr<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.001</span>)</span>
+<span id="cb1-36"></span>
+<span id="cb1-37"></span>
+<span id="cb1-38">params_dictionary <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> {<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"epochs"</span>: <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">3</span>}</span>
+<span id="cb1-39">task.<span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">connect</span>(params_dictionary)</span>
+<span id="cb1-40"></span>
+<span id="cb1-41">transform <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> transforms.Compose(</span>
+<span id="cb1-42">    [transforms.ToTensor(), transforms.Normalize((<span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.5</span>,), (<span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.5</span>,))]</span>
+<span id="cb1-43">)</span>
+<span id="cb1-44"></span>
+<span id="cb1-45">train_dataset <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> datasets.MNIST(</span>
+<span id="cb1-46">    root<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"./data"</span>, train<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">True</span>, transform<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>transform, download<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">True</span></span>
+<span id="cb1-47">)</span>
+<span id="cb1-48">test_dataset <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> datasets.MNIST(root<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"./data"</span>, train<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">False</span>, transform<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>transform)</span>
+<span id="cb1-49"></span>
+<span id="cb1-50">train_loader <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> torch.utils.data.DataLoader(</span>
+<span id="cb1-51">    dataset<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>train_dataset, batch_size<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">128</span>, shuffle<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">True</span></span>
+<span id="cb1-52">)</span>
+<span id="cb1-53">test_loader <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> torch.utils.data.DataLoader(</span>
+<span id="cb1-54">    dataset<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>test_dataset, batch_size<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">128</span>, shuffle<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">False</span></span>
+<span id="cb1-55">)</span>
+<span id="cb1-56"></span>
+<span id="cb1-57">model <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> SimpleNN()</span>
+<span id="cb1-58">trainer <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> pl.Trainer(max_epochs<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>params_dictionary[<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"epochs"</span>])</span>
+<span id="cb1-59">trainer.fit(model, train_loader)</span>
+<span id="cb1-60">trainer.test(dataloaders<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>test_loader)</span></code></pre></div>
+</section>
+<section id="zenml" class="level3">
+<h3 class="anchored" data-anchor-id="zenml">ZenML</h3>
+<div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">@zenml.step</span></span>
+<span id="cb2-2"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">def</span> load_mnist() <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-&gt;</span> Tuple[</span>
+<span id="cb2-3">    Annotated[torch.utils.data.DataLoader, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"train_loader"</span>],</span>
+<span id="cb2-4">    Annotated[torch.utils.data.DataLoader, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"test_loader"</span>],</span>
+<span id="cb2-5">]:</span>
+<span id="cb2-6">    ...</span>
+<span id="cb2-7">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">return</span> train_loader, test_loader</span>
+<span id="cb2-8"></span>
+<span id="cb2-9"><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">@zenml.step</span></span>
+<span id="cb2-10"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">def</span> train_model(</span>
+<span id="cb2-11">    train_loader: torch.utils.data.DataLoader, test_loader: torch.utils.data.DataLoader</span>
+<span id="cb2-12">):</span>
+<span id="cb2-13">    model <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> SimpleNN()</span>
+<span id="cb2-14">    trainer <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> pl.Trainer()</span>
+<span id="cb2-15">    trainer.fit(model, train_loader)</span>
+<span id="cb2-16">    trainer.test(dataloaders<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>test_loader)</span>
+<span id="cb2-17"></span>
+<span id="cb2-18"></span>
+<span id="cb2-19"><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">@zenml.pipeline</span></span>
+<span id="cb2-20"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">def</span> train_pipeline():</span>
+<span id="cb2-21">    train_loader, test_loader <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> load_mnist()</span>
+<span id="cb2-22">    train_model(train_loader, test_loader)</span>
+<span id="cb2-23"></span>
+<span id="cb2-24"></span>
+<span id="cb2-25"><span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">if</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">__name__</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">==</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"__main__"</span>:</span>
+<span id="cb2-26">    train_pipeline()</span></code></pre></div>
+
+
+</section>
+</section>
+
+ ]]></description>
+  <category>mlops</category>
+  <guid>https://blog.londogard.com/posts/2024-05-05-zenml-vs-clearml/</guid>
+  <pubDate>Sun, 05 May 2024 00:00:00 GMT</pubDate>
+</item>
 <item>
   <title>Streamlit Fragments - Make the Dashboard Dream come true</title>
   <dc:creator>Hampus Londögård</dc:creator>
@@ -7532,31 +7947,6 @@ Hampus Londögård</p>
   <category>raspberrypi</category>
   <guid>https://blog.londogard.com/posts/2022-11-06-babymonitor-pt-1.html</guid>
   <pubDate>Sun, 06 Nov 2022 00:00:00 GMT</pubDate>
-</item>
-<item>
-  <title>Docker (Presentation)</title>
-  <dc:creator>Hampus Londögård</dc:creator>
-  <link>https://blog.londogard.com/posts/2022-09-07-docker-simplified-presentation.html</link>
-  <description><![CDATA[ 
-
-
-
-
-
-<p>Just a week ago I did a presentation on Docker and why it’s so incredibly useful as a Data * (* = Engineer, Scientist, etc..).</p>
-<!--truncate-->
-<p>I simply thought I would share the slides with the world. :)</p>
-<p>(OBS: Presentation in Swedish)</p>
-<embed src="../assets/docker_afry_x.pdf" width="100%" height="720px" type="application/pdf">
-
-
-
- ]]></description>
-  <category>presentation</category>
-  <category>machine-learning</category>
-  <category>docker</category>
-  <guid>https://blog.londogard.com/posts/2022-09-07-docker-simplified-presentation.html</guid>
-  <pubDate>Wed, 07 Sep 2022 00:00:00 GMT</pubDate>
 </item>
 </channel>
 </rss>
