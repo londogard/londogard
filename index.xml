@@ -9,8 +9,334 @@
 <link>https://blog.londogard.com/</link>
 <atom:link href="https://blog.londogard.com/index.xml" rel="self" type="application/rss+xml"/>
 <description>A blog which majorly focuses on Data Science, Data Engineering and sometimes Kotlin / Scala.</description>
-<generator>quarto-1.4.554</generator>
-<lastBuildDate>Sun, 05 May 2024 00:00:00 GMT</lastBuildDate>
+<generator>quarto-1.5.57</generator>
+<lastBuildDate>Thu, 24 Oct 2024 00:00:00 GMT</lastBuildDate>
+<item>
+  <title>Data Loading - Daft</title>
+  <dc:creator>Hampus Londögård</dc:creator>
+  <link>https://blog.londogard.com/posts/2024-10-24-data-loading-daft/</link>
+  <description><![CDATA[ 
+
+
+
+
+
+<p>In Deep Learning you often want to optimize GPU usage or in other words not CPU bound. That is: <em>you want to always have data ready when the GPU has time to process more data</em>.</p>
+<p>There’s a lot of different tools to load data and I’ll go through a few of them for one of the more complex use-cases: <em>Object Detection</em>. Why <em>Object Detection</em>?</p>
+<ol type="1">
+<li>It’s common</li>
+<li>It has variable, or <em>ragged</em>, dimensions
+<ol type="1">
+<li>i.e.&nbsp;one image has 2 bounding boxes of people and the second has 0.</li>
+</ol></li>
+<li>The data (images) is too large to keep in-memory</li>
+</ol>
+<p>All in all this makes Object Detection a task that requires some tuning of the Data Loading to make full use of your GPU’s!</p>
+<p>This blog will be brief and not as in-depth as I’d hoped. But there’ll be more where I compare to other tools.</p>
+<section id="daft" class="level1">
+<h1>Daft</h1>
+<p>Today I’ll introduce one of the newer alternatives in the field, <a href="https://getdaft.io/">daft</a>.</p>
+<p>Daft is what you can only call a merger between <code>polars</code>, <code>spark</code> and Deep Learning. If they had been more inspired by <code>polars</code> in the Developer Experience (DX) I’d have called it a “lovechild”, but for now they don’t have the nice-to-haves like <code>pl.with_column(new_col_name=pl.col("other_col")*2)</code> named syntax and other things like <code>pl.col("col").replace(dict_to_replace)</code> and a lot of other things.</p>
+<p>What <em>daft</em> does have is a <em>multi-modal</em> namespace, unlike <code>polars</code> which solely focuses on traditional data-types. This is <em>really</em> interesting albeit not that fleshed out yet. It’s enjoyable and has potential to grow!</p>
+<p>Further, to quote <em>daft</em> themselves: &gt; <em>Daft provides a snappy and delightful local interactive experience, but also seamlessly scales to petabyte-scale distributed workloads.</em></p>
+<p>The <em>petabyte-scale</em> comes from the fact that you can run <em>daft</em> on top of <em>Ray</em> which is a distributed framework that tries to take on Spark. It’s famously used at OpenAI while training their models.</p>
+</section>
+<section id="coding-with-daft" class="level1">
+<h1>Coding with Daft</h1>
+<p>Coding with <code>daft</code> is an experience. I only ran locally but it held up really well to “native” PyTorch, even surpassing it in one case!</p>
+<p>I’ll share my experience and implementations below!</p>
+<section id="reading-data" class="level2">
+<h2 class="anchored" data-anchor-id="reading-data">Reading Data</h2>
+<p>Like most modern project <em>daft</em> includes a smooth integration to <em>Apache Arrow</em>.</p>
+<blockquote class="blockquote">
+<p>Apache Arrow is “The universal columnar format and multi-language toolbox for fast data interchange and in-memory analytics”</p>
+</blockquote>
+<p>The Arrow integration gives <em>daft</em> multiple ways in to read a dataset, and the dataset doesn’t even have to be in-memory because of the Arrow data structure which can easily be stream “memory-map-mode” (<code>mmap</code>).</p>
+<p>To “read” a Arrow table you simply call <code>from_arrow</code>, as I do below reading a HuggingFace Datasets Arrow Table.</p>
+<div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1">ds_train <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> daft.from_arrow(ds[<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"train"</span>].data.table)</span></code></pre></div>
+<p>To “read” other formats from disk you simply use <code>read_(delta|csv|...)</code>, as below.</p>
+<div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1">df <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> daft.read_deltalake(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"some-table-uri"</span>) <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># read_(csv|parquet|json|...)</span></span></code></pre></div>
+<p>Finally it has very tight integration with Ray, which is very neat when you wish to scale to Big Data.</p>
+</section>
+<section id="data-transforms---multi-modal-and-whatnot" class="level2">
+<h2 class="anchored" data-anchor-id="data-transforms---multi-modal-and-whatnot">Data Transforms - multi-modal and whatnot</h2>
+<p>To modify a DataFrame you work very similar to <code>polars</code>. There’s <code>Expression</code>’s which is a way to have a lazy non-evaluated expression, like a SQL query before you run it. I’ve spoken about <code>Expression</code>’s before and I really love them, they make code decoupling a lot easier and can simplify a query to something beautiful.</p>
+<p>See my example of extracting image from a struct that has a field with bytes.</p>
+<div class="sourceCode" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># expression: lazy non-executed method</span></span>
+<span id="cb3-2">extract_img_bytes <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> daft.col(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"image"</span>).struct.get(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"bytes"</span>).alias(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"image"</span>)</span>
+<span id="cb3-3"></span>
+<span id="cb3-4">ds_train.select(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"label"</span>, extract_img_bytes)</span></code></pre></div>
+<blockquote class="blockquote">
+<p>Select column <code>label</code> and <code>image</code>, where <code>image</code> extracts <code>image.bytes</code> into <code>image</code>.</p>
+</blockquote>
+<p>From here I’d like to decode the image into something which we can work with, unlike bytes, and that’s easy using the multi-modal namespace (<code>.image</code>).</p>
+<div class="sourceCode" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1">img_decode_resize <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> daft.col(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"image"</span>).image.decode(mode<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"RGB"</span>).image.resize(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">224</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">224</span>)</span>
+<span id="cb4-2"></span>
+<span id="cb4-3">ds_train <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> ds_train.with_column(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"image"</span>, img_decode_resize)</span></code></pre></div>
+<blockquote class="blockquote">
+<p>Transforms <code>image</code> by decoding it into <code>RGB</code> and then resizing to <code>224x224</code>.</p>
+</blockquote>
+<p>Quite cool right? There’s some great potential here!</p>
+<p>How do we apply more complex operations? UDF’s! It’s just as easy as in <code>polars</code>, simply call <code>apply</code>.</p>
+<div class="sourceCode" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">def</span> rescale_transpose(x: np.array):</span>
+<span id="cb5-2">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">return</span> (x <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">255.0</span>).transpose(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>)</span>
+<span id="cb5-3"></span>
+<span id="cb5-4">ds_train.with_column(</span>
+<span id="cb5-5">    <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"image"</span>,</span>
+<span id="cb5-6">    daft.col(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"image"</span>).<span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">apply</span>(</span>
+<span id="cb5-7">        rescale_transpose,</span>
+<span id="cb5-8">        return_dtype<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>daft.DataType.tensor(daft.DataType.float32()),</span>
+<span id="cb5-9">    ),</span>
+<span id="cb5-10">)</span></code></pre></div>
+<blockquote class="blockquote">
+<p>Applying a custom transformation. Images are represented as <code>np.array</code> and you need to define <code>return_dtype</code>.</p>
+</blockquote>
+<p>With all this available we’re good to go for a Deep Learning training pipeline!</p>
+</section>
+<section id="producing-a-pytorch-dataset" class="level2">
+<h2 class="anchored" data-anchor-id="producing-a-pytorch-dataset">Producing a PyTorch Dataset</h2>
+<p>The final part of our pipeline is to move the data into <code>torch.Tensor</code>. There’s one big gotcha - don’t apply <code>num_workers</code> as <em>daft</em> already apply multi-thread/processing optimizations!</p>
+<div class="sourceCode" id="cb6" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1">ds_train <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> ds_train.to_torch_iter_dataset()</span>
+<span id="cb6-2"></span>
+<span id="cb6-3"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># </span><span class="al" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">NOTE</span><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">: don't apply num_workers even though PyTorch warns!</span></span>
+<span id="cb6-4">dls_train <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> torch.utils.data.DataLoader(ds_train, batch_size<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">32</span>)</span></code></pre></div>
+<p>And that’s a wrap! We got all the steps to finalize the deal. How about a comparison?</p>
+</section>
+</section>
+<section id="mini-benchmark" class="level1">
+<h1>Mini Benchmark</h1>
+<p>Comparing speeds with “native” PyTorch DataLoaders is interesting and shows that Daft is on-par in speed when using their new <em>native execution engine</em> (<em>swordfish</em>). When I increase image size, i.e.&nbsp;larger data to process, I see Daft even surpassing PyTorch DataLoaders (!).</p>
+<p><strong>N.B.</strong> I’m running the full training from a HuggingFace Dataset backed by Arrow. It’s the same underlying data structure for all tests except “Folder File” one, but things might just be different if we start discussing file-loading (rather than from bytes) or even remote data.</p>
+<section id="numbers" class="level2">
+<h2 class="anchored" data-anchor-id="numbers">Numbers</h2>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 13%">
+<col style="width: 13%">
+<col style="width: 6%">
+<col style="width: 18%">
+<col style="width: 13%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Tool</th>
+<th>Num_worker</th>
+<th>Pin_memory</th>
+<th>Cache</th>
+<th>Configuration</th>
+<th>Time</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>Torch Dataset/Loader</strong></td>
+<td>None</td>
+<td>None</td>
+<td>-</td>
+<td>Default</td>
+<td>3m20s</td>
+</tr>
+<tr class="even">
+<td></td>
+<td>None</td>
+<td>None</td>
+<td>-</td>
+<td>Default</td>
+<td>3m26s</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>4</td>
+<td>True</td>
+<td>-</td>
+<td>Default</td>
+<td>4m9s</td>
+</tr>
+<tr class="even">
+<td></td>
+<td>2</td>
+<td>True</td>
+<td>-</td>
+<td>Default</td>
+<td>3m44s</td>
+</tr>
+<tr class="odd">
+<td><strong>Daft</strong></td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>daft-default</td>
+<td><strong>14m55s</strong></td>
+</tr>
+<tr class="even">
+<td></td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>daft-native</td>
+<td><strong>3m30s</strong></td>
+</tr>
+</tbody>
+</table>
+<p>Running on full sized images we get a bit more interesting results:</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 39%">
+<col style="width: 12%">
+<col style="width: 12%">
+<col style="width: 6%">
+<col style="width: 16%">
+<col style="width: 11%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Tool</th>
+<th>Num_worker</th>
+<th>Pin_memory</th>
+<th>Cache</th>
+<th>Configuration</th>
+<th>Time</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>Full Size</strong></td>
+<td>4</td>
+<td>True</td>
+<td>-</td>
+<td>torch</td>
+<td>4m19s</td>
+</tr>
+<tr class="even">
+<td><strong>Full Size</strong></td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>daft</td>
+<td><strong>3m49s</strong></td>
+</tr>
+<tr class="odd">
+<td><strong>Image Folder &amp; Files (160p)</strong></td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>torch</td>
+<td><strong>3m31s</strong></td>
+</tr>
+<tr class="even">
+<td><strong>Image Folder &amp; Files (160p)</strong></td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>daft</td>
+<td><strong>3m26s</strong></td>
+</tr>
+</tbody>
+</table>
+<p>To read a file locally using <em>daft</em> you simply do the same as you’d do with remote.</p>
+<div class="sourceCode" id="cb7" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1">df.with_column(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"image"</span>, daft.col(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"path"</span>).url.download())</span></code></pre></div>
+</section>
+</section>
+<section id="remote-data" class="level1">
+<h1>Remote data</h1>
+<p>Working with remote data is a common and interesting use-case. I think based on this research that <em>daft</em> has a good chance of performing really well, as the local files also did great.</p>
+</section>
+<section id="final-thoughts" class="level1">
+<h1>Final Thoughts</h1>
+<p>Even if <em>daft</em> has a way to go for Deep Learning training it really holds great promise. If they make the export easier to PyTorch and perhaps add TensorFlow I believe it could grow into a valuable competitor to HuggingFace Datasets et. al.</p>
+<p>As Ray is what drives OpenAI’s training I believe Daft stands on some really good scalable underlying tech and can perhaps be what joins Data Engineering and Data Science together as one, for real - a big leap forward!</p>
+<p>Thanks for this time, Hampus</p>
+<p><strong>Extra:</strong> all code is available on the git-repo for this blog, see <code>code/data_loading</code>.</p>
+
+
+</section>
+
+ ]]></description>
+  <category>TIL</category>
+  <guid>https://blog.londogard.com/posts/2024-10-24-data-loading-daft/</guid>
+  <pubDate>Thu, 24 Oct 2024 00:00:00 GMT</pubDate>
+</item>
 <item>
   <title>ZenML or ClearML? Which MLOps tool strikes best?</title>
   <dc:creator>Hampus Londögård</dc:creator>
@@ -22,7 +348,7 @@
 
 
 <p>Making it as few words as possible.</p>
-<table class="table">
+<table class="caption-top table">
 <colgroup>
 <col style="width: 33%">
 <col style="width: 33%">
@@ -121,9 +447,11 @@ font-style: inherit;">None</span>,</span>
 <span id="cb1-8"></span>
 <span id="cb1-9"><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">class</span> SimpleNN(pl.LightningModule):</span>
 <span id="cb1-10">    <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">def</span> <span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">__init__</span>(<span class="va" style="color: #111111;
@@ -164,6 +492,7 @@ font-style: inherit;">10</span>)</span>
 <span id="cb1-15"></span>
 <span id="cb1-16">    <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">def</span> forward(<span class="va" style="color: #111111;
 background-color: null;
 font-style: inherit;">self</span>, x):</span>
@@ -192,6 +521,7 @@ background-color: null;
 font-style: inherit;">self</span>.fc2(x)</span>
 <span id="cb1-22">        <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">return</span> torch.log_softmax(x, dim<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span><span class="dv" style="color: #AD0000;
@@ -200,6 +530,7 @@ font-style: inherit;">1</span>)</span>
 <span id="cb1-23"></span>
 <span id="cb1-24">    <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">def</span> training_step(<span class="va" style="color: #111111;
 background-color: null;
 font-style: inherit;">self</span>, batch, batch_idx):</span>
@@ -221,15 +552,18 @@ background-color: null;
 font-style: inherit;">"train_loss"</span>, loss)</span>
 <span id="cb1-29">        <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">return</span> loss</span>
 <span id="cb1-30"></span>
 <span id="cb1-31">    <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">def</span> test_step(<span class="va" style="color: #111111;
 background-color: null;
 font-style: inherit;">self</span>, batch, batch_idx):</span>
 <span id="cb1-32">        <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">return</span> <span class="va" style="color: #111111;
 background-color: null;
 font-style: inherit;">self</span>(batch[<span class="dv" style="color: #AD0000;
@@ -238,11 +572,13 @@ font-style: inherit;">0</span>])</span>
 <span id="cb1-33"></span>
 <span id="cb1-34">    <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">def</span> configure_optimizers(<span class="va" style="color: #111111;
 background-color: null;
 font-style: inherit;">self</span>):</span>
 <span id="cb1-35">        <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">return</span> optim.Adam(<span class="va" style="color: #111111;
 background-color: null;
 font-style: inherit;">self</span>.parameters(), lr<span class="op" style="color: #5E5E5E;
@@ -359,6 +695,7 @@ background-color: null;
 font-style: inherit;">@zenml.step</span></span>
 <span id="cb2-2"><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">def</span> load_mnist() <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">-&gt;</span> Tuple[</span>
@@ -372,6 +709,7 @@ font-style: inherit;">"test_loader"</span>],</span>
 <span id="cb2-6">    ...</span>
 <span id="cb2-7">    <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">return</span> train_loader, test_loader</span>
 <span id="cb2-8"></span>
 <span id="cb2-9"><span class="at" style="color: #657422;
@@ -379,6 +717,7 @@ background-color: null;
 font-style: inherit;">@zenml.step</span></span>
 <span id="cb2-10"><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">def</span> train_model(</span>
 <span id="cb2-11">    train_loader: torch.utils.data.DataLoader, test_loader: torch.utils.data.DataLoader</span>
 <span id="cb2-12">):</span>
@@ -399,6 +738,7 @@ background-color: null;
 font-style: inherit;">@zenml.pipeline</span></span>
 <span id="cb2-20"><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">def</span> train_pipeline():</span>
 <span id="cb2-21">    train_loader, test_loader <span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -408,6 +748,7 @@ font-style: inherit;">=</span> load_mnist()</span>
 <span id="cb2-24"></span>
 <span id="cb2-25"><span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">if</span> <span class="va" style="color: #111111;
 background-color: null;
 font-style: inherit;">__name__</span> <span class="op" style="color: #5E5E5E;
@@ -471,6 +812,7 @@ font-style: inherit;">as</span> st</span>
 <span id="cb1-4"></span>
 <span id="cb1-5"><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">def</span> main():</span>
 <span id="cb1-6">    st.write(<span class="st" style="color: #20794D;
 background-color: null;
@@ -488,6 +830,7 @@ background-color: null;
 font-style: inherit;">@st.experimental_fragment</span>()</span>
 <span id="cb1-12"><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">def</span> first_fragment():</span>
 <span id="cb1-13">    st.write(<span class="st" style="color: #20794D;
 background-color: null;
@@ -524,6 +867,7 @@ background-color: null;
 font-style: inherit;">"2s"</span>)</span>
 <span id="cb1-20"><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">def</span> second_fragment():</span>
 <span id="cb1-21">    st.write(<span class="st" style="color: #20794D;
 background-color: null;
@@ -556,6 +900,7 @@ font-style: inherit;">"Toggle me! (2nd Fragment)"</span>)</span>
 <span id="cb1-27"></span>
 <span id="cb1-28"><span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">if</span> <span class="va" style="color: #111111;
 background-color: null;
 font-style: inherit;">__name__</span> <span class="op" style="color: #5E5E5E;
@@ -572,10 +917,12 @@ font-style: inherit;">2</span>)</span>
 <span id="cb1-31"></span>
 <span id="cb1-32">    <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">with</span> c1:</span>
 <span id="cb1-33">        first_fragment()</span>
 <span id="cb1-34">    <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">with</span> c2:</span>
 <span id="cb1-35">        second_fragment()</span></code></pre></div>
 </div>
@@ -650,6 +997,7 @@ font-style: inherit;">as</span> px</span>
 <span id="cb2-6"></span>
 <span id="cb2-7"><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">def</span> main() <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">-&gt;</span> <span class="bu" style="color: null;
@@ -677,6 +1025,7 @@ font-style: inherit;">0.1</span>)</span>
 <span id="cb2-11"></span>
 <span id="cb2-12">    <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">return</span> multiplier</span>
 <span id="cb2-13"></span>
 <span id="cb2-14"></span>
@@ -685,11 +1034,13 @@ background-color: null;
 font-style: inherit;">@st.cache_resource</span></span>
 <span id="cb2-16"><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">def</span> get_stocks() <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">-&gt;</span> pl.DataFrame:</span>
 <span id="cb2-17">    <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">return</span> pl.read_csv(</span>
 <span id="cb2-18">        <span class="st" style="color: #20794D;
 background-color: null;
@@ -702,6 +1053,7 @@ background-color: null;
 font-style: inherit;">@st.experimental_fragment</span>()</span>
 <span id="cb2-23"><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">def</span> first_fragment(multiplier: <span class="bu" style="color: null;
 background-color: null;
 font-style: inherit;">float</span>):</span>
@@ -780,6 +1132,7 @@ background-color: null;
 font-style: inherit;">"2s"</span>)</span>
 <span id="cb2-37"><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">def</span> second_fragment(multiplier: <span class="bu" style="color: null;
 background-color: null;
 font-style: inherit;">float</span>):</span>
@@ -794,11 +1147,14 @@ font-style: inherit;">2</span>)</span>
 <span id="cb2-40"></span>
 <span id="cb2-41">    <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">with</span> c1:</span>
 <span id="cb2-42">        <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">if</span> <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">not</span> st.checkbox(<span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">"Lock company"</span>):</span>
@@ -817,6 +1173,7 @@ font-style: inherit;">"AMZN"</span>]</span>
 <span id="cb2-45">            )</span>
 <span id="cb2-46">    <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">with</span> c2:</span>
 <span id="cb2-47">        ticker <span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -884,6 +1241,7 @@ font-style: inherit;">True</span>,</span>
 <span id="cb2-60"></span>
 <span id="cb2-61"><span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">if</span> <span class="va" style="color: #111111;
 background-color: null;
 font-style: inherit;">__name__</span> <span class="op" style="color: #5E5E5E;
@@ -902,10 +1260,12 @@ font-style: inherit;">2</span>)</span>
 <span id="cb2-64"></span>
 <span id="cb2-65">    <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">with</span> c1:</span>
 <span id="cb2-66">        first_fragment(multiplier)</span>
 <span id="cb2-67">    <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">with</span> c2:</span>
 <span id="cb2-68">        second_fragment(multiplier)</span></code></pre></div>
 </div>
@@ -1087,6 +1447,7 @@ font-style: inherit;">$PATH</span></span></code></pre></div>
 <p>In a Dockerfile it ends up as follows.</p>
 <div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode dockerfile code-with-copy"><code class="sourceCode dockerfile"><span id="cb2-1"><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">RUN</span> <span class="ex" style="color: null;
 background-color: null;
 font-style: inherit;">useradd</span> <span class="at" style="color: #657422;
@@ -1096,10 +1457,12 @@ background-color: null;
 font-style: inherit;">-u</span> 1000 user</span>
 <span id="cb2-2"><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">USER</span> user</span>
 <span id="cb2-3"></span>
 <span id="cb2-4"><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">COPY</span> <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">--chown=user</span> . /app</span>
@@ -1116,23 +1479,28 @@ font-style: inherit;">--chown=user</span> . /app</span>
 <p>This was a huge blocker for me and took a long while to understand. To enable my deployment I instead of creating a custom user hijacked the existing user <code>vscode</code>. See the final <code>Dockerfile</code>.</p>
 <div class="sourceCode" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode dockerfile code-with-copy"><code class="sourceCode dockerfile"><span id="cb3-1"><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">FROM</span> mcr.microsoft.com/vscode/devcontainers/miniconda:latest</span>
 <span id="cb3-2"></span>
 <span id="cb3-3"><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">USER</span> vscode</span>
 <span id="cb3-4"></span>
 <span id="cb3-5"><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">COPY</span> <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">--chown=vscode</span> . /app</span>
 <span id="cb3-6"><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">WORKDIR</span> /app</span>
 <span id="cb3-7"></span>
 <span id="cb3-8"><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">RUN</span> <span class="ex" style="color: null;
 background-color: null;
 font-style: inherit;">conda</span> env create <span class="at" style="color: #657422;
@@ -1140,6 +1508,7 @@ background-color: null;
 font-style: inherit;">-f</span> env.yml</span>
 <span id="cb3-9"><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">RUN</span> <span class="ex" style="color: null;
 background-color: null;
 font-style: inherit;">conda</span> clean <span class="at" style="color: #657422;
@@ -1149,20 +1518,24 @@ background-color: null;
 font-style: inherit;">-y</span></span>
 <span id="cb3-10"><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">RUN</span> <span class="ex" style="color: null;
 background-color: null;
 font-style: inherit;">conda</span> init</span>
 <span id="cb3-11"></span>
 <span id="cb3-12"><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">EXPOSE</span> 8765</span>
 <span id="cb3-13"></span>
 <span id="cb3-14"><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">ENV</span> PATH /opt/conda/envs/highlights/bin/:$PATH</span>
 <span id="cb3-15"></span>
 <span id="cb3-16"><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">CMD</span> [<span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">"solara"</span>, <span class="st" style="color: #20794D;
@@ -1258,7 +1631,7 @@ font-style: inherit;">"--host=0.0.0.0"</span>]</span></code></pre></div>
 <section id="choices-during-my-journey" class="level2">
 <h2 class="anchored" data-anchor-id="choices-during-my-journey">Choices during my Journey</h2>
 <p>I was contemplating four (4) options to deploy my resulting model.</p>
-<table class="table">
+<table class="caption-top table">
 <colgroup>
 <col style="width: 13%">
 <col style="width: 31%">
@@ -1469,6 +1842,7 @@ background-color: null;
 font-style: inherit;">@solara.component</span>()</span>
 <span id="cb1-2"><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">def</span> ProgressDynamic(</span>
 <span id="cb1-3">    msg: <span class="bu" style="color: null;
 background-color: null;
@@ -1477,6 +1851,7 @@ font-style: inherit;">str</span>,</span>
 <span id="cb1-5">):</span>
 <span id="cb1-6">    <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">if</span> result.state <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">==</span> solara.ResultState.RUNNING:</span>
@@ -1515,6 +1890,7 @@ background-color: null;
 font-style: inherit;">@solara.component</span></span>
 <span id="cb3-2"><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">def</span> CutOffChartSelection(</span>
 <span id="cb3-3">    cut_off: solara.Reactive[<span class="bu" style="color: null;
 background-color: null;
@@ -1566,6 +1942,7 @@ font-style: inherit;">"end_points"</span>,</span>
 <span id="cb3-14">    )</span>
 <span id="cb3-15">    <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">with</span> div:</span>
 <span id="cb3-16">        fig <span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -1605,6 +1982,7 @@ background-color: null;
 font-style: inherit;">@solara.component</span></span>
 <span id="cb4-2"><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">def</span> ModelFileSelectComponent(</span>
 <span id="cb4-3">    <span class="bu" style="color: null;
 background-color: null;
@@ -1623,11 +2001,13 @@ background-color: null;
 font-style: inherit;">=</span> ...</span>
 <span id="cb4-8">    <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">with</span> solara.Card(<span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">"Select Video/Model"</span>):</span>
 <span id="cb4-9">        <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">with</span> solara.Columns():</span>
 <span id="cb4-10">            solara.Select(<span class="st" style="color: #20794D;
 background-color: null;
@@ -1664,6 +2044,7 @@ background-color: null;
 font-style: inherit;">@solara.memoize</span></span>
 <span id="cb5-3"><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">def</span> slow_func(...): ...</span>
 <span id="cb5-4">result <span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -1674,11 +2055,13 @@ background-color: null;
 font-style: inherit;"># 2. Run thread directly</span></span>
 <span id="cb5-7"><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">def</span> slow_func_2(...): ...</span>
 <span id="cb5-8">result <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> solara.use_thread(<span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">lambda</span>: slow_func_2(...), dependencies<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span>...)</span></code></pre></div>
@@ -1698,6 +2081,7 @@ font-style: inherit;">=</span> write_video.use_thread(...)</span>
 <span id="cb6-2"></span>
 <span id="cb6-3"><span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">if</span> res.state <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">==</span> solara.ResultState.RUNNING:</span>
@@ -1706,6 +2090,7 @@ background-color: null;
 font-style: inherit;">"Writing video..."</span>)</span>
 <span id="cb6-5"><span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">elif</span> res.state <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">==</span> solara.ResultState.FINISHED:</span>
@@ -1718,6 +2103,7 @@ font-style: inherit;">==</span> solara.ResultState.FINISHED:</span>
 <p>I implemented a really cool Plotly Callback through Solara’s integration. It allows the user to select a subset of the video by “zooming”/”dragging”. It’s a clean approach to selecting sub-parts of videos to build the full video, i.e.&nbsp;one game at a time and not the full stream! See Figure&nbsp;1.</p>
 <div class="sourceCode" id="cb7" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">def</span> update_vals(relayout_dict: <span class="bu" style="color: null;
 background-color: null;
 font-style: inherit;">dict</span>[<span class="bu" style="color: null;
@@ -1729,10 +2115,13 @@ background-color: null;
 font-style: inherit;">None</span>):</span>
 <span id="cb7-2">    <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">if</span> relayout_dict <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">is</span> <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">not</span> <span class="va" style="color: #111111;
 background-color: null;
 font-style: inherit;">None</span>:</span>
@@ -1763,7 +2152,7 @@ font-style: inherit;">True</span>),</span>
 <span id="cb7-9">solara.FigurePlotly(fig, on_relayout<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span>update_vals)</span></code></pre></div>
-<div id="fig-plotly" class="quarto-figure quarto-figure-center quarto-float anchored">
+<div id="fig-plotly" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-plotly-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <video src="imgs/full_app_use.mp4" class="img-fluid" controls=""><a href="imgs/full_app_use.mp4">Video</a></video>
@@ -1948,7 +2337,7 @@ For this dataset I could only keep labels in-memory, but doing that makes sense 
 </figure>
 </div>
 <p>And to build my highlights I did a <code>rolling_sum</code> on the last 30 seconds of predictions, giving a <em><strong>highlight intensity</strong></em> chart as shown in Figure&nbsp;1.</p>
-<div id="fig-intensity" class="quarto-figure quarto-figure-center quarto-float anchored">
+<div id="fig-intensity" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-intensity-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="https://blog.londogard.com/posts/2023-09-10-highlights-lol/imgs/highlights_test.png" class="img-fluid figure-img">
@@ -1979,6 +2368,7 @@ Data Splitter
 <div class="callout-body-container callout-body">
 <div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">def</span> chunk_splitter(total_size: <span class="bu" style="color: null;
 background-color: null;
 font-style: inherit;">int</span>, chunk_size: <span class="bu" style="color: null;
@@ -2015,8 +2405,10 @@ font-style: inherit;">"int"</span>)</span>
 <span id="cb2-4"></span>
 <span id="cb2-5">    <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">for</span> index <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">in</span> val_idxs:</span>
 <span id="cb2-6">        index <span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -2031,6 +2423,7 @@ font-style: inherit;">1</span></span>
 <span id="cb2-8"></span>
 <span id="cb2-9">    <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">return</span> is_valid</span></code></pre></div>
 </div>
 </div>
@@ -2049,9 +2442,11 @@ FrameDataset
 <div class="callout-body-container callout-body">
 <div class="sourceCode" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">class</span> FrameDataset(Dataset):</span>
 <span id="cb3-2">  <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">def</span> <span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">__init__</span>(<span class="va" style="color: #111111;
@@ -2100,6 +2495,7 @@ background-color: null;
 font-style: inherit;">=</span> is_train</span>
 <span id="cb3-12">        <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">if</span> is_train:</span>
 <span id="cb3-13">          <span class="va" style="color: #111111;
 background-color: null;
@@ -2124,10 +2520,12 @@ font-style: inherit;">self</span>.stride <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> stride <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">or</span> frames_per_clip</span>
 <span id="cb3-17"></span>
 <span id="cb3-18">  <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">def</span> <span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">__len__</span>(<span class="va" style="color: #111111;
@@ -2135,6 +2533,7 @@ background-color: null;
 font-style: inherit;">self</span>):</span>
 <span id="cb3-19">      <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">return</span> <span class="bu" style="color: null;
 background-color: null;
 font-style: inherit;">len</span>(<span class="va" style="color: #111111;
@@ -2147,6 +2546,7 @@ font-style: inherit;">self</span>.stride</span>
 <span id="cb3-20"></span>
 <span id="cb3-21">  <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">def</span> <span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">__getitem__</span>(<span class="va" style="color: #111111;
@@ -2168,6 +2568,7 @@ background-color: null;
 font-style: inherit;">self</span>.frames_per_clip</span>
 <span id="cb3-24">      <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">if</span> stop<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">-</span>start<span class="op" style="color: #5E5E5E;
@@ -2187,6 +2588,7 @@ background-color: null;
 font-style: inherit;">self</span>._open_augment_img(path)</span>
 <span id="cb3-27">        <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">if</span> <span class="va" style="color: #111111;
 background-color: null;
 font-style: inherit;">self</span>.is_train:</span>
@@ -2197,6 +2599,7 @@ background-color: null;
 font-style: inherit;">self</span>.y[start]</span>
 <span id="cb3-29">      <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">else</span>:</span>
 <span id="cb3-30">        frames <span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -2204,8 +2607,10 @@ font-style: inherit;">=</span> [<span class="va" style="color: #111111;
 background-color: null;
 font-style: inherit;">self</span>._open_augment_img(path) <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">for</span> path <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">in</span> <span class="va" style="color: #111111;
 background-color: null;
 font-style: inherit;">self</span>.paths[start:stop]]</span>
@@ -2214,6 +2619,7 @@ background-color: null;
 font-style: inherit;">=</span> torch.stack(frames)</span>
 <span id="cb3-32">        <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">if</span> <span class="va" style="color: #111111;
 background-color: null;
 font-style: inherit;">self</span>.is_train:</span>
@@ -2226,21 +2632,26 @@ background-color: null;
 font-style: inherit;">max</span>()</span>
 <span id="cb3-34">      <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">if</span> <span class="va" style="color: #111111;
 background-color: null;
 font-style: inherit;">self</span>.is_train:</span>
 <span id="cb3-35">        <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">return</span> frames_tr, y</span>
 <span id="cb3-36">      <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">else</span>:</span>
 <span id="cb3-37">        <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">return</span> frames_tr</span>
 <span id="cb3-38"></span>
 <span id="cb3-39">  <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">def</span> _open_augment_img(<span class="va" style="color: #111111;
 background-color: null;
 font-style: inherit;">self</span>, path):</span>
@@ -2254,6 +2665,7 @@ background-color: null;
 font-style: inherit;">self</span>.augments(img)</span>
 <span id="cb3-42">      <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">return</span> img</span></code></pre></div>
 </div>
 </div>
@@ -2272,9 +2684,11 @@ Lightning DataModule
 <div class="callout-body-container callout-body">
 <div class="sourceCode" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">class</span> FrameDataModule(L.LightningDataModule):</span>
 <span id="cb4-2">    <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">def</span> <span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">__init__</span>(<span class="va" style="color: #111111;
@@ -2388,11 +2802,13 @@ font-style: inherit;">self</span>.dataset, val_indices)</span>
 <span id="cb4-20"></span>
 <span id="cb4-21">    <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">def</span> train_dataloader(<span class="va" style="color: #111111;
 background-color: null;
 font-style: inherit;">self</span>):</span>
 <span id="cb4-22">        <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">return</span> DataLoader(<span class="va" style="color: #111111;
 background-color: null;
 font-style: inherit;">self</span>.ds_train, shuffle<span class="op" style="color: #5E5E5E;
@@ -2415,11 +2831,13 @@ font-style: inherit;">self</span>.pin_memory)</span>
 <span id="cb4-23"></span>
 <span id="cb4-24">    <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">def</span> val_dataloader(<span class="va" style="color: #111111;
 background-color: null;
 font-style: inherit;">self</span>):</span>
 <span id="cb4-25">        <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">return</span> DataLoader(<span class="va" style="color: #111111;
 background-color: null;
 font-style: inherit;">self</span>.ds_val, batch_size<span class="op" style="color: #5E5E5E;
@@ -2455,9 +2873,11 @@ Image Classifier (ResNet)
 <div class="callout-body-container callout-body">
 <div class="sourceCode" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">class</span> ResNetClassifier(nn.Module):</span>
 <span id="cb5-2">    <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">def</span> <span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">__init__</span>(<span class="va" style="color: #111111;
@@ -2494,11 +2914,13 @@ font-style: inherit;">self</span>.model.fc.in_features, num_classes)</span>
 <span id="cb5-7"></span>
 <span id="cb5-8">    <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">def</span> forward(<span class="va" style="color: #111111;
 background-color: null;
 font-style: inherit;">self</span>, x):</span>
 <span id="cb5-9">        <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">return</span> <span class="va" style="color: #111111;
 background-color: null;
 font-style: inherit;">self</span>.model(x)</span></code></pre></div>
@@ -2519,9 +2941,11 @@ Video Classifier (RNN+ResNet)
 <div class="callout-body-container callout-body">
 <div class="sourceCode" id="cb6" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">class</span> RNNClassifier(nn.Module):</span>
 <span id="cb6-2">    <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">def</span> <span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">__init__</span>(<span class="va" style="color: #111111;
@@ -2597,6 +3021,7 @@ font-style: inherit;">256</span>, num_classes)</span>
 <span id="cb6-14"></span>
 <span id="cb6-15">    <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">def</span> forward(<span class="va" style="color: #111111;
 background-color: null;
 font-style: inherit;">self</span>, x):</span>
@@ -2606,8 +3031,10 @@ font-style: inherit;">=</span> []</span>
 <span id="cb6-17"></span>
 <span id="cb6-18">      <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">for</span> i <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">in</span> <span class="bu" style="color: null;
 background-color: null;
 font-style: inherit;">range</span>(x.shape[<span class="dv" style="color: #AD0000;
@@ -2653,6 +3080,7 @@ font-style: inherit;">self</span>.classifier(out)</span>
 <span id="cb6-28"></span>
 <span id="cb6-29">      <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">return</span> out</span></code></pre></div>
 </div>
 </div>
@@ -2698,9 +3126,11 @@ font-style: inherit;">import</span> torchmetrics</span>
 <span id="cb7-7"></span>
 <span id="cb7-8"><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">class</span> LightningWrapper(L.LightningModule):</span>
 <span id="cb7-9">    <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">def</span> <span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">__init__</span>(<span class="va" style="color: #111111;
@@ -2761,17 +3191,20 @@ font-style: inherit;">"val_"</span>)</span>
 <span id="cb7-18"></span>
 <span id="cb7-19">    <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">def</span> forward(<span class="va" style="color: #111111;
 background-color: null;
 font-style: inherit;">self</span>, x):</span>
 <span id="cb7-20">        <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">return</span> <span class="va" style="color: #111111;
 background-color: null;
 font-style: inherit;">self</span>.model(x)</span>
 <span id="cb7-21"></span>
 <span id="cb7-22">    <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">def</span> training_step(<span class="va" style="color: #111111;
 background-color: null;
 font-style: inherit;">self</span>, batch, batch_idx):</span>
@@ -2805,10 +3238,12 @@ background-color: null;
 font-style: inherit;">True</span>)</span>
 <span id="cb7-29">        <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">return</span> loss</span>
 <span id="cb7-30"></span>
 <span id="cb7-31">    <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">def</span> validation_step(<span class="va" style="color: #111111;
 background-color: null;
 font-style: inherit;">self</span>, batch, batch_idx):</span>
@@ -2843,6 +3278,7 @@ font-style: inherit;">True</span>)</span>
 <span id="cb7-38"></span>
 <span id="cb7-39">    <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">def</span> configure_optimizers(<span class="va" style="color: #111111;
 background-color: null;
 font-style: inherit;">self</span>):</span>
@@ -2857,6 +3293,7 @@ background-color: null;
 font-style: inherit;">self</span>.lr)</span>
 <span id="cb7-41">        <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">return</span> optimizer</span></code></pre></div>
 </div>
 </div>
@@ -2962,6 +3399,7 @@ font-style: inherit;">"."</span>)])</span>
 <span id="cb8-20"></span>
 <span id="cb8-21"><span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">with</span> mlflow.start_run():</span>
 <span id="cb8-22">  trainer.fit(model, datamodule<span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -3059,6 +3497,7 @@ background-color: null;
 font-style: inherit;">@solara.component</span></span>
 <span id="cb1-5"><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">def</span> Page():</span>
 <span id="cb1-6">    <span class="bu" style="color: null;
 background-color: null;
@@ -3079,12 +3518,15 @@ background-color: null;
 font-style: inherit;">False</span>)</span>
 <span id="cb1-9">    <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">if</span> <span class="bu" style="color: null;
 background-color: null;
 font-style: inherit;">file</span> <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">is</span> <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">not</span> <span class="va" style="color: #111111;
 background-color: null;
 font-style: inherit;">None</span>:</span>
@@ -3104,6 +3546,7 @@ background-color: null;
 font-style: inherit;"># currently does not support polars</span></span>
 <span id="cb1-12">    <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">else</span>:</span>
 <span id="cb1-13">        solara.Text(<span class="st" style="color: #20794D;
 background-color: null;
@@ -3143,7 +3586,7 @@ We can then send this to a child-component which would be updated as well when i
 <p>A comparison between the two is available in Section&nbsp;1, where I use multiple components and share state between them. If you add some logging you can see that <strong>Solara doesn’t rerun code unnecessarily</strong>.</p>
 <section id="quick-facts" class="level3">
 <h3 class="anchored" data-anchor-id="quick-facts">Quick Facts</h3>
-<table class="table">
+<table class="caption-top table">
 <tbody>
 <tr class="odd">
 <td>Measurement</td>
@@ -3337,6 +3780,7 @@ background-color: null;
 font-style: inherit;">@solara.component</span></span>
 <span id="cb6-7"><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">def</span> Page():</span>
 <span id="cb6-8">    <span class="bu" style="color: null;
 background-color: null;
@@ -3358,12 +3802,15 @@ background-color: null;
 font-style: inherit;">False</span>)</span>
 <span id="cb6-12">    <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">if</span> <span class="bu" style="color: null;
 background-color: null;
 font-style: inherit;">file</span> <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">is</span> <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">not</span> <span class="va" style="color: #111111;
 background-color: null;
 font-style: inherit;">None</span>:</span>
@@ -3381,6 +3828,7 @@ font-style: inherit;">"-"</span>).drop_nulls()</span>
 <span id="cb6-14">        DFViews(df)</span>
 <span id="cb6-15">    <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">else</span>:</span>
 <span id="cb6-16">        solara.Text(<span class="st" style="color: #20794D;
 background-color: null;
@@ -3391,6 +3839,7 @@ background-color: null;
 font-style: inherit;">@dataclass</span></span>
 <span id="cb6-19"><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">class</span> FilterValues:</span>
 <span id="cb6-20">    sodium: <span class="bu" style="color: null;
 background-color: null;
@@ -3412,9 +3861,11 @@ background-color: null;
 font-style: inherit;">@solara.component</span></span>
 <span id="cb6-24"><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">def</span> Filters(df: pl.DataFrame, filters: solara.Reactive[FilterValues]):</span>
 <span id="cb6-25">    <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">with</span> solara.Card(<span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">"Filter DataFrame"</span>):</span>
@@ -3485,6 +3936,7 @@ font-style: inherit;">max</span>())</span>
 <span id="cb6-30">        </span>
 <span id="cb6-31">        <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">with</span> solara.CardActions():</span>
 <span id="cb6-32">            solara.Button(<span class="st" style="color: #20794D;
 background-color: null;
@@ -3492,6 +3944,7 @@ font-style: inherit;">"Submit"</span>, on_click<span class="op" style="color: #5
 background-color: null;
 font-style: inherit;">=</span><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">lambda</span>: filters.<span class="bu" style="color: null;
 background-color: null;
 font-style: inherit;">set</span>(FilterValues(sodium.value, carbs.value)))</span>
@@ -3501,6 +3954,7 @@ background-color: null;
 font-style: inherit;">@solara.component</span></span>
 <span id="cb6-35"><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">def</span> FilteredPage(df: pl.DataFrame, filter_values: solara.Reactive[FilterValues]):</span>
 <span id="cb6-36">    df <span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -3529,6 +3983,7 @@ background-color: null;
 font-style: inherit;">@solara.component</span></span>
 <span id="cb6-41"><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">def</span> DFVis(df: pl.DataFrame):</span>
 <span id="cb6-42">    solara.Markdown(<span class="ss" style="color: #20794D;
 background-color: null;
@@ -3551,6 +4006,7 @@ background-color: null;
 font-style: inherit;">@solara.component</span></span>
 <span id="cb6-47"><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">def</span> DFViews(df: pl.DataFrame):</span>
 <span id="cb6-48">    filter_values <span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -3574,6 +4030,7 @@ font-style: inherit;">max</span>())))</span>
 <span id="cb6-49">    Filters(df, filter_values)</span>
 <span id="cb6-50">    <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">with</span> solara.Columns():</span>
 <span id="cb6-51">            DFVis(df)</span>
 <span id="cb6-52">            FilteredPage(df, filter_values)</span></code></pre></div>
@@ -3604,6 +4061,7 @@ font-style: inherit;">as</span> px</span>
 <span id="cb7-5"></span>
 <span id="cb7-6"><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">def</span> Page():</span>
 <span id="cb7-7">    st.markdown(<span class="st" style="color: #20794D;
 background-color: null;
@@ -3617,12 +4075,15 @@ background-color: null;
 font-style: inherit;">"Upload a file"</span>)</span>
 <span id="cb7-9">    <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">if</span> <span class="bu" style="color: null;
 background-color: null;
 font-style: inherit;">file</span> <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">is</span> <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">not</span> <span class="va" style="color: #111111;
 background-color: null;
 font-style: inherit;">None</span>:</span>
@@ -3638,6 +4099,7 @@ font-style: inherit;">"-"</span>).drop_nulls()</span>
 <span id="cb7-11">        DFViews(df)</span>
 <span id="cb7-12">    <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">else</span>:</span>
 <span id="cb7-13">        st.write(<span class="st" style="color: #20794D;
 background-color: null;
@@ -3648,6 +4110,7 @@ background-color: null;
 font-style: inherit;">@dataclass</span></span>
 <span id="cb7-16"><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">class</span> FilterValues:</span>
 <span id="cb7-17">    sodium: <span class="bu" style="color: null;
 background-color: null;
@@ -3666,11 +4129,13 @@ font-style: inherit;">int</span>]</span>
 <span id="cb7-19"></span>
 <span id="cb7-20"><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">def</span> Filters(df: pl.DataFrame) <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">-&gt;</span> FilterValues:</span>
 <span id="cb7-21">    <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">with</span> st.form(<span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">"df_filer"</span>):</span>
@@ -3735,10 +4200,12 @@ background-color: null;
 font-style: inherit;">"Submit"</span>)</span>
 <span id="cb7-29">    <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">return</span> FilterValues(sodium, carbs)</span>
 <span id="cb7-30"></span>
 <span id="cb7-31"><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">def</span> FilteredPage(df: pl.DataFrame, filter_values: FilterValues):</span>
 <span id="cb7-32">    df <span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -3764,6 +4231,7 @@ font-style: inherit;">1</span>]))</span>
 <span id="cb7-35"></span>
 <span id="cb7-36"><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">def</span> DFVis(df: pl.DataFrame):</span>
 <span id="cb7-37">    st.markdown(<span class="ss" style="color: #20794D;
 background-color: null;
@@ -3779,6 +4247,7 @@ font-style: inherit;">"Sodium"</span>]))</span>
 <span id="cb7-40"></span>
 <span id="cb7-41"><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">def</span> DFViews(df: pl.DataFrame):</span>
 <span id="cb7-42">    filters <span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -3790,10 +4259,12 @@ background-color: null;
 font-style: inherit;">2</span>)</span>
 <span id="cb7-44">    <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">with</span> c1:</span>
 <span id="cb7-45">        DFVis(df)</span>
 <span id="cb7-46">    <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">with</span> c2:</span>
 <span id="cb7-47">        FilteredPage(df, filters)</span>
 <span id="cb7-48"></span>
@@ -4339,18 +4810,22 @@ font-style: inherit;">=</span> [<span class="dv" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">0</span> <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">if</span> x <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">==</span> <span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">'None'</span> <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">else</span> <span class="dv" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">1</span> <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">for</span> x <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">in</span> annotation_labels]</span></code></pre></div>
 </div>
 </section>
@@ -4497,8 +4972,7 @@ font-style: inherit;">;</span>metrics</span></code></pre></div>
   Num examples = 640
   Num epochs = 1
   Total optimization steps = 80
-  Total train batch size = 8
-***** Running evaluation *****</code></pre>
+  Total train batch size = 8</code></pre>
 </div>
 <div class="cell-output cell-output-display">
 <script type="application/vnd.jupyter.widget-view+json">
@@ -4514,6 +4988,9 @@ font-style: inherit;">;</span>metrics</span></code></pre></div>
 <script type="application/vnd.jupyter.widget-view+json">
 {"model_id":"ce4b1d23ff714c86bdde4391960992cf","version_major":2,"version_minor":0,"quarto_mimetype":"application/vnd.jupyter.widget-view+json"}
 </script>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>***** Running evaluation *****</code></pre>
 </div>
 <div class="cell-output cell-output-display">
 <script type="application/vnd.jupyter.widget-view+json">
@@ -4533,14 +5010,14 @@ font-style: inherit;">;</span>metrics</span></code></pre></div>
 <p>1.0 accuracy on the 7 reviews in the evaluation dataset, that’s amazing!<br>
 …How about a custom test?</p>
 <div id="cell-21" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2023-03-27T17:45:06.985717Z&quot;,&quot;iopub.status.busy&quot;:&quot;2023-03-27T17:45:06.984191Z&quot;,&quot;iopub.status.idle&quot;:&quot;2023-03-27T17:45:07.026774Z&quot;,&quot;shell.execute_reply&quot;:&quot;2023-03-27T17:45:07.025780Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2023-03-27T17:45:06.985677Z&quot;}" data-trusted="true" data-execution_count="9">
-<div class="sourceCode cell-code" id="cb12" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1">model([</span>
-<span id="cb12-2">    <span class="st" style="color: #20794D;
+<div class="sourceCode cell-code" id="cb13" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1">model([</span>
+<span id="cb13-2">    <span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">"I'd like the portions to be larger and the tables are very small. The food otherwise is pretty good!"</span>,</span>
-<span id="cb12-3">    <span class="st" style="color: #20794D;
+<span id="cb13-3">    <span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">"The food is simply amazing! A must go!"</span></span>
-<span id="cb12-4">])</span></code></pre></div>
+<span id="cb13-4">])</span></code></pre></div>
 <div class="cell-output cell-output-display">
 <script type="application/vnd.jupyter.widget-view+json">
 {"model_id":"c4316b69f3a64053abe16c8c70e8ac2a","version_major":2,"version_minor":0,"quarto_mimetype":"application/vnd.jupyter.widget-view+json"}
@@ -4588,21 +5065,21 @@ Even without a NER I think the results are impressive and has good impact.</p>
 <section id="data-analysis-reviews" class="level3">
 <h3 class="anchored" data-anchor-id="data-analysis-reviews">Data Analysis: Reviews</h3>
 <div id="cell-29" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2023-04-01T08:32:00.632463Z&quot;,&quot;iopub.status.busy&quot;:&quot;2023-04-01T08:32:00.632076Z&quot;,&quot;iopub.status.idle&quot;:&quot;2023-04-01T08:32:52.139130Z&quot;,&quot;shell.execute_reply&quot;:&quot;2023-04-01T08:32:52.137888Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2023-04-01T08:32:00.632431Z&quot;}" data-trusted="true" data-execution_count="1">
-<div class="sourceCode cell-code" id="cb14" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><span class="im" style="color: #00769E;
+<div class="sourceCode cell-code" id="cb15" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><span class="im" style="color: #00769E;
 background-color: null;
 font-style: inherit;">import</span> polars <span class="im" style="color: #00769E;
 background-color: null;
 font-style: inherit;">as</span> pl</span>
-<span id="cb14-2"></span>
-<span id="cb14-3">df_review_all <span class="op" style="color: #5E5E5E;
+<span id="cb15-2"></span>
+<span id="cb15-3">df_review_all <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> pl.scan_ndjson(<span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">"/kaggle/input/yelp-dataset/yelp_academic_dataset_review.json"</span>) <span class="co" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;"># scan, once again lazy.</span></span>
-<span id="cb14-4"></span>
-<span id="cb14-5"><span class="co" style="color: #5E5E5E;
+<span id="cb15-4"></span>
+<span id="cb15-5"><span class="co" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">"Number of reviews"</span>, df_review_all.select(pl.count()).collect(streaming<span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -4620,7 +5097,7 @@ font-style: inherit;">0</span>]</span></code></pre></div>
 <p>That’s a lot of reviews, we should probably sample fewer to examine.<br>
 Making use of <code>pl.LazyFrame</code> we make sure to read the full dataset, but rather we do <code>take_every</code> which means we skip loading 999/1000 rows, later sampling <img src="https://latex.codecogs.com/png.latex?1000"> of the final dataset.</p>
 <div id="cell-31" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2023-03-29T17:31:47.846259Z&quot;,&quot;iopub.status.busy&quot;:&quot;2023-03-29T17:31:47.845620Z&quot;,&quot;iopub.status.idle&quot;:&quot;2023-03-29T17:32:26.906128Z&quot;,&quot;shell.execute_reply&quot;:&quot;2023-03-29T17:32:26.905031Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2023-03-29T17:31:47.846220Z&quot;}" data-trusted="true" data-execution_count="7">
-<div class="sourceCode cell-code" id="cb16" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1">df_review_sample <span class="op" style="color: #5E5E5E;
+<div class="sourceCode cell-code" id="cb17" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1">df_review_sample <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> df_review_all.take_every(<span class="dv" style="color: #AD0000;
 background-color: null;
@@ -4633,11 +5110,11 @@ background-color: null;
 font-style: inherit;">=</span><span class="dv" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">42</span>)</span>
-<span id="cb16-2"></span>
-<span id="cb16-3"><span class="bu" style="color: null;
+<span id="cb17-2"></span>
+<span id="cb17-3"><span class="bu" style="color: null;
 background-color: null;
 font-style: inherit;">print</span>(df_review_sample.schema)</span>
-<span id="cb16-4"><span class="co" style="color: #5E5E5E;
+<span id="cb17-4"><span class="co" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">"Review: "</span>, df_review_sample[<span class="dv" style="color: #AD0000;
 background-color: null;
@@ -4660,16 +5137,15 @@ font-style: inherit;">"text"</span>]</span></code></pre></div>
 <p>We should view the other files too, to validate what the data contains and so on.<br>
 Let’s use <code>pl.LazyFrame.limit</code> to make sure we only read 3 samples and never open the rest of the data.</p>
 <div id="cell-34" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2023-03-29T17:38:14.298314Z&quot;,&quot;iopub.status.busy&quot;:&quot;2023-03-29T17:38:14.297235Z&quot;,&quot;iopub.status.idle&quot;:&quot;2023-03-29T17:38:14.401831Z&quot;,&quot;shell.execute_reply&quot;:&quot;2023-03-29T17:38:14.400858Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2023-03-29T17:38:14.298273Z&quot;}" data-trusted="true" data-execution_count="9">
-<div class="sourceCode cell-code" id="cb19" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1">df_business <span class="op" style="color: #5E5E5E;
+<div class="sourceCode cell-code" id="cb20" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1">df_business <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> pl.scan_ndjson(<span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">"/kaggle/input/yelp-dataset/yelp_academic_dataset_business.json"</span>)</span>
-<span id="cb19-2">df_business.limit(<span class="dv" style="color: #AD0000;
+<span id="cb20-2">df_business.limit(<span class="dv" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">3</span>).collect()</span></code></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="9">
-<div>
 <div><style>
 .dataframe > thead > tr > th,
 .dataframe > tbody > tr > td {
@@ -4677,7 +5153,7 @@ font-style: inherit;">3</span>).collect()</span></code></pre></div>
 }
 </style>
 <small>shape: (3, 14)</small>
-<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
 <thead>
 <tr class="header">
 <th data-quarto-table-cell-role="th">business_id</th>
@@ -4766,11 +5242,10 @@ font-style: inherit;">3</span>).collect()</span></code></pre></div>
 </div>
 </div>
 </div>
-</div>
 <p>Interesting, there’s a lot of things we don’t really care about. But <code>stars</code> &amp; <code>review_count</code> is relevant.</p>
 <p>So which restaurant has the most stars? What is their count?</p>
 <div id="cell-36" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2023-03-29T17:41:57.551243Z&quot;,&quot;iopub.status.busy&quot;:&quot;2023-03-29T17:41:57.550854Z&quot;,&quot;iopub.status.idle&quot;:&quot;2023-03-29T17:41:58.047163Z&quot;,&quot;shell.execute_reply&quot;:&quot;2023-03-29T17:41:58.046163Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2023-03-29T17:41:57.551209Z&quot;}" data-trusted="true" data-execution_count="14">
-<div class="sourceCode cell-code" id="cb20" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1">df_business.sort(<span class="st" style="color: #20794D;
+<div class="sourceCode cell-code" id="cb21" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1">df_business.sort(<span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">"review_count"</span>, descending<span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -4786,7 +5261,6 @@ font-style: inherit;">"review_count"</span>]).limit(<span class="dv" style="colo
 background-color: null;
 font-style: inherit;">3</span>).collect()</span></code></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="14">
-<div>
 <div><style>
 .dataframe > thead > tr > th,
 .dataframe > tbody > tr > td {
@@ -4794,7 +5268,7 @@ font-style: inherit;">3</span>).collect()</span></code></pre></div>
 }
 </style>
 <small>shape: (3, 3)</small>
-<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
 <thead>
 <tr class="header">
 <th data-quarto-table-cell-role="th">business_id</th>
@@ -4828,14 +5302,13 @@ font-style: inherit;">3</span>).collect()</span></code></pre></div>
 </div>
 </div>
 </div>
-</div>
 <p>The most reviewed business has 7.5k reviews (!) and is averaging 4 stars, which is pretty great!<br>
 I’ll later choose this restaurant as the basis of my “Helpful” or “Not Helpful” review.</p>
 <section id="ydata-profiler-analysis" class="level4">
 <h4 class="anchored" data-anchor-id="ydata-profiler-analysis">Ydata-Profiler Analysis</h4>
 <p>The business data is pretty tabular, as such I’d like to try <code>ydata-profiling</code> which is an automated data analysis tool which extracts some good statistics. It’s like <code>DataFrame.describe()</code> on steroids!</p>
 <div id="cell-38" class="cell" data-trusted="true">
-<div class="sourceCode cell-code" id="cb21" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1">report <span class="op" style="color: #5E5E5E;
+<div class="sourceCode cell-code" id="cb22" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1">report <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> ProfileReport(df_business.drop([<span class="st" style="color: #20794D;
 background-color: null;
@@ -4860,12 +5333,12 @@ background-color: null;
 font-style: inherit;">"address"</span>]).take_every(<span class="dv" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">500</span>).collect().to_pandas())</span>
-<span id="cb21-2">report.to_widgets()</span></code></pre></div>
+<span id="cb22-2">report.to_widgets()</span></code></pre></div>
 </div>
 <p>Because widgets are removed we don’t see, but trust me when I say that the only thing we find is a high correlation between <code>review_count</code> and <code>state</code> which doesn’t give us a lot as we sampled the dataset.</p>
 <p>Let’s extract our review dataset of the most common restaurant!</p>
 <div id="cell-40" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2023-03-29T17:47:17.888690Z&quot;,&quot;iopub.status.busy&quot;:&quot;2023-03-29T17:47:17.887671Z&quot;,&quot;iopub.status.idle&quot;:&quot;2023-03-29T17:47:47.307947Z&quot;,&quot;shell.execute_reply&quot;:&quot;2023-03-29T17:47:47.306078Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2023-03-29T17:47:17.888649Z&quot;}" data-trusted="true" data-execution_count="16">
-<div class="sourceCode cell-code" id="cb22" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1">b_id <span class="op" style="color: #5E5E5E;
+<div class="sourceCode cell-code" id="cb23" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1">b_id <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> df_business.sort(<span class="st" style="color: #20794D;
 background-color: null;
@@ -4882,7 +5355,7 @@ background-color: null;
 font-style: inherit;">0</span>,<span class="dv" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">0</span>]</span>
-<span id="cb22-2">df_review <span class="op" style="color: #5E5E5E;
+<span id="cb23-2">df_review <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> df_review_all.<span class="bu" style="color: null;
 background-color: null;
@@ -4895,9 +5368,8 @@ background-color: null;
 font-style: inherit;">=</span><span class="va" style="color: #111111;
 background-color: null;
 font-style: inherit;">True</span>)</span>
-<span id="cb22-3">df_review.head()</span></code></pre></div>
+<span id="cb23-3">df_review.head()</span></code></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="16">
-<div>
 <div><style>
 .dataframe > thead > tr > th,
 .dataframe > tbody > tr > td {
@@ -4905,7 +5377,7 @@ font-style: inherit;">True</span>)</span>
 }
 </style>
 <small>shape: (5, 9)</small>
-<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
 <thead>
 <tr class="header">
 <th data-quarto-table-cell-role="th">review_id</th>
@@ -4991,22 +5463,21 @@ font-style: inherit;">True</span>)</span>
 </div>
 </div>
 </div>
-</div>
 </section>
 </section>
 <section id="data-analysis-user-data" class="level3">
 <h3 class="anchored" data-anchor-id="data-analysis-user-data">Data Analysis: User Data</h3>
 <p>In the original document I also started an investigation of user-data to validate if we could find bots in the data, I did this by the following code snippets:</p>
-<div class="sourceCode" id="cb23" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1">df_user <span class="op" style="color: #5E5E5E;
+<div class="sourceCode" id="cb24" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1">df_user <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> pl.scan_ndjson(<span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">"/kaggle/input/yelp-dataset/yelp_academic_dataset_user.json"</span>)</span>
-<span id="cb23-2">df_user.limit(<span class="dv" style="color: #AD0000;
+<span id="cb24-2">df_user.limit(<span class="dv" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">3</span>).collect()</span>
-<span id="cb23-3"></span>
-<span id="cb23-4">low_rating <span class="op" style="color: #5E5E5E;
+<span id="cb24-3"></span>
+<span id="cb24-4">low_rating <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> pl.col(<span class="st" style="color: #20794D;
 background-color: null;
@@ -5015,7 +5486,7 @@ background-color: null;
 font-style: inherit;">&lt;=</span> <span class="fl" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">1.5</span></span>
-<span id="cb23-5">many_reviews <span class="op" style="color: #5E5E5E;
+<span id="cb24-5">many_reviews <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> pl.col(<span class="st" style="color: #20794D;
 background-color: null;
@@ -5024,7 +5495,7 @@ background-color: null;
 font-style: inherit;">&gt;</span> <span class="dv" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">5</span></span>
-<span id="cb23-6">df_user.<span class="bu" style="color: null;
+<span id="cb24-6">df_user.<span class="bu" style="color: null;
 background-color: null;
 font-style: inherit;">filter</span>(low_rating <span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -5035,8 +5506,8 @@ background-color: null;
 font-style: inherit;">=</span><span class="va" style="color: #111111;
 background-color: null;
 font-style: inherit;">True</span>)</span>
-<span id="cb23-7"></span>
-<span id="cb23-8">high_rating <span class="op" style="color: #5E5E5E;
+<span id="cb24-7"></span>
+<span id="cb24-8">high_rating <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> pl.col(<span class="st" style="color: #20794D;
 background-color: null;
@@ -5045,7 +5516,7 @@ background-color: null;
 font-style: inherit;">&gt;=</span> <span class="dv" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">5</span></span>
-<span id="cb23-9">df_user.<span class="bu" style="color: null;
+<span id="cb24-9">df_user.<span class="bu" style="color: null;
 background-color: null;
 font-style: inherit;">filter</span>(high_rating <span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -5085,10 +5556,10 @@ Reviews should have some things in common, such as opening hours, pricing and ta
 </ol>
 <p>Because I don’t fully focus on this task I use an algorithmic approach where I sample 10k random reviews.</p>
 <div id="cell-44" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2023-04-01T08:33:55.315567Z&quot;,&quot;iopub.status.busy&quot;:&quot;2023-04-01T08:33:55.315160Z&quot;,&quot;iopub.status.idle&quot;:&quot;2023-04-01T08:34:35.509813Z&quot;,&quot;shell.execute_reply&quot;:&quot;2023-04-01T08:34:35.508682Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2023-04-01T08:33:55.315524Z&quot;}" data-trusted="true" data-execution_count="4">
-<div class="sourceCode cell-code" id="cb24" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><span class="im" style="color: #00769E;
+<div class="sourceCode cell-code" id="cb25" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><span class="im" style="color: #00769E;
 background-color: null;
 font-style: inherit;">import</span> yake</span>
-<span id="cb24-2">all_reviews <span class="op" style="color: #5E5E5E;
+<span id="cb25-2">all_reviews <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> <span class="st" style="color: #20794D;
 background-color: null;
@@ -5105,44 +5576,44 @@ background-color: null;
 font-style: inherit;">True</span>)[<span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">"text"</span>])</span>
-<span id="cb24-3"></span>
-<span id="cb24-4">kw_extractor <span class="op" style="color: #5E5E5E;
+<span id="cb25-3"></span>
+<span id="cb25-4">kw_extractor <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> yake.KeywordExtractor(lan<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span><span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">"en"</span>, </span>
-<span id="cb24-5">                                     n<span class="op" style="color: #5E5E5E;
+<span id="cb25-5">                                     n<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span><span class="dv" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">3</span>, </span>
-<span id="cb24-6">                                     dedupLim<span class="op" style="color: #5E5E5E;
+<span id="cb25-6">                                     dedupLim<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span><span class="fl" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">0.9</span>, </span>
-<span id="cb24-7">                                     dedupFunc<span class="op" style="color: #5E5E5E;
+<span id="cb25-7">                                     dedupFunc<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span><span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">"seqm"</span>, </span>
-<span id="cb24-8">                                     windowsSize<span class="op" style="color: #5E5E5E;
+<span id="cb25-8">                                     windowsSize<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span><span class="dv" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">1</span>, </span>
-<span id="cb24-9">                                     top<span class="op" style="color: #5E5E5E;
+<span id="cb25-9">                                     top<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span><span class="dv" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">20</span>)</span>
-<span id="cb24-10"></span>
-<span id="cb24-11">keywords <span class="op" style="color: #5E5E5E;
+<span id="cb25-10"></span>
+<span id="cb25-11">keywords <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> kw_extractor.extract_keywords(all_reviews)</span>
-<span id="cb24-12">keywords</span></code></pre></div>
+<span id="cb25-12">keywords</span></code></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="4">
 <pre><code>[('hours from beginning', 0.020546851659972578),
  ('beginning to end', 0.020546851659972578),
@@ -5173,17 +5644,19 @@ font-style: inherit;">=</span> kw_extractor.extract_keywords(all_reviews)</span>
 <h3 class="anchored" data-anchor-id="task-find-topic-themes-by-stars">Task: Find Topic Themes by Stars</h3>
 <p>Let’s see if we can find a common thematic between different stars on reviews by embedding our sentences and coloring by stars. First we need to figure out how many stars we have and how to move them.</p>
 <div id="cell-47" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2023-04-01T12:06:47.575179Z&quot;,&quot;iopub.status.busy&quot;:&quot;2023-04-01T12:06:47.574384Z&quot;,&quot;iopub.status.idle&quot;:&quot;2023-04-01T12:07:18.627095Z&quot;,&quot;shell.execute_reply&quot;:&quot;2023-04-01T12:07:18.625271Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2023-04-01T12:06:47.575117Z&quot;}" data-trusted="true" data-execution_count="3">
-<div class="sourceCode cell-code" id="cb26" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><span class="kw" style="color: #003B4F;
+<div class="sourceCode cell-code" id="cb27" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">def</span> get_star_perc(df: pl.DataFrame):</span>
-<span id="cb26-2">    <span class="cf" style="color: #003B4F;
+<span id="cb27-2">    <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">return</span> (df</span>
-<span id="cb26-3">            .groupby(<span class="st" style="color: #20794D;
+<span id="cb27-3">            .groupby(<span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">"stars"</span>)</span>
-<span id="cb26-4">            .count()</span>
-<span id="cb26-5">            .with_columns(perc<span class="op" style="color: #5E5E5E;
+<span id="cb27-4">            .count()</span>
+<span id="cb27-5">            .with_columns(perc<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span>pl.col(<span class="st" style="color: #20794D;
 background-color: null;
@@ -5194,24 +5667,24 @@ background-color: null;
 font-style: inherit;">sum</span>(<span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">"count"</span>)))</span>
-<span id="cb26-6"></span>
-<span id="cb26-7">lhs <span class="op" style="color: #5E5E5E;
+<span id="cb27-6"></span>
+<span id="cb27-7">lhs <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> get_star_perc(df_review)</span>
-<span id="cb26-8">rhs <span class="op" style="color: #5E5E5E;
+<span id="cb27-8">rhs <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> get_star_perc(df_review_all).collect()  <span class="co" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;"># lazy.collect()</span></span>
-<span id="cb26-9"></span>
-<span id="cb26-10">df_stars <span class="op" style="color: #5E5E5E;
+<span id="cb27-9"></span>
+<span id="cb27-10">df_stars <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> lhs.join(rhs, on<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span><span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">"stars"</span>)</span>
-<span id="cb26-11">df_stars <span class="op" style="color: #5E5E5E;
+<span id="cb27-11">df_stars <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> df_stars.select([<span class="st" style="color: #20794D;
 background-color: null;
@@ -5224,7 +5697,7 @@ background-color: null;
 font-style: inherit;">"perc_right"</span>).alias(<span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">"sample_of_all"</span>)])</span>
-<span id="cb26-12">df_stars.sort(<span class="st" style="color: #20794D;
+<span id="cb27-12">df_stars.sort(<span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">"stars"</span>).to_pandas().plot.bar(x<span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -5252,12 +5725,12 @@ font-style: inherit;">"sample_of_all"</span>])</span></code></pre></div>
 <p><a href="https://bpemb.h-its.org/">BPEmb</a> is built on <code>Byte-Pair Encoding</code> and gives us <em>Subword Embeddings</em> in 275 (!) languages. It’s really great!</p>
 <p>The creators share that it has <strong>the same performance using a 11MB file as a 6GB FastText-file</strong>.</p>
 <div id="cell-50" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2023-04-01T12:08:56.151547Z&quot;,&quot;iopub.status.busy&quot;:&quot;2023-04-01T12:08:56.149944Z&quot;,&quot;iopub.status.idle&quot;:&quot;2023-04-01T12:09:07.245022Z&quot;,&quot;shell.execute_reply&quot;:&quot;2023-04-01T12:09:07.243654Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2023-04-01T12:08:56.151466Z&quot;}" data-trusted="true" data-execution_count="6">
-<div class="sourceCode cell-code" id="cb27" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><span class="im" style="color: #00769E;
+<div class="sourceCode cell-code" id="cb28" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><span class="im" style="color: #00769E;
 background-color: null;
 font-style: inherit;">from</span> bpemb <span class="im" style="color: #00769E;
 background-color: null;
 font-style: inherit;">import</span> BPEmb</span>
-<span id="cb27-2">bpemb_en <span class="op" style="color: #5E5E5E;
+<span id="cb28-2">bpemb_en <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> BPEmb(lang<span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -5271,38 +5744,44 @@ font-style: inherit;">50</span>) <span class="co" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;"># low dimensionality to keep memory low</span></span></code></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>downloading https://nlp.h-its.org/bpemb/en/en.wiki.bpe.vs10000.model
-downloading https://nlp.h-its.org/bpemb/en/en.wiki.bpe.vs10000.d50.w2v.bin.tar.gz</code></pre>
+<pre><code>downloading https://nlp.h-its.org/bpemb/en/en.wiki.bpe.vs10000.model</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
-<pre><code>100%|██████████| 400869/400869 [00:01&lt;00:00, 358780.98B/s]
-100%|██████████| 1924908/1924908 [00:01&lt;00:00, 1139119.63B/s]</code></pre>
+<pre><code>100%|██████████| 400869/400869 [00:01&lt;00:00, 358780.98B/s]</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>downloading https://nlp.h-its.org/bpemb/en/en.wiki.bpe.vs10000.d50.w2v.bin.tar.gz</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>100%|██████████| 1924908/1924908 [00:01&lt;00:00, 1139119.63B/s]</code></pre>
 </div>
 </div>
 <div id="cell-51" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2023-04-01T12:09:07.247978Z&quot;,&quot;iopub.status.busy&quot;:&quot;2023-04-01T12:09:07.246817Z&quot;,&quot;iopub.status.idle&quot;:&quot;2023-04-01T12:09:07.264296Z&quot;,&quot;shell.execute_reply&quot;:&quot;2023-04-01T12:09:07.262128Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2023-04-01T12:09:07.247931Z&quot;}" data-trusted="true" data-execution_count="7">
-<div class="sourceCode cell-code" id="cb30" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb30-1"><span class="im" style="color: #00769E;
+<div class="sourceCode cell-code" id="cb33" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb33-1"><span class="im" style="color: #00769E;
 background-color: null;
 font-style: inherit;">import</span> numpy <span class="im" style="color: #00769E;
 background-color: null;
 font-style: inherit;">as</span> np</span>
-<span id="cb30-2"></span>
-<span id="cb30-3"><span class="kw" style="color: #003B4F;
+<span id="cb33-2"></span>
+<span id="cb33-3"><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">def</span> simple_avg_embeddings(text: <span class="bu" style="color: null;
 background-color: null;
 font-style: inherit;">str</span>) <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">-&gt;</span> np.array:</span>
-<span id="cb30-4">    <span class="co" style="color: #5E5E5E;
+<span id="cb33-4">    <span class="co" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">"""Would prefer to do USif or a similar more advanced sentence embedding"""</span></span>
-<span id="cb30-5">    <span class="cf" style="color: #003B4F;
+<span id="cb33-5">    <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">return</span> np.mean(np.array(bpemb_en.embed(text)), <span class="dv" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">0</span>)</span>
-<span id="cb30-6"></span>
-<span id="cb30-7">simple_avg_embeddings(<span class="st" style="color: #20794D;
+<span id="cb33-6"></span>
+<span id="cb33-7">simple_avg_embeddings(<span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">"hello world"</span>)</span></code></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="7">
@@ -5322,7 +5801,7 @@ font-style: inherit;">"hello world"</span>)</span></code></pre></div>
 </div>
 </div>
 <div id="cell-52" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2023-04-01T12:09:07.270447Z&quot;,&quot;iopub.status.busy&quot;:&quot;2023-04-01T12:09:07.269396Z&quot;,&quot;iopub.status.idle&quot;:&quot;2023-04-01T12:09:12.859589Z&quot;,&quot;shell.execute_reply&quot;:&quot;2023-04-01T12:09:12.858122Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2023-04-01T12:09:07.270385Z&quot;}" data-trusted="true" data-execution_count="8">
-<div class="sourceCode cell-code" id="cb32" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb32-1">df_review <span class="op" style="color: #5E5E5E;
+<div class="sourceCode cell-code" id="cb35" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb35-1">df_review <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> df_review.with_columns(pl.col(<span class="st" style="color: #20794D;
 background-color: null;
@@ -5333,7 +5812,7 @@ background-color: null;
 font-style: inherit;">"emb"</span>))</span></code></pre></div>
 </div>
 <div id="cell-53" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2023-04-01T12:09:12.861509Z&quot;,&quot;iopub.status.busy&quot;:&quot;2023-04-01T12:09:12.861117Z&quot;,&quot;iopub.status.idle&quot;:&quot;2023-04-01T12:09:12.875506Z&quot;,&quot;shell.execute_reply&quot;:&quot;2023-04-01T12:09:12.873428Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2023-04-01T12:09:12.861474Z&quot;}" data-trusted="true" data-execution_count="9">
-<div class="sourceCode cell-code" id="cb33" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb33-1">df_review.head(<span class="dv" style="color: #AD0000;
+<div class="sourceCode cell-code" id="cb36" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb36-1">df_review.head(<span class="dv" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">1</span>)</span></code></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="9">
@@ -5459,24 +5938,25 @@ object
 </div>
 </div>
 <div id="cell-54" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2023-04-01T12:09:12.879107Z&quot;,&quot;iopub.status.busy&quot;:&quot;2023-04-01T12:09:12.877965Z&quot;,&quot;iopub.status.idle&quot;:&quot;2023-04-01T12:10:34.238095Z&quot;,&quot;shell.execute_reply&quot;:&quot;2023-04-01T12:10:34.236603Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2023-04-01T12:09:12.879022Z&quot;}" data-trusted="true" data-execution_count="10">
-<div class="sourceCode cell-code" id="cb34" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb34-1"><span class="im" style="color: #00769E;
+<div class="sourceCode cell-code" id="cb37" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb37-1"><span class="im" style="color: #00769E;
 background-color: null;
 font-style: inherit;">from</span> sklearn.manifold <span class="im" style="color: #00769E;
 background-color: null;
 font-style: inherit;">import</span> TSNE</span>
-<span id="cb34-2"></span>
-<span id="cb34-3">tsne <span class="op" style="color: #5E5E5E;
+<span id="cb37-2"></span>
+<span id="cb37-3">tsne <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> TSNE()</span>
-<span id="cb34-4">result <span class="op" style="color: #5E5E5E;
+<span id="cb37-4">result <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> tsne.fit_transform(np.array(df_review[<span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">"emb"</span>].to_list()))</span>
-<span id="cb34-5"><span class="kw" style="color: #003B4F;
+<span id="cb37-5"><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">del</span> tsne</span>
-<span id="cb34-6">result</span></code></pre></div>
+<span id="cb37-6">result</span></code></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>/opt/conda/lib/python3.7/site-packages/sklearn/manifold/_t_sne.py:783: FutureWarning: The default initialization in TSNE will change from 'random' to 'pca' in 1.2.
   FutureWarning,
@@ -5494,18 +5974,18 @@ font-style: inherit;">del</span> tsne</span>
 </div>
 </div>
 <div id="cell-55" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2023-04-01T12:10:34.247379Z&quot;,&quot;iopub.status.busy&quot;:&quot;2023-04-01T12:10:34.244636Z&quot;,&quot;iopub.status.idle&quot;:&quot;2023-04-01T12:10:38.269111Z&quot;,&quot;shell.execute_reply&quot;:&quot;2023-04-01T12:10:38.267567Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2023-04-01T12:10:34.247294Z&quot;}" data-trusted="true" data-execution_count="11">
-<div class="sourceCode cell-code" id="cb37" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb37-1"><span class="im" style="color: #00769E;
+<div class="sourceCode cell-code" id="cb40" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb40-1"><span class="im" style="color: #00769E;
 background-color: null;
 font-style: inherit;">import</span> plotly.express <span class="im" style="color: #00769E;
 background-color: null;
 font-style: inherit;">as</span> px</span>
-<span id="cb37-2"><span class="im" style="color: #00769E;
+<span id="cb40-2"><span class="im" style="color: #00769E;
 background-color: null;
 font-style: inherit;">import</span> pandas <span class="im" style="color: #00769E;
 background-color: null;
 font-style: inherit;">as</span> pd</span>
-<span id="cb37-3"></span>
-<span id="cb37-4">df_tsne <span class="op" style="color: #5E5E5E;
+<span id="cb40-3"></span>
+<span id="cb40-4">df_tsne <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> pd.DataFrame({<span class="st" style="color: #20794D;
 background-color: null;
@@ -5522,11 +6002,12 @@ background-color: null;
 font-style: inherit;">"stars"</span>].cast(<span class="bu" style="color: null;
 background-color: null;
 font-style: inherit;">str</span>).to_list()})</span>
-<span id="cb37-5"><span class="kw" style="color: #003B4F;
+<span id="cb40-5"><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">del</span> result</span>
-<span id="cb37-6"></span>
-<span id="cb37-7">px.scatter(df_tsne, x<span class="op" style="color: #5E5E5E;
+<span id="cb40-6"></span>
+<span id="cb40-7">px.scatter(df_tsne, x<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span><span class="st" style="color: #20794D;
 background-color: null;
@@ -5568,53 +6049,56 @@ if (outputEl) {{
 </div>
 </div>
 <div id="cell-56" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2023-04-01T12:10:38.271339Z&quot;,&quot;iopub.status.busy&quot;:&quot;2023-04-01T12:10:38.270665Z&quot;,&quot;iopub.status.idle&quot;:&quot;2023-04-01T12:10:38.282799Z&quot;,&quot;shell.execute_reply&quot;:&quot;2023-04-01T12:10:38.279801Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2023-04-01T12:10:38.271288Z&quot;}" data-trusted="true" data-execution_count="12">
-<div class="sourceCode cell-code" id="cb38" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb38-1"><span class="kw" style="color: #003B4F;
+<div class="sourceCode cell-code" id="cb41" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb41-1"><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">del</span> df_tsne</span></code></pre></div>
 </div>
 <p>This didn’t work out either really…</p>
 <p>How about a LLM?</p>
 <div id="cell-58" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2023-04-01T12:10:38.285826Z&quot;,&quot;iopub.status.busy&quot;:&quot;2023-04-01T12:10:38.285197Z&quot;,&quot;iopub.status.idle&quot;:&quot;2023-04-01T12:11:21.209501Z&quot;,&quot;shell.execute_reply&quot;:&quot;2023-04-01T12:11:21.207809Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2023-04-01T12:10:38.285765Z&quot;}" data-trusted="true" data-execution_count="13">
-<div class="sourceCode cell-code" id="cb39" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb39-1"><span class="im" style="color: #00769E;
+<div class="sourceCode cell-code" id="cb42" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb42-1"><span class="im" style="color: #00769E;
 background-color: null;
 font-style: inherit;">from</span> sentence_transformers <span class="im" style="color: #00769E;
 background-color: null;
 font-style: inherit;">import</span> SentenceTransformer</span>
-<span id="cb39-2"><span class="im" style="color: #00769E;
+<span id="cb42-2"><span class="im" style="color: #00769E;
 background-color: null;
 font-style: inherit;">from</span> IPython.display <span class="im" style="color: #00769E;
 background-color: null;
 font-style: inherit;">import</span> clear_output</span>
-<span id="cb39-3"></span>
-<span id="cb39-4">model <span class="op" style="color: #5E5E5E;
+<span id="cb42-3"></span>
+<span id="cb42-4">model <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> SentenceTransformer(<span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">'all-MiniLM-L6-v2'</span>)</span>
-<span id="cb39-5"></span>
-<span id="cb39-6">clear_output()</span></code></pre></div>
+<span id="cb42-5"></span>
+<span id="cb42-6">clear_output()</span></code></pre></div>
 </div>
 <div id="cell-59" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2023-04-01T12:11:21.216569Z&quot;,&quot;iopub.status.busy&quot;:&quot;2023-04-01T12:11:21.215554Z&quot;,&quot;iopub.status.idle&quot;:&quot;2023-04-01T12:11:38.693639Z&quot;,&quot;shell.execute_reply&quot;:&quot;2023-04-01T12:11:38.691773Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2023-04-01T12:11:21.216498Z&quot;}" data-trusted="true">
-<div class="sourceCode cell-code" id="cb40" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb40-1">encoding <span class="op" style="color: #5E5E5E;
+<div class="sourceCode cell-code" id="cb43" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb43-1">encoding <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> model.encode(df_review[<span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">"text"</span>].to_list())</span>
-<span id="cb40-2"><span class="kw" style="color: #003B4F;
+<span id="cb43-2"><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">del</span> model</span>
-<span id="cb40-3">tsne <span class="op" style="color: #5E5E5E;
+<span id="cb43-3">tsne <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> TSNE()</span>
-<span id="cb40-4">tsne_enc <span class="op" style="color: #5E5E5E;
+<span id="cb43-4">tsne_enc <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> tsne.fit_transform(encoding)</span>
-<span id="cb40-5"><span class="kw" style="color: #003B4F;
+<span id="cb43-5"><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">del</span> encoding</span></code></pre></div>
 </div>
 <div id="cell-60" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2023-04-01T12:13:03.830155Z&quot;,&quot;iopub.status.busy&quot;:&quot;2023-04-01T12:13:03.827116Z&quot;,&quot;iopub.status.idle&quot;:&quot;2023-04-01T12:13:03.948595Z&quot;,&quot;shell.execute_reply&quot;:&quot;2023-04-01T12:13:03.947127Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2023-04-01T12:13:03.830075Z&quot;}" data-trusted="true" data-execution_count="16">
-<div class="sourceCode cell-code" id="cb41" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb41-1">df_tsne <span class="op" style="color: #5E5E5E;
+<div class="sourceCode cell-code" id="cb44" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb44-1">df_tsne <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> pd.DataFrame({<span class="st" style="color: #20794D;
 background-color: null;
@@ -5631,11 +6115,12 @@ background-color: null;
 font-style: inherit;">"stars"</span>].cast(<span class="bu" style="color: null;
 background-color: null;
 font-style: inherit;">str</span>).to_list()})</span>
-<span id="cb41-2"><span class="kw" style="color: #003B4F;
+<span id="cb44-2"><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">del</span> tsne_enc</span>
-<span id="cb41-3"></span>
-<span id="cb41-4">px.scatter(df_tsne, x<span class="op" style="color: #5E5E5E;
+<span id="cb44-3"></span>
+<span id="cb44-4">px.scatter(df_tsne, x<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span><span class="st" style="color: #20794D;
 background-color: null;
@@ -5750,7 +6235,7 @@ font-style: inherit;">--post</span> serve</span></code></pre></div>
 </section>
 <section id="deepchecks" class="level1">
 <h1>Deepchecks</h1>
-<div id="fig-deepchecks" class="quarto-figure quarto-figure-center quarto-float anchored">
+<div id="fig-deepchecks" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-deepchecks-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="https://blog.londogard.com/posts/2023-03-20-deepchecks/checks-and-conditions.png" class="img-fluid figure-img">
@@ -6030,6 +6515,7 @@ background-color: null;
 font-style: inherit;">"value_"</span>),</span>
 <span id="cb6-15">        pa.Check(<span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">lambda</span> s: s.<span class="bu" style="color: null;
 background-color: null;
 font-style: inherit;">str</span>.split(<span class="st" style="color: #20794D;
@@ -6067,6 +6553,7 @@ font-style: inherit;">import</span> Series</span>
 <span id="cb7-2"></span>
 <span id="cb7-3"><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">class</span> Schema(pa.DataFrameModel):</span>
 <span id="cb7-4">    column1: Series[<span class="bu" style="color: null;
 background-color: null;
@@ -6103,6 +6590,7 @@ background-color: null;
 font-style: inherit;">"column3"</span>)</span>
 <span id="cb7-9">    <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">def</span> column_3_check(cls, series: Series[<span class="bu" style="color: null;
 background-color: null;
 font-style: inherit;">str</span>]) <span class="op" style="color: #5E5E5E;
@@ -6115,6 +6603,7 @@ background-color: null;
 font-style: inherit;">"""Check that column3 values have two elements after being split with '_'"""</span></span>
 <span id="cb7-11">        <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">return</span> series.<span class="bu" style="color: null;
 background-color: null;
 font-style: inherit;">str</span>.split(<span class="st" style="color: #20794D;
@@ -6138,7 +6627,7 @@ font-style: inherit;">2</span></span>
 <section id="final-comparison-table" class="level1">
 <h1>Final Comparison Table</h1>
 <p>Comparing the tools this is how they can be used, and if I really like using them :wink:</p>
-<table class="table">
+<table class="caption-top table">
 <colgroup>
 <col style="width: 12%">
 <col style="width: 12%">
@@ -6354,7 +6843,7 @@ Apache Arrow
 Random Access is slow with high latency even on the best SSD’s, and this is why&nbsp;<em>Random Access Memory</em>&nbsp;(RAM) exist! It has improved substantially the last decade, but nonetheless it’s slow.</p>
 <p>We built a system that retrieves data from columnar storage but randomly. Our batches are sequential which helps a little, but we extract our batch starting point randomly, see Figure&nbsp;1. We’re solving a time series forecasting problem which also means we expand one data point into a window of the last X points to predict future Y points. This isn’t cheap either, to roll over data like this.<br>
 To keep a batch internally intact is very important for some models such as the Recurrent Neural Networks (RNN) that keeps an internal state being reset each batch.</p>
-<div id="fig-subsamp" class="quarto-figure quarto-figure-center quarto-float anchored">
+<div id="fig-subsamp" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-subsamp-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="https://blog.londogard.com/posts/assets/randomsubsampler.png" height="300" class="figure-img">
@@ -6461,7 +6950,7 @@ Figure&nbsp;1: RandomSubsequenceSampler that allows randomizing batches but keep
 <section id="hardware-details" class="level3">
 <h3 class="anchored" data-anchor-id="hardware-details">Hardware Details</h3>
 <p>Most of my hardware was bought through Aliexpress, with few parts being from an old Pi.</p>
-<table class="table">
+<table class="caption-top table">
 <thead>
 <tr class="header">
 <th>Hardware</th>
@@ -6544,7 +7033,7 @@ Figure&nbsp;1: RandomSubsequenceSampler that allows randomizing batches but keep
 <section id="images-of-the-building-process" class="level3">
 <h3 class="anchored" data-anchor-id="images-of-the-building-process">Images of the Building Process</h3>
 <p>And some images of when I built the monitor!</p>
-<table class="table">
+<table class="caption-top table">
 <colgroup>
 <col style="width: 30%">
 <col style="width: 69%">
@@ -6701,6 +7190,7 @@ Figure&nbsp;1: RandomSubsequenceSampler that allows randomizing batches but keep
 <p>This way it’s incredibly easy to combine filters and even more importantly, decouple code.</p>
 <div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">def</span> filter_age(age: <span class="bu" style="color: null;
 background-color: null;
 font-style: inherit;">int</span>) <span class="op" style="color: #5E5E5E;
@@ -6708,6 +7198,7 @@ background-color: null;
 font-style: inherit;">-&gt;</span> pl.Expr:</span>
 <span id="cb1-2">  <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">return</span> pl.col(<span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">"age"</span>) <span class="op" style="color: #5E5E5E;
@@ -6764,6 +7255,7 @@ font-style: inherit;">0</span>), f<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">lambda</span> acc, x: acc <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">+</span> x, exprs<span class="op" style="color: #5E5E5E;
@@ -6790,6 +7282,7 @@ font-style: inherit;">True</span>),</span>
 background-color: null;
 font-style: inherit;">=</span><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">lambda</span> acc, x: acc <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">&amp;</span> x,</span>
@@ -6856,8 +7349,10 @@ The model does not actually predict a value but a distribution, using <code>Gaus
 background-color: null;
 font-style: inherit;">=</span> torch.vstack([model.predict(in_data) <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">for</span> i <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">in</span> <span class="bu" style="color: null;
 background-color: null;
 font-style: inherit;">range</span>(x)])</span>
@@ -7241,712 +7736,6 @@ font-style: inherit;">"sort_A_by_B_by_fruits"</span>),</span>
   <category>timeseries</category>
   <guid>https://blog.londogard.com/posts/2022-11-23-timeseries-learnings/</guid>
   <pubDate>Wed, 23 Nov 2022 00:00:00 GMT</pubDate>
-</item>
-<item>
-  <title>Babymonitor #1</title>
-  <dc:creator>Hampus Londögård</dc:creator>
-  <link>https://blog.londogard.com/posts/2022-11-06-babymonitor-pt-1.html</link>
-  <description><![CDATA[ 
-
-
-
-
-
-<p>Hi 👋</p>
-<p>I’m building a babymonitor. It’s not gonna be anything novel, neither the first or last in history. But it’s a relevant project to me, and it makes me happy! 🤓</p>
-<p>In this blog I’ll walk through different ways to stream video from the raspberry pi to the network, capturing it in a client browser.</p>
-<!--truncate-->
-<section id="background" class="level2">
-<h2 class="anchored" data-anchor-id="background">Background</h2>
-<p>It all started when I talked to an old friend and he said that his in-laws gifted them the “Rolls-Royce” of babymonitors. The monitor has:</p>
-<ul>
-<li>Bidirectional audio.</li>
-<li>Unidirectional video.
-<ol type="1">
-<li>Night Vision.</li>
-<li>Rotation Horizontally.</li>
-<li>Zoom.</li>
-</ol></li>
-<li>Temperature</li>
-<li>Play soothing bedtime songs.</li>
-</ul>
-<p>Incredibly cool!&nbsp;&nbsp;</p>
-<p>This led to a simple equation:<br>
-<code>awesome + expensive + programmer = Do It Yourself (DIY)</code></p>
-<p>Obviously I need to have the same specifications and a little better, while “cheaper” (my hours are “free” 🤓).</p>
-<p>The greatest part? I have a natural deadline which enforce me to finish the project!</p>
-</section>
-<section id="goals" class="level2">
-<h2 class="anchored" data-anchor-id="goals">Goals</h2>
-<p><strong>KISS</strong>&nbsp;- Keep It Simple Stupid</p>
-<p>I’ve collected the following equipment:</p>
-<ul>
-<li>Raspberry Pi 3B (had one already)</li>
-<li>5 MP camera with mechanical IR filter</li>
-<li>2 servos (rotating camera)</li>
-<li>Temperature / Humidity Sensor</li>
-<li>Microphone Array</li>
-<li>Speaker</li>
-</ul>
-<p>My bottleneck is the Raspberry Pi’s performance really. And with performance comes optimisations, which I love! It makes following the KISS principle a tad harder! 😅</p>
-<p>I have settled on one of three languages to write the video streaming in, either <code>golang</code>, <code>rust</code> or <code>python</code>.<br>
-My initial idea is that the simpler parts will be a FastAPI (Python) server, like temperature and moving servos. Python really is&nbsp;<em>lingua franca</em>&nbsp;on the Raspberry Pi and the support is amazing.&nbsp;&nbsp;</p>
-<p>From my initial experimentation I found Python to require a&nbsp;<em>shit ton</em>&nbsp;of CPU power to livestream video, as such I believe <code>rust</code> or <code>golang</code> will be the way to go. 🚀</p>
-</section>
-<section id="live-streaming-initial-experimentation" class="level2">
-<h2 class="anchored" data-anchor-id="live-streaming-initial-experimentation">Live Streaming: Initial Experimentation</h2>
-<p>I’ve tried multiple things, HTTP, HLS, Websocket &amp; WebRTC. Each step proves a more complex, albeit more optimal, solution. Each with it’s trade-offs.</p>
-<p>Some worthy mentions of other solutions is&nbsp;<em>Real Time Streaming Protocol (RTSP)</em>.</p>
-<section id="protocols-variants" class="level3">
-<h3 class="anchored" data-anchor-id="protocols-variants">Protocols / Variants</h3>
-<p>Describing the protocol and how it’s implemented, in a very general way.</p>
-<div class="tabset-margin-container"></div><div class="panel-tabset" data-group="type">
-<ul class="nav nav-tabs"><li class="nav-item"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" aria-controls="tabset-1-1" aria-selected="true">HTTP</a></li><li class="nav-item"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" aria-controls="tabset-1-2" aria-selected="false">HLS</a></li><li class="nav-item"><a class="nav-link" id="tabset-1-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-3" aria-controls="tabset-1-3" aria-selected="false">Websocket</a></li><li class="nav-item"><a class="nav-link" id="tabset-1-4-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-4" aria-controls="tabset-1-4" aria-selected="false">WebRTC</a></li></ul>
-<div class="tab-content" data-group="type">
-<div id="tabset-1-1" class="tab-pane active" aria-labelledby="tabset-1-1-tab">
-<p><strong>H</strong>yper<strong>t</strong>ext <strong>T</strong>ransfer <strong>P</strong>rotocol, <em>lingua franca</em> protocol of the internet, is a way to stream both video and audio. It’s easy, but not efficient.</p>
-<p><strong>How:</strong> Stream chunks using HTTP messages and let your <code>&lt;video&gt;</code> element handle the consumption of stream.</p>
-</div>
-<div id="tabset-1-2" class="tab-pane" aria-labelledby="tabset-1-2-tab">
-<p><strong>H</strong>TTP <strong>L</strong>ive <strong>S</strong>treaming is a simple and pretty efficient way to stream both video and audio over the internet.</p>
-<p><strong>How:</strong> video-/audio-files, <code>.m3u8</code>, which are then picked up by client. The chunks are built from a “live” stream, e.g.&nbsp;webcam, or a file.</p>
-</div>
-<div id="tabset-1-3" class="tab-pane" aria-labelledby="tabset-1-3-tab">
-<p>Websockets is a communication protocol which allows much lower overhead than raw HTTP while providing bi-directional (duplex) communication. It’s really optimal to stream things that move in real-time through HTTP, such as a video or audio stream.</p>
-<p><strong>How:</strong> Stream your byte-array realtime through a websocket, like you’d a HTTP. There’s less headers involved, but it’s much harder to consume on the client. You need a special JS media player which can decode the websocket stream into video/audio.</p>
-</div>
-<div id="tabset-1-4" class="tab-pane" aria-labelledby="tabset-1-4-tab">
-<p>WebRTC is a open framework that enables <em>Real-Time Communications (RTC)</em> inside the browser. From the get-go it supports bidirectional video/audio and also encrypted if required.<br>
-It’s <em>the protocol to stream realtime</em> really. It’s used in a lot of the tools you know today.</p>
-<p><strong>How:</strong> set up a WebRTC server and then stream your bytearrays directly after connecting with a client.</p>
-</div>
-</div>
-</div>
-<p>Each protocol comes with positives and negatives.</p>
-<table class="table">
-<colgroup>
-<col style="width: 20%">
-<col style="width: 20%">
-<col style="width: 20%">
-<col style="width: 20%">
-<col style="width: 20%">
-</colgroup>
-<thead>
-<tr class="header">
-<th></th>
-<th>HTTP</th>
-<th>HLS</th>
-<th>Websocket</th>
-<th>WebRTC</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td><strong>Pros</strong></td>
-<td>+ Easy to implement.<br>+ Simple protocol.</td>
-<td>+ Easy to implement<br>+ CPU efficient.<br>+ Easy to do “live” streams.</td>
-<td>+ Low latency.<br>+ CPU efficient.</td>
-<td>+ Supports all my use-cases<br>+ Low Latency.<br>+ CPU efficient.</td>
-</tr>
-<tr class="even">
-<td><strong>Cons</strong></td>
-<td>- CPU inefficient (HTTP header overhead).</td>
-<td>- High latency (5-10s+).&nbsp;</td>
-<td>- Hard to consume on client.<br>- Bi-directional streaming is also hard.</td>
-<td>- Not straightforward implementation<br>- Less documentation than HLS/HTTP.</td>
-</tr>
-</tbody>
-</table>
-</section>
-<section id="implementations" class="level3">
-<h3 class="anchored" data-anchor-id="implementations">Implementations</h3>
-<div class="tabset-margin-container"></div><div class="panel-tabset" data-group="type">
-<ul class="nav nav-tabs"><li class="nav-item"><a class="nav-link active" id="tabset-2-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-1" aria-controls="tabset-2-1" aria-selected="true">HTTP</a></li><li class="nav-item"><a class="nav-link" id="tabset-2-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-2" aria-controls="tabset-2-2" aria-selected="false">HLS</a></li><li class="nav-item"><a class="nav-link" id="tabset-2-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-3" aria-controls="tabset-2-3" aria-selected="false">Websocket</a></li><li class="nav-item"><a class="nav-link" id="tabset-2-4-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-4" aria-controls="tabset-2-4" aria-selected="false">WebRTC</a></li></ul>
-<div class="tab-content" data-group="type">
-<div id="tabset-2-1" class="tab-pane active" aria-labelledby="tabset-2-1-tab">
-<p>Using <strong>MJPEG</strong>.<br>
-The provided&nbsp;<a href="https://raw.githubusercontent.com/raspberrypi/picamera2/main/examples/mjpeg_server.py">MJPEG server</a>&nbsp;from&nbsp;<a href="https://github.com/raspberrypi/picamera2"><code>picamera2</code></a>&nbsp;is excelent show-case on how to stream the video. It sets up a simple HTML with a&nbsp;<code>&lt;img&gt;</code>&nbsp;element which streams new frames using&nbsp;<code>MJPEG</code>&nbsp; which is Motion-JPEG.</p>
-<p>The performance is pretty OK, considering it’s Python &amp; MJPEG. Compared to H264 which works much more effectively.&nbsp;<br>
-We see the CPU hovering around 130-150%, but the largest drawback is the network&nbsp;bandwidth, at ~50Mb/s compared to H.264 at ~3.5Mb/s.<br>
-This is because MJPEG sends the full frame each time, H.264 sends a frame and then some delta frame until it sends a full frame again. This has drawbacks and positives, the bandwidth is low but quality can suffer.</p>
-<details>
-<summary>
-Code
-</summary>
-<div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><span class="co" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">#!/usr/bin/python3</span></span>
-<span id="cb1-2"></span>
-<span id="cb1-3"><span class="co" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;"># Mostly copied from https://picamera.readthedocs.io/en/release-1.13/recipes2.html</span></span>
-<span id="cb1-4"><span class="co" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;"># Run this script, then point a web browser at http:&lt;this-ip-address&gt;:8000</span></span>
-<span id="cb1-5"><span class="co" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;"># Note: needs simplejpeg to be installed (pip3 install simplejpeg).</span></span>
-<span id="cb1-6"></span>
-<span id="cb1-7"><span class="im" style="color: #00769E;
-background-color: null;
-font-style: inherit;">import</span> io</span>
-<span id="cb1-8"><span class="im" style="color: #00769E;
-background-color: null;
-font-style: inherit;">import</span> logging</span>
-<span id="cb1-9"><span class="im" style="color: #00769E;
-background-color: null;
-font-style: inherit;">import</span> socketserver</span>
-<span id="cb1-10"><span class="im" style="color: #00769E;
-background-color: null;
-font-style: inherit;">from</span> http <span class="im" style="color: #00769E;
-background-color: null;
-font-style: inherit;">import</span> server</span>
-<span id="cb1-11"><span class="im" style="color: #00769E;
-background-color: null;
-font-style: inherit;">from</span> threading <span class="im" style="color: #00769E;
-background-color: null;
-font-style: inherit;">import</span> Condition, Thread</span>
-<span id="cb1-12"></span>
-<span id="cb1-13"><span class="im" style="color: #00769E;
-background-color: null;
-font-style: inherit;">from</span> picamera2 <span class="im" style="color: #00769E;
-background-color: null;
-font-style: inherit;">import</span> Picamera2</span>
-<span id="cb1-14"><span class="im" style="color: #00769E;
-background-color: null;
-font-style: inherit;">from</span> picamera2.encoders <span class="im" style="color: #00769E;
-background-color: null;
-font-style: inherit;">import</span> JpegEncoder</span>
-<span id="cb1-15"><span class="im" style="color: #00769E;
-background-color: null;
-font-style: inherit;">from</span> picamera2.outputs <span class="im" style="color: #00769E;
-background-color: null;
-font-style: inherit;">import</span> FileOutput</span>
-<span id="cb1-16"></span>
-<span id="cb1-17">PAGE <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> <span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"""</span><span class="ch" style="color: #20794D;
-background-color: null;
-font-style: inherit;">\</span></span>
-<span id="cb1-18"><span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">&lt;html&gt;</span></span>
-<span id="cb1-19"><span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">&lt;head&gt;</span></span>
-<span id="cb1-20"><span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">&lt;title&gt;picamera2 MJPEG streaming demo&lt;/title&gt;</span></span>
-<span id="cb1-21"><span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">&lt;/head&gt;</span></span>
-<span id="cb1-22"><span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">&lt;body&gt;</span></span>
-<span id="cb1-23"><span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">&lt;h1&gt;Picamera2 MJPEG Streaming Demo&lt;/h1&gt;</span></span>
-<span id="cb1-24"><span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">&lt;img src="stream.mjpg" width="640" height="480" /&gt;</span></span>
-<span id="cb1-25"><span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">&lt;/body&gt;</span></span>
-<span id="cb1-26"><span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">&lt;/html&gt;</span></span>
-<span id="cb1-27"><span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"""</span></span>
-<span id="cb1-28"></span>
-<span id="cb1-29"></span>
-<span id="cb1-30"><span class="kw" style="color: #003B4F;
-background-color: null;
-font-style: inherit;">class</span> StreamingOutput(io.BufferedIOBase):</span>
-<span id="cb1-31">    <span class="kw" style="color: #003B4F;
-background-color: null;
-font-style: inherit;">def</span> <span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">__init__</span>(<span class="va" style="color: #111111;
-background-color: null;
-font-style: inherit;">self</span>):</span>
-<span id="cb1-32">        <span class="va" style="color: #111111;
-background-color: null;
-font-style: inherit;">self</span>.frame <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> <span class="va" style="color: #111111;
-background-color: null;
-font-style: inherit;">None</span></span>
-<span id="cb1-33">        <span class="va" style="color: #111111;
-background-color: null;
-font-style: inherit;">self</span>.condition <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> Condition()</span>
-<span id="cb1-34"></span>
-<span id="cb1-35">    <span class="kw" style="color: #003B4F;
-background-color: null;
-font-style: inherit;">def</span> write(<span class="va" style="color: #111111;
-background-color: null;
-font-style: inherit;">self</span>, buf):</span>
-<span id="cb1-36">        <span class="cf" style="color: #003B4F;
-background-color: null;
-font-style: inherit;">with</span> <span class="va" style="color: #111111;
-background-color: null;
-font-style: inherit;">self</span>.condition:</span>
-<span id="cb1-37">            <span class="va" style="color: #111111;
-background-color: null;
-font-style: inherit;">self</span>.frame <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> buf</span>
-<span id="cb1-38">            <span class="va" style="color: #111111;
-background-color: null;
-font-style: inherit;">self</span>.condition.notify_all()</span>
-<span id="cb1-39"></span>
-<span id="cb1-40"></span>
-<span id="cb1-41"><span class="kw" style="color: #003B4F;
-background-color: null;
-font-style: inherit;">class</span> StreamingHandler(server.BaseHTTPRequestHandler):</span>
-<span id="cb1-42">    <span class="kw" style="color: #003B4F;
-background-color: null;
-font-style: inherit;">def</span> do_GET(<span class="va" style="color: #111111;
-background-color: null;
-font-style: inherit;">self</span>):</span>
-<span id="cb1-43">        <span class="cf" style="color: #003B4F;
-background-color: null;
-font-style: inherit;">if</span> <span class="va" style="color: #111111;
-background-color: null;
-font-style: inherit;">self</span>.path <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">==</span> <span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">'/'</span>:</span>
-<span id="cb1-44">            <span class="va" style="color: #111111;
-background-color: null;
-font-style: inherit;">self</span>.send_response(<span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">301</span>)</span>
-<span id="cb1-45">            <span class="va" style="color: #111111;
-background-color: null;
-font-style: inherit;">self</span>.send_header(<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">'Location'</span>, <span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">'/index.html'</span>)</span>
-<span id="cb1-46">            <span class="va" style="color: #111111;
-background-color: null;
-font-style: inherit;">self</span>.end_headers()</span>
-<span id="cb1-47">        <span class="cf" style="color: #003B4F;
-background-color: null;
-font-style: inherit;">elif</span> <span class="va" style="color: #111111;
-background-color: null;
-font-style: inherit;">self</span>.path <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">==</span> <span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">'/index.html'</span>:</span>
-<span id="cb1-48">            content <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> PAGE.encode(<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">'utf-8'</span>)</span>
-<span id="cb1-49">            <span class="va" style="color: #111111;
-background-color: null;
-font-style: inherit;">self</span>.send_response(<span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">200</span>)</span>
-<span id="cb1-50">            <span class="va" style="color: #111111;
-background-color: null;
-font-style: inherit;">self</span>.send_header(<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">'Content-Type'</span>, <span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">'text/html'</span>)</span>
-<span id="cb1-51">            <span class="va" style="color: #111111;
-background-color: null;
-font-style: inherit;">self</span>.send_header(<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">'Content-Length'</span>, <span class="bu" style="color: null;
-background-color: null;
-font-style: inherit;">len</span>(content))</span>
-<span id="cb1-52">            <span class="va" style="color: #111111;
-background-color: null;
-font-style: inherit;">self</span>.end_headers()</span>
-<span id="cb1-53">            <span class="va" style="color: #111111;
-background-color: null;
-font-style: inherit;">self</span>.wfile.write(content)</span>
-<span id="cb1-54">        <span class="cf" style="color: #003B4F;
-background-color: null;
-font-style: inherit;">elif</span> <span class="va" style="color: #111111;
-background-color: null;
-font-style: inherit;">self</span>.path <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">==</span> <span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">'/stream.mjpg'</span>:</span>
-<span id="cb1-55">            <span class="va" style="color: #111111;
-background-color: null;
-font-style: inherit;">self</span>.send_response(<span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">200</span>)</span>
-<span id="cb1-56">            <span class="va" style="color: #111111;
-background-color: null;
-font-style: inherit;">self</span>.send_header(<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">'Age'</span>, <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">0</span>)</span>
-<span id="cb1-57">            <span class="va" style="color: #111111;
-background-color: null;
-font-style: inherit;">self</span>.send_header(<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">'Cache-Control'</span>, <span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">'no-cache, private'</span>)</span>
-<span id="cb1-58">            <span class="va" style="color: #111111;
-background-color: null;
-font-style: inherit;">self</span>.send_header(<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">'Pragma'</span>, <span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">'no-cache'</span>)</span>
-<span id="cb1-59">            <span class="va" style="color: #111111;
-background-color: null;
-font-style: inherit;">self</span>.send_header(<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">'Content-Type'</span>, <span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">'multipart/x-mixed-replace; boundary=FRAME'</span>)</span>
-<span id="cb1-60">            <span class="va" style="color: #111111;
-background-color: null;
-font-style: inherit;">self</span>.end_headers()</span>
-<span id="cb1-61">            <span class="cf" style="color: #003B4F;
-background-color: null;
-font-style: inherit;">try</span>:</span>
-<span id="cb1-62">                <span class="cf" style="color: #003B4F;
-background-color: null;
-font-style: inherit;">while</span> <span class="va" style="color: #111111;
-background-color: null;
-font-style: inherit;">True</span>:</span>
-<span id="cb1-63">                    <span class="cf" style="color: #003B4F;
-background-color: null;
-font-style: inherit;">with</span> output.condition:</span>
-<span id="cb1-64">                        output.condition.wait()</span>
-<span id="cb1-65">                        frame <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> output.frame</span>
-<span id="cb1-66">                    <span class="va" style="color: #111111;
-background-color: null;
-font-style: inherit;">self</span>.wfile.write(<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">b'--FRAME</span><span class="ch" style="color: #20794D;
-background-color: null;
-font-style: inherit;">\r\n</span><span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">'</span>)</span>
-<span id="cb1-67">                    <span class="va" style="color: #111111;
-background-color: null;
-font-style: inherit;">self</span>.send_header(<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">'Content-Type'</span>, <span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">'image/jpeg'</span>)</span>
-<span id="cb1-68">                    <span class="va" style="color: #111111;
-background-color: null;
-font-style: inherit;">self</span>.send_header(<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">'Content-Length'</span>, <span class="bu" style="color: null;
-background-color: null;
-font-style: inherit;">len</span>(frame))</span>
-<span id="cb1-69">                    <span class="va" style="color: #111111;
-background-color: null;
-font-style: inherit;">self</span>.end_headers()</span>
-<span id="cb1-70">                    <span class="va" style="color: #111111;
-background-color: null;
-font-style: inherit;">self</span>.wfile.write(frame)</span>
-<span id="cb1-71">                    <span class="va" style="color: #111111;
-background-color: null;
-font-style: inherit;">self</span>.wfile.write(<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">b'</span><span class="ch" style="color: #20794D;
-background-color: null;
-font-style: inherit;">\r\n</span><span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">'</span>)</span>
-<span id="cb1-72">            <span class="cf" style="color: #003B4F;
-background-color: null;
-font-style: inherit;">except</span> <span class="pp" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">Exception</span> <span class="im" style="color: #00769E;
-background-color: null;
-font-style: inherit;">as</span> e:</span>
-<span id="cb1-73">                logging.warning(</span>
-<span id="cb1-74">                    <span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">'Removed streaming client </span><span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">%s</span><span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">: </span><span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">%s</span><span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">'</span>,</span>
-<span id="cb1-75">                    <span class="va" style="color: #111111;
-background-color: null;
-font-style: inherit;">self</span>.client_address, <span class="bu" style="color: null;
-background-color: null;
-font-style: inherit;">str</span>(e))</span>
-<span id="cb1-76">        <span class="cf" style="color: #003B4F;
-background-color: null;
-font-style: inherit;">else</span>:</span>
-<span id="cb1-77">            <span class="va" style="color: #111111;
-background-color: null;
-font-style: inherit;">self</span>.send_error(<span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">404</span>)</span>
-<span id="cb1-78">            <span class="va" style="color: #111111;
-background-color: null;
-font-style: inherit;">self</span>.end_headers()</span>
-<span id="cb1-79"></span>
-<span id="cb1-80"></span>
-<span id="cb1-81"><span class="kw" style="color: #003B4F;
-background-color: null;
-font-style: inherit;">class</span> StreamingServer(socketserver.ThreadingMixIn, server.HTTPServer):</span>
-<span id="cb1-82">    allow_reuse_address <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> <span class="va" style="color: #111111;
-background-color: null;
-font-style: inherit;">True</span></span>
-<span id="cb1-83">    daemon_threads <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> <span class="va" style="color: #111111;
-background-color: null;
-font-style: inherit;">True</span></span>
-<span id="cb1-84"></span>
-<span id="cb1-85"></span>
-<span id="cb1-86">picam2 <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> Picamera2()</span>
-<span id="cb1-87">picam2.configure(picam2.create_video_configuration(main<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span>{<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"size"</span>: (<span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">640</span>, <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">480</span>)}))</span>
-<span id="cb1-88">output <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> StreamingOutput()</span>
-<span id="cb1-89">picam2.start_recording(JpegEncoder(), FileOutput(output))</span>
-<span id="cb1-90"></span>
-<span id="cb1-91"><span class="cf" style="color: #003B4F;
-background-color: null;
-font-style: inherit;">try</span>:</span>
-<span id="cb1-92">    address <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> (<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">''</span>, <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">8000</span>)</span>
-<span id="cb1-93">    server <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> StreamingServer(address, StreamingHandler)</span>
-<span id="cb1-94">    server.serve_forever()</span>
-<span id="cb1-95"><span class="cf" style="color: #003B4F;
-background-color: null;
-font-style: inherit;">finally</span>:</span>
-<span id="cb1-96">    picam2.stop_recording()</span></code></pre></div>
-</details>
-</div>
-<div id="tabset-2-2" class="tab-pane" aria-labelledby="tabset-2-2-tab">
-<p>Very simple using&nbsp;<code>ffmpeg</code>&nbsp;and&nbsp;<code>picamera2</code>&nbsp; in conjunction.&nbsp;</p>
-<p>The performance of HLS is great at ~40% CPU, but the latency is awful at 5-10s easily!</p>
-<p><strong>Python</strong></p>
-<div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><span class="im" style="color: #00769E;
-background-color: null;
-font-style: inherit;">import</span> time</span>
-<span id="cb2-2"><span class="im" style="color: #00769E;
-background-color: null;
-font-style: inherit;">from</span> picamera2.outputs <span class="im" style="color: #00769E;
-background-color: null;
-font-style: inherit;">import</span> FfmpegOutput</span>
-<span id="cb2-3"><span class="im" style="color: #00769E;
-background-color: null;
-font-style: inherit;">from</span> picamera2.encoders <span class="im" style="color: #00769E;
-background-color: null;
-font-style: inherit;">import</span> H264Encoder, Quality</span>
-<span id="cb2-4"><span class="im" style="color: #00769E;
-background-color: null;
-font-style: inherit;">from</span> picamera2 <span class="im" style="color: #00769E;
-background-color: null;
-font-style: inherit;">import</span> Picamera2</span>
-<span id="cb2-5"></span>
-<span id="cb2-6"></span>
-<span id="cb2-7">picam2 <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> Picamera2()</span>
-<span id="cb2-8">picam2.configure(picam2.create_video_configuration(main<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span>{<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"size"</span>: (<span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">640</span>, <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">480</span>)}))</span>
-<span id="cb2-9">encoder <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> H264Encoder(bitrate<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span><span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">1000000</span>, repeat<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span><span class="va" style="color: #111111;
-background-color: null;
-font-style: inherit;">True</span>, iperiod<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span><span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">15</span>)</span>
-<span id="cb2-10">output <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> FfmpegOutput(<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"-f hls -hls_time 4 -hls_list_size 5 -hls_flags delete_segments -hls_allow_cache 0 stream.m3u8"</span>)</span>
-<span id="cb2-11">picam2.start_recording(encoder, output)</span>
-<span id="cb2-12">time.sleep(<span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">9999999</span>)</span></code></pre></div>
-<p><strong>HTML</strong></p>
-<div class="sourceCode" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode html code-with-copy"><code class="sourceCode html"><span id="cb3-1"><span class="dt" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">&lt;</span><span class="kw" style="color: #003B4F;
-background-color: null;
-font-style: inherit;">video</span><span class="ot" style="color: #003B4F;
-background-color: null;
-font-style: inherit;"> width</span><span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span><span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"320"</span><span class="ot" style="color: #003B4F;
-background-color: null;
-font-style: inherit;"> height</span><span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span><span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"240"</span><span class="ot" style="color: #003B4F;
-background-color: null;
-font-style: inherit;"> controls autoplay</span><span class="dt" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">&gt;</span></span>
-<span id="cb3-2">    <span class="dt" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">&lt;</span><span class="kw" style="color: #003B4F;
-background-color: null;
-font-style: inherit;">source</span><span class="ot" style="color: #003B4F;
-background-color: null;
-font-style: inherit;"> src</span><span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span><span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"stream.m3u8"</span><span class="ot" style="color: #003B4F;
-background-color: null;
-font-style: inherit;"> type</span><span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span><span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"application/x-mpegURL"</span><span class="ot" style="color: #003B4F;
-background-color: null;
-font-style: inherit;"> </span><span class="dt" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">/&gt;</span></span>
-<span id="cb3-3">    Your browser does not support the video tag.</span>
-<span id="cb3-4"><span class="dt" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">&lt;/</span><span class="kw" style="color: #003B4F;
-background-color: null;
-font-style: inherit;">video</span><span class="dt" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">&gt;</span></span></code></pre></div>
-</div>
-<div id="tabset-2-3" class="tab-pane" aria-labelledby="tabset-2-3-tab">
-<p>I’ve basically re-used&nbsp;<a href="https://github.com/bezineb5/go-h264-streamer"><code>go-h264-streamer</code></a>&nbsp;which is a very simple yet efficient golang-implementation of a websocket driven H264 streamer that streams through websocket to a client. The client has a JS script which is WebASM/emscripten compiled to use WebGL-accelerated graphics to decode the H264 into frames.&nbsp;</p>
-<p>What’s really cool about this implementation is that it only starts the video stream when people connect and shut it down when there’s no connected websockets.</p>
-</div>
-<div id="tabset-2-4" class="tab-pane" aria-labelledby="tabset-2-4-tab">
-<p>I kept myself to KISS, unlike all this testing of approaches, and went with golangs&nbsp;<code>pion</code>&nbsp;(<a href="https://github.com/pion/webrtc">https://github.com/pion/webrtc</a>)&nbsp; and their excellent&nbsp;<code>mediadevices</code>&nbsp;(<a href="https://github.com/pion/mediadevices">https://github.com/pion/mediadevices</a>) which wraps the legacy pi camera stack (non-open source drivers, unlike the modern pi camera stack which builds on&nbsp;<code>libcamera</code>).</p>
-</div>
-</div>
-</div>
-</section>
-<section id="performance" class="level3">
-<h3 class="anchored" data-anchor-id="performance">Performance</h3>
-<p>Stats taken from <code>top</code>.</p>
-<table class="table">
-<colgroup>
-<col style="width: 14%">
-<col style="width: 14%">
-<col style="width: 14%">
-<col style="width: 14%">
-<col style="width: 14%">
-<col style="width: 14%">
-<col style="width: 14%">
-</colgroup>
-<thead>
-<tr class="header">
-<th>Hardware</th>
-<th>HTTP - MJPEG</th>
-<th>HLS</th>
-<th>Websocket no connection</th>
-<th>Websocket</th>
-<th>WebRTC</th>
-<th>WebRTC (<code>aiortc</code>)</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td><strong>CPU</strong></td>
-<td>150%</td>
-<td><strong>40%</strong></td>
-<td>&lt;=0.2%</td>
-<td><strong>40%</strong></td>
-<td>170%</td>
-<td>250-350%</td>
-</tr>
-<tr class="even">
-<td><strong>RAM</strong></td>
-<td>6%</td>
-<td><strong>4%</strong></td>
-<td>&lt;=0.4%</td>
-<td>6%</td>
-<td>5%</td>
-<td></td>
-</tr>
-</tbody>
-</table>
-</section>
-</section>
-<section id="ending-notes" class="level2">
-<h2 class="anchored" data-anchor-id="ending-notes">Ending Notes</h2>
-<p>This is what I have currently.&nbsp;<strong>In the next blog I’ll go through how we’ll set up a backend which will allow us to use the sensors, move the servos and stream audio/video.</strong></p>
-<p>I think the bidirectional communication will require a third blog, and then manufacturing a 3D-printed case as a fourth!</p>
-<p>Until next time,<br>
-Hampus Londögård</p>
-
-
-</section>
-
- ]]></description>
-  <category>python</category>
-  <category>raspberrypi</category>
-  <guid>https://blog.londogard.com/posts/2022-11-06-babymonitor-pt-1.html</guid>
-  <pubDate>Sun, 06 Nov 2022 00:00:00 GMT</pubDate>
 </item>
 </channel>
 </rss>
