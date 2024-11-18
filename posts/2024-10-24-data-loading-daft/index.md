@@ -28,6 +28,7 @@ If they had been more inspired by `polars` in the Developer Experience (DX) I'd 
 What _daft_ does have is a _multi-modal_ namespace, unlike `polars` which solely focuses on traditional data-types. This is _really_ interesting albeit not that fleshed out yet. It's enjoyable and has potential to grow!
 
 Further, to quote _daft_ themselves:
+
 > _Daft provides a snappy and delightful local interactive experience, but also seamlessly scales to petabyte-scale distributed workloads._
 
 The _petabyte-scale_ comes from the fact that you can run _daft_ on top of _Ray_ which is a distributed framework that tries to take on Spark. It's famously used at OpenAI while training their models.
@@ -128,7 +129,7 @@ Comparing speeds with "native" PyTorch DataLoaders is interesting and shows that
 ## Numbers
 | Tool                     | Num_worker | Pin_memory | Cache | Configuration | Time       |
 | ------------------------ | ---------- | ---------- | ----- | ------------- | ---------- |
-| **Torch Dataset/Loader** | None       | None       | -     | Default       | 3m20s      |
+| **Torch Dataset/Loader** | None       | None       | -     | Default       | **3m20s**  |
 |                          | None       | None       | -     | Default       | 3m26s      |
 |                          | 4          | True       | -     | Default       | 4m9s       |
 |                          | 2          | True       | -     | Default       | 3m44s      |
