@@ -38,7 +38,10 @@
 <p>Today I’ll introduce one of the newer alternatives in the field, <a href="https://getdaft.io/">daft</a>.</p>
 <p>Daft is what you can only call a merger between <code>polars</code>, <code>spark</code> and Deep Learning. If they had been more inspired by <code>polars</code> in the Developer Experience (DX) I’d have called it a “lovechild”, but for now they don’t have the nice-to-haves like <code>pl.with_column(new_col_name=pl.col("other_col")*2)</code> named syntax and other things like <code>pl.col("col").replace(dict_to_replace)</code> and a lot of other things.</p>
 <p>What <em>daft</em> does have is a <em>multi-modal</em> namespace, unlike <code>polars</code> which solely focuses on traditional data-types. This is <em>really</em> interesting albeit not that fleshed out yet. It’s enjoyable and has potential to grow!</p>
-<p>Further, to quote <em>daft</em> themselves: &gt; <em>Daft provides a snappy and delightful local interactive experience, but also seamlessly scales to petabyte-scale distributed workloads.</em></p>
+<p>Further, to quote <em>daft</em> themselves:</p>
+<blockquote class="blockquote">
+<p><em>Daft provides a snappy and delightful local interactive experience, but also seamlessly scales to petabyte-scale distributed workloads.</em></p>
+</blockquote>
 <p>The <em>petabyte-scale</em> comes from the fact that you can run <em>daft</em> on top of <em>Ray</em> which is a distributed framework that tries to take on Spark. It’s famously used at OpenAI while training their models.</p>
 </section>
 <section id="coding-with-daft" class="level1">
@@ -211,7 +214,7 @@ font-style: inherit;">32</span>)</span></code></pre></div>
 <td>None</td>
 <td>-</td>
 <td>Default</td>
-<td>3m20s</td>
+<td><strong>3m20s</strong></td>
 </tr>
 <tr class="even">
 <td></td>
