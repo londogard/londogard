@@ -21,21 +21,20 @@ format:
 
 ### About
 
-- Lives in Lund, contact me for other details.
-- [![](icons/github.png){height=18px}/lundez](https://github.com/lundez) | [![](icons/github.png){height=18px}/londogard](https://github.com/londogard) | [![](icons/twitter.png){height=18px}/hlondogard](https://twitter.com/hlondogard) | [![](icons/linkedin.png){height=18px}/hampus-londögård](https://www.linkedin.com/in/hampus-londögård/) | [blog.londogard.com](https://blog.londogard.com/)
+- Ystad | 0733 673 179 | hampus@londogard.com
+- [![](icons/github.png){height=16px}/lundez](https://github.com/lundez) | [![](icons/github.png){height=16px}/londogard](https://github.com/londogard) | [![](icons/twitter.png){height=16px}/hlondogard](https://twitter.com/hlondogard) | [![](icons/linkedin.png){height=16px}/hampus-londögård](https://www.linkedin.com/in/hampus-londögård/) | [blog.londogard.com](https://blog.londogard.com/)
 - Languages: Swedish, English and a bit Danish.
 - Interest and Activities: Tech, Open-Source, Deep Learning, Kotlin, Traveling, Environment, Family/Friends and Brewing Beer
 
 ### Introduction
 
-I'm in love with data of small and big sizes, with passion of sharing knowledge you'll find me keeping up-to-date and a great explainer.  
-In the end what excites me the most is to build actual value by finding patterns in data. I work in a unified way of Software Engineering with Data Science/Engineering to keep code tidy, scalable and efficient. The systems I build have a lot of ML-/DataOps in mind. This allows the team to put more effort into how the model is used (context) and how it impacts downstream consumers. Being able to iterate fast in a reckless way while being safe is incredibly valuable.
+I’m passionate about transforming data into value and knowledge-sharing. By combining Software Engineering with Data Science, I build scalable, efficient systems that emphasize ML and DataOps principles. My work enables teams to focus on impactful model applications and achieve safe, rapid iterations.
 
 ### Other Experiences
 
 **Honorifics**: Hyperights [Nordic 100 2023](https://www.linkedin.com/feed/update/urn:li:activity:7059486986662744064/?updateEntityUrn=urn%3Ali%3Afs_updateV2%3A%28urn%3Ali%3Aactivity%3A7059486986662744064%2CFEED_DETAIL%2CEMPTY%2CDEFAULT%2Cfalse%29) in Data, AI & Analytics  
 **Presentations**: AFRY x Snowflake[^1], Foo Café[^2][^3], Google DevFest[^4], Industry Day by IEEE[^5], Almedalsveckan[^6]  
-**Open Source**: e.g. [DJL](https://github.com/deepjavalibrary/djl), [flyte](https://flyte.org/), [solara](https://github.com/widgetti/solara) and my own libraries under `/londogard` and `/Lundez`.
+**Open Source**: Contributed to big projects like [DJL](https://github.com/deepjavalibrary/djl), [flyte](https://flyte.org/), [solara](https://github.com/widgetti/solara) and my own libraries under `/londogard` and `/Lundez`.
 
 [^1]: _"Building ML solutions using Snowpark"_
 [^2]: _"Building Efficient Local-First ML Pipelines"_
@@ -45,7 +44,7 @@ In the end what excites me the most is to build actual value by finding patterns
 [^6]: [_"Vikten av att verkligen förstå AI"_](https://www.youtube.com/watch?v=yl6B3X6PwCk)
 
 ### Education
-2013-2018 - MsC Computer Science, Lundes Tekniska Högskola, Lund.  
+2013-2018 - MsC Computer Science, Lunds Tekniska Högskola  
 Master Thesis: _"Improving the Open Street Map using Deep Learning"_
 
 ### Licenses / Certificates
@@ -61,66 +60,69 @@ Master Thesis: _"Improving the Open Street Map using Deep Learning"_
 
 {{< pagebreak >}}
 
-## Work Experience
+# Work Experience
 
 
-### **AFRY**: _Team Lead Analytics_
-Built a AI & Analytics subdivision from scratch at AFRY X where I handled everything from 1:1's to recruitment and sales. I helped bring in assignments and handled communication, made sure our solutions was of high quality.  
-Additionally I supervised 5 Master Thesises in co-operation with Apple (Maps).
+## **2023- | Verisure** - _Senior Machine Learning Engineer_
 
-**Apple Maps** _Lead and Data Engineer/Scientist_ (2023)  
-I managed the delivery of a AI team of 6, and the client relationship. We built a scalable web scraping solution using XGBoost and LLM's, e.g. RoBERTa, which was deployed in production using Scala/Spark. Further we integrated MLOps solutions and explainable AI (XAI) into the training pipelines.  
-Tech: Python, Scala, Spark, PyTorch, sklearn, SHAP, MLFlow
+- **2023-09 to 2023-11 | Senior Machine Learning Engineer**  
+  - Developed and trained Computer Vision and Timeseries models.
+  - Improved Data Infrastructure to enhance model performance and efficiency.
 
-**Volvo Cars** _Lead and Data Engineer/Scientist_ (2022-2023)   
-After bringing assignment to AFRY I was delivery manager.  
-The assignment itself was two feasibility studies where we built a generic pipeline on Timeseries Classification/Forecasting. Using this we compared State-of-the-Art models such as Informer & NHiTS and integrate MLOps principles.  
-The data was 40 KHz sensor data and in both assignments we presented and had a Q&A with the Agile Release Train at VCC.  
-Tech: Python, Docker, Azure, PyTorch, sklearn, SHAP    
+- **2023-11 to 2024-03 | Team Lead**  
+  - Led the team in agile project management, delegating responsibilities to ensure scalable team operations.
 
-**Norsk Hydro**  _Data Scientist_  (2023)  
-Task: Reduce amount of scrap produced in factories.  
-Approach: Machine Learning to model producers and apply Swarm Optimization, with additional analysis applied.  
-Tech: sklearn, XGBoost, XAI (SHAP), Docker, Azure, MLFlow
+- **2024-08- | Senior ML Engineer & Cloud ML Lead**  
+  - Oversaw the AWS Cloud ML approach and integrated scalable cloud solutions.
 
-**Öresundsbron**  _Data Warehouse & Cloud Expert_  (2023)   
-- Create a tendering (upphandling) on how Öresundsbron should collect, store and work with data
-- Tech: Cloud Data Platform (Databricks/Snowflake), Realtime Warnings (TimeScaleDB)
+**Technologies**: Python, PyTorch, TensorFlow, ONNX, Keras, AWS, IaC, Azure, MLFlow, Docker, Kubernetes
 
-**Ericsson**  _Lead and Data Scientist_  (2021-2023)  
-- Manage delivery of AI team and customer relation                                              
-- Brough assignment in                                                                          
-- Presentations and visit client in Germany                                                     
-- 5G antenna Q&A process improvements, find patterns and behaviours in sensor data (time-series)
-- End-2-end interactive validation tool with integrated Machine Learning                        
-- Tech: PyTorch, sklearn, streamlit, Docker, Azure, GitLab Pipelines  
-> _"The best data analysis project I've seen at this company"_ - Andreas Hartl
+## **2021-2023 | AFRY** - _Team Lead Analytics_
 
-### **AFRY**: Software Developer (2018-2021)
+Built an AI & Analytics subdivision from scratch at AFRY X where I handled everything from 1:1's to recruitment and sales. I helped bring in assignments and handled communication, made sure our solutions was of high quality.  
+Additionally I supervised 5 Master thesis's in co-operation with Apple Maps.
 
-At AFRY I was the Competence Lead (IT South) which includded blogging, Tipsrundan and fun events. I was also the driver of Deep Learning Competence.
+**2023 | Apple Maps | _Delivery Manager and Lead Data Engineer/Scientist_**  
+My team of 6 persons helped Apple build a scalable web scraping solution using XGBoost and LLM's, e.g. RoBERTa, which was deployed in production using Scala/Spark. Further we integrated MLOps solutions and explainable AI (XAI) into the training pipelines.  
+_Tech_: Python, Scala, Spark, PyTorch, sklearn, SHAP, MLFlow
 
-**Apple Maps**    _ML/Data Engineer_  (2020-2021)  
-- Address Data Team
-- NLP solution to parse and classify tokens in addresses across the entire world
-- Spark based solution that cross-validate address sources country-by-country
-- Tech: Java, Scala, Spark, Conditional Random Fields
+**2022-2023 | Volvo Cars | _Delivery Manager & Lead Data Engineer/Scientist_**   
+Built a generic timeseries pipeline to do Classification & Forecasting. We applied State-of-the-Art models such as NHiTS, Rocket and Informer while integrating MLOps principles to make experimentation simple for anyone.  
+_Tech_: Python, Docker, Azure, PyTorch, sklearn, SHAP    
 
-**Apple Maps**  _Software Engineer_  (2018-2020)  
-- Worked in Data Validation team (Geospatial & Addressing)
-- Built internal tooling (full-stack) and a framework in Spark bottom up to improve efficiency
-- Tech: Scala, Spark, React, PostgreSQL, helm & kubernetes
+**2023 | Norsk Hydro | _Data Scientist_**  
+Applied Machine Learning techniques to reduce scrap produced in factories. Applied Swarm Optimization and additional analysis.  
+_Tech_: sklearn, XGBoost, XAI (SHAP), Docker, Azure, MLFlow
+
+**2023 | Öresundsbron | _Data Warehouse & Cloud Expert_**  
+Assisted Øresundsbron in creating a procurement on how to collect, store and work with sensor data in a modernized way. 
+
+**2021-2023 | Ericsson | _Delivery Manager & Lead Data Scientist_**  
+Worked with 5G antenna Q&A process improvements by automating sensor data behavior/pattern extractions. Built a end-to-end interactive tool that client could use that had integrated Machine Learning parts to automate sensor data clustering and finding behaviors.  
+_Tech_: PyTorch, sklearn, streamlit, Docker, Azure, GitLab Pipelines  
+> _"The best data analysis project I've seen at this company"_ - Andreas Hartl (Ericsson Manager)
+
+## 2018-2021 | AFRY | _Software Engineer_
+
+At AFRY I was the Competence Lead (IT South) which included blogging, Tipsrundan and fun events. I was also the driver of Deep Learning Competence.
+
+**2020-2021 | Apple Maps | _ML/Data Engineer_**
+Worked in Address Data Team, utilizing NLP techniques to parse and classify tokens in addresses across the entire world. Cross-validated address sources country-by-country using Big Data tools such as Scala Spark.  
+_Tech_: Java, Scala, Spark, Conditional Random Fields
+
+**2018-2020 | Apple Maps | _Software/Data Engineer_**  
+Worked in Data Validation Team with Geospatial and Address data. Built internal tooling (full-stack) and a framework in Spark bottom-up to improve efficiency among colleagues.  
+_Tech_: Scala, Spark, React, PostgreSQL, helm & kubernetes
 
 
 
-### Other work experiences
+## Other work experiences
 
-- **Lunds Tekniska Högskola**    _SI-Leader & Coach_   (2014-2017)  
-    - Assist students in a way that stimulates group dynamics and encourage active thinking by discussions. Additionally coachedd other SI-leaders to be more confident.
-- **Flatfrog**  _Software Engineer (Intern)_  (2017)  
-    - Developed automatic testing of a new protocol and built a tool to track and visualize all tests.
-- **Advenica**  _Software Engineer (Intern)_  (2016)  
-    - Developed an automated testing suite that worked with new and legacy hardware products.
-- **Other** (2010-2015)
-(2010-2015)  
-    - Assistant Teacher (Smartstudies), Assistant Nurse, Amusement Park (Tosselilla), Restaurant/Kiosk (Försvarsutbildarna) & Janitor (Ystads Kommun)
+**2014-2017 | Lunds Tekniska Högskola | _SI-Leader (Math) & Coach_**   
+
+
+**2016,2017 | Summer Internships (Advenica, Flatfrog) | _Software Engineer_**     
+I worked with test automation, embedded code & python dashboards.  
+
+**2010-2015 | Other | _Various Roles_**  
+Assistant Teacher (Smartstudies), Assistant Nurse, Amusement Park (Tosselilla), Restaurant/Kiosk (Försvarsutbildarna) & Janitor (Ystads Kommun)

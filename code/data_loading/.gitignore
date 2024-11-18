@@ -1,0 +1,8 @@
+# pixi environments
+.pixi
+*.egg-info
+
+lightning_logs
+imagenette_full_size
+__pycache__
+imagenette2-160

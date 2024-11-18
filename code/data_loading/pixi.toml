@@ -1,0 +1,23 @@
+[project]
+name = "data_loading"
+version = "0.1.0"
+description = "Add a short description here"
+authors = ["hampus.londogard@gmail.com <hampus.londogard@gmail.com>"]
+channels = ["conda-forge"]
+platforms = ["osx-arm64"]
+
+[tasks]
+
+[dependencies]
+python = ">=3.12.7,<3.13"
+dataset = ">=1.6.2,<1.7"
+ray-data = ">=2.37.0,<2.38"
+datasets = ">=3.0.2,<3.1"
+pillow = ">=11.0.0,<11.1"
+torchvision = ">=0.19.1,<0.20"
+lightning = ">=2.4.0,<2.5"
+torchmetrics = ">=1.5.1,<1.6"
+polars = ">=1.12.0,<1.13"
+
+[pypi-dependencies]
+getdaft = "*"
