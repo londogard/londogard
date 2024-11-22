@@ -14,7 +14,7 @@ daft.set_execution_config(enable_native_executor=True, default_morsel_size=256)
 
 
 def load_imagenette_datasets_daft(dataset_path="./imagenette_full_size"):
-    ds = datasets.load_from_disk(dataset_path)
+    ds = datasets.load_dataset(dataset_path)
     extract_img_bytes = daft.col("image").struct.get("bytes").alias("image")
     ds_train = daft.from_arrow(ds["train"].data.table).select(
         "label", extract_img_bytes
