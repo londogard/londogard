@@ -204,7 +204,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         </div>
       </div>
                           <div class="quarto-categories">
-                <div class="quarto-category">TIL</div>
+                <div class="quarto-category">data</div>
+                <div class="quarto-category">loading</div>
               </div>
                   </div>
   </div>
@@ -763,10 +764,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <p>I think most of the frameworks ends up at a similar place in the experience.</p>
-<p><strong>Quick DX Ranking</strong> 1. PyTorch &amp; HuggingFace Datasets 2. Daft 3. Ray (albeit I believe it to be the most scalable solution as you can truly tinker in detail)</p>
-<p>I enjoyed <em>Daft</em> a lot with its multi-modal syntax, inspired by polars with namespaces (e.g.&nbsp;<code>.image.decode()</code>), which can be phenomenal. Working with DataFrame’s is a cool addition, where you can drop into python simply by using <code>apply</code>. Working with <em>Daft</em> more and more I noticed that the DataFrame syntax sometimes becomes a big blocker and the simplicity of HF Datasets and Ray using <code>dict</code> syntax in <code>.map</code> statements results in easier code and smoother integration with existing libraries.<br>
+<p><strong>Quick DX Ranking</strong></p>
+<ol type="1">
+<li>PyTorch &amp; HuggingFace Datasets</li>
+<li>Daft</li>
+<li>Ray (albeit I believe it to be the most scalable solution as you can truly tinker in detail)</li>
+</ol>
+<p>I enjoyed <em>Daft</em> a lot with its multi-modal syntax, inspired by polars with namespaces (e.g.&nbsp;<code>.image.decode()</code>), which can be phenomenal. Working with DataFrame’s is a cool addition, where you can drop into python simply by using <code>apply</code>.<br>
+Working with <em>Daft</em> more and more I noticed that the DataFrame syntax sometimes becomes a big blocker and the simplicity of HF Datasets and Ray using <code>dict</code>’s in <code>.map</code> statements results in easier code and smoother integration with existing libraries.<br>
 Additionally HF Datasets / PyTorch DataLoaders feels more pythonic, where the latter is real simple. I can’t put my finger on it but they just seem easier to debug and understand.</p>
-<p>For now I prefer Torch &amp; HuggingFace over Daft. As said Ray comes at last, but I can see it shine with huge models. Ray lets you tune the knobs, Daft is somewhere in-between and perhaps they found a middle-ground where “normal” practitioners can get good scaling without a lot of work. It’ll sure be interesting to follow!</p>
+<p>It’ll sure be interesting to follow the progress being made, and I’m happy the dust isn’t settled yet!</p>
 </section>
 <section id="appendix" class="level1">
 <h1>Appendix</h1>
