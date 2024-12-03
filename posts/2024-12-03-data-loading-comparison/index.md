@@ -1,7 +1,7 @@
 ---
 title: "Data Loading - Comparing Common Tooling"
 description: "Minibenchmark and Developer Experience (DX) between the choices"
-categories: [TIL]
+categories: [data, loading]
 date: "2024-12-03"
 ---
 
@@ -251,14 +251,17 @@ def load_imagenette_datasets_ray(dataset_path="./imagenette_full_size"):
 I think most of the frameworks ends up at a similar place in the experience. 
 
 **Quick DX Ranking**
+
+
 1. PyTorch & HuggingFace Datasets
 2. Daft
 3. Ray (albeit I believe it to be the most scalable solution as you can truly tinker in detail)
 
-I enjoyed _Daft_ a lot with its multi-modal syntax, inspired by polars with namespaces (e.g. `.image.decode()`), which can be phenomenal. Working with DataFrame's is a cool addition, where you can drop into python simply by using `apply`. Working with _Daft_ more and more I noticed that the DataFrame syntax sometimes becomes a big blocker and the simplicity of HF Datasets and Ray using `dict` syntax in `.map` statements results in easier code and smoother integration with existing libraries.  
+I enjoyed _Daft_ a lot with its multi-modal syntax, inspired by polars with namespaces (e.g. `.image.decode()`), which can be phenomenal. Working with DataFrame's is a cool addition, where you can drop into python simply by using `apply`.   
+Working with _Daft_ more and more I noticed that the DataFrame syntax sometimes becomes a big blocker and the simplicity of HF Datasets and Ray using `dict`'s in `.map` statements results in easier code and smoother integration with existing libraries.  
 Additionally HF Datasets / PyTorch DataLoaders feels more pythonic, where the latter is real simple. I can't put my finger on it but they just seem easier to debug and understand.
 
-For now I prefer Torch & HuggingFace over Daft. As said Ray comes at last, but I can see it shine with huge models. Ray lets you tune the knobs, Daft is somewhere in-between and perhaps they found a middle-ground where "normal" practitioners can get good scaling without a lot of work. It'll sure be interesting to follow!
+It'll sure be interesting to follow the progress being made, and I'm happy the dust isn't settled yet!
 
 
 # Appendix
