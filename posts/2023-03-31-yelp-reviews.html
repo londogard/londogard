@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.5.57">
+<meta name="generator" content="quarto-1.6.39">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -73,10 +73,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-0626ff4d7a71b55c8707dcae1d04a9b6.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-bc163a3a22d509ec1bc4838f08992d42.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -158,8 +158,11 @@ window.Quarto = {
 <link rel="stylesheet" href="../styles.css">
 <meta name="twitter:title" content="Building Actionable Insights from Yelp Reviews using Setfit – Londogard Blog">
 <meta name="twitter:description" content="Setfit: Efficient few-shot learning with Sentence Transformers is a way to train models to perform new tasks with very little data. In this blog I use SetFit to create value for restaurant owners by finding reviews that are helpful and contains improvements applicable to the restaurant using Yelp Dataset.">
+<meta name="twitter:image" content="https://blog.londogard.com/posts/2023-03-31-yelp-reviews_files/figure-html/cell-18-output-1.png">
 <meta name="twitter:creator" content="@hlondogard">
-<meta name="twitter:card" content="summary">
+<meta name="twitter:image-height" content="441">
+<meta name="twitter:image-width" content="547">
+<meta name="twitter:card" content="summary_large_image">
 </head>
 
 <body class="nav-fixed">
@@ -647,7 +650,7 @@ Let’s use <code>pl.LazyFrame.limit</code> to make sure we only read 3 samples 
 <th data-quarto-table-cell-role="th">categories</th>
 <th data-quarto-table-cell-role="th">hours</th>
 </tr>
-<tr class="odd">
+<tr class="even">
 <th>str</th>
 <th>str</th>
 <th>str</th>
@@ -737,7 +740,7 @@ Let’s use <code>pl.LazyFrame.limit</code> to make sure we only read 3 samples 
 <th data-quarto-table-cell-role="th">stars</th>
 <th data-quarto-table-cell-role="th">review_count</th>
 </tr>
-<tr class="odd">
+<tr class="even">
 <th>str</th>
 <th>f64</th>
 <th>i64</th>
@@ -800,7 +803,7 @@ I’ll later choose this restaurant as the basis of my “Helpful” or “Not H
 <th data-quarto-table-cell-role="th">text</th>
 <th data-quarto-table-cell-role="th">date</th>
 </tr>
-<tr class="odd">
+<tr class="even">
 <th>str</th>
 <th>str</th>
 <th>str</th>
@@ -1357,8 +1360,6 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   });
   clipboard.on('success', onCopySuccess);
   if (window.document.getElementById('quarto-embedded-source-code-modal')) {
-    // For code content inside modals, clipBoardJS needs to be initialized with a container option
-    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
     const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
       text: getTextToCopy,
       container: window.document.getElementById('quarto-embedded-source-code-modal')
@@ -1469,7 +1470,6 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       if (window.Quarto?.typesetMath) {
         window.Quarto.typesetMath(note);
       }
-      // TODO in 1.5, we should make sure this works without a callout special case
       if (note.classList.contains("callout")) {
         return note.outerHTML;
       } else {

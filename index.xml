@@ -9,8 +9,1009 @@
 <link>https://blog.londogard.com/</link>
 <atom:link href="https://blog.londogard.com/index.xml" rel="self" type="application/rss+xml"/>
 <description>A blog which majorly focuses on Data Science, Data Engineering and sometimes Kotlin / Scala.</description>
-<generator>quarto-1.5.57</generator>
-<lastBuildDate>Tue, 19 Nov 2024 00:00:00 GMT</lastBuildDate>
+<generator>quarto-1.6.39</generator>
+<lastBuildDate>Tue, 03 Dec 2024 00:00:00 GMT</lastBuildDate>
+<item>
+  <title>Data Loading - Comparing Common Tooling</title>
+  <dc:creator>Hampus Londögård</dc:creator>
+  <link>https://blog.londogard.com/posts/2024-12-03-data-loading-comparison/</link>
+  <description><![CDATA[ 
+
+
+
+
+
+<p>This blog was supposed to be more in-depth but my enthusiasm was drastically cut and I felt like splitting it up into multiple smaller one, whereas <a href="../../posts/2024-10-24-data-loading-daft/">daft one</a> is already uploaded.</p>
+<blockquote class="blockquote">
+<p>I started writing a “recipe-book” for <code>daft</code> where I realized it wasn’t as smoothly integrated as a lot of other tools. I believe that the <code>DataFrame</code> format is both a winning and loosing concept, it’s very helpful but when you need to use two columns the way <code>Ray</code>, <code>HuggingFace Datasets</code> and others map data using <code>dict</code> is a winning concept for both <em>element by element</em> and <em>batch</em> mapping. With a <code>dict</code> way to map <code>DataFrame</code> I think that <code>daft</code> might end up the perfect tool.</p>
+</blockquote>
+<p>Anyhow, today I’ll compare the developer experience and performance of different tools for data loading.</p>
+<ol type="1">
+<li><a href="https://huggingface.co/docs/datasets/index">HuggingFace Datasets</a></li>
+<li><a href="https://docs.ray.io/en/latest/data/data.html">Ray Data</a></li>
+<li><a href="https://getdaft.io/">Daft</a></li>
+<li><a href="https://pytorch.org/">“PyTorch Native” (Dataset &amp; DataLoader)</a></li>
+</ol>
+<p>All of the chosen tools are quite awesome, but HuggingFace and Ray can export to TensorFlow additionally. Although Ray currently cannot handle <code>RaggedTensor</code> which is required for models with variable output - a letdown!</p>
+<section id="quick-introduction" class="level2">
+<h2 class="anchored" data-anchor-id="quick-introduction">Quick Introduction</h2>
+<p><strong>Hugging Face Datasets</strong> offers easy access to a vast library of datasets, with efficient memory handling through streaming and memory-mapping. Its API simplifies data loading and transformation for direct use with PyTorch and TensorFlow.</p>
+<p><strong>Ray Data</strong> enables scalable, distributed data processing across multiple nodes, ideal for large datasets. It integrates with Ray’s ML tools for parallel training and distributed transformations. It’s the tool for Large Language Model training, even embraced by OpenAI in their ChatGPT <a href="https://thenewstack.io/how-ray-a-distributed-ai-framework-helps-power-chatgpt/">source</a>.</p>
+<p><strong>Daft</strong> is a high-performance data processing library with lazy evaluation, optimized for structured data formats like Parquet and Arrow. It’s a strong choice for single-node and multi-node data preparation with PyTorch compatibility. It utilizes Ray to achieve multi-node behavior.</p>
+<p><strong>PyTorch’s Dataset and DataLoader</strong> offer a simple and flexible way to load data with minimal memory overhead, ideal for in-memory and custom datasets. It’s lightweight but lacks distributed and lazy loading features.</p>
+<table class="caption-top table">
+<caption>Table Summarization</caption>
+<colgroup>
+<col style="width: 28%">
+<col style="width: 24%">
+<col style="width: 9%">
+<col style="width: 4%">
+<col style="width: 32%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Feature</th>
+<th>Hugging Face Datasets</th>
+<th>Ray Data</th>
+<th>Daft</th>
+<th>PyTorch Dataset + DataLoader</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Parallel Processing</td>
+<td>+</td>
+<td>+++</td>
+<td>++</td>
+<td>+</td>
+</tr>
+<tr class="even">
+<td>Distributed Processing</td>
+<td>0</td>
+<td>+++</td>
+<td>+++</td>
+<td>0</td>
+</tr>
+<tr class="odd">
+<td>Caching &amp; Memory Mapping</td>
+<td>+++</td>
+<td>+</td>
+<td>+</td>
+<td>0</td>
+</tr>
+<tr class="even">
+<td>Lazy Loading</td>
+<td>+++</td>
+<td>++</td>
+<td>+++</td>
+<td>+++ (depends)</td>
+</tr>
+<tr class="odd">
+<td>Simple to Use</td>
+<td>+++</td>
+<td>+</td>
+<td>++</td>
+<td>+++</td>
+</tr>
+<tr class="even">
+<td>Built-in Dataset Access</td>
+<td>+++</td>
+<td>0</td>
+<td>0</td>
+<td>+++</td>
+</tr>
+<tr class="odd">
+<td>Custom Transformations</td>
+<td>++</td>
+<td>+++</td>
+<td>+++</td>
+<td>+++</td>
+</tr>
+<tr class="even">
+<td>ML Framework Support</td>
+<td>+++</td>
+<td>+++</td>
+<td>++</td>
+<td>++</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="mini-benchmark" class="level2">
+<h2 class="anchored" data-anchor-id="mini-benchmark">Mini Benchmark</h2>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 27%">
+<col style="width: 11%">
+<col style="width: 11%">
+<col style="width: 5%">
+<col style="width: 32%">
+<col style="width: 11%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Tool</th>
+<th>Num_worker</th>
+<th>Pin_memory</th>
+<th>Cache</th>
+<th>Configuration</th>
+<th>Time</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>HF Element</strong></td>
+<td>None</td>
+<td>None</td>
+<td>False</td>
+<td>.map</td>
+<td>6m48s</td>
+</tr>
+<tr class="even">
+<td></td>
+<td>None</td>
+<td>None</td>
+<td>True</td>
+<td>.with_transform</td>
+<td><strong>3m23s</strong></td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>4</td>
+<td>None</td>
+<td>False</td>
+<td>.map</td>
+<td>9m16s</td>
+</tr>
+<tr class="even">
+<td></td>
+<td>2</td>
+<td>None</td>
+<td>False</td>
+<td>.map, persistent_worker=True</td>
+<td>8m50s</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>2</td>
+<td>True</td>
+<td>True</td>
+<td>.map</td>
+<td>4m7s</td>
+</tr>
+<tr class="even">
+<td></td>
+<td>None</td>
+<td>None</td>
+<td>False</td>
+<td>.map, num_proc=2</td>
+<td>6m17s</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>None</td>
+<td>None</td>
+<td>True</td>
+<td>.map, num_proc=2</td>
+<td>4m4s</td>
+</tr>
+<tr class="even">
+<td><strong>HF Batched</strong></td>
+<td>None</td>
+<td>None</td>
+<td>False</td>
+<td>.map</td>
+<td>7m14s</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>None</td>
+<td>None</td>
+<td>False</td>
+<td>.map, num_proc=4</td>
+<td>4m57s</td>
+</tr>
+<tr class="even">
+<td></td>
+<td>None</td>
+<td>None</td>
+<td>False</td>
+<td>.map, num_proc=4, size=64</td>
+<td>5m25s</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>None</td>
+<td>None</td>
+<td>True</td>
+<td>.map</td>
+<td><strong>3m22s</strong></td>
+</tr>
+<tr class="even">
+<td></td>
+<td>4</td>
+<td>True</td>
+<td>False</td>
+<td>.map</td>
+<td>4m</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>4</td>
+<td>True</td>
+<td>False</td>
+<td>.map</td>
+<td>5m34s</td>
+</tr>
+<tr class="even">
+<td></td>
+<td>2</td>
+<td>True</td>
+<td>False</td>
+<td>.map</td>
+<td>5m3s</td>
+</tr>
+<tr class="odd">
+<td><strong>Torch Dataset/Loader</strong></td>
+<td>None</td>
+<td>None</td>
+<td>-</td>
+<td>Default</td>
+<td>3m20s</td>
+</tr>
+<tr class="even">
+<td></td>
+<td>None</td>
+<td>None</td>
+<td>-</td>
+<td>Default</td>
+<td>3m26s</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>4</td>
+<td>True</td>
+<td>-</td>
+<td>Default</td>
+<td>4m9s</td>
+</tr>
+<tr class="even">
+<td></td>
+<td>2</td>
+<td>True</td>
+<td>-</td>
+<td>Default</td>
+<td>3m44s</td>
+</tr>
+<tr class="odd">
+<td><strong>Daft</strong></td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>daft-default</td>
+<td><strong>14m55s</strong></td>
+</tr>
+<tr class="even">
+<td></td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>daft-native</td>
+<td><strong>3m30s</strong></td>
+</tr>
+<tr class="odd">
+<td><strong>Ray</strong></td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>Default</td>
+<td>7m41s</td>
+</tr>
+</tbody>
+</table>
+<p>Running on full sized images we get a bit more interesting results:</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 12%">
+<col style="width: 12%">
+<col style="width: 6%">
+<col style="width: 17%">
+<col style="width: 25%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Tool</th>
+<th>Num_worker</th>
+<th>Pin_memory</th>
+<th>Cache</th>
+<th>Configuration</th>
+<th>Time</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>Additional Tests</strong></td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>torch</td>
+<td>4m19s</td>
+</tr>
+<tr class="even">
+<td></td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>hf_with_transf</td>
+<td>4m40s</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>hf_map</td>
+<td>8m14s, cached: 7m21s</td>
+</tr>
+<tr class="even">
+<td></td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>daft</td>
+<td><strong>3m49s</strong></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="developer-experience-dx" class="level2">
+<h2 class="anchored" data-anchor-id="developer-experience-dx">Developer Experience (DX)</h2>
+<div class="tabset-margin-container"></div><div class="panel-tabset">
+<ul class="nav nav-tabs"><li class="nav-item"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" aria-controls="tabset-1-1" aria-selected="true">HuggingFace Datasets</a></li><li class="nav-item"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" aria-controls="tabset-1-2" aria-selected="false">PyTorch “native”</a></li><li class="nav-item"><a class="nav-link" id="tabset-1-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-3" aria-controls="tabset-1-3" aria-selected="false">Daft</a></li><li class="nav-item"><a class="nav-link" id="tabset-1-4-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-4" aria-controls="tabset-1-4" aria-selected="false">Ray</a></li></ul>
+<div class="tab-content">
+<div id="tabset-1-1" class="tab-pane active" aria-labelledby="tabset-1-1-tab">
+<div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">def</span> test_elem_by_elem(num_workers: <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">int</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">None</span>, pin_memory: <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">bool</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">None</span>, cache: <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">bool</span>):</span>
+<span id="cb1-2">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">if</span> <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">not</span> cache:</span>
+<span id="cb1-3">        datasets.disable_caching()</span>
+<span id="cb1-4"></span>
+<span id="cb1-5">    <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">def</span> _preprocess(data: <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">dict</span>):</span>
+<span id="cb1-6">        imgs <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> [utils.PREPROCESS_TRANSFORMS(x.convert(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"RGB"</span>)) <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">for</span> x <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">in</span> data[<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"image"</span>]]</span>
+<span id="cb1-7">        data[<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"image"</span>] <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> imgs</span>
+<span id="cb1-8">        <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">return</span> data</span>
+<span id="cb1-9"></span>
+<span id="cb1-10">    ds <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> datasets.load_from_disk(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"./imagenette_full_size"</span>)</span>
+<span id="cb1-11"></span>
+<span id="cb1-12">    <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">def</span> _augment(data: <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">dict</span>):</span>
+<span id="cb1-13">        tensor <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> _preprocess(data[<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"image"</span>])</span>
+<span id="cb1-14">        data[<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"image"</span>] <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> utils.AUGMENTATIONS(tensor)</span>
+<span id="cb1-15">        <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">return</span> data</span>
+<span id="cb1-16"></span>
+<span id="cb1-17">    ds_train <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> ds[<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"train"</span>].with_transform(_augment)</span>
+<span id="cb1-18">    ds_valid <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> ds[<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"validation"</span>].with_transform(_preprocess)</span>
+<span id="cb1-19"></span>
+<span id="cb1-20">    kwargs <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">dict</span>(</span>
+<span id="cb1-21">        num_workers<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>num_workers <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">or</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>,</span>
+<span id="cb1-22">        persistent_workers<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">bool</span>(num_workers),</span>
+<span id="cb1-23">        pin_memory<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>pin_memory,</span>
+<span id="cb1-24">        batch_size<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">32</span>,</span>
+<span id="cb1-25">    )</span>
+<span id="cb1-26">    dls_train <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> torch.utils.data.DataLoader(ds_train, <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">**</span>kwargs)</span>
+<span id="cb1-27">    dls_valid <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> torch.utils.data.DataLoader(ds_valid, <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">**</span>kwargs)</span>
+<span id="cb1-28">    </span></code></pre></div>
+</div>
+<div id="tabset-1-2" class="tab-pane" aria-labelledby="tabset-1-2-tab">
+<div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">class</span> ImagenetteDataset(Dataset):</span>
+<span id="cb2-2">    <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">def</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">__init__</span>(<span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>, hf_dataset, preprocess<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">None</span>, augment<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">None</span>):</span>
+<span id="cb2-3">        <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.hf_dataset <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> hf_dataset</span>
+<span id="cb2-4">        <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.preprocess <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> preprocess</span>
+<span id="cb2-5">        <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.augment <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> augment</span>
+<span id="cb2-6"></span>
+<span id="cb2-7">    <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">def</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">__len__</span>(<span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>):</span>
+<span id="cb2-8">        <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">return</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">len</span>(<span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.hf_dataset)</span>
+<span id="cb2-9"></span>
+<span id="cb2-10">    <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">def</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">__getitem__</span>(<span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>, idx):</span>
+<span id="cb2-11">        data <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.hf_dataset[idx]</span>
+<span id="cb2-12"></span>
+<span id="cb2-13">        image <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> data[<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"image"</span>].convert(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"RGB"</span>)</span>
+<span id="cb2-14"></span>
+<span id="cb2-15">        <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Apply preprocessing and augmentation if specified</span></span>
+<span id="cb2-16">        <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">if</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.preprocess:</span>
+<span id="cb2-17">            image: torch.Tensor <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.preprocess(image)</span>
+<span id="cb2-18">        <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">if</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.augment:</span>
+<span id="cb2-19">            image <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.augment(image)</span>
+<span id="cb2-20"></span>
+<span id="cb2-21">        <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">return</span> {</span>
+<span id="cb2-22">            <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"image"</span>: image,</span>
+<span id="cb2-23">            <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"label"</span>: data[<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"label"</span>],</span>
+<span id="cb2-24">        }</span>
+<span id="cb2-25">train_dataset <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> ImagenetteDataset(</span>
+<span id="cb2-26">    ds[<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"train"</span>], preprocess<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>utils.PREPROCESS_TRANSFORMS</span>
+<span id="cb2-27">)</span>
+<span id="cb2-28"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">print</span>(<span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">len</span>(train_dataset))</span>
+<span id="cb2-29">valid_dataset <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> ImagenetteDataset(</span>
+<span id="cb2-30">    ds[<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"validation"</span>], preprocess<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>utils.PREPROCESS_TRANSFORMS</span>
+<span id="cb2-31">)</span>
+<span id="cb2-32"></span>
+<span id="cb2-33"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Create DataLoader instances</span></span>
+<span id="cb2-34">kwargs <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">dict</span>(</span>
+<span id="cb2-35">    num_workers<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>num_workers <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">or</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>,</span>
+<span id="cb2-36">    persistent_workers<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">bool</span>(num_workers),</span>
+<span id="cb2-37">    pin_memory<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>pin_memory,</span>
+<span id="cb2-38">    batch_size<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">32</span>,</span>
+<span id="cb2-39">)</span>
+<span id="cb2-40">dls_train <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> DataLoader(train_dataset, shuffle<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">True</span>, <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">**</span>kwargs)</span>
+<span id="cb2-41">dls_valid <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> DataLoader(valid_dataset, <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">**</span>kwargs)</span></code></pre></div>
+</div>
+<div id="tabset-1-3" class="tab-pane" aria-labelledby="tabset-1-3-tab">
+<div class="sourceCode" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">def</span> load_imagenette_datasets_daft(dataset_path<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"./imagenette_full_size"</span>):</span>
+<span id="cb3-2">    ds <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> datasets.load_from_disk(dataset_path)</span>
+<span id="cb3-3">    extract_img_bytes <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> daft.col(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"image"</span>).struct.get(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"bytes"</span>).alias(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"image"</span>)</span>
+<span id="cb3-4">    ds_train <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> daft.from_arrow(ds[<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"train"</span>].data.table).select(</span>
+<span id="cb3-5">        <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"label"</span>, extract_img_bytes</span>
+<span id="cb3-6">    )</span>
+<span id="cb3-7"></span>
+<span id="cb3-8">    ds_valid <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> daft.from_arrow(ds[<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"validation"</span>].data.table).select(</span>
+<span id="cb3-9">        <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"label"</span>, extract_img_bytes</span>
+<span id="cb3-10">    )</span>
+<span id="cb3-11"></span>
+<span id="cb3-12">    img_decode_resize <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> (</span>
+<span id="cb3-13">        daft.col(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"image"</span>).image.decode(mode<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"RGB"</span>).image.resize(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">224</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">224</span>)</span>
+<span id="cb3-14">    )</span>
+<span id="cb3-15"></span>
+<span id="cb3-16">    ds_train <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> ds_train.with_column(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"image"</span>, img_decode_resize)</span>
+<span id="cb3-17">    ds_valid <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> ds_valid.with_column(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"image"</span>, img_decode_resize)</span>
+<span id="cb3-18"></span>
+<span id="cb3-19">    <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">def</span> to_f32_tensor(ds: daft.DataFrame):</span>
+<span id="cb3-20">        <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">return</span> ds.with_column(</span>
+<span id="cb3-21">            <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"image"</span>,</span>
+<span id="cb3-22">            daft.col(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"image"</span>).<span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">apply</span>(</span>
+<span id="cb3-23">                <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">lambda</span> x: (x <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">255.0</span>).transpose(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>),</span>
+<span id="cb3-24">                return_dtype<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>daft.DataType.tensor(daft.DataType.float32()),</span>
+<span id="cb3-25">            ),</span>
+<span id="cb3-26">        )</span>
+<span id="cb3-27"></span>
+<span id="cb3-28">    ds_train <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> to_f32_tensor(ds_train)</span>
+<span id="cb3-29">    ds_valid <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> to_f32_tensor(ds_valid)</span>
+<span id="cb3-30"></span>
+<span id="cb3-31">    ds_train <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> ds_train.to_torch_iter_dataset()</span>
+<span id="cb3-32">    ds_valid <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> ds_valid.to_torch_iter_dataset()</span>
+<span id="cb3-33"></span>
+<span id="cb3-34">    dls_train <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> torch.utils.data.DataLoader(ds_train, batch_size<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">32</span>)</span>
+<span id="cb3-35">    dls_valid <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> torch.utils.data.DataLoader(ds_valid, batch_size<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">32</span>)</span>
+<span id="cb3-36">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">return</span> dls_train, dls_valid</span></code></pre></div>
+</div>
+<div id="tabset-1-4" class="tab-pane" aria-labelledby="tabset-1-4-tab">
+<div class="sourceCode" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">def</span> load_imagenette_datasets_ray(dataset_path<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"./imagenette_full_size"</span>):</span>
+<span id="cb4-2">    <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Load the Arrow dataset with Ray</span></span>
+<span id="cb4-3">    ds <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> datasets.load_from_disk(dataset_path)</span>
+<span id="cb4-4"></span>
+<span id="cb4-5">    <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">def</span> extract_img_to_pil(data):</span>
+<span id="cb4-6">        image <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> data[<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"image"</span>][<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"bytes"</span>]</span>
+<span id="cb4-7">        data[<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"image"</span>] <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> PIL.Image.<span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">open</span>(io.BytesIO(image)).convert(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"RGB"</span>)</span>
+<span id="cb4-8">        <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">return</span> data</span>
+<span id="cb4-9"></span>
+<span id="cb4-10">    ds_train <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> ray.data.from_huggingface(ds[<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"train"</span>]).<span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">map</span>(extract_img_to_pil)</span>
+<span id="cb4-11">    ds_val <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> ray.data.from_huggingface(ds[<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"validation"</span>]).<span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">map</span>(extract_img_to_pil)</span>
+<span id="cb4-12"></span>
+<span id="cb4-13">    preprocess_transforms <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> transforms.Compose(</span>
+<span id="cb4-14">        [</span>
+<span id="cb4-15">            utils.PREPROCESS_TRANSFORMS,</span>
+<span id="cb4-16">        ]</span>
+<span id="cb4-17">    )</span>
+<span id="cb4-18">    augmentation_transforms <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> utils.AUGMENTATIONS</span>
+<span id="cb4-19"></span>
+<span id="cb4-20">    <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Apply transformations in Ray</span></span>
+<span id="cb4-21">    <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">def</span> preprocess_image(batch):</span>
+<span id="cb4-22">        batch[<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"image"</span>] <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> [preprocess_transforms(x) <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">for</span> x <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">in</span> batch[<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"image"</span>]]</span>
+<span id="cb4-23"></span>
+<span id="cb4-24">        <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">return</span> batch</span>
+<span id="cb4-25"></span>
+<span id="cb4-26">    <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">def</span> augment_image(elem):</span>
+<span id="cb4-27">        elem[<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"image"</span>] <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> augmentation_transforms(elem[<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"image"</span>])</span>
+<span id="cb4-28"></span>
+<span id="cb4-29">        <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">return</span> batch</span>
+<span id="cb4-30"></span>
+<span id="cb4-31">    ds_train <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> ds_train.map_batches(preprocess_image).<span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">map</span>(augment_image)</span>
+<span id="cb4-32"></span>
+<span id="cb4-33">    ds_val <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> ds_val.map_batches(preprocess_image)</span>
+<span id="cb4-34"></span>
+<span id="cb4-35">    d_train <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> ds_train.to_torch(</span>
+<span id="cb4-36">        label_column<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"label"</span>,</span>
+<span id="cb4-37">        batch_size<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">32</span>,</span>
+<span id="cb4-38">        local_shuffle_buffer_size<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">512</span>,</span>
+<span id="cb4-39">        prefetch_batches<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">5</span>,</span>
+<span id="cb4-40">    )</span>
+<span id="cb4-41">    d_valid <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> ds_val.to_torch(label_column<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"label"</span>, batch_size<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">32</span>, prefetch_batches<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">5</span>)</span>
+<span id="cb4-42"></span>
+<span id="cb4-43">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">return</span> d_train, d_valid</span></code></pre></div>
+</div>
+</div>
+</div>
+<p>I think most of the frameworks ends up at a similar place in the experience.</p>
+<p><strong>Quick DX Ranking</strong> 1. PyTorch &amp; HuggingFace Datasets 2. Daft 3. Ray (albeit I believe it to be the most scalable solution as you can truly tinker in detail)</p>
+<p>I enjoyed <em>Daft</em> a lot with its multi-modal syntax, inspired by polars with namespaces (e.g.&nbsp;<code>.image.decode()</code>), which can be phenomenal. Working with DataFrame’s is a cool addition, where you can drop into python simply by using <code>apply</code>. Working with <em>Daft</em> more and more I noticed that the DataFrame syntax sometimes becomes a big blocker and the simplicity of HF Datasets and Ray using <code>dict</code> syntax in <code>.map</code> statements results in easier code and smoother integration with existing libraries.<br>
+Additionally HF Datasets / PyTorch DataLoaders feels more pythonic, where the latter is real simple. I can’t put my finger on it but they just seem easier to debug and understand.</p>
+<p>For now I prefer Torch &amp; HuggingFace over Daft. As said Ray comes at last, but I can see it shine with huge models. Ray lets you tune the knobs, Daft is somewhere in-between and perhaps they found a middle-ground where “normal” practitioners can get good scaling without a lot of work. It’ll sure be interesting to follow!</p>
+</section>
+<section id="appendix" class="level1">
+<h1>Appendix</h1>
+<section id="appendix-a.-additional-benchmarks" class="level2">
+<h2 class="anchored" data-anchor-id="appendix-a.-additional-benchmarks">Appendix A. <em>Additional Benchmarks</em></h2>
+
+
+</section>
+</section>
+
+ ]]></description>
+  <category>TIL</category>
+  <guid>https://blog.londogard.com/posts/2024-12-03-data-loading-comparison/</guid>
+  <pubDate>Tue, 03 Dec 2024 00:00:00 GMT</pubDate>
+</item>
 <item>
   <title>Data Loading - Daft</title>
   <dc:creator>Hampus Londögård</dc:creator>
@@ -5174,7 +6175,7 @@ font-style: inherit;">3</span>).collect()</span></code></pre></div>
 <th data-quarto-table-cell-role="th">categories</th>
 <th data-quarto-table-cell-role="th">hours</th>
 </tr>
-<tr class="odd">
+<tr class="even">
 <th>str</th>
 <th>str</th>
 <th>str</th>
@@ -5278,7 +6279,7 @@ font-style: inherit;">3</span>).collect()</span></code></pre></div>
 <th data-quarto-table-cell-role="th">stars</th>
 <th data-quarto-table-cell-role="th">review_count</th>
 </tr>
-<tr class="odd">
+<tr class="even">
 <th>str</th>
 <th>f64</th>
 <th>i64</th>
@@ -5393,7 +6394,7 @@ font-style: inherit;">True</span>)</span>
 <th data-quarto-table-cell-role="th">text</th>
 <th data-quarto-table-cell-role="th">date</th>
 </tr>
-<tr class="odd">
+<tr class="even">
 <th>str</th>
 <th>str</th>
 <th>str</th>
@@ -7444,301 +8445,6 @@ font-style: inherit;">*</span> outs.std()</span></code></pre></div></li>
   <category>timeseries</category>
   <guid>https://blog.londogard.com/posts/2022-11-28-probabilistic-forecasting/</guid>
   <pubDate>Mon, 28 Nov 2022 00:00:00 GMT</pubDate>
-</item>
-<item>
-  <title>Timeseries Learnings at AFRY</title>
-  <dc:creator>Hampus Londögård</dc:creator>
-  <link>https://blog.londogard.com/posts/2022-11-23-timeseries-learnings/</link>
-  <description><![CDATA[ 
-
-
-
-
-
-<section id="timeseries-learnings" class="level2">
-<h2 class="anchored" data-anchor-id="timeseries-learnings">Timeseries Learnings</h2>
-<p><strong>Intro</strong></p>
-<p>This is a blog based on a presentation I did at Foo Café, where we shared a lot of our hard-earned wisdom at AFRY X, mainly based on working with timeseries.</p>
-<p>There’s both simple and more advanced, hopefully in an easy to understand fashion! <!--truncate--></p>
-<section id="background" class="level3">
-<h3 class="anchored" data-anchor-id="background">Background</h3>
-<p>We’re currently working with two (2) assignments involving timeseries right now.&nbsp;</p>
-<ol type="1">
-<li>Helping a telecom company to embrace Data Driven Testing of 5G-antennas</li>
-<li>Helping a automotive company to forecast weird brake behavior.</li>
-</ol>
-<p>So what have we learned? Let’s see…</p>
-</section>
-</section>
-<section id="learning-to-embrace-kiss" class="level2">
-<h2 class="anchored" data-anchor-id="learning-to-embrace-kiss">1. Learning to embrace KISS 💋</h2>
-<p>We learned this by a few different experiences.</p>
-<section id="mlops-tooling" class="level3">
-<h3 class="anchored" data-anchor-id="mlops-tooling">MLOps Tooling</h3>
-<p>Yes, it’s real. We all say it, all the time. But when the dust settles a lot of us ended up optimizing some part of our code anyways or even adding the “better tool” which involves just a “tiny bit” more complexity and code.</p>
-<p>Well, we did end up adding that “better tool” and it bit us back by clearly reducing our innovation pace. The story…</p>
-<p>To build our MLOps pipeline we used a tool (DVC) which is way better than the “default” of MLFlow. It has multiple bonuses:</p>
-<ol type="1">
-<li><p><strong>Data</strong>&nbsp;Version Control</p></li>
-<li><p><strong>Reproducible</strong>&nbsp;Pipelines</p></li>
-<li><p><strong>CI/CD</strong>&nbsp;custom-made for Machine Learning</p></li>
-<li><p><strong>Cloud &amp; Tool Agnostic</strong></p></li>
-<li><p><strong>Simply <code>git</code></strong></p></li>
-</ol>
-<p>There’s no real drawbacks, except the KISS principle. Don’t get me wrong DVC is an excellent tool but we ended up having to write a lot of code to download datasets, track models, keep things tidy in git. To top it off? It was cumbersome to test a new task inside the same repository.</p>
-<p>The biggest drawback was the additional code, albeit not complex in itself it added a total complexity, each time we wanted to update something in the pipeline we had to make sure to keep DVC working.<br>
-And to get new features it was a little bit of adding lego bricks, which I love but ended up adding more complexity again.<br>
-I want to note that the complexity was from lines of code rather than complicated code and this complexity made it harder for us to innovate.</p>
-<p>Biting the bullet and migrating to MLFlow, an inferior tool on the paper, made our pipelines more lean and easier to innovate upon.<br>
-MLFlow has magic integrations into all cloud providers and libraries which makes it very easy to add with basically 0 code.</p>
-<p>This simplification led to further gains which are hard to show on paper.</p>
-<p>In the end with&nbsp;our small team-size and project-size the gains of DVC isn’t worth the cost, as such the KISS approach leads us to MLFlow.</p>
-</section>
-<section id="local-cloud" class="level3">
-<h3 class="anchored" data-anchor-id="local-cloud">Local ↔︎ Cloud</h3>
-<p>Cloud compute brings a ton of goodies such as defaulting to containerization, which should be done locally to really, and having powerful computers at your fingertips.</p>
-<p>But what is forgotten is that with great powers comes great responsibility. Cloud enables training heavy models but with that it hides a lot of problems.</p>
-<ol type="1">
-<li>Inefficient pipelines</li>
-<li>Hard to debug</li>
-<li>…</li>
-</ol>
-<p>We’ve learned that using a <em>Local First Approach</em> gives us the best of both worlds. Our pipelines are able to run fully local, including unit testing, but are just as simple to run on a cluster.</p>
-<p>This is enabled by using a local pipeline rather than fully embracing the ecosystem.&nbsp;</p>
-<p>We are able to run:</p>
-<ul>
-<li><p><code>⁠pipeline.py</code></p></li>
-<li><p><code>pipeline_on_azure.py --exp_name &lt;NAME&gt; --compute &lt;COMPUTE&gt;</code></p></li>
-<li><p><code>pipeline_mlflow_azure.py</code></p>
-<ul>
-<li>Allows local experiments to be tracked on Azure MLFlow server rather than locally</li>
-</ul></li>
-</ul>
-<p>Which makes our life incredibly easy!</p>
-</section>
-<section id="automate-boring-checks" class="level3">
-<h3 class="anchored" data-anchor-id="automate-boring-checks">Automate Boring Checks</h3>
-<p>Of course code reviews should, and is, mandatory. Based on our software engineering principles we’ve made sure to also add CI/CD verifications which validates that everything is nice and tidy with no breaking changes. It reduces our cognitive load, which is awesome.</p>
-<p>Our current set-up:</p>
-<ul>
-<li><strong><a href="https://pre-commit.com/" title="https://pre-commit.com/">pre-commit</a>:</strong> local validation on each commit
-<ul>
-<li><code>[flake8](https://github.com/pycqa/flake8 "https://github.com/pycqa/flake8")</code>: Code Style Checker
-<ul>
-<li>Validates that we don’t break code-styles such as unused imports, unused variables, too complicated functions etc</li>
-</ul></li>
-<li><code>[black](https://github.com/psf/black "https://github.com/psf/black")</code>: Code Formatter
-<ul>
-<li>It’s uncompromising and makes sure our repository has a standard stylistic with correct indenting and much more</li>
-</ul></li>
-<li><code>[mypy](https://github.com/python/mypy "https://github.com/python/mypy")</code>: Static Type Checker
-<ul>
-<li>Makes sure that our types are valid and we’re not simply lucky in the duck-typing 🦆 world of Python 🐍!</li>
-</ul></li>
-<li><strong>^ All above also runs in CI/CD</strong></li>
-</ul></li>
-<li><strong>CI/CD</strong>
-<ul>
-<li><a href="https://docs.pytest.org/en/7.2.x/" title="https://docs.pytest.org/en/7.2.x/"><strong>pytest</strong></a><strong>:</strong> unit tests
-<ul>
-<li>Test that your functions, neural networks etc works as expected</li>
-</ul></li>
-<li><strong>pre-commit</strong>&nbsp;- see above</li>
-<li><strong><a href="https://cypress.io/" title="https://cypress.io/">cypress</a>:</strong> E2E frontend testing
-<ul>
-<li>Only for a user-facing analysis tool</li>
-</ul></li>
-</ul></li>
-</ul>
-<p>This is running on both GitHub Actions and GitLab Pipelines.</p>
-<p>We deploy our containers through Azure and experiment through the Azure ML Studio or locally.</p>
-</section>
-</section>
-<section id="interactive-validation" class="level2">
-<h2 class="anchored" data-anchor-id="interactive-validation">2. Interactive Validation 👨‍💻</h2>
-<p>This is the killer deal. A lot of people out there makes heavy use of what I call “Static Analysis”, where metrics and static images are viewed.&nbsp;</p>
-<p>Viewing static results isn’t enough, it barely scraps the surface and we’re <em>Data *</em>&nbsp;right? So why not dive into the data!? 🕵️</p>
-<p>We’re extending our analyses to include custom built Streamlit Application(s) which allows us to work exploratory. Static validation is still important to keep track of actual objective metrics, but exploration is not only very satisfying but also awesome as you learn so much more about the model(s) and data.</p>
-<p>Interactive analysis gives the following: <em>Promote Explorability, Gives End-User a Great Experience, Increase Explainability, Efficient Feedback-Loop</em>. Awesome? Hell yeah! 😎</p>
-<p><strong>Static Validation:</strong></p>
-<p><img src="https://blog.londogard.com/posts/2022-11-23-timeseries-learnings/Files/image.png" class="img-fluid"></p>
-<p><strong>Interactive Validation:</strong></p>
-<p><strong><img src="https://blog.londogard.com/posts/2022-11-23-timeseries-learnings/Files/interactive_validation.gif" class="img-fluid"><br>
-</strong></p>
-</section>
-<section id="additional-wisdom" class="level2">
-<h2 class="anchored" data-anchor-id="additional-wisdom">3. Additional Wisdom 🤓</h2>
-<section id="probabilistic-forecasting" class="level3">
-<h3 class="anchored" data-anchor-id="probabilistic-forecasting">Probabilistic Forecasting</h3>
-<p>This is a powerful tool to have in your arsenal, and with clever tricks you can have it with <em>all</em>&nbsp; neural networks that uses dropout! 🤯</p>
-<p>The idea is that rather than forecast/predict point by point we forecast a confidence interval! This way we capture uncertaintied of the model.&nbsp; This&nbsp; assists debugging your model to fix its weaknesses! 🔍</p>
-</section>
-<section id="custom-loss-functions" class="level3">
-<h3 class="anchored" data-anchor-id="custom-loss-functions">Custom Loss Functions</h3>
-<p>Using a custom loss function makes a lot of sense in almost any real problem. It’s very rare that you actually care about the overall impact, but rather specific regions actually matters in time-series. In our case we don’t care about forecasting noise nor do we care about forecasting the bad behavior after it happened, we need to find it before it happens - forecasting.</p>
-<p>In our case it’s an oscillating behavior that builds amplitude over time, as we want the model to do the same we need to penalize undershooting heavily to not fit it to the noice.</p>
-<p>This ended up being a big improvement, but what lessons did we learn?</p>
-<ol type="1">
-<li>Always invert scale before calculating test-metrics
-<ul>
-<li>To not allow scaling functions to impact the final results</li>
-</ul></li>
-<li>Never optimize a loss function that you use as a metric
-<ul>
-<li>This will play the model</li>
-</ul></li>
-<li>Decide on validation metrics <em>before</em>&nbsp; you start
-<ul>
-<li>A moving target is impossible to hit and compare against</li>
-</ul></li>
-</ol>
-</section>
-</section>
-<section id="unexpected-learnings" class="level2">
-<h2 class="anchored" data-anchor-id="unexpected-learnings">4. Unexpected Learnings 🤔</h2>
-<section id="model-weights-badly-instantiated" class="level3">
-<h3 class="anchored" data-anchor-id="model-weights-badly-instantiated">Model weights badly instantiated</h3>
-<p>We found this to be true in both papers and (5k⭐️) Open Source libraries.&nbsp;</p>
-<p>Make sure that you validate code you’re using in-depth and don’t expect it to work as expected from the get-go!</p>
-</section>
-<section id="best-practices-is-contextual" class="level3">
-<h3 class="anchored" data-anchor-id="best-practices-is-contextual">Best Practices is contextual</h3>
-<p>Best Practices are certainly not true for any example or user. This was shown in multiple cases, such as our Local ↔︎ Cloud story.</p>
-<p>Make sure to validate that what you’re doing is actually required for your use-case. A lot of the tools out there is built for <em>huge scale</em>&nbsp;while we’re working on <em>small-medium scale</em>. To use the same tooling is to introduce a large overhead and disconnect from the developer.</p>
-</section>
-</section>
-<section id="generally-winning-concepts" class="level2">
-<h2 class="anchored" data-anchor-id="generally-winning-concepts">Generally winning concepts</h2>
-<ul>
-<li><strong>Type hints</strong>, Type Hints everywhere
-<ul>
-<li>It really assists you greatly. As a Scala/Kotlin and FP-enthusiast I’d like to talk even further about it, but I might grow boring.</li>
-</ul></li>
-<li><strong>Plotly/Altair</strong>&nbsp;rather than matplotlib – interactivity is king.
-<ul>
-<li><img src="https://blog.londogard.com/posts/2022-11-23-timeseries-learnings/Files/altair.gif" class="img-fluid"></li>
-<li>I cannot emphasize how much is learnt by the kinder Garten style of panning, zooming and playing around</li>
-<li>It gives data and model understanding</li>
-</ul></li>
-<li><strong>Polars</strong>&nbsp;<strong>–</strong> efficient speedy DataFrame’s with a <em>logical API</em>
-<ul>
-<li>I can’t be alone thinking that whoever designed pandas API must’ve been a masochist
-<ul>
-<li>Polars makes sense, includes lazy and it’s fast! 🏎️</li>
-<li>Con: it’s not lingua franca like pandas and thereby isn’t supported automatically by all different libraries
-<ul>
-<li>Solved by using <code>to_pandas()</code></li>
-</ul></li>
-</ul></li>
-<li><div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1">  <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">&gt;&gt;&gt;</span> df.sort(<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"fruits"</span>).select(</span>
-<span id="cb1-2">  ...     [</span>
-<span id="cb1-3">  ...         <span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"cars"</span>,</span>
-<span id="cb1-4">  ...         pl.col(<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"B"</span>).<span class="bu" style="color: null;
-background-color: null;
-font-style: inherit;">filter</span>(pl.col(<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"cars"</span>) <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">==</span> <span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"beetle"</span>).<span class="bu" style="color: null;
-background-color: null;
-font-style: inherit;">sum</span>(),</span>
-<span id="cb1-5">  ...         pl.col(<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"A"</span>).<span class="bu" style="color: null;
-background-color: null;
-font-style: inherit;">filter</span>(pl.col(<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"B"</span>) <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">&gt;</span> <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">2</span>).<span class="bu" style="color: null;
-background-color: null;
-font-style: inherit;">sum</span>().over(<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"cars"</span>).alias(<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"sum_A_by_cars"</span>),</span>
-<span id="cb1-6">  ...         pl.col(<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"A"</span>).<span class="bu" style="color: null;
-background-color: null;
-font-style: inherit;">sum</span>().over(<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"fruits"</span>).alias(<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"sum_A_by_fruits"</span>),</span>
-<span id="cb1-7">  ...         pl.col(<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"A"</span>).reverse().over(<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"fruits"</span>).alias(<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"rev_A_by_fruits"</span>),</span>
-<span id="cb1-8">  ...         pl.col(<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"A"</span>).sort_by(<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"B"</span>).over(<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"fruits"</span>).alias(<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"sort_A_by_B_by_fruits"</span>),</span>
-<span id="cb1-9">  ...     ]</span>
-<span id="cb1-10">  ... )</span></code></pre></div></li>
-<li><img src="https://blog.londogard.com/posts/2022-11-23-timeseries-learnings/Files/image_2.png" class="img-fluid"><br>
-</li>
-</ul></li>
-<li><strong>Streamlit</strong> quick interactive apps that makes a huge difference
-<ul>
-<li>This is how we build our interactive validation and analysis tools.&nbsp;</li>
-</ul></li>
-<li><strong>CI/CD</strong>&nbsp;on all projects</li>
-<li><strong>Quarto</strong>&nbsp;reports
-<ul>
-<li>They’re amazing, think markdown + code cells + all the goodies of LaTeX in a package 😍</li>
-</ul></li>
-<li><strong>Use Path-lib from the get-go</strong>
-<ul>
-<li>Don’t waste a full working day of headache to help that Windows-user to run your project</li>
-</ul></li>
-</ul>
-</section>
-<section id="summarizing" class="level1">
-<h1>Summarizing</h1>
-<ul>
-<li>Follow <strong>KISS</strong></li>
-<li><strong>Embrace the systems you’re working in,</strong>&nbsp;it’ll pay off to not generalize too much
-<ul>
-<li>Whenever you change cloud-provider you’ll have to update a lot of code anyways because of auth and more</li>
-</ul></li>
-<li><strong>Interactive Analysis</strong>&nbsp;is incredible and open new doors</li>
-<li>Always <strong>be mindful</strong>
-<ul>
-<li>Continuously evaluate, iterate and execute – be agile.</li>
-</ul></li>
-</ul>
-<p>That’s it for now</p>
-<p>~Hampus Londögård</p>
-
-
-</section>
-
- ]]></description>
-  <category>machine-learning</category>
-  <category>timeseries</category>
-  <guid>https://blog.londogard.com/posts/2022-11-23-timeseries-learnings/</guid>
-  <pubDate>Wed, 23 Nov 2022 00:00:00 GMT</pubDate>
 </item>
 </channel>
 </rss>
