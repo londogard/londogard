@@ -156,46 +156,6 @@
 <td><strong>3m23s</strong></td>
 </tr>
 <tr class="odd">
-<td></td>
-<td>4</td>
-<td>None</td>
-<td>False</td>
-<td>.map</td>
-<td>9m16s</td>
-</tr>
-<tr class="even">
-<td></td>
-<td>2</td>
-<td>None</td>
-<td>False</td>
-<td>.map, persistent_worker=True</td>
-<td>8m50s</td>
-</tr>
-<tr class="odd">
-<td></td>
-<td>2</td>
-<td>True</td>
-<td>True</td>
-<td>.map</td>
-<td>4m7s</td>
-</tr>
-<tr class="even">
-<td></td>
-<td>None</td>
-<td>None</td>
-<td>False</td>
-<td>.map, num_proc=2</td>
-<td>6m17s</td>
-</tr>
-<tr class="odd">
-<td></td>
-<td>None</td>
-<td>None</td>
-<td>True</td>
-<td>.map, num_proc=2</td>
-<td>4m4s</td>
-</tr>
-<tr class="even">
 <td><strong>HF Batched</strong></td>
 <td>None</td>
 <td>None</td>
@@ -203,23 +163,7 @@
 <td>.map</td>
 <td>7m14s</td>
 </tr>
-<tr class="odd">
-<td></td>
-<td>None</td>
-<td>None</td>
-<td>False</td>
-<td>.map, num_proc=4</td>
-<td>4m57s</td>
-</tr>
 <tr class="even">
-<td></td>
-<td>None</td>
-<td>None</td>
-<td>False</td>
-<td>.map, num_proc=4, size=64</td>
-<td>5m25s</td>
-</tr>
-<tr class="odd">
 <td></td>
 <td>None</td>
 <td>None</td>
@@ -227,71 +171,23 @@
 <td>.map</td>
 <td><strong>3m22s</strong></td>
 </tr>
-<tr class="even">
-<td></td>
-<td>4</td>
-<td>True</td>
-<td>False</td>
-<td>.map</td>
-<td>4m</td>
-</tr>
-<tr class="odd">
-<td></td>
-<td>4</td>
-<td>True</td>
-<td>False</td>
-<td>.map</td>
-<td>5m34s</td>
-</tr>
-<tr class="even">
-<td></td>
-<td>2</td>
-<td>True</td>
-<td>False</td>
-<td>.map</td>
-<td>5m3s</td>
-</tr>
 <tr class="odd">
 <td><strong>Torch Dataset/Loader</strong></td>
 <td>None</td>
 <td>None</td>
 <td>-</td>
 <td>Default</td>
-<td>3m20s</td>
+<td><strong>3m20s</strong></td>
 </tr>
 <tr class="even">
-<td></td>
-<td>None</td>
-<td>None</td>
-<td>-</td>
-<td>Default</td>
-<td>3m26s</td>
-</tr>
-<tr class="odd">
-<td></td>
-<td>4</td>
-<td>True</td>
-<td>-</td>
-<td>Default</td>
-<td>4m9s</td>
-</tr>
-<tr class="even">
-<td></td>
-<td>2</td>
-<td>True</td>
-<td>-</td>
-<td>Default</td>
-<td>3m44s</td>
-</tr>
-<tr class="odd">
 <td><strong>Daft</strong></td>
 <td>-</td>
 <td>-</td>
 <td>-</td>
 <td>daft-default</td>
-<td><strong>14m55s</strong></td>
+<td>14m55s</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td></td>
 <td>-</td>
 <td>-</td>
@@ -299,7 +195,7 @@
 <td>daft-native</td>
 <td><strong>3m30s</strong></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><strong>Ray</strong></td>
 <td>-</td>
 <td>-</td>
