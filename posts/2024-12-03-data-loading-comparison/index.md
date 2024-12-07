@@ -47,23 +47,10 @@ All of the chosen tools are quite awesome, but HuggingFace and Ray can export to
 | ------------------------ | ---------- | ---------- | ----- | ---------------------------- | ---------- |
 | **HF Element**           | None       | None       | False | .map                         | 6m48s      |
 |                          | None       | None       | True  | .with_transform              | **3m23s**  |
-|                          | 4          | None       | False | .map                         | 9m16s      |
-|                          | 2          | None       | False | .map, persistent_worker=True | 8m50s      |
-|                          | 2          | True       | True  | .map                         | 4m7s       |
-|                          | None       | None       | False | .map, num_proc=2             | 6m17s      |
-|                          | None       | None       | True  | .map, num_proc=2             | 4m4s       |
 | **HF Batched**           | None       | None       | False | .map                         | 7m14s      |
-|                          | None       | None       | False | .map, num_proc=4             | 4m57s      |
-|                          | None       | None       | False | .map, num_proc=4, size=64    | 5m25s      |
 |                          | None       | None       | True  | .map                         | **3m22s**  |
-|                          | 4          | True       | False | .map                         | 4m         |
-|                          | 4          | True       | False | .map                         | 5m34s      |
-|                          | 2          | True       | False | .map                         | 5m3s       |
-| **Torch Dataset/Loader** | None       | None       | -     | Default                      | 3m20s      |
-|                          | None       | None       | -     | Default                      | 3m26s      |
-|                          | 4          | True       | -     | Default                      | 4m9s       |
-|                          | 2          | True       | -     | Default                      | 3m44s      |
-| **Daft**                 | -          | -          | -     | daft-default                 | **14m55s** |
+| **Torch Dataset/Loader** | None       | None       | -     | Default                      | **3m20s**  |
+| **Daft**                 | -          | -          | -     | daft-default                 | 14m55s     |
 |                          | -          | -          | -     | daft-native                  | **3m30s**  |
 | **Ray**                  | -          | -          | -     | Default                      | 7m41s      |
 
