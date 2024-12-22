@@ -248,13 +248,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#pixi-sample-docker-builds" id="toc-pixi-sample-docker-builds" class="nav-link" data-scroll-target="#pixi-sample-docker-builds">Pixi Sample Docker Builds</a></li>
   <li><a href="#pixi-docker-build-on-aws-sagemaker" id="toc-pixi-docker-build-on-aws-sagemaker" class="nav-link" data-scroll-target="#pixi-docker-build-on-aws-sagemaker">Pixi Docker Build on AWS Sagemaker</a></li>
   </ul></li>
-  <li><a href="#pixi-docker-build-on-aws-sagemaker-1" id="toc-pixi-docker-build-on-aws-sagemaker-1" class="nav-link" data-scroll-target="#pixi-docker-build-on-aws-sagemaker-1">Pixi Docker Build on AWS Sagemaker</a></li>
   <li><a href="#pixi-multi-platformenvironment" id="toc-pixi-multi-platformenvironment" class="nav-link" data-scroll-target="#pixi-multi-platformenvironment">Pixi Multi-Platform/Environment</a>
   <ul class="collapse">
   <li><a href="#some-personal-comments" id="toc-some-personal-comments" class="nav-link" data-scroll-target="#some-personal-comments">Some Personal Comments</a></li>
   </ul></li>
   <li><a href="#pixi-build-slimmming" id="toc-pixi-build-slimmming" class="nav-link" data-scroll-target="#pixi-build-slimmming">Pixi Build Slimmming</a></li>
-  <li><a href="#pixi-vs-uv" id="toc-pixi-vs-uv" class="nav-link" data-scroll-target="#pixi-vs-uv">Pixi vs uv</a></li>
+  <li><a href="#pixi-vs-uv" id="toc-pixi-vs-uv" class="nav-link" data-scroll-target="#pixi-vs-uv">Pixi vs uv</a>
+  <ul class="collapse">
+  <li><a href="#what-is-the-one-big-uv-pro" id="toc-what-is-the-one-big-uv-pro" class="nav-link" data-scroll-target="#what-is-the-one-big-uv-pro">What is the one big <code>uv</code> pro?</a></li>
+  </ul></li>
   <li><a href="#outro" id="toc-outro" class="nav-link" data-scroll-target="#outro">Outro</a></li>
   </ul>
 </nav>
@@ -286,10 +288,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="pixi-docker-build-on-aws-sagemaker" class="level3">
 <h3 class="anchored" data-anchor-id="pixi-docker-build-on-aws-sagemaker">Pixi Docker Build on AWS Sagemaker</h3>
-</section>
-</section>
-<section id="pixi-docker-build-on-aws-sagemaker-1" class="level2">
-<h2 class="anchored" data-anchor-id="pixi-docker-build-on-aws-sagemaker-1">Pixi Docker Build on AWS Sagemaker</h2>
 <p>Sagemaker can be quite challenging to work with. While deploying custom Docker builds is easiest using their own base image, this image is often bloated with unnecessary dependencies. Additionally, to run <code>@remote</code> jobs on AWS, you need to include a <code>conda</code> or <code>mamba</code> environment - something that <code>pixi</code> doesn’t inherently use.</p>
 <p><strong>So, how do we integrate Pixi with Sagemaker?</strong></p>
 <p>Here’s a workaround to make them play nicely together:</p>
@@ -303,6 +301,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </ol>
 <p>With these steps, you’re ready to run your Pixi-managed projects on Sagemaker!</p>
 <p>In my experiments, this approach significantly reduced the size of my CUDA images from around 12 GB down to 4.5 GB - a massive improvement in terms of storage and deployment speed!</p>
+</section>
 </section>
 <section id="pixi-multi-platformenvironment" class="level2">
 <h2 class="anchored" data-anchor-id="pixi-multi-platformenvironment">Pixi Multi-Platform/Environment</h2>
@@ -331,24 +330,25 @@ The part of keeping lock-files on everything, while allowing certain OS:es missi
 <p>While <em>uv</em> has gained significant traction in the Python community, I believe <em>Pixi</em> offers a more compelling solution for my specific needs, especially when it comes to complex, real-world projects.</p>
 <p>Why?</p>
 <ol type="1">
-<li><code>tasks</code> is awesome. They might not be perfect but they’re great to me!</li>
-<li>Multi-platform and Multi-environment projects (personal opinion) somehow ends up easier in Pixi
+<li><strong><code>tasks</code> are awesome.</strong> They might not be perfect but they’re great to me!</li>
+<li><strong>Multi-platform and Multi-environment projects</strong> (personal opinion) somehow ends up easier in Pixi
 <ul>
 <li>I really tried to embrace the <code>uv</code> approach as I appreciate it as more lightweight. But Pixi is somehow “smoother”.</li>
 </ul></li>
-<li>Pixi has base-images with CUDA
+<li><strong>Pixi has base-images with CUDA</strong>
 <ul>
 <li>Both tools are easy to build from a raw base-image too, so it’s not a huge problem</li>
 </ul></li>
-<li>Access to <code>conda</code> packages
+<li><strong>Access to <code>conda</code> packages</strong>
 <ul>
 <li>Some hate it, but I like getting pre-built binaries.</li>
 <li>It’s quite interesting to install shell tools via <code>conda</code> for container deployment.</li>
 </ul></li>
-<li>Possible to work with other languages than Python</li>
+<li><strong>Possible to work with other languages than Python</strong></li>
 </ol>
-<p>What is the one big <code>uv</code> pro?<br>
-<a href="https://docs.astral.sh/uv/guides/scripts/#declaring-script-dependencies">UV’s Inline Script Dependencies</a></p>
+<section id="what-is-the-one-big-uv-pro" class="level3">
+<h3 class="anchored" data-anchor-id="what-is-the-one-big-uv-pro">What is the one big <code>uv</code> pro?</h3>
+<p><a href="https://docs.astral.sh/uv/guides/scripts/#declaring-script-dependencies">UV’s Inline Script Dependencies</a></p>
 <p>I think this feature is really cool, but as pixi utilize <code>uv</code> you can use it in <code>pixi</code> too! ;)</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># /// script</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="co"># dependencies = [</span></span>
@@ -363,6 +363,7 @@ The part of keeping lock-files on everything, while allowing certain OS:es missi
 <span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>resp <span class="op">=</span> requests.get(<span class="st">"https://peps.python.org/api/peps.json"</span>)</span>
 <span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>data <span class="op">=</span> resp.json()</span>
 <span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>pprint([(k, v[<span class="st">"title"</span>]) <span class="cf">for</span> k, v <span class="kw">in</span> data.items()][:<span class="dv">10</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
 </section>
 <section id="outro" class="level1">
 <h1>Outro</h1>
