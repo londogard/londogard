@@ -36,8 +36,6 @@ Efficient Production build by using Docker Multi-Stage Build: [prefix-docker/she
 
 ### Pixi Docker Build on AWS Sagemaker
 
-## Pixi Docker Build on AWS Sagemaker
-
 Sagemaker can be quite challenging to work with. While deploying custom Docker builds is easiest using their own base image, this image is often bloated with unnecessary dependencies. Additionally, to run `@remote` jobs on AWS, you need to include a `conda` or `mamba` environment - something that `pixi` doesn't inherently use.
 
 **So, how do we integrate Pixi with Sagemaker?**
@@ -80,17 +78,17 @@ While _uv_ has gained significant traction in the Python community, I believe _P
 
 Why?
 
-1. `tasks` is awesome. They might not be perfect but they're great to me!
-2. Multi-platform and Multi-environment projects (personal opinion) somehow ends up easier in Pixi
-    - I really tried to embrace the `uv` approach as I appreciate it as more lightweight. But Pixi is somehow "smoother".
-3. Pixi has base-images with CUDA
-    - Both tools are easy to build from a raw base-image too, so it's not a huge problem
-4. Access to `conda` packages
-    - Some hate it, but I like getting pre-built binaries.
-    - It's quite interesting to install shell tools via `conda` for container deployment.
-5. Possible to work with other languages than Python
+1.  **`tasks` are awesome.** They might not be perfect but they're great to me!
+2.  **Multi-platform and Multi-environment projects** (personal opinion) somehow ends up easier in Pixi
+    *   I really tried to embrace the `uv` approach as I appreciate it as more lightweight. But Pixi is somehow "smoother".
+3.  **Pixi has base-images with CUDA**
+    *   Both tools are easy to build from a raw base-image too, so it's not a huge problem
+4.  **Access to `conda` packages**
+    *   Some hate it, but I like getting pre-built binaries.
+    *   It's quite interesting to install shell tools via `conda` for container deployment.
+5.  **Possible to work with other languages than Python**
 
-What is the one big `uv` pro?  
+### What is the one big `uv` pro?  
 [UV's Inline Script Dependencies](https://docs.astral.sh/uv/guides/scripts/#declaring-script-dependencies)
 
 I think this feature is really cool, but as pixi utilize `uv` you can use it in `pixi` too! ;)
