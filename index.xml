@@ -10,7 +10,166 @@
 <atom:link href="https://blog.londogard.com/index.xml" rel="self" type="application/rss+xml"/>
 <description>A blog which majorly focuses on Data Science, Data Engineering and sometimes Kotlin / Scala.</description>
 <generator>quarto-1.6.39</generator>
-<lastBuildDate>Tue, 03 Dec 2024 00:00:00 GMT</lastBuildDate>
+<lastBuildDate>Tue, 17 Dec 2024 00:00:00 GMT</lastBuildDate>
+<item>
+  <title>Pixi - Real World Usage</title>
+  <dc:creator>Hampus Londögård</dc:creator>
+  <link>https://blog.londogard.com/posts/2024-12-17-pixi-real-usage/</link>
+  <description><![CDATA[ 
+
+
+
+
+
+<p>Managing dependencies and environments across multiple platforms can be a nightmare. That’s why I was thrilled to discover <a href="pixi.sh/dev/">Pixi</a>. I’ve previous talked about Pixi on LinkedIn/Twitter, but haven’t used it in any “serious” project until recently and so far it has worked exceptional!</p>
+<p>Imagine a tool that combines the speed and efficiency of <a href="https://github.com/astral-sh/uv"><em>uv</em></a> with the robust package management of <a href="https://github.com/mamba-org/mamba"><em>mamba</em></a>. That’s Pixi in a nutshell. Built from the expertise drawn from as the mamba creators and utilizing <code>uv</code> for PyPi dependenciess, Pixi offers a streamlined, powerful way to manage Python environments. Compared to <em>mamba</em>, <em>pixi</em> takes things one step further as their PyPi-dependencies are tested with conda on top of the additional tools brought by pixi, such as <em>tasks</em>.</p>
+<p>Cherry on top? Pixi is lightning fast and enables multi-platform &amp; multi-environment inside a single file where everything is synced together.</p>
+<blockquote class="blockquote">
+<p>Multi-platform, multi-environment means that we can sync dependencies between osx-arm64, linux-64, CUDA, CPU, … - a standout feature!</p>
+</blockquote>
+<section id="pixi-docker-builds" class="level2">
+<h2 class="anchored" data-anchor-id="pixi-docker-builds">Pixi Docker Builds</h2>
+<p>After solving your local environment in a easy yet producible manner the next step is to solve it for your cloud workloads - <em>containerization</em>.</p>
+<p>Containerization is an important part of a developers toolkit in the modern world. To run cloud workloads it’s very common to deploy as a container, in Data Science this is for everything like Training, Inference and Data Pipelines.</p>
+<p>With pixi it’s quite straight-forward and they provide ready-to-use images through the <a href="https://github.com/prefix-dev/pixi-docker">pixi-docker</a> registry. There’s multiple base-images, including CUDA, to get started - it can’t be any simpler!</p>
+<section id="pixi-sample-docker-builds" class="level3">
+<h3 class="anchored" data-anchor-id="pixi-sample-docker-builds">Pixi Sample Docker Builds</h3>
+<p>Simple starter:</p>
+<div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">docker</span> pull ghcr.io/prefix-dev/pixi:latest</span></code></pre></div>
+<p>Find the different tags on <a href="https://github.com/prefix-dev/pixi-docker?tab=readme-ov-file#pulling-the-images">Pixi Docker tags page</a>.</p>
+<p>Efficient Production build by using Docker Multi-Stage Build: <a href="https://github.com/prefix-dev/pixi-docker?tab=readme-ov-file#usage-with-shell-hook">prefix-docker/shell-hook</a>.</p>
+</section>
+<section id="pixi-docker-build-on-aws-sagemaker" class="level3">
+<h3 class="anchored" data-anchor-id="pixi-docker-build-on-aws-sagemaker">Pixi Docker Build on AWS Sagemaker</h3>
+</section>
+</section>
+<section id="pixi-docker-build-on-aws-sagemaker-1" class="level2">
+<h2 class="anchored" data-anchor-id="pixi-docker-build-on-aws-sagemaker-1">Pixi Docker Build on AWS Sagemaker</h2>
+<p>Sagemaker can be quite challenging to work with. While deploying custom Docker builds is easiest using their own base image, this image is often bloated with unnecessary dependencies. Additionally, to run <code>@remote</code> jobs on AWS, you need to include a <code>conda</code> or <code>mamba</code> environment - something that <code>pixi</code> doesn’t inherently use.</p>
+<p><strong>So, how do we integrate Pixi with Sagemaker?</strong></p>
+<p>Here’s a workaround to make them play nicely together:</p>
+<ol type="1">
+<li><strong>Include <code>micromamba</code>:</strong> Add <code>micromamba</code> (available on <code>conda-forge</code>) as a dependency in your <code>pixi.toml</code>. This will allow us to create a conda-like environment within our Pixi setup.
+<ul>
+<li>In the future this could be done using a simple shell script, which is a planned improvement in my own projects.</li>
+</ul></li>
+<li><strong>Add <code>micromamba</code> to <code>$PATH</code>:</strong> Ensure that the <code>micromamba</code> executable installed by Pixi is added to your system’s <code>$PATH</code>. This will make it accessible to Sagemaker.</li>
+<li><strong>Set Environment Variables:</strong> Configure necessary environment variables like <code>CONDA_PREFIX</code> to point to the appropriate location where <code>micromamba</code> will manage your environment.</li>
+</ol>
+<p>With these steps, you’re ready to run your Pixi-managed projects on Sagemaker!</p>
+<p>In my experiments, this approach significantly reduced the size of my CUDA images from around 12 GB down to 4.5 GB - a massive improvement in terms of storage and deployment speed!</p>
+</section>
+<section id="pixi-multi-platformenvironment" class="level2">
+<h2 class="anchored" data-anchor-id="pixi-multi-platformenvironment">Pixi Multi-Platform/Environment</h2>
+<p>One of Pixi’s standout features is its seamless support for multi-platform and multi-environment projects. While I initially planned to delve deeper into this, prefix.dev recently published an excellent guide on the topic. I highly recommend checking out their documentation on <a href="https://pixi.sh/dev/features/pytorch/#mixing-macos-and-cuda-with-pypi-dependencies">combining different OS’s and environments (CPU, CUDA) with PyTorch</a> for a comprehensive overview.</p>
+<section id="some-personal-comments" class="level3">
+<h3 class="anchored" data-anchor-id="some-personal-comments">Some Personal Comments</h3>
+<p>Personally I find this part of pixi one of the biggest strengths, especially how easy it is to work with! To build a docker image you simply follow the basic example above, opting for <code>--feature=cuda</code>.<br>
+The part of keeping lock-files on everything, while allowing certain OS:es missing out on dependencies makes it very practical in real-world scenarios!</p>
+</section>
+</section>
+<section id="pixi-build-slimmming" class="level2">
+<h2 class="anchored" data-anchor-id="pixi-build-slimmming">Pixi Build Slimmming</h2>
+<p>When containerizing your code, it’s crucial to keep builds slim. Here are a few tricks to help you minimize your Pixi-based Docker images:</p>
+<ol type="1">
+<li><strong>Leverage <code>.dockerignore</code>:</strong> Create a <code>.dockerignore</code> file to exclude unnecessary files and directories (e.g., <code>.git</code>, <code>__pycache__</code>, tests) from your Docker build context.</li>
+<li><strong>Optimize Dependencies:</strong>
+<ul>
+<li>Carefully consider each dependency and remove any that are not strictly required for production.</li>
+<li>Utilize multiple environments within your <code>pixi.toml</code>, e.g.&nbsp;<code>prod</code> and <code>dev</code> environments. This allows you to exclude dev-specific dependencies (test, lint, ..) from your production container.</li>
+</ul></li>
+<li><strong>Employ Multi-Stage Docker Builds:</strong> Multi-stage builds reduces the image size. Use a build stage to install dependencies and compile your application, and then copy only the necessary artifacts to a smaller, leaner final image. The <code>pixi-docker</code> project provides guidance on using <a href="https://github.com/prefix-dev/pixi-docker?tab=readme-ov-file#usage-with-shell-hook">multi-stage builds with shell-hook</a>.</li>
+</ol>
+</section>
+<section id="pixi-vs-uv" class="level1">
+<h1>Pixi vs uv</h1>
+<p>While <em>uv</em> has gained significant traction in the Python community, I believe <em>Pixi</em> offers a more compelling solution for my specific needs, especially when it comes to complex, real-world projects.</p>
+<p>Why?</p>
+<ol type="1">
+<li><code>tasks</code> is awesome. They might not be perfect but they’re great to me!</li>
+<li>Multi-platform and Multi-environment projects (personal opinion) somehow ends up easier in Pixi
+<ul>
+<li>I really tried to embrace the <code>uv</code> approach as I appreciate it as more lightweight. But Pixi is somehow “smoother”.</li>
+</ul></li>
+<li>Pixi has base-images with CUDA
+<ul>
+<li>Both tools are easy to build from a raw base-image too, so it’s not a huge problem</li>
+</ul></li>
+<li>Access to <code>conda</code> packages
+<ul>
+<li>Some hate it, but I like getting pre-built binaries.</li>
+<li>It’s quite interesting to install shell tools via <code>conda</code> for container deployment.</li>
+</ul></li>
+<li>Possible to work with other languages than Python</li>
+</ol>
+<p>What is the one big <code>uv</code> pro?<br>
+<a href="https://docs.astral.sh/uv/guides/scripts/#declaring-script-dependencies">UV’s Inline Script Dependencies</a></p>
+<p>I think this feature is really cool, but as pixi utilize <code>uv</code> you can use it in <code>pixi</code> too! ;)</p>
+<div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># /// script</span></span>
+<span id="cb2-2"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># dependencies = [</span></span>
+<span id="cb2-3"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">#   "requests&lt;3",</span></span>
+<span id="cb2-4"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">#   "rich",</span></span>
+<span id="cb2-5"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># ]</span></span>
+<span id="cb2-6"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># ///</span></span>
+<span id="cb2-7"></span>
+<span id="cb2-8"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> requests</span>
+<span id="cb2-9"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">from</span> rich.pretty <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> pprint</span>
+<span id="cb2-10"></span>
+<span id="cb2-11">resp <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> requests.get(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"https://peps.python.org/api/peps.json"</span>)</span>
+<span id="cb2-12">data <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> resp.json()</span>
+<span id="cb2-13">pprint([(k, v[<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"title"</span>]) <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">for</span> k, v <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">in</span> data.items()][:<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">10</span>])</span></code></pre></div>
+</section>
+<section id="outro" class="level1">
+<h1>Outro</h1>
+<p>If you’re a Python developer struggling with dependency management, environment inconsistencies, or cumbersome container builds, I urge you to give Pixi a try. It’s a powerful tool that has the potential to streamline your workflow and make you a happier developer. Pixi has certainly made a significant difference in mine!</p>
+<p>Thanks for this time, Hampus Londögård</p>
+
+
+</section>
+
+ ]]></description>
+  <category>python</category>
+  <category>dependencies</category>
+  <category>packaging</category>
+  <guid>https://blog.londogard.com/posts/2024-12-17-pixi-real-usage/</guid>
+  <pubDate>Tue, 17 Dec 2024 00:00:00 GMT</pubDate>
+</item>
 <item>
   <title>Data Loading - Comparing Common Tooling</title>
   <dc:creator>Hampus Londögård</dc:creator>
@@ -8218,136 +8377,6 @@ font-style: inherit;">1</span>,</span>
   <category>data</category>
   <guid>https://blog.londogard.com/posts/2022-11-30-why-polars.html</guid>
   <pubDate>Wed, 30 Nov 2022 00:00:00 GMT</pubDate>
-</item>
-<item>
-  <title>Probabilistic Forecasting Made Simple</title>
-  <dc:creator>Hampus Londögård</dc:creator>
-  <link>https://blog.londogard.com/posts/2022-11-28-probabilistic-forecasting/</link>
-  <description><![CDATA[ 
-
-
-
-
-
-<section id="probabilistic-forecasting-made-simple" class="level2">
-<h2 class="anchored" data-anchor-id="probabilistic-forecasting-made-simple">Probabilistic Forecasting Made Simple</h2>
-<p>Probabilistic Forecasting is something very cool, but it is not approachable in the current state of affairs.&nbsp;</p>
-<p>While researching probabilistic forecasting in a client project I managed to find a paper which opens the door to <strong>any</strong> neural network <em>with dropout</em>&nbsp;- which is the majority. That is, we can do probabilistic forecasting with essentially any network!<br>
-<!--truncate--></p>
-<p><a href="https://github.com/unit8co/darts" title="https://github.com/unit8co/darts">Darts</a>, a brilliant timeseries library, includes a very competent probabilistic forecasting but it’s not really applicable to all models. This is the reason that I started diving into the whole space of probabilistic forecasting. A probabilistic model includes not only a raw prediction value but a distribution of possible points, which ends up with a prediction like:</p>
-<p><img src="https://blog.londogard.com/posts/2022-11-28-probabilistic-forecasting/Files/image.png" class="img-fluid"></p>
-<blockquote class="blockquote">
-<p>Probabilistic Model by <a href="https://unit8.com/resources/probabilistic-forecasting-in-darts/" title="https://unit8.com/resources/probabilistic-forecasting-in-darts/">unit8/darts</a></p>
-</blockquote>
-<p>Additionally models like ARIMA and ExponentialSmoothing allows to do this kind of thing very easily, simply sample running simulations of their state-spaced models with a bit of randomly sampled errors. To solve this on their deep learning models darts decided to model distribution using a <code>Likelihood</code>&nbsp; class. What does this mean?<br>
-The model does not actually predict a value but a distribution, using <code>Gaussian</code>&nbsp; we’d predict two values - <code>mean</code>&nbsp; and <code>std</code>&nbsp;.</p>
-</section>
-<section id="how-to-do-probabilistic-forecasting-on-any-deep-learning-model" class="level2">
-<h2 class="anchored" data-anchor-id="how-to-do-probabilistic-forecasting-on-any-deep-learning-model">How to do probabilistic forecasting on any deep learning model</h2>
-<p>By combining the knowledge in <em><a href="https://arxiv.org/pdf/1709.01907.pdf" title="https://arxiv.org/pdf/1709.01907.pdf">Deep and Confident Prediction Time Series at Uber</a></em>&nbsp;by L. Zhi &amp; N. Laptev (2017) with&nbsp;<em><a href="https://arxiv.org/pdf/1703.04977.pdf" title="https://arxiv.org/pdf/1703.04977.pdf">What Uncertainties Do We Need in Bayesian Deep Learning for Computer Vision?</a></em>&nbsp;by A. Kendall &amp; Y. Gal (2017) one can conclude that it’s possible to model distributions using dropout during inference. In the Uber paper they use a special variant they call “Monte Carlo dropout”, which I don’t believe is required to achieve interesting results. Using the pure dropout-module which randomly zeroes some elements by a probability <img src="https://latex.codecogs.com/png.latex?p">&nbsp; sampling from a Bernoulli Distribution.</p>
-<p><strong>How do we do this?</strong></p>
-<ol type="1">
-<li>Activate Dropout during Inference.</li>
-<li>Do <img src="https://latex.codecogs.com/png.latex?x">&nbsp; predictions with a dropout probability <img src="https://latex.codecogs.com/png.latex?p">.</li>
-<li>Based on these x&nbsp;predictions we have a distribution of data.</li>
-<li>Build a <em>confidence interval</em>&nbsp;from the points.
-<ul>
-<li><div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1">  outs <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> torch.vstack([model.predict(in_data) <span class="cf" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">for</span> i <span class="kw" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">in</span> <span class="bu" style="color: null;
-background-color: null;
-font-style: inherit;">range</span>(x)])</span>
-<span id="cb1-2">  <span class="co" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;"># Defined by confidence coefficients</span></span>
-<span id="cb1-3">  Z_TABLE <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> {<span class="fl" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">0.8</span>: <span class="fl" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">1.28</span>, <span class="fl" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">0.85</span>: <span class="fl" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">1.44</span>, <span class="fl" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">0.9</span>: <span class="fl" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">1.65</span>, <span class="fl" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">0.95</span>: <span class="fl" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">1.96</span>, <span class="fl" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">0.99</span>: <span class="fl" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">2.58</span>, <span class="fl" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">0.999</span>: <span class="fl" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">3.29</span>, <span class="fl" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">0.9999</span>: <span class="fl" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">3.89</span>}</span>
-<span id="cb1-4"></span>
-<span id="cb1-5">  <span class="co" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;"># Confidence Interval with mean as line</span></span>
-<span id="cb1-6">  mean <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> outs.mean()</span>
-<span id="cb1-7">  lower <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> mean <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">-</span> Z_TABLE[confidence] <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">*</span> outs.std()</span>
-<span id="cb1-8">  upper <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> mean <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">+</span> Z_TABLE[confidence] <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">*</span> outs.std()</span></code></pre></div></li>
-</ul></li>
-</ol>
-</section>
-<section id="the-possibilities" class="level2">
-<h2 class="anchored" data-anchor-id="the-possibilities">The possibilities</h2>
-<p>There’s a lot of possiblities, I’ll share two of our biggest ones.</p>
-<section id="model-understanding-weaknessstrength" class="level4">
-<h4 class="anchored" data-anchor-id="model-understanding-weaknessstrength">1. Model Understanding (Weakness/Strength)</h4>
-<p>By returning a <em>probabilistic forecast</em>, i.e.&nbsp;a distribution/confidence interval, we can learn more about the model and its strengths/weaknesses.&nbsp;</p>
-<p>In our project(s) we’ve seen that it opens a door to really figure out how to improve our models by focusing on the areas were the model is the most uncertain. This has proved to improve performance by a substantial amount which makes the effort worth it.</p>
-</section>
-<section id="downstream-consumer-happiness" class="level4">
-<h4 class="anchored" data-anchor-id="downstream-consumer-happiness">2. Downstream Consumer Happiness</h4>
-<p>We see that our clients trust the model further by being able to see how confident they are. Building trust between model and downstream consumer is really important to deliver an actual successful project, which once again makes the effort totally worth it!</p>
-<p><strong>Bonus:</strong> we also found that it opens new possibilities to chain of the inference power if you keep it in production, as your downstream tasks can now make use of a confidence interval rather than a raw data point. But&nbsp;the inference is very expensive compared to the usual (remember we do x&nbsp;predictions per prediction)!</p>
-</section>
-</section>
-<section id="sources" class="level2">
-<h2 class="anchored" data-anchor-id="sources">Sources</h2>
-<p><em><a href="https://arxiv.org/pdf/1709.01907.pdf" title="https://arxiv.org/pdf/1709.01907.pdf">Deep and Confident Prediction Time Series at Uber</a></em>&nbsp;by L. Zhi &amp; N. Laptev (2017) -&nbsp;<a href="https://arxiv.org/pdf/1709.01907.pdf">https://arxiv.org/pdf/1709.01907.pdf</a></p>
-<p><em><a href="https://arxiv.org/pdf/1703.04977.pdf" title="https://arxiv.org/pdf/1703.04977.pdf">What Uncertainties Do We Need in Bayesian Deep Learning for Computer Vision?</a></em>&nbsp;by A. Kendall &amp; Y. Gal (2017) -&nbsp;<a href="https://arxiv.org/pdf/1703.04977.pdf">https://arxiv.org/pdf/1703.04977.pdf</a></p>
-
-
-</section>
-
- ]]></description>
-  <category>machine-learning</category>
-  <category>timeseries</category>
-  <guid>https://blog.londogard.com/posts/2022-11-28-probabilistic-forecasting/</guid>
-  <pubDate>Mon, 28 Nov 2022 00:00:00 GMT</pubDate>
 </item>
 </channel>
 </rss>
