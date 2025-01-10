@@ -1,0 +1,966 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.6.40">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Hampus Londögård">
+<meta name="dcterms.date" content="2025-01-09">
+<meta name="description" content="A childs dream - turning any image into a LEGO Build. In this blog I walk through my xmas project.">
+
+<title>Image to Lego (Xmas Project) – Londogard Blog</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../../favicon.ico" rel="icon">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-86daaaaad7353f9cc0c554efc1dd6d94.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-bc163a3a22d509ec1bc4838f08992d42.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script src="../../site_libs/quarto-contrib/videojs/video.min.js"></script>
+<link href="../../site_libs/quarto-contrib/videojs/video-js.css" rel="stylesheet">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="../../styles.css">
+<meta name="twitter:title" content="Image to Lego (Xmas Project) – Londogard Blog">
+<meta name="twitter:description" content="A childs dream - turning any image into a LEGO Build. In this blog I walk through my xmas project.">
+<meta name="twitter:image" content="https://blog.londogard.com/posts/2025-01-09-img-2-lego/build_img.png">
+<meta name="twitter:creator" content="@hlondogard">
+<meta name="twitter:image-height" content="634">
+<meta name="twitter:image-width" content="714">
+<meta name="twitter:card" content="summary_large_image">
+</head>
+
+<body class="nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top quarto-banner">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a href="../../index.html" class="navbar-brand navbar-brand-logo">
+    <img src="../../favicon.ico" alt="" class="navbar-logo">
+    </a>
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">Londogard Blog</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../"> 
+<span class="menu-text">Blogs</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../pages/presentations.html"> 
+<span class="menu-text">Presentations</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="https://londogard.com/projects"> 
+<span class="menu-text">Londogard Projects↗</span></a>
+  </li>  
+</ul>
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../pages/about.html"> 
+<span class="menu-text">About</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../pages/code_setup/code_setup.html"> 
+<span class="menu-text">Dev Setup</span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://www.linkedin.com/in/hampus-londögård/"> <i class="bi bi-linkedin" role="img" aria-label="LinkedIn">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://twitter.com/hlondogard"> <i class="bi bi-twitter" role="img" aria-label="Twitter">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-bi-github" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+      <i class="bi bi-github" role="img">
+</i> 
+ <span class="menu-text"></span>
+    </a>
+    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="nav-menu-bi-github">    
+        <li>
+    <a class="dropdown-item" href="https://github.com/lundez"><i class="bi bi-github" role="img">
+</i> 
+ <span class="dropdown-text">Lundez</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="https://github.com/londogard"><i class="bi bi-github" role="img">
+</i> 
+ <span class="dropdown-text">Londogard</span></a>
+  </li>  
+    </ul>
+  </li>
+  <li class="nav-item compact">
+    <a class="nav-link" href="../../index.xml"> <i class="bi bi-rss" role="img" aria-label="Londogard Blog RSS">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<header id="title-block-header" class="quarto-title-block default page-columns page-full">
+  <div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-body">
+      <h1 class="title">Image to Lego (Xmas Project)</h1>
+                  <div>
+        <div class="description">
+          A childs dream - turning any image into a LEGO Build. In this blog I walk through my xmas project.
+        </div>
+      </div>
+                          <div class="quarto-categories">
+                <div class="quarto-category">python</div>
+                <div class="quarto-category">project</div>
+                <div class="quarto-category">packaging</div>
+              </div>
+                  </div>
+  </div>
+    
+  
+  <div class="quarto-title-meta">
+
+      <div>
+      <div class="quarto-title-meta-heading">Author</div>
+      <div class="quarto-title-meta-contents">
+               <p>Hampus Londögård </p>
+            </div>
+    </div>
+      
+      <div>
+      <div class="quarto-title-meta-heading">Published</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date">January 9, 2025</p>
+      </div>
+    </div>
+    
+      
+    </div>
+    
+  
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#result-demo" id="toc-result-demo" class="nav-link active" data-scroll-target="#result-demo">Result / Demo</a></li>
+  <li><a href="#project-layout" id="toc-project-layout" class="nav-link" data-scroll-target="#project-layout">Project Layout</a>
+  <ul class="collapse">
+  <li><a href="#image-to-mesh-from-2d-photo-to-3d-model" id="toc-image-to-mesh-from-2d-photo-to-3d-model" class="nav-link" data-scroll-target="#image-to-mesh-from-2d-photo-to-3d-model">Image to Mesh: From 2D Photo to 3D Model</a>
+  <ul class="collapse">
+  <li><a href="#steps-for-a-deep-learning-approach" id="toc-steps-for-a-deep-learning-approach" class="nav-link" data-scroll-target="#steps-for-a-deep-learning-approach">Steps for a Deep Learning approach</a></li>
+  </ul></li>
+  </ul></li>
+  <li><a href="#future-work" id="toc-future-work" class="nav-link" data-scroll-target="#future-work">Future Work</a>
+  <ul class="collapse">
+  <li><a href="#improve-colors" id="toc-improve-colors" class="nav-link" data-scroll-target="#improve-colors">Improve colors</a></li>
+  <li><a href="#bigger-bricks" id="toc-bigger-bricks" class="nav-link" data-scroll-target="#bigger-bricks">Bigger bricks</a></li>
+  </ul></li>
+  <li><a href="#outro" id="toc-outro" class="nav-link" data-scroll-target="#outro">Outro</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content quarto-banner-title-block" id="quarto-document-content">
+
+
+
+
+
+<p>Merry Christmas, Happy Holidays and a Good New Year! 🥳</p>
+<blockquote class="blockquote">
+<p>Disclaimer: I’m not affiliated with LEGO and this is a personal project.</p>
+</blockquote>
+<p>Ever wished you could turn a photo into a LEGO masterpiece? This holiday season, while my son napped, I did!<br>
+I’ve been passionately working on what might be my most entertaining project since I built my own Baby Monitor (<a href="../../posts/2022-11-06-babymonitor-pt-1">1</a>, <a href="../../posts/2023-02-06-baby-monitor-pt-p2">2</a>): <strong>a tool that transforms any image into a buildable 3D LEGO model, complete with step-by-step, layer-by-layer instructions, just like a real LEGO set!</strong></p>
+<p>The idea had been brewing in my mind for a few years, but a recent request from my friend Oscar J finally gave me the motivation to bring it to life!</p>
+<section id="result-demo" class="level1">
+<h1>Result / Demo</h1>
+<p>I built an Gradio application, mainly as a learning excercise. Usually I prefer Streamlit or Solara for my applications, but Gradio is growing fast and I wanted to try it in a “real project”.</p>
+<div>
+
+</div>
+<div class="quarto-layout-panel" data-layout="[[2,1], [1,1]]">
+<div class="quarto-layout-row">
+<div class="quarto-layout-cell" style="flex-basis: 66.7%;justify-content: flex-start;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="build_img.png" class="img-fluid figure-img"></p>
+<figcaption>Visualization of the Image to LEGO Flow</figcaption>
+</figure>
+</div>
+</div>
+<div class="quarto-layout-cell" style="flex-basis: 33.3%;justify-content: flex-start;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="lego_build_instruct.gif" class="img-fluid figure-img"></p>
+<figcaption>LEGO Build Instruction GIF</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<div class="quarto-layout-row">
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: flex-start;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="lego_bricks_1.png" class="img-fluid figure-img"></p>
+<figcaption>Visualization of LEGO Bricks (notice how it’s bricks and not Voxels)</figcaption>
+</figure>
+</div>
+</div>
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: flex-start;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="lego_bricks_2.png" class="img-fluid figure-img"></p>
+<figcaption>Visualization of LEGO Bricks (notice how it’s bricks and not Voxels)</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<div class="callout callout-style-simple callout-note callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Complete walkthrough: From image input to 3D LEGO model with instructions
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-1" class="callout-1-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<div class="quarto-video"><video id="video_shortcode_videojs_video1" class="video-js vjs-default-skin vjs-fluid" controls="" preload="auto" data-setup="{}" title=""><source src="full_flow.mp4"></video></div>
+</div>
+</div>
+</div>
+<p>Not to brag, but the results are quite magical in my opinion.<br>
+Intrigued? Keep reading to learn how I built this image-to-LEGO generator!</p>
+</section>
+<section id="project-layout" class="level1">
+<h1>Project Layout</h1>
+<p>My first step was to research existing solutions. While there are tools for image-to-3D model conversion and voxelization, I couldn’t find anything specifically to build LEGO models with accurate, buildable bricks and “instructions”. This meant I had to build most of the pipeline from scratch. Here’s the steps I identified:</p>
+<ol type="1">
+<li><strong>Turn image into 3D object (Deep Learning):</strong> Use a deep learning model to generate a 3D mesh from a single 2D image.</li>
+<li><strong>Voxelize Mesh (Algorithmic):</strong> Convert the 3D mesh into a voxelized representation, essentially breaking it down into cubes.</li>
+<li><strong>Colorize Voxels with LEGO approved colors (Algorithmic):</strong> Map the colors of the voxels to the closest matching colors from a predefined LEGO color palette.</li>
+<li><strong>Merge Voxels into LEGO sized bricks (Algorithmic):</strong> Combine adjacent voxels into standard LEGO brick shapes, optimizing for larger bricks while preserving the overall shape.
+<ol type="a">
+<li>This involves finding the right balance between using larger, more efficient bricks and accurately representing the details of the original model.</li>
+</ol></li>
+</ol>
+<p>This list might make it sound easy, but it really is an interesting and challenging problem!</p>
+<section id="image-to-mesh-from-2d-photo-to-3d-model" class="level2">
+<h2 class="anchored" data-anchor-id="image-to-mesh-from-2d-photo-to-3d-model">Image to Mesh: From 2D Photo to 3D Model</h2>
+<p>Getting from a single 2D image to a 3D model isn’t exactly a walk in the park. Traditionally, people have done this by algorithmically stitching together a bunch of photos taken from different angles, creating a 3D point cloud.</p>
+<p>That multi-image approach might work for professionals, but for your average LEGO builder? I don’t think so.<br>
+It’s a hassle to take all those photos, and getting them to stitch together correctly? Not fun.</p>
+<p>I wanted a smoother experience, one where you can just use a <strong>single image</strong> to get your 3D model, and that’s why I went with deep learning. Basically, you train a model on tons of images and their corresponding 3D models. Then, when you give it a new image, it can make educated guesses about the 3D shape, even the parts you can’t see. We’re shifting the heavy lifting of data collection from the user during the model’s use to the training phase, which makes things much easier. For this project I’m using a two-step process:</p>
+<ol type="1">
+<li><strong>Generate Multi-View Images:</strong> A diffusion model takes the single input image and generates multiple views of the object as if it were photographed from different angles.</li>
+<li><strong>Reconstruct 3D Mesh from Multi-View Images:</strong> Another deep learning model takes these generated views and creates a coherent 3D mesh, essentially filling in the gaps between the different perspectives.</li>
+</ol>
+<p>It’s not perfect, and the model might struggle with unusual objects or bad lighting. But, it’s a lot better than manually stitching images, and it gets us closer to that one-click LEGO dream. Now, with a 3D mesh in hand, we can move on to the next steps!</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+The perfect dataset easily available
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<blockquote class="blockquote">
+<p>A <em>sweet bonus</em> is that we can build our dataset inside Game Engines very easily! Combining real data and synthetic data built in a Game Engine is perfect and makes it easy to have a <em>great</em> dataset.</p>
+</blockquote>
+</div>
+</div>
+<section id="steps-for-a-deep-learning-approach" class="level3">
+<h3 class="anchored" data-anchor-id="steps-for-a-deep-learning-approach">Steps for a Deep Learning approach</h3>
+<p>How do we actually turn a image into a mesh through Deep Learning? The idea is quite straight-forward and people without knowledge should understand what is happening under-the-hood, though not mathematically.</p>
+<section id="step-1-turn-image-into-multi-angle-images" class="level4">
+<h4 class="anchored" data-anchor-id="step-1-turn-image-into-multi-angle-images">Step 1: Turn image into multi-angle images</h4>
+<p>To get around the need for multiple input images, the first step in my approach is to generate them artificially. We use a Diffusion Model for this. This model is able to look at your single image and create new images of the same object, but from different angles, by generalizing from a large diverse dataset that it has trained on.</p>
+</section>
+<section id="step-2-generate-mesh-model-from-multi-angle-images" class="level4">
+<h4 class="anchored" data-anchor-id="step-2-generate-mesh-model-from-multi-angle-images">Step 2: Generate mesh (model) from multi-angle images</h4>
+<p>With the generated multi-angle, e.g.&nbsp;6, images we stitch/generate a mesh structure to work with through another Deep Learning Model! The model at hands needs to fill the sparse data into a 3D mesh. This can be done in multiple ways depending on how you’d like to define the resulting mesh.</p>
+<p>Once we have our 3D mesh we can head to the next step, i.e.&nbsp;voxelation.</p>
+</section>
+<section id="step-3-mesh-to-voxels" class="level4">
+<h4 class="anchored" data-anchor-id="step-3-mesh-to-voxels">Step 3: Mesh to Voxels</h4>
+<p>This is a “solved” problem and it’s easy to voxelize using <em>trimesh</em>, a python library. Trimesh delivers the voxels, or cubes, in grey-scale and we need to add colors ourselves.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> voxelize(mesh_path: <span class="bu">str</span> <span class="op">|</span> Path, resolution: <span class="bu">int</span>):</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Voxelize the mesh based on a resolution parameter. Resolution is how many bricks it should contain, i.e. 16 creates a 16x16 base plate."""</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    mesh <span class="op">=</span> trimesh.load(mesh_path)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>    bounds <span class="op">=</span> mesh.bounds</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>    voxel_size <span class="op">=</span> (bounds[<span class="dv">1</span>] <span class="op">-</span> bounds[<span class="dv">0</span>]).<span class="bu">max</span>() <span class="op">/</span> resolution  <span class="co"># pitch</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>    voxels <span class="op">=</span> mesh.voxelized(pitch<span class="op">=</span>voxel_size)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="step-4-colorize-voxels" class="level4">
+<h4 class="anchored" data-anchor-id="step-4-colorize-voxels">Step 4: Colorize Voxels</h4>
+<p>With the voxels in place, we need to color them. We start by assigning each voxel the ‘true’ color from the original mesh, found by identifying the nearest point on the mesh’s surface to the voxel’s center. That is the color won’t be an “approved” LEGO color for now.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> tree_knearest_colors(mesh, voxels):</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    tree <span class="op">=</span> cKDTree(mesh.vertices)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    _, vertex_indices <span class="op">=</span> tree.query(voxels.points, k<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> mesh.visual.vertex_colors[vertex_indices]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>The <code>cKDTree</code> is an <em>approximate nearest neighbour</em>, which means it’s fast and good enough.</p>
+</section>
+<section id="step-5-quantize-colors-into-lego-palette" class="level4">
+<h4 class="anchored" data-anchor-id="step-5-quantize-colors-into-lego-palette">Step 5: Quantize Colors into LEGO palette</h4>
+<p>As mentioned our colors is based on the 3D model rather than the LEGO palette, we need to transform them into LEGO palette to be able to order have LEGO bricks.<br>
+This task could be done in multiple ways, I opted for the simple Euclidean distance of the RGB array. A better approach would be to utilize <a href="https://en.wikipedia.org/wiki/CIELAB_color_space">LAB</a> color-space as that’s more similar to what humans perceive. LAB conversion isn’t as smooth as I had hoped (possible via <code>colormath</code>), and I wanted to wrap up my application, hence the RGB Euclidean Distance.</p>
+<blockquote class="blockquote">
+<p>I did try LAB and didn’t see a better result, but I didn’t put too much effort into it and there might be a better way to make it work.</p>
+</blockquote>
+</section>
+<section id="step-6-merge-voxels-into-lego-bricks" class="level4">
+<h4 class="anchored" data-anchor-id="step-6-merge-voxels-into-lego-bricks">Step 6: Merge Voxels into LEGO Bricks</h4>
+<p>Our final step is to go from voxels (1x1 bricks) into bigger LEGO bricks. No sane person would enjoy building a LEGO with only 1x1 bricks! 😂</p>
+<p>My current approach is dead simple, greedy starting from largest area bricks and iteratively trying smaller sizes. I’m utilizing a vectorized approach rather than the traitional “graph-based” one, e.g.&nbsp;Depth-First-Search (DFS).</p>
+<p>Our problem has some constraints which means that it fits vectorized approaches very well. The constraints to merge voxels follows:</p>
+<ol type="1">
+<li>Same color</li>
+<li>Same z-level</li>
+</ol>
+<p>The code is quite simple when treating it as a vectorized problem and utilizing numpy indexing.</p>
+<ol type="1">
+<li>Treat each Z-level as a matrix</li>
+<li>Treat each color as a number inside the matrix</li>
+<li>Apply equality</li>
+<li>Validate if we can fit our brick, say 2x6, if <code>np.all()</code> then it’s true
+<ol type="a">
+<li>Only apply this validation starting from an existing coordinate of the voxels</li>
+</ol></li>
+<li>Place brick when a brick found, iteratively moving down in size</li>
+</ol>
+</section>
+</section>
+</section>
+</section>
+<section id="future-work" class="level1">
+<h1>Future Work</h1>
+<p>There’s still a lot of work to improve the resulting lego model. The biggest flaws are that there’s too many small bricks and that the colors are not great…</p>
+<section id="improve-colors" class="level2">
+<h2 class="anchored" data-anchor-id="improve-colors">Improve colors</h2>
+<p>The first problem that would solve a lot is to have better colors.</p>
+<p>With better colors we’d be able to merge into bigger bricks, as we’re not allowed to put different colors into the same brick. The end-goal would be to reduce A) Shadows and B) Gradients, simplifying the model into something of lower color resolution.</p>
+<p>I have a hard time seeing that I can solve this fully through algorithms (already having tried LAB color space) and believe that I’d need to train a new Deep/Machine Learning model to achieve better results. That model would be able to better opt for which color to use and potentially even reduce weird colors that don’t fit the greater picture. Additionally it could have higher resolution for small important things like eyes.</p>
+<p>That is potential fixes:</p>
+<ul>
+<li>Apply ML to predict fewer colors</li>
+<li>Apply some type of kernel that remove gradients but keep edges</li>
+<li>…and probably something else not in my mind right now!</li>
+</ul>
+</section>
+<section id="bigger-bricks" class="level2">
+<h2 class="anchored" data-anchor-id="bigger-bricks">Bigger bricks</h2>
+<p><strong>First fix: Better Colors</strong><br>
+See previous section.</p>
+<p><strong>Second fix: Filling Empty Space</strong><br>
+Our 3D model is currently empty in the middle, this void could be filled to enable larger bricks. Sometimes we fill with 2 1x1 bricks rather than using a larger brick because we’re not allowed to place it in the empty void.</p>
+<p>This task is most likely simple to solve algorithmically, but some “voids” we wouldn’t want to fill. It should only be filled if hidden from most angles, i.e.&nbsp;we wouldn’t want to fill the void inside a leg of the Eifel Tower as that’s supposed to be a empty void rather than filled.</p>
+</section>
+</section>
+<section id="outro" class="level1">
+<h1>Outro</h1>
+<p>This was (and is) a very exciting project that I’ll keep on working on whenever I get a short burst of time. There’s some important improvements to add before the project is truly <em>User Friendly™</em>.</p>
+<p>The research in what type of approaches are available was a fun one and to implement the algorithms brought me back to my time at Apple, but with the knowledge gained from working in a more mathematical setting later, i.e.&nbsp;applying vectorization.</p>
+<p>Finally the result is impressive and something I can use already today. I can’t wait to order bricks for my first LEGO build!</p>
+<p>Thanks for this time,<br>
+Hampus Londögård</p>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp("https:\/\/blog\.londogard\.com\/");
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<script src="https://giscus.app/client.js" data-repo="londogard/londogard" data-repo-id="MDEwOlJlcG9zaXRvcnkyOTcyNzE0MzE=" data-category="General" data-category-id="MDE4OkRpc2N1c3Npb25DYXRlZ29yeTMwODYxNzM4" data-mapping="title" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="top" data-theme="light" data-lang="en" crossorigin="anonymous" async="">
+</script>
+<input type="hidden" id="giscus-base-theme" value="light">
+<input type="hidden" id="giscus-alt-theme" value="dark">
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+      <ul class="footer-items list-unstyled">
+    <li class="nav-item">
+    <a class="nav-link" href="https://www.buymeacoffee.com/hlondogard">
+<p><img src="https://cdn.buymeacoffee.com/buttons/v2/default-blue.png" class="img-fluid" width="100"></p>
+</a>
+  </li>  
+    <li class="nav-item">
+    <a class="nav-link" href="https://github.com/sponsors/Lundez?o=esb">
+<p><img src="https://img.shields.io/static/v1?label=Sponsor&amp;message=%E2%9D%A4&amp;logo=GitHub&amp;color=%23fe8e86.png" class="img-fluid" width="100"></p>
+</a>
+  </li>  
+</ul>
+    </div>   
+    <div class="nav-footer-center">
+      <ul class="footer-items list-unstyled">
+    <li class="nav-item">
+    <a class="nav-link" href="../../pages/about.html">
+<p>About</p>
+</a>
+  </li>  
+</ul>
+    </div>
+    <div class="nav-footer-right">
+      <ul class="footer-items list-unstyled">
+    <li class="nav-item compact">
+    <a class="nav-link" href="https://www.linkedin.com/in/hampus-londögård/">
+      <i class="bi bi-linkedin" role="img" aria-label="LinkedIn">
+</i> 
+    </a>
+  </li>  
+    <li class="nav-item compact">
+    <a class="nav-link" href="https://twitter.com/hlondogard">
+      <i class="bi bi-twitter" role="img" aria-label="Twitter">
+</i> 
+    </a>
+  </li>  
+    <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/lundez">
+      <i class="bi bi-github" role="img" aria-label="Lundez GitHub">
+</i> 
+    </a>
+  </li>  
+    <li class="nav-item compact">
+    <a class="nav-link" href="../../index.xml">
+      <i class="bi bi-rss" role="img" aria-label="Londogard Blog RSS">
+</i> 
+    </a>
+  </li>  
+</ul>
+    </div>
+  </div>
+</footer>
+<script>videojs(video_shortcode_videojs_video1);</script>
+
+
+
+
+</body></html>

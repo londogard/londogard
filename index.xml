@@ -9,8 +9,280 @@
 <link>https://blog.londogard.com/</link>
 <atom:link href="https://blog.londogard.com/index.xml" rel="self" type="application/rss+xml"/>
 <description>A blog which majorly focuses on Data Science, Data Engineering and sometimes Kotlin / Scala.</description>
-<generator>quarto-1.6.39</generator>
-<lastBuildDate>Tue, 17 Dec 2024 00:00:00 GMT</lastBuildDate>
+<generator>quarto-1.6.40</generator>
+<lastBuildDate>Thu, 09 Jan 2025 00:00:00 GMT</lastBuildDate>
+<item>
+  <title>Image to Lego (Xmas Project)</title>
+  <dc:creator>Hampus Londögård</dc:creator>
+  <link>https://blog.londogard.com/posts/2025-01-09-img-2-lego/</link>
+  <description><![CDATA[ 
+
+
+
+
+
+<p>Merry Christmas, Happy Holidays and a Good New Year! 🥳</p>
+<blockquote class="blockquote">
+<p>Disclaimer: I’m not affiliated with LEGO and this is a personal project.</p>
+</blockquote>
+<p>Ever wished you could turn a photo into a LEGO masterpiece? This holiday season, while my son napped, I did!<br>
+I’ve been passionately working on what might be my most entertaining project since I built my own Baby Monitor (<a href="../../posts/2022-11-06-babymonitor-pt-1">1</a>, <a href="../../posts/2023-02-06-baby-monitor-pt-p2">2</a>): <strong>a tool that transforms any image into a buildable 3D LEGO model, complete with step-by-step, layer-by-layer instructions, just like a real LEGO set!</strong></p>
+<p>The idea had been brewing in my mind for a few years, but a recent request from my friend Oscar J finally gave me the motivation to bring it to life!</p>
+<section id="result-demo" class="level1">
+<h1>Result / Demo</h1>
+<p>I built an Gradio application, mainly as a learning excercise. Usually I prefer Streamlit or Solara for my applications, but Gradio is growing fast and I wanted to try it in a “real project”.</p>
+<div>
+
+</div>
+<div class="quarto-layout-panel" data-layout="[[2,1], [1,1]]">
+<div class="quarto-layout-row">
+<div class="quarto-layout-cell" style="flex-basis: 66.7%;justify-content: flex-start;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://blog.londogard.com/posts/2025-01-09-img-2-lego/build_img.png" class="img-fluid figure-img"></p>
+<figcaption>Visualization of the Image to LEGO Flow</figcaption>
+</figure>
+</div>
+</div>
+<div class="quarto-layout-cell" style="flex-basis: 33.3%;justify-content: flex-start;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://blog.londogard.com/posts/2025-01-09-img-2-lego/lego_build_instruct.gif" class="img-fluid figure-img"></p>
+<figcaption>LEGO Build Instruction GIF</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<div class="quarto-layout-row">
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: flex-start;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://blog.londogard.com/posts/2025-01-09-img-2-lego/lego_bricks_1.png" class="img-fluid figure-img"></p>
+<figcaption>Visualization of LEGO Bricks (notice how it’s bricks and not Voxels)</figcaption>
+</figure>
+</div>
+</div>
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: flex-start;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://blog.londogard.com/posts/2025-01-09-img-2-lego/lego_bricks_2.png" class="img-fluid figure-img"></p>
+<figcaption>Visualization of LEGO Bricks (notice how it’s bricks and not Voxels)</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<div class="callout callout-style-simple callout-note callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Complete walkthrough: From image input to 3D LEGO model with instructions
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-1" class="callout-1-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<div class="quarto-video"><video id="video_shortcode_videojs_video1" class="video-js vjs-default-skin vjs-fluid" controls="" preload="auto" data-setup="{}" title=""><source src="full_flow.mp4"></video></div>
+</div>
+</div>
+</div>
+<p>Not to brag, but the results are quite magical in my opinion.<br>
+Intrigued? Keep reading to learn how I built this image-to-LEGO generator!</p>
+</section>
+<section id="project-layout" class="level1">
+<h1>Project Layout</h1>
+<p>My first step was to research existing solutions. While there are tools for image-to-3D model conversion and voxelization, I couldn’t find anything specifically to build LEGO models with accurate, buildable bricks and “instructions”. This meant I had to build most of the pipeline from scratch. Here’s the steps I identified:</p>
+<ol type="1">
+<li><strong>Turn image into 3D object (Deep Learning):</strong> Use a deep learning model to generate a 3D mesh from a single 2D image.</li>
+<li><strong>Voxelize Mesh (Algorithmic):</strong> Convert the 3D mesh into a voxelized representation, essentially breaking it down into cubes.</li>
+<li><strong>Colorize Voxels with LEGO approved colors (Algorithmic):</strong> Map the colors of the voxels to the closest matching colors from a predefined LEGO color palette.</li>
+<li><strong>Merge Voxels into LEGO sized bricks (Algorithmic):</strong> Combine adjacent voxels into standard LEGO brick shapes, optimizing for larger bricks while preserving the overall shape.
+<ol type="a">
+<li>This involves finding the right balance between using larger, more efficient bricks and accurately representing the details of the original model.</li>
+</ol></li>
+</ol>
+<p>This list might make it sound easy, but it really is an interesting and challenging problem!</p>
+<section id="image-to-mesh-from-2d-photo-to-3d-model" class="level2">
+<h2 class="anchored" data-anchor-id="image-to-mesh-from-2d-photo-to-3d-model">Image to Mesh: From 2D Photo to 3D Model</h2>
+<p>Getting from a single 2D image to a 3D model isn’t exactly a walk in the park. Traditionally, people have done this by algorithmically stitching together a bunch of photos taken from different angles, creating a 3D point cloud.</p>
+<p>That multi-image approach might work for professionals, but for your average LEGO builder? I don’t think so.<br>
+It’s a hassle to take all those photos, and getting them to stitch together correctly? Not fun.</p>
+<p>I wanted a smoother experience, one where you can just use a <strong>single image</strong> to get your 3D model, and that’s why I went with deep learning. Basically, you train a model on tons of images and their corresponding 3D models. Then, when you give it a new image, it can make educated guesses about the 3D shape, even the parts you can’t see. We’re shifting the heavy lifting of data collection from the user during the model’s use to the training phase, which makes things much easier. For this project I’m using a two-step process:</p>
+<ol type="1">
+<li><strong>Generate Multi-View Images:</strong> A diffusion model takes the single input image and generates multiple views of the object as if it were photographed from different angles.</li>
+<li><strong>Reconstruct 3D Mesh from Multi-View Images:</strong> Another deep learning model takes these generated views and creates a coherent 3D mesh, essentially filling in the gaps between the different perspectives.</li>
+</ol>
+<p>It’s not perfect, and the model might struggle with unusual objects or bad lighting. But, it’s a lot better than manually stitching images, and it gets us closer to that one-click LEGO dream. Now, with a 3D mesh in hand, we can move on to the next steps!</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+The perfect dataset easily available
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<blockquote class="blockquote">
+<p>A <em>sweet bonus</em> is that we can build our dataset inside Game Engines very easily! Combining real data and synthetic data built in a Game Engine is perfect and makes it easy to have a <em>great</em> dataset.</p>
+</blockquote>
+</div>
+</div>
+<section id="steps-for-a-deep-learning-approach" class="level3">
+<h3 class="anchored" data-anchor-id="steps-for-a-deep-learning-approach">Steps for a Deep Learning approach</h3>
+<p>How do we actually turn a image into a mesh through Deep Learning? The idea is quite straight-forward and people without knowledge should understand what is happening under-the-hood, though not mathematically.</p>
+<section id="step-1-turn-image-into-multi-angle-images" class="level4">
+<h4 class="anchored" data-anchor-id="step-1-turn-image-into-multi-angle-images">Step 1: Turn image into multi-angle images</h4>
+<p>To get around the need for multiple input images, the first step in my approach is to generate them artificially. We use a Diffusion Model for this. This model is able to look at your single image and create new images of the same object, but from different angles, by generalizing from a large diverse dataset that it has trained on.</p>
+</section>
+<section id="step-2-generate-mesh-model-from-multi-angle-images" class="level4">
+<h4 class="anchored" data-anchor-id="step-2-generate-mesh-model-from-multi-angle-images">Step 2: Generate mesh (model) from multi-angle images</h4>
+<p>With the generated multi-angle, e.g.&nbsp;6, images we stitch/generate a mesh structure to work with through another Deep Learning Model! The model at hands needs to fill the sparse data into a 3D mesh. This can be done in multiple ways depending on how you’d like to define the resulting mesh.</p>
+<p>Once we have our 3D mesh we can head to the next step, i.e.&nbsp;voxelation.</p>
+</section>
+<section id="step-3-mesh-to-voxels" class="level4">
+<h4 class="anchored" data-anchor-id="step-3-mesh-to-voxels">Step 3: Mesh to Voxels</h4>
+<p>This is a “solved” problem and it’s easy to voxelize using <em>trimesh</em>, a python library. Trimesh delivers the voxels, or cubes, in grey-scale and we need to add colors ourselves.</p>
+<div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">def</span> voxelize(mesh_path: <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">str</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|</span> Path, resolution: <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">int</span>):</span>
+<span id="cb1-2">    <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">"""Voxelize the mesh based on a resolution parameter. Resolution is how many bricks it should contain, i.e. 16 creates a 16x16 base plate."""</span></span>
+<span id="cb1-3">    mesh <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> trimesh.load(mesh_path)</span>
+<span id="cb1-4">    bounds <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> mesh.bounds</span>
+<span id="cb1-5">    voxel_size <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> (bounds[<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>] <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> bounds[<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>]).<span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">max</span>() <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span> resolution  <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># pitch</span></span>
+<span id="cb1-6">    voxels <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> mesh.voxelized(pitch<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>voxel_size)</span></code></pre></div>
+</section>
+<section id="step-4-colorize-voxels" class="level4">
+<h4 class="anchored" data-anchor-id="step-4-colorize-voxels">Step 4: Colorize Voxels</h4>
+<p>With the voxels in place, we need to color them. We start by assigning each voxel the ‘true’ color from the original mesh, found by identifying the nearest point on the mesh’s surface to the voxel’s center. That is the color won’t be an “approved” LEGO color for now.</p>
+<div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">def</span> tree_knearest_colors(mesh, voxels):</span>
+<span id="cb2-2">    tree <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> cKDTree(mesh.vertices)</span>
+<span id="cb2-3">    _, vertex_indices <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> tree.query(voxels.points, k<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>)</span>
+<span id="cb2-4"></span>
+<span id="cb2-5">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">return</span> mesh.visual.vertex_colors[vertex_indices]</span></code></pre></div>
+<p>The <code>cKDTree</code> is an <em>approximate nearest neighbour</em>, which means it’s fast and good enough.</p>
+</section>
+<section id="step-5-quantize-colors-into-lego-palette" class="level4">
+<h4 class="anchored" data-anchor-id="step-5-quantize-colors-into-lego-palette">Step 5: Quantize Colors into LEGO palette</h4>
+<p>As mentioned our colors is based on the 3D model rather than the LEGO palette, we need to transform them into LEGO palette to be able to order have LEGO bricks.<br>
+This task could be done in multiple ways, I opted for the simple Euclidean distance of the RGB array. A better approach would be to utilize <a href="https://en.wikipedia.org/wiki/CIELAB_color_space">LAB</a> color-space as that’s more similar to what humans perceive. LAB conversion isn’t as smooth as I had hoped (possible via <code>colormath</code>), and I wanted to wrap up my application, hence the RGB Euclidean Distance.</p>
+<blockquote class="blockquote">
+<p>I did try LAB and didn’t see a better result, but I didn’t put too much effort into it and there might be a better way to make it work.</p>
+</blockquote>
+</section>
+<section id="step-6-merge-voxels-into-lego-bricks" class="level4">
+<h4 class="anchored" data-anchor-id="step-6-merge-voxels-into-lego-bricks">Step 6: Merge Voxels into LEGO Bricks</h4>
+<p>Our final step is to go from voxels (1x1 bricks) into bigger LEGO bricks. No sane person would enjoy building a LEGO with only 1x1 bricks! 😂</p>
+<p>My current approach is dead simple, greedy starting from largest area bricks and iteratively trying smaller sizes. I’m utilizing a vectorized approach rather than the traitional “graph-based” one, e.g.&nbsp;Depth-First-Search (DFS).</p>
+<p>Our problem has some constraints which means that it fits vectorized approaches very well. The constraints to merge voxels follows:</p>
+<ol type="1">
+<li>Same color</li>
+<li>Same z-level</li>
+</ol>
+<p>The code is quite simple when treating it as a vectorized problem and utilizing numpy indexing.</p>
+<ol type="1">
+<li>Treat each Z-level as a matrix</li>
+<li>Treat each color as a number inside the matrix</li>
+<li>Apply equality</li>
+<li>Validate if we can fit our brick, say 2x6, if <code>np.all()</code> then it’s true
+<ol type="a">
+<li>Only apply this validation starting from an existing coordinate of the voxels</li>
+</ol></li>
+<li>Place brick when a brick found, iteratively moving down in size</li>
+</ol>
+</section>
+</section>
+</section>
+</section>
+<section id="future-work" class="level1">
+<h1>Future Work</h1>
+<p>There’s still a lot of work to improve the resulting lego model. The biggest flaws are that there’s too many small bricks and that the colors are not great…</p>
+<section id="improve-colors" class="level2">
+<h2 class="anchored" data-anchor-id="improve-colors">Improve colors</h2>
+<p>The first problem that would solve a lot is to have better colors.</p>
+<p>With better colors we’d be able to merge into bigger bricks, as we’re not allowed to put different colors into the same brick. The end-goal would be to reduce A) Shadows and B) Gradients, simplifying the model into something of lower color resolution.</p>
+<p>I have a hard time seeing that I can solve this fully through algorithms (already having tried LAB color space) and believe that I’d need to train a new Deep/Machine Learning model to achieve better results. That model would be able to better opt for which color to use and potentially even reduce weird colors that don’t fit the greater picture. Additionally it could have higher resolution for small important things like eyes.</p>
+<p>That is potential fixes:</p>
+<ul>
+<li>Apply ML to predict fewer colors</li>
+<li>Apply some type of kernel that remove gradients but keep edges</li>
+<li>…and probably something else not in my mind right now!</li>
+</ul>
+</section>
+<section id="bigger-bricks" class="level2">
+<h2 class="anchored" data-anchor-id="bigger-bricks">Bigger bricks</h2>
+<p><strong>First fix: Better Colors</strong><br>
+See previous section.</p>
+<p><strong>Second fix: Filling Empty Space</strong><br>
+Our 3D model is currently empty in the middle, this void could be filled to enable larger bricks. Sometimes we fill with 2 1x1 bricks rather than using a larger brick because we’re not allowed to place it in the empty void.</p>
+<p>This task is most likely simple to solve algorithmically, but some “voids” we wouldn’t want to fill. It should only be filled if hidden from most angles, i.e.&nbsp;we wouldn’t want to fill the void inside a leg of the Eifel Tower as that’s supposed to be a empty void rather than filled.</p>
+</section>
+</section>
+<section id="outro" class="level1">
+<h1>Outro</h1>
+<p>This was (and is) a very exciting project that I’ll keep on working on whenever I get a short burst of time. There’s some important improvements to add before the project is truly <em>User Friendly™</em>.</p>
+<p>The research in what type of approaches are available was a fun one and to implement the algorithms brought me back to my time at Apple, but with the knowledge gained from working in a more mathematical setting later, i.e.&nbsp;applying vectorization.</p>
+<p>Finally the result is impressive and something I can use already today. I can’t wait to order bricks for my first LEGO build!</p>
+<p>Thanks for this time,<br>
+Hampus Londögård</p>
+
+
+</section>
+
+ ]]></description>
+  <category>python</category>
+  <category>project</category>
+  <category>packaging</category>
+  <guid>https://blog.londogard.com/posts/2025-01-09-img-2-lego/</guid>
+  <pubDate>Thu, 09 Jan 2025 00:00:00 GMT</pubDate>
+</item>
 <item>
   <title>Pixi - Real World Usage</title>
   <dc:creator>Hampus Londögård</dc:creator>
@@ -8164,218 +8436,6 @@ Figure&nbsp;1: RandomSubsequenceSampler that allows randomizing batches but keep
   <category>python</category>
   <guid>https://blog.londogard.com/posts/2023-02-06-baby-monitor-pt-p2/</guid>
   <pubDate>Mon, 06 Feb 2023 00:00:00 GMT</pubDate>
-</item>
-<item>
-  <title>Polars - A Refreshingly Great DataFrame Library</title>
-  <dc:creator>Hampus Londögård</dc:creator>
-  <link>https://blog.londogard.com/posts/2022-11-30-why-polars.html</link>
-  <description><![CDATA[ 
-
-
-
-
-
-<p>While working at AFRY we’ve noted that in performance intensive application that isn’t really <em>Big Data</em> ends up being slow when using <a href="https://pandas.pydata.org/"><code>pandas</code></a>.</p>
-<p>Coming from languages such as <em>Scala, Kotlin </em>&amp; <em>golang</em> we knew there had to be more to it. There was a lot of performance to be squeezed! 🏎️</p>
-<!--truncate-->
-<p>Cherry on the top? The <code>pandas</code> API is a constant source of confusion and thereby not very satisfying. I end up having to read/search the documentation more times than I care to admit. All in all a cleaner and more efficient tool was needed to handle our data &amp; model training pipelines.</p>
-<p>One day I stumbled upon <a href="https://github.com/pola-rs/polars"><code>polars</code></a> - an <em>blazing fast</em> DataFrame-library written in Rust. Plenty of buzzwords, documentation and user-guide later I was ready to trial it in a personal project. 🤠</p>
-<p>It was a smooth addition because of the <code>pandas</code> integration, <code>pl.from_pandas</code> &amp; <code>df.to_pandas()</code>, which in turn made it a gradual adoption. The trial was an instant success, moving <code>DataFrame</code>’s to and from <code>polars</code> was diminished by the fact that <code>polars</code> sped up my pipeline so much. And the code was clean, the API more natural, only downgrade was a bit less reading options - otherwise <em>only upgrades</em>! 🤯</p>
-<p>I was ready to trial it work, and boy was I in for a wonderful journey!</p>
-<p>After gradually adopting it in one of our client project we saw huge speedups (some parts being &gt;3 magnitudes (!) faster) and our code became a lot simpler. Additionally something I didn’t expect: we decoupled our code in a more efficient way producing leaner code that’s more testable! 🦸‍♂️</p>
-<p>Then… what the actual fudge is <code>polars</code>?</p>
-<section id="polars" class="level1">
-<h1>Polars</h1>
-<p>Polars is a DataFrame library written purely in Rust, i.e.&nbsp;no runtime overhead, and uses <a href="https://arrow.apache.org/"><code>Arrow</code></a> as its foundation. The Python/JS bindings are simply a thin wrapper to be able to be able to use functionality in the core library. Very similar to <code>pandas</code> with a few major differences.</p>
-<p><strong>Why is it fast?</strong></p>
-<p><code>polars</code> achieves its speed by utilizing available cores <strong>and</strong> being smart. It goes to great lengths to:</p>
-<ul>
-<li>Reduce redundant copies</li>
-<li>Traverse memory cache efficiently</li>
-<li>Minimize contention in parallelism</li>
-</ul>
-<p><code>polars</code> has a <strong>lazy API</strong> with reminisence of SQL and Spark, this lazy API is automatically applied for certain operations such as <code>groupBy</code>. Using the lazy API <code>polars</code> enables <strong>query optimizations</strong> which improves performance and memory pressure. <code>polars</code> tracks your query in a <em>logical plan</em> which is optimized.</p>
-<p>Here’s a list from <a href="https://pola-rs.github.io/polars-book/user-guide/">pola-rs.github.io</a> on how it achieves its performance:</p>
-<ul>
-<li><a href="https://en.wikipedia.org/wiki/Copy-on-write">Copy-on-write</a> (COW) semantics
-<ul>
-<li>“Free” clones</li>
-<li>Cheap appends</li>
-</ul></li>
-<li>Appending without clones</li>
-<li>Column oriented data storage
-<ul>
-<li>No block manager (i.e.&nbsp;predictable performance)</li>
-</ul></li>
-<li>Missing values indicated with bitmask
-<ul>
-<li>NaN are different from missing</li>
-<li>Bitmask optimizations</li>
-</ul></li>
-<li>Efficient algorithms</li>
-<li>Very fast IO
-<ul>
-<li>Its csv and parquet readers are among the fastest in existence</li>
-</ul></li>
-<li><a href="https://pola-rs.github.io/polars-book/user-guide/optimizations/lazy/intro.html">Query optimizations</a>
-<ul>
-<li>Predicate pushdown
-<ul>
-<li>Filtering at scan level</li>
-</ul></li>
-<li>Projection pushdown
-<ul>
-<li>Projection at scan level</li>
-</ul></li>
-<li>Aggregate pushdown
-<ul>
-<li>Aggregations at scan level</li>
-</ul></li>
-<li>Simplify expressions</li>
-<li>Parallel execution of physical plan</li>
-<li>Cardinality based groupby dispatch
-<ul>
-<li>Different groupby strategies based on data cardinality</li>
-</ul></li>
-</ul></li>
-<li>SIMD vectorization</li>
-<li><a href="https://numpy.org/doc/stable/reference/ufuncs.html"><code>NumPy</code> universal functions</a></li>
-</ul>
-<blockquote class="blockquote">
-<p><strong>Side-note</strong>: one ugly hack I remember doing in <code>pandas</code> was to slice columns used in a <code>groupBy</code> aggregation before applying <code>groupBy</code> to make it faster. In <code>polars</code> this operation is lazy and automatically does this optimization in its query optimizer! Boy is it beautiful to see! 😍</p>
-</blockquote>
-<p><strong>Why does it make sense?</strong></p>
-<p>I’m not sure this title makes sense, but <code>polars</code> sure do! 🤓</p>
-<p>Did you ever ask yourself why <code>numpy</code> and <code>pandas</code> requires an indexing array to filter a list? E.g. <code>x[x &gt; 10]</code> to return the list with all values &gt;10.</p>
-<p>I did, and the answer is <em>vectorization</em> which makes code incredibly fast. But we should be able to achieve this in a simpler and more efficient way right? Because it’s ugly and stupid… so let’s achieve it more efficiently!</p>
-<p><code>polars</code> uses semantic more familiar to other languages, with it’s <code>.filter(pl.col(x) &gt; 10)</code>.</p>
-<blockquote class="blockquote">
-<p><strong>Side-note</strong>: <code>pl.col(x) &gt; 10</code> is a <code>pl.Expr</code> which is <strong>not</strong> executed until queried via <code>DataFrame</code> or <code>Series</code>!</p>
-</blockquote>
-<p>This way it’s incredibly easy to combine filters and even more importantly, decouple code.</p>
-<div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><span class="kw" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">def</span> filter_age(age: <span class="bu" style="color: null;
-background-color: null;
-font-style: inherit;">int</span>) <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">-&gt;</span> pl.Expr:</span>
-<span id="cb1-2">  <span class="cf" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">return</span> pl.col(<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"age"</span>) <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">&gt;</span> age</span>
-<span id="cb1-3">  </span>
-<span id="cb1-4"> df.<span class="bu" style="color: null;
-background-color: null;
-font-style: inherit;">filter</span>(filter_age(<span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">13</span>))</span></code></pre></div>
-<p>To me this <code>&lt;u&gt;</code>is really cool!<code>&lt;/u&gt;</code> 🤓</p>
-<section id="in-production" class="level2">
-<h2 class="anchored" data-anchor-id="in-production">In Production</h2>
-<p>We use <code>polars</code> extensively in production and after evaluating we found:</p>
-<ol type="1">
-<li>Pipelines to be 2x-20x faster, averaging about 7x</li>
-<li>Simpler pipelines</li>
-<li>Easier testing of pipelines</li>
-</ol>
-<p>Which is some pretty fantastic gains!</p>
-</section>
-<section id="future" class="level2">
-<h2 class="anchored" data-anchor-id="future">Future</h2>
-<p>I see a bright future with <code>polars</code> as it enables workloads which previously required to run in the cloud to be able to run locally, because the efficiency is so high.</p>
-</section>
-<section id="bonus" class="level2">
-<h2 class="anchored" data-anchor-id="bonus">Bonus</h2>
-<p><code>polars</code> is more than a “simpler API” and “faster <code>pandas</code>” with its additional functionality. Ever heard of <code>over</code>? Not? Let me tell you a cool story!</p>
-<section id="pl.over" class="level3">
-<h3 class="anchored" data-anchor-id="pl.over"><code>pl.Over</code></h3>
-<p><code>pl.col(age).mean().over(gender)</code> is like <code>pd.groupBy(gender).transform({age: "mean"})</code> but way more expressive and powerful!</p>
-<p>It can be used to build columns, filter DataFrame and anything really. We can combine multiple of them in the same select:</p>
-<div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1">df.select([</span>
-<span id="cb2-2">  pl.col(age).mean().over(gender),</span>
-<span id="cb2-3">  pl.col(height).mean().over(gender),</span>
-<span id="cb2-4">  pl.col([age, height]).over([gender, species])</span>
-<span id="cb2-5">])</span></code></pre></div>
-<p>The first and second row of the select uses the same grouper, query optimizer yay!</p>
-<p>The third line does it over multiple columns, combining all this into one single select is some pretty powerful stuff! 🦸‍♂️</p>
-</section>
-<section id="pl.fold" class="level3">
-<h3 class="anchored" data-anchor-id="pl.fold"><code>pl.Fold</code></h3>
-<p>Yet another incredibly powerful piece of operation is the <code>fold</code> which most <em>Scala-</em> or <em>FP-</em>programmers will know and love. <code>fold</code> is a more powerful <code>reduce</code> as it allows us to define what type we’d like to accumulate.</p>
-<p>The simplest example is using <code>fold</code> as a <code>reduce</code> to calculate the sum, e.g.</p>
-<div class="sourceCode" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1">out <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> df.select(</span>
-<span id="cb3-2">    pl.fold(acc<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span>pl.lit(<span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">0</span>), f<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span><span class="kw" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">lambda</span> acc, x: acc <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">+</span> x, exprs<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span>pl.col(<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"*"</span>)).alias(<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"sum"</span>),</span>
-<span id="cb3-3">)</span></code></pre></div>
-<p>Which is an obvious overkill solution, but allowing to aggregate expressions with conditionals is an inredibly powerful concept which can yield the best types of expressions.</p>
-<div class="sourceCode" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1">out <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> df.<span class="bu" style="color: null;
-background-color: null;
-font-style: inherit;">filter</span>(</span>
-<span id="cb4-2">    pl.fold(</span>
-<span id="cb4-3">        acc<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span>pl.lit(<span class="va" style="color: #111111;
-background-color: null;
-font-style: inherit;">True</span>),</span>
-<span id="cb4-4">        f<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span><span class="kw" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">lambda</span> acc, x: acc <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">&amp;</span> x,</span>
-<span id="cb4-5">        exprs<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span>pl.<span class="bu" style="color: null;
-background-color: null;
-font-style: inherit;">all</span>() <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">&gt;</span> <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">1</span>,</span>
-<span id="cb4-6">    )</span>
-<span id="cb4-7">)</span></code></pre></div>
-<p>In this expression we filter that every coluumn is larger than 1.</p>
-<p>That’s it for this small article. ~Hampus Londögård</p>
-
-
-</section>
-</section>
-</section>
-
- ]]></description>
-  <category>data-engineering</category>
-  <category>pipeline</category>
-  <category>data</category>
-  <guid>https://blog.londogard.com/posts/2022-11-30-why-polars.html</guid>
-  <pubDate>Wed, 30 Nov 2022 00:00:00 GMT</pubDate>
 </item>
 </channel>
 </rss>
