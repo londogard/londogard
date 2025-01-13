@@ -10,7 +10,7 @@ Merry Christmas, Happy Holidays and a Good New Year! 🥳
 > Disclaimer: I'm not affiliated with LEGO and this is a personal project.
 
 Ever wished you could turn a photo into a LEGO masterpiece? This holiday season, while my son napped, I did!  
-I've been passionately working on what might be my most entertaining project since I built my own Baby Monitor ([1](/posts/2022-11-06-babymonitor-pt-1), [2](/posts/2023-02-06-baby-monitor-pt-p2)): **a tool that transforms any image into a buildable 3D LEGO model, complete with step-by-step, layer-by-layer instructions, just like a real LEGO set!** 
+I've been passionately working on what might be my most entertaining project since I built my own Baby Monitor ([1](/posts/2022-11-06-babymonitor-pt-1), [2](/posts/2023-02-06-baby-monitor-pt-p2)): **a tool that transforms any image into a buildable 3D LEGO model, complete with layer-by-layer instructions, basically like a real LEGO set!** 
 
 The idea had been brewing in my mind for a few years, but a recent request from my friend Oscar J finally gave me the motivation to bring it to life!
 
