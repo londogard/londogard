@@ -26,7 +26,7 @@
 <p>Disclaimer: I’m not affiliated with LEGO and this is a personal project.</p>
 </blockquote>
 <p>Ever wished you could turn a photo into a LEGO masterpiece? This holiday season, while my son napped, I did!<br>
-I’ve been passionately working on what might be my most entertaining project since I built my own Baby Monitor (<a href="../../posts/2022-11-06-babymonitor-pt-1">1</a>, <a href="../../posts/2023-02-06-baby-monitor-pt-p2">2</a>): <strong>a tool that transforms any image into a buildable 3D LEGO model, complete with step-by-step, layer-by-layer instructions, just like a real LEGO set!</strong></p>
+I’ve been passionately working on what might be my most entertaining project since I built my own Baby Monitor (<a href="../../posts/2022-11-06-babymonitor-pt-1">1</a>, <a href="../../posts/2023-02-06-baby-monitor-pt-p2">2</a>): <strong>a tool that transforms any image into a buildable 3D LEGO model, complete with layer-by-layer instructions, basically like a real LEGO set!</strong></p>
 <p>The idea had been brewing in my mind for a few years, but a recent request from my friend Oscar J finally gave me the motivation to bring it to life!</p>
 <section id="result-demo" class="level1">
 <h1>Result / Demo</h1>
@@ -2704,26 +2704,39 @@ font-style: inherit;"># runs Solara App</span></span></code></pre></div>
   <pubDate>Wed, 20 Mar 2024 00:00:00 GMT</pubDate>
 </item>
 <item>
-  <title>TIL: Multiple Git Remotes</title>
+  <title>TIL: Stlite - running streamlit in WASM through b64-encoded URL’s</title>
   <dc:creator>Hampus Londögård</dc:creator>
-  <link>https://blog.londogard.com/posts/2024-02-18-git-remote.html</link>
+  <link>https://blog.londogard.com/posts/2024-02-22-stlite/</link>
   <description><![CDATA[ 
 
 
 
 
 
-<p>It is really simple actually. Simply call the following command:</p>
-<p><code>git remote add &lt;ALIAS&gt; &lt;GIT_URL_SSH&gt;</code></p>
-<p>To then push it is as simple as <code>git push &lt;ALIAS&gt;</code>.</p>
-<p>I use this to keep my repository in HuggingFace Spaces and GitHub at the same time.</p>
-<p>That’s it!</p>
+<p><strong>Amazing one-off tools deployed as a URL that embeds a WASM app is officially here! 🤯</strong></p>
+<p>Wow, that was a mouthful! There’s a mini-breakdown of the tech utilized to enable this at the bottom.👇</p>
+<p>What does this mean? It means that I can build assistive apps that has the following properties:</p>
+<ol type="1">
+<li>Deplyed as a URL - <strong>no server, no nothing</strong>, simply share away 🦸</li>
+<li>Runs completely inside browser, on the user-device 💻</li>
+<li>Requires NO developer or developer environment to run! 😇</li>
+</ol>
+<p>This is what I call truly Serverless! Because code and everything is embedded in the URL and runs inside a contained environemnt in the browser it cannot be simpler to share one-off tools! I’m excited to utilize this a lot more to enable my colleagues in sister-teams!</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://blog.londogard.com/posts/2024-02-22-stlite/sample.jpeg" class="img-fluid figure-img"></p>
+<figcaption>Sample image of internal app I made</figcaption>
+</figure>
+</div>
+<p>Here is a URL for a tool that does real-time image processing <strong>in the browser</strong>: <a href="https://edit.share.stlite.net/?sampleAppId=realtime_image_processing">stlite.net</a>! Here’s where you can work inside the browser to build a script: <a href="https://edit.share.stlite.net/">edit.share.stlite.net</a>.</p>
+<p><strong>Tech breakdown that enables everything:</strong> 1. Emscripten/WASM enables C code running efficiently in the browser 2. Pyodide is a cPython port to Emscripten/WASM that works brilliantly, including micropip that enables a bunch of libraries 3. Stlite is a Streamlit port to Pyodide (with few caveats)</p>
+<p>P.S. I heard that Solara is potentially working on the same functionality natively 😉</p>
 
 
 
  ]]></description>
   <category>TIL</category>
-  <guid>https://blog.londogard.com/posts/2024-02-18-git-remote.html</guid>
+  <guid>https://blog.londogard.com/posts/2024-02-22-stlite/</guid>
   <pubDate>Sun, 18 Feb 2024 00:00:00 GMT</pubDate>
 </item>
 <item>
@@ -2893,39 +2906,26 @@ font-style: inherit;">"--host=0.0.0.0"</span>]</span></code></pre></div>
   <pubDate>Sun, 18 Feb 2024 00:00:00 GMT</pubDate>
 </item>
 <item>
-  <title>TIL: Stlite - running streamlit in WASM through b64-encoded URL’s</title>
+  <title>TIL: Multiple Git Remotes</title>
   <dc:creator>Hampus Londögård</dc:creator>
-  <link>https://blog.londogard.com/posts/2024-02-22-stlite/</link>
+  <link>https://blog.londogard.com/posts/2024-02-18-git-remote.html</link>
   <description><![CDATA[ 
 
 
 
 
 
-<p><strong>Amazing one-off tools deployed as a URL that embeds a WASM app is officially here! 🤯</strong></p>
-<p>Wow, that was a mouthful! There’s a mini-breakdown of the tech utilized to enable this at the bottom.👇</p>
-<p>What does this mean? It means that I can build assistive apps that has the following properties:</p>
-<ol type="1">
-<li>Deplyed as a URL - <strong>no server, no nothing</strong>, simply share away 🦸</li>
-<li>Runs completely inside browser, on the user-device 💻</li>
-<li>Requires NO developer or developer environment to run! 😇</li>
-</ol>
-<p>This is what I call truly Serverless! Because code and everything is embedded in the URL and runs inside a contained environemnt in the browser it cannot be simpler to share one-off tools! I’m excited to utilize this a lot more to enable my colleagues in sister-teams!</p>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="https://blog.londogard.com/posts/2024-02-22-stlite/sample.jpeg" class="img-fluid figure-img"></p>
-<figcaption>Sample image of internal app I made</figcaption>
-</figure>
-</div>
-<p>Here is a URL for a tool that does real-time image processing <strong>in the browser</strong>: <a href="https://edit.share.stlite.net/?sampleAppId=realtime_image_processing">stlite.net</a>! Here’s where you can work inside the browser to build a script: <a href="https://edit.share.stlite.net/">edit.share.stlite.net</a>.</p>
-<p><strong>Tech breakdown that enables everything:</strong> 1. Emscripten/WASM enables C code running efficiently in the browser 2. Pyodide is a cPython port to Emscripten/WASM that works brilliantly, including micropip that enables a bunch of libraries 3. Stlite is a Streamlit port to Pyodide (with few caveats)</p>
-<p>P.S. I heard that Solara is potentially working on the same functionality natively 😉</p>
+<p>It is really simple actually. Simply call the following command:</p>
+<p><code>git remote add &lt;ALIAS&gt; &lt;GIT_URL_SSH&gt;</code></p>
+<p>To then push it is as simple as <code>git push &lt;ALIAS&gt;</code>.</p>
+<p>I use this to keep my repository in HuggingFace Spaces and GitHub at the same time.</p>
+<p>That’s it!</p>
 
 
 
  ]]></description>
   <category>TIL</category>
-  <guid>https://blog.londogard.com/posts/2024-02-22-stlite/</guid>
+  <guid>https://blog.londogard.com/posts/2024-02-18-git-remote.html</guid>
   <pubDate>Sun, 18 Feb 2024 00:00:00 GMT</pubDate>
 </item>
 <item>
