@@ -65,7 +65,7 @@ Marimo is perhaps too bold at trying to achieve it all, let's dive into it!
 
 ::: {.callout-note collapse="true"}
 
-## WASM Notes
+## WASM Details on each tool
 - `stlite` can be deploy as single HTML file, but depends on network then (fetching CDN resources).
 - `marimo` can be deployed as a HTML folder that needs to be server, but requires no network.
 - `stlite`, `marimo`, and `py.cafe` all enable "base64-url-apps", i.e. you can have a single URL that contains the full application and can run on their webpage!
@@ -106,31 +106,58 @@ marimo edit # open marimo editor and app
 
 Running in a sandboxed Python (pyodide) environment *inside* your browser! 🤯
 
-This is phenomenal way to share your "tools" with the team! The `stlite` approach of being able to embed everything inside a single HTML file (via CDN assets) makes this really cool to, but the URL with files as b64-encode is great too. For some company you might want to self-host which is *incredibly easy*.\
-I also posted an issue to actually enable single-HTML file like `stlite` ([here](https://github.com/marimo-team/marimo/issues/3667) ).
+I'm amazed at how easy you can share "tools" with internal teams today using WASM. 
 
-::: {.callout-tip collapse="true"}
+1. A single HTML file without serving needs (á la `stlite`, utilizing CDN assets)
+2. A single URL that contains the code using base64-encoded string in the URL (á la `stlite`, `py.cafe`, and `marimo`)
+3. A stand-alone web app (folder with HTML file and assets) that you serve
 
-# Resource Comparison (Marimo does well!)
+It's such an easy way to deploy tools, and everything is sandboxed inside the browser. No need to go through IT security or have an deployment done - an amazing feat!
 
-It seems that Marimo actually utilizes a lot less RAM to run a basic notebook which is a good thing!
+::: {.column-margin}
 
-|                                                                           |                         |
-| ------------------------------------------------------------------------- | ----------------------- |
-| App                                                                       | WASM Memory Consumption |
-| Marimo                                                                    | **400 MB**              |
-| stlite                                                                    | 600 MB                  |
-| jupyterlite                                                               | >1GB                    |
-| gradio_lite                                                               | 522 MB                  |
-| pyodide (via [pydantic.run](https://pydantic.run/) no UI or dependencies) | **200 MB**              |
+**Resource Comparison**
+
+|                                                                           |            |
+| ------------------------------------------------------------------------- | ---------- |
+| WASM App                                                                  | RAM        |
+| Marimo                                                                    | **400 MB** |
+| stlite                                                                    | 600 MB     |
+| jupyterlite                                                               | >1GB       |
+| gradio_lite                                                               | 522 MB     |
+| pyodide (via [pydantic.run](https://pydantic.run/) no UI or dependencies) | **200 MB** |
 
 :::
 
+
+#### Marimo WASM
+Marimo solves WASM quite brilliantly. Their built-in package handler makes it a breeze to add dependencies.  
+The app looks just the same, compared to say `gradio` that degrades quite a lot with `gradio_lite`.
+
+Finally as shared in the margin the resources used by Marimo is in the lower span compared to other similar apps.
+
+
 # Marimo
+
+Marimo is easy, you simply define and use a component like following:
+```python
+# cell 1
+import marimo as mo
+slider = mo.ui.slider(0,10)
+f"Select your step: {slider}"
+---
+# cell 2
+f"You've selected {slider.value} which doubled is {slider.value * 2}"
+```
+
+Here we defined a slider component, we display it using markdown and in our second cell 
+it's neatly displayed and updated automatically because of reactivity!  
+Bonus? You can swap the order of the cells and the code will still be valid, because of said reactivity. This is also what enforces the _reproducibility_. The code follows a DAG based on the variables.  
+Drawback? You can't update a variable outside the cell that defines it.
 
 ## A basic App Example
 
-I'll share examples from [docs.marimo.io](https://docs.marimo.io/#a-reactive-programming-environment) which is a good resource to get started.
+I'll share examples from [docs.marimo.io](https://docs.marimo.io/#a-reactive-programming-environment) which is a great resource to get started.
 
 **UI Components:**  
 ![Marimo Slider & Reactivity](https://docs.marimo.io/_static/readme-ui.mp4) 
@@ -177,16 +204,13 @@ The reactive nature of Marimo makes it reproducible, but building Apps with reac
 **Fixes:**
 
 1. Set expensive/dangerous actions behind a button (define it in a function)
+2. Apply `mo.stop` to stop execution.
+3. Disable cell ([example](https://docs.marimo.io/guides/reactivity/#disabling-cells))
+4. Make "lazy execution" of cell or all cells. This will neatly gray cells that are out-of-sync
 
-1. Apply `mo.stop` to stop execution.
+![](https://images.amplenote.com/384cdeec-d88b-11ef-b6ab-a76117c9f257/ec4f09a0-44df-433b-a0b1-f49b1c295418.png)
 
-1. Disable cell ([example](https://docs.marimo.io/guides/reactivity/#disabling-cells))
-
-1. Make "lazy execution" of cell or all cells. This will neatly gray cells that are out-of-sync
-
-![](https://images.amplenote.com/384cdeec-d88b-11ef-b6ab-a76117c9f257/ec4f09a0-44df-433b-a0b1-f49b1c295418.png) [^1]
-
-![](https://images.amplenote.com/384cdeec-d88b-11ef-b6ab-a76117c9f257/08977551-7517-40c8-bf57-829cf7167b9c.png) [^2]
+![](https://images.amplenote.com/384cdeec-d88b-11ef-b6ab-a76117c9f257/08977551-7517-40c8-bf57-829cf7167b9c.png)
 
 ### UI vs root namespace
 
@@ -198,10 +222,17 @@ This is quite confusing and I think the namespacing issue is a larger one than o
 
 What's cool though is that, just like Jupyter, Marimo tries to auto-display element using nice visualization.
 
-\
 
 ### Only final element is visible
 
 Only the final component added is actually displayed, in my opinion all `mo.ui` components should be displayed if they're added. It'd make more sense.
 
 One can wrap elements inside a markdown text, accordion or other type of "display multiple elements".
+
+# Outro
+I think Marimo all in all does really well, there's a few sharp edges to resolve but I might replace Jupyter really soon with this. The DataFrame Explorer - Amazing. The callbacks for charts and more - Superb!
+
+It's like a harder-to-reason but better Streamlit if that makes sense? With more components it'll be golden!
+
+Thanks for this time,  
+Hampus Londögård
