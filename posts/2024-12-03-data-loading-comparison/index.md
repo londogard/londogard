@@ -8,6 +8,8 @@ date: "2024-12-03"
 This blog was supposed to be more in-depth but my enthusiasm was drastically cut and I felt like splitting it up into multiple smaller one, whereas [daft one](/posts/2024-10-24-data-loading-daft/) is already uploaded.
 
 > I started writing a "recipe-book" for `daft` where I realized it wasn't as smoothly integrated as a lot of other tools. I believe that the `DataFrame` format is both a winning and loosing concept, it's very helpful but when you need to use two columns the way `Ray`, `HuggingFace Datasets` and others map data using `dict` is a winning concept for both _element by element_ and _batch_ mapping. With a `dict` way to map `DataFrame` I think that `daft` might end up the perfect tool.
+> 
+> For now I believe Daft is better utilized as an ETL framework, but in the near future it might become great for ML too.
 
 Anyhow, today I'll compare the developer experience and performance of different tools for data loading.
 
