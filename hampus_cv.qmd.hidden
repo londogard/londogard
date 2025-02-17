@@ -24,7 +24,7 @@ format:
 - Ystad | 0733 673 179 | hampus@londogard.com
 - [![](icons/github.png){height=16px}/lundez](https://github.com/lundez) | [![](icons/github.png){height=16px}/londogard](https://github.com/londogard) | [![](icons/twitter.png){height=16px}/hlondogard](https://twitter.com/hlondogard) | [![](icons/linkedin.png){height=16px}/hampus-londögård](https://www.linkedin.com/in/hampus-londögård/) | [blog.londogard.com](https://blog.londogard.com/)
 - Languages: Swedish, English and a bit Danish.
-- Interest and Activities: Tech, Open-Source, Deep Learning, Kotlin, Traveling, Environment, Family/Friends and Brewing Beer
+- Interest and Activities: Tech, Open-Source, Deep Learning, Functional Programming, Traveling, Environment, Family/Friends and Brewing Beer
 
 ### Introduction
 
@@ -67,15 +67,15 @@ Master Thesis: _"Improving the Open Street Map using Deep Learning"_
 
 - **2023-09 to 2023-11 | Senior Machine Learning Engineer**  
   - Developed and trained Computer Vision and Timeseries models.
-  - Improved Data Infrastructure to enhance model performance and efficiency.
+  - Improved Data Infrastructure to enhance model development and efficiency.
 
 - **2023-11 to 2024-03 | Team Lead**  
   - Led the team in agile project management, delegating responsibilities to ensure scalable team operations.
 
 - **2024-08- | Senior ML Engineer & Cloud ML Lead**  
-  - Oversaw the AWS Cloud ML approach and integrated scalable cloud solutions.
+  - Leading the AWS Cloud ML approach and integrated scalable cloud solutions (real-time prediction & batched Data Infrastructure).
 
-**Technologies**: Python, PyTorch, TensorFlow, ONNX, Keras, AWS, IaC, Azure, MLFlow, Docker, Kubernetes
+**Technologies**: Python, Delta Lake, PyTorch, TensorFlow, ONNX, Keras, AWS, IaC, Azure, MLFlow, Docker, Kubernetes, Jenkins (CI/CD)
 
 ## **2021-2023 | AFRY** - _Team Lead Analytics_
 
