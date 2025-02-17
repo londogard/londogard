@@ -21,7 +21,7 @@
 
 
 
-<section id="marimo" class="level1">
+<section id="marimo" class="level1 page-columns page-full">
 <h1>Marimo</h1>
 <p>Marimo is the “new” kid on the block. Based on what Marimo tries to achieve you can’t help yourself but comparing it too other frameworks such as <em>Gradio, Jupyter, Streamlit, Solara &amp; Panel</em>.</p>
 <div class="callout callout-style-simple callout-note callout-titled">
@@ -125,7 +125,7 @@ My Final Thoughts
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-WASM Notes
+WASM Details on each tool
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
@@ -152,7 +152,7 @@ WASM Notes
 Streamlit ends up in the top because of its strong community, and <code>stlite</code> really helps the WASM story-line.</p>
 <p>But how do you actually use Marimo, <strong><em>and can it beat Streamlit by having a smarter execution system?</em></strong></p>
 </section>
-<section id="marimo-intro" class="level2">
+<section id="marimo-intro" class="level2 page-columns page-full">
 <h2 class="anchored" data-anchor-id="marimo-intro">Marimo Intro</h2>
 <p>Marimo has two execution “environments”, Python and WASM.</p>
 <section id="python" class="level3">
@@ -160,29 +160,24 @@ Streamlit ends up in the top because of its strong community, and <code>stlite</
 <p>This is essentially like running a Jupyter Notebook in your local python environment. It starts a marimo kernel that handles your execution:</p>
 <pre><code>marimo edit # open marimo editor and app</code></pre>
 </section>
-<section id="wasm" class="level3">
+<section id="wasm" class="level3 page-columns page-full">
 <h3 class="anchored" data-anchor-id="wasm">WASM</h3>
 <p>Running in a sandboxed Python (pyodide) environment <em>inside</em> your browser! 🤯</p>
-<p>This is phenomenal way to share your “tools” with the team! The <code>stlite</code> approach of being able to embed everything inside a single HTML file (via CDN assets) makes this really cool to, but the URL with files as b64-encode is great too. For some company you might want to self-host which is <em>incredibly easy</em>.<br>
-I also posted an issue to actually enable single-HTML file like <code>stlite</code> (<a href="https://github.com/marimo-team/marimo/issues/3667">here</a> ).</p>
-<div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-4-contents" aria-controls="callout-4" aria-expanded="false" aria-label="Toggle callout">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Resource Comparison (Marimo does well!)
-</div>
-<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
-</div>
-<div id="callout-4" class="callout-4-contents callout-collapse collapse">
-<div class="callout-body-container callout-body">
-<p>It seems that Marimo actually utilizes a lot less RAM to run a basic notebook which is a good thing!</p>
+<p>I’m amazed at how easy you can share “tools” with internal teams today using WASM.</p>
+<ol type="1">
+<li>A single HTML file without serving needs (á la <code>stlite</code>, utilizing CDN assets)</li>
+<li>A single URL that contains the code using base64-encoded string in the URL (á la <code>stlite</code>, <code>py.cafe</code>, and <code>marimo</code>)</li>
+<li>A stand-alone web app (folder with HTML file and assets) that you serve</li>
+</ol>
+<p>It’s such an easy way to deploy tools, and everything is sandboxed inside the browser. No need to go through IT security or have an deployment done - an amazing feat!</p>
+
+<div class="no-row-height column-margin column-container"><div class="">
+<p><strong>Resource Comparison</strong></p>
 <table class="caption-top table">
 <tbody>
 <tr class="odd">
-<td>App</td>
-<td>WASM Memory Consumption</td>
+<td>WASM App</td>
+<td>RAM</td>
 </tr>
 <tr class="even">
 <td>Marimo</td>
@@ -206,17 +201,77 @@ Resource Comparison (Marimo does well!)
 </tr>
 </tbody>
 </table>
-</div>
-</div>
-</div>
+</div></div><section id="marimo-wasm" class="level4">
+<h4 class="anchored" data-anchor-id="marimo-wasm">Marimo WASM</h4>
+<p>Marimo solves WASM quite brilliantly. Their built-in package handler makes it a breeze to add dependencies.<br>
+The app looks just the same, compared to say <code>gradio</code> that degrades quite a lot with <code>gradio_lite</code>.</p>
+<p>Finally as shared in the margin the resources used by Marimo is in the lower span compared to other similar apps.</p>
+</section>
 </section>
 </section>
 </section>
 <section id="marimo-1" class="level1">
 <h1>Marimo</h1>
+<p>Marimo is easy, you simply define and use a component like following:</p>
+<div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># cell 1</span></span>
+<span id="cb2-2"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> marimo <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">as</span> mo</span>
+<span id="cb2-3">slider <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> mo.ui.slider(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>,<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">10</span>)</span>
+<span id="cb2-4"><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">f"Select your step: </span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">{</span>slider<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">}</span><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"</span></span>
+<span id="cb2-5"><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">---</span></span>
+<span id="cb2-6"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># cell 2</span></span>
+<span id="cb2-7"><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">f"You've selected </span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">{</span>slider<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span>value<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">}</span><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;"> which doubled is </span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">{</span>slider<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span>value <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">}</span><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"</span></span></code></pre></div>
+<p>Here we defined a slider component, we display it using markdown and in our second cell it’s neatly displayed and updated automatically because of reactivity!<br>
+Bonus? You can swap the order of the cells and the code will still be valid, because of said reactivity. This is also what enforces the <em>reproducibility</em>. The code follows a DAG based on the variables.<br>
+Drawback? You can’t update a variable outside the cell that defines it.</p>
 <section id="a-basic-app-example" class="level2">
 <h2 class="anchored" data-anchor-id="a-basic-app-example">A basic App Example</h2>
-<p>I’ll share examples from <a href="https://docs.marimo.io/#a-reactive-programming-environment">docs.marimo.io</a> which is a good resource to get started.</p>
+<p>I’ll share examples from <a href="https://docs.marimo.io/#a-reactive-programming-environment">docs.marimo.io</a> which is a great resource to get started.</p>
 <p><strong>UI Components:</strong><br>
 <video src="https://docs.marimo.io/_static/readme-ui.mp4" class="img-fluid" controls=""><a href="https://docs.marimo.io/_static/readme-ui.mp4">Marimo Slider &amp; Reactivity</a></video></p>
 <p><strong>DataFrame Explorer:</strong><br>
@@ -254,13 +309,13 @@ Which enables editing in your local IDE and watch changes in the browser. I thin
 <p>The reactive nature of Marimo makes it reproducible, but building Apps with reactive execution makes it simple to accidentally “trigger” actions when you didn’t anticipate to. Especially as you might be used to Jupyter and not having “auto-run”.</p>
 <p><strong>Fixes:</strong></p>
 <ol type="1">
-<li><p>Set expensive/dangerous actions behind a button (define it in a function)</p></li>
-<li><p>Apply <code>mo.stop</code> to stop execution.</p></li>
-<li><p>Disable cell (<a href="https://docs.marimo.io/guides/reactivity/#disabling-cells">example</a>)</p></li>
-<li><p>Make “lazy execution” of cell or all cells. This will neatly gray cells that are out-of-sync</p></li>
+<li>Set expensive/dangerous actions behind a button (define it in a function)</li>
+<li>Apply <code>mo.stop</code> to stop execution.</li>
+<li>Disable cell (<a href="https://docs.marimo.io/guides/reactivity/#disabling-cells">example</a>)</li>
+<li>Make “lazy execution” of cell or all cells. This will neatly gray cells that are out-of-sync</li>
 </ol>
-<p><img src="https://images.amplenote.com/384cdeec-d88b-11ef-b6ab-a76117c9f257/ec4f09a0-44df-433b-a0b1-f49b1c295418.png" class="img-fluid"> [^1]</p>
-<p><img src="https://images.amplenote.com/384cdeec-d88b-11ef-b6ab-a76117c9f257/08977551-7517-40c8-bf57-829cf7167b9c.png" class="img-fluid"> [^2]</p>
+<p><img src="https://images.amplenote.com/384cdeec-d88b-11ef-b6ab-a76117c9f257/ec4f09a0-44df-433b-a0b1-f49b1c295418.png" class="img-fluid"></p>
+<p><img src="https://images.amplenote.com/384cdeec-d88b-11ef-b6ab-a76117c9f257/08977551-7517-40c8-bf57-829cf7167b9c.png" class="img-fluid"></p>
 </section>
 <section id="ui-vs-root-namespace" class="level3">
 <h3 class="anchored" data-anchor-id="ui-vs-root-namespace">UI vs root namespace</h3>
@@ -268,17 +323,22 @@ Which enables editing in your local IDE and watch changes in the browser. I thin
 <p><code>mo.ui.\*</code> includes reactive UI components, e.g.&nbsp;button &amp; slider, while <code>mo.\*</code> includes display UI components such as image or video.</p>
 <p>This is quite confusing and I think the namespacing issue is a larger one than one might anticipate, as you tend to get lost on where to find what you wish to draw.</p>
 <p>What’s cool though is that, just like Jupyter, Marimo tries to auto-display element using nice visualization.</p>
-<p><br>
-</p>
 </section>
 <section id="only-final-element-is-visible" class="level3">
 <h3 class="anchored" data-anchor-id="only-final-element-is-visible">Only final element is visible</h3>
 <p>Only the final component added is actually displayed, in my opinion all <code>mo.ui</code> components should be displayed if they’re added. It’d make more sense.</p>
 <p>One can wrap elements inside a markdown text, accordion or other type of “display multiple elements”.</p>
-
-
 </section>
 </section>
+</section>
+<section id="outro" class="level1">
+<h1>Outro</h1>
+<p>I think Marimo all in all does really well, there’s a few sharp edges to resolve but I might replace Jupyter really soon with this. The DataFrame Explorer - Amazing. The callbacks for charts and more - Superb!</p>
+<p>It’s like a harder-to-reason but better Streamlit if that makes sense? With more components it’ll be golden!</p>
+<p>Thanks for this time,<br>
+Hampus Londögård</p>
+
+
 </section>
 
  ]]></description>
