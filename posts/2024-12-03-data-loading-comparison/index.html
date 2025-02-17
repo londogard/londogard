@@ -76,7 +76,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../../site_libs/quarto-html/quarto-syntax-highlighting-86daaaaad7353f9cc0c554efc1dd6d94.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-c810d5943d07318663498dbd9b09dd12.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-2213d22e36e8e52ed4c0e87820819647.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -262,6 +262,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>This blog was supposed to be more in-depth but my enthusiasm was drastically cut and I felt like splitting it up into multiple smaller one, whereas <a href="../../posts/2024-10-24-data-loading-daft/">daft one</a> is already uploaded.</p>
 <blockquote class="blockquote">
 <p>I started writing a “recipe-book” for <code>daft</code> where I realized it wasn’t as smoothly integrated as a lot of other tools. I believe that the <code>DataFrame</code> format is both a winning and loosing concept, it’s very helpful but when you need to use two columns the way <code>Ray</code>, <code>HuggingFace Datasets</code> and others map data using <code>dict</code> is a winning concept for both <em>element by element</em> and <em>batch</em> mapping. With a <code>dict</code> way to map <code>DataFrame</code> I think that <code>daft</code> might end up the perfect tool.</p>
+<p>For now I believe Daft is better utilized as an ETL framework, but in the near future it might become great for ML too.</p>
 </blockquote>
 <p>Anyhow, today I’ll compare the developer experience and performance of different tools for data loading.</p>
 <ol type="1">

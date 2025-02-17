@@ -10,7 +10,284 @@
 <atom:link href="https://blog.londogard.com/index.xml" rel="self" type="application/rss+xml"/>
 <description>A blog which majorly focuses on Data Science, Data Engineering and sometimes Kotlin / Scala.</description>
 <generator>quarto-1.6.40</generator>
-<lastBuildDate>Thu, 09 Jan 2025 00:00:00 GMT</lastBuildDate>
+<lastBuildDate>Mon, 17 Feb 2025 00:00:00 GMT</lastBuildDate>
+<item>
+  <title>Marimo - A new Notebook/App on the block!</title>
+  <dc:creator>Hampus Londögård</dc:creator>
+  <link>https://blog.londogard.com/posts/2025-02-17-marimo/</link>
+  <description><![CDATA[ 
+
+
+
+
+
+<section id="marimo" class="level1">
+<h1>Marimo</h1>
+<p>Marimo is the “new” kid on the block. Based on what Marimo tries to achieve you can’t help yourself but comparing it too other frameworks such as <em>Gradio, Jupyter, Streamlit, Solara &amp; Panel</em>.</p>
+<div class="callout callout-style-simple callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+A multitude of options
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><strong>The fact that there’s a plethora of options</strong> to build WASM apps/tools and “<em>literate programming”</em> through notebook-style <strong>is nothing short of amazing</strong><br>
+We’re in for a great time!</p>
+<p>Drawback? What do I choose!</p>
+</div>
+</div>
+<p>I’ll put a little focus on comparing, especially their WASM usage via <a href="https://pyodide.org/">pyodide</a>, where I the first time wrote about <a href="https://stlite.net/">stlite</a> in my <a href="https://blog.londogard.com/posts/2024-02-22-stlite/">blog</a> (Feb, 2024). Since I discovered WASM deployments via <em>base64-URLs</em> and <em>standalone-HTML-file</em> I was amazed at the opportunity to deploy simple-to-use tools for your colleagues.</p>
+<p>Marimo is a reactive notebook with built-in UI components that can be turned into an app easily. It tries to become great at additional battles, such as WASM.</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+My Final Thoughts
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-2" class="callout-2-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p><em>Marimo does great, it handles App use-case, Notebook and WASM phenomenally.</em> The UI components are sleek and combines in a smooth way. The one draw-back? You’ll have to rewire your brain a bit with <em>reactivity</em> rather than sequential execution!</p>
+<p>Interested to learn more? Read on!</p>
+</div>
+</div>
+</div>
+<section id="usage" class="level2">
+<h2 class="anchored" data-anchor-id="usage">Usage</h2>
+<p>I’ll start by sharing <strong>my current go-to tool(s)</strong> for each area of use, and then try to fit Marimo into this.</p>
+<ul>
+<li><strong>Heavy Applications</strong>: <a href="https://solara.dev/">Solara</a>
+<ul>
+<li>Pros: ‘React’ style of programming, very efficient bindings and updates</li>
+<li>Cons: Not the most modern UI,</li>
+</ul></li>
+<li><strong>Simple Applications</strong>: <a href="https://streamlit.io/">Streamlit</a>
+<ul>
+<li>Pros: Simple, Modern UI, Large Community</li>
+<li>Cons: The “execute everything on each change” execution is quite inefficient and with caching reasoning grows harder with time</li>
+</ul></li>
+<li><strong>WASM Apps</strong>: Streamlit via stlite</li>
+<li><strong>ML Demos with API</strong>: Gradio (and Streamlit)
+<ul>
+<li>Pros: Simple, provides <code>gradio_client</code> REST API by default (AMAZING)</li>
+<li>Cons: I hate building Gradio apps</li>
+</ul></li>
+<li><strong>Notebook</strong>: Jupyter</li>
+</ul>
+<p><em>Marimo could possibly replace most in the list</em>, but especially WASM Apps and Notebook. Potentially it can take on ML Demos and Simple Applications too, and why not Heavy?</p>
+<p>Marimo is perhaps too bold at trying to achieve it all, let’s dive into it!</p>
+</section>
+<section id="quick-subjective-rankings" class="level2">
+<h2 class="anchored" data-anchor-id="quick-subjective-rankings">Quick (Subjective) Rankings</h2>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 12%">
+<col style="width: 23%">
+<col style="width: 46%">
+<col style="width: 17%">
+</colgroup>
+<tbody>
+<tr class="odd">
+<td><strong>Action</strong></td>
+<td>🥇</td>
+<td>🥈</td>
+<td>🥉</td>
+</tr>
+<tr class="even">
+<td>WASM</td>
+<td>stlite, Marimo</td>
+<td>py.cafe (streamlit &amp; solara), gradio</td>
+<td>jupyter lite</td>
+</tr>
+<tr class="odd">
+<td>Notebook</td>
+<td>Jupyter &amp; Marimo</td>
+<td>Streamlit</td>
+<td>Solara, gradio</td>
+</tr>
+<tr class="even">
+<td>App</td>
+<td>Streamlit &amp; Solara</td>
+<td>Marimo, gradio</td>
+<td>Jupyter</td>
+</tr>
+</tbody>
+</table>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-3-contents" aria-controls="callout-3" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+WASM Notes
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-3" class="callout-3-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<ul>
+<li><code>stlite</code> can be deploy as single HTML file, but depends on network then (fetching CDN resources).</li>
+<li><code>marimo</code> can be deployed as a HTML folder that needs to be server, but requires no network.</li>
+<li><code>stlite</code>, <code>marimo</code>, and <code>py.cafe</code> all enable “base64-url-apps”, i.e.&nbsp;you can have a single URL that contains the full application and can run on their webpage!</li>
+<li><code>jupyterlite</code> is really good as a tool, but the share-ability is awful.</li>
+<li><code>gradio</code> works decently in WASM, but it has a big pro which is its API when running the real app. The - <code>gradio_client</code> is an amazing initiative.</li>
+</ul>
+<p>All in all I’m amazed regarding the tools that are available to run sandboxed in your browser (all based on <a href="https://pyodide.org/en/stable/">pyodide</a>). We’re programming in a really cool part of history!</p>
+</div>
+</div>
+</div>
+<p>If we put scores on each (3,2,1 for 1st, 2nd, and 3rd) we end up with the following:</p>
+<ol type="1">
+<li><p><strong>Marimo &amp; Streamlit:</strong> <strong>8pts</strong></p></li>
+<li><p><strong>Solara:</strong> 6pts</p></li>
+<li><p><strong>Jupyter &amp; Gradio:</strong> 5pts</p></li>
+</ol>
+<p>It seems Marimo ends up covering all needs quite well based on my initial research.<br>
+Streamlit ends up in the top because of its strong community, and <code>stlite</code> really helps the WASM story-line.</p>
+<p>But how do you actually use Marimo, <strong><em>and can it beat Streamlit by having a smarter execution system?</em></strong></p>
+</section>
+<section id="marimo-intro" class="level2">
+<h2 class="anchored" data-anchor-id="marimo-intro">Marimo Intro</h2>
+<p>Marimo has two execution “environments”, Python and WASM.</p>
+<section id="python" class="level3">
+<h3 class="anchored" data-anchor-id="python">Python</h3>
+<p>This is essentially like running a Jupyter Notebook in your local python environment. It starts a marimo kernel that handles your execution:</p>
+<pre><code>marimo edit # open marimo editor and app</code></pre>
+</section>
+<section id="wasm" class="level3">
+<h3 class="anchored" data-anchor-id="wasm">WASM</h3>
+<p>Running in a sandboxed Python (pyodide) environment <em>inside</em> your browser! 🤯</p>
+<p>This is phenomenal way to share your “tools” with the team! The <code>stlite</code> approach of being able to embed everything inside a single HTML file (via CDN assets) makes this really cool to, but the URL with files as b64-encode is great too. For some company you might want to self-host which is <em>incredibly easy</em>.<br>
+I also posted an issue to actually enable single-HTML file like <code>stlite</code> (<a href="https://github.com/marimo-team/marimo/issues/3667">here</a> ).</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-4-contents" aria-controls="callout-4" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Resource Comparison (Marimo does well!)
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-4" class="callout-4-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>It seems that Marimo actually utilizes a lot less RAM to run a basic notebook which is a good thing!</p>
+<table class="caption-top table">
+<tbody>
+<tr class="odd">
+<td>App</td>
+<td>WASM Memory Consumption</td>
+</tr>
+<tr class="even">
+<td>Marimo</td>
+<td><strong>400 MB</strong></td>
+</tr>
+<tr class="odd">
+<td>stlite</td>
+<td>600 MB</td>
+</tr>
+<tr class="even">
+<td>jupyterlite</td>
+<td>&gt;1GB</td>
+</tr>
+<tr class="odd">
+<td>gradio_lite</td>
+<td>522 MB</td>
+</tr>
+<tr class="even">
+<td>pyodide (via <a href="https://pydantic.run/">pydantic.run</a> no UI or dependencies)</td>
+<td><strong>200 MB</strong></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</section>
+</section>
+</section>
+<section id="marimo-1" class="level1">
+<h1>Marimo</h1>
+<section id="a-basic-app-example" class="level2">
+<h2 class="anchored" data-anchor-id="a-basic-app-example">A basic App Example</h2>
+<p>I’ll share examples from <a href="https://docs.marimo.io/#a-reactive-programming-environment">docs.marimo.io</a> which is a good resource to get started.</p>
+<p><strong>UI Components:</strong><br>
+<video src="https://docs.marimo.io/_static/readme-ui.mp4" class="img-fluid" controls=""><a href="https://docs.marimo.io/_static/readme-ui.mp4">Marimo Slider &amp; Reactivity</a></video></p>
+<p><strong>DataFrame Explorer:</strong><br>
+<video src="https://docs.marimo.io/_static/docs-df.mp4" class="img-fluid" controls=""><a href="https://docs.marimo.io/_static/docs-df.mp4">Marimo DataFrame Explorer - I love it!</a></video><br>
+<strong>SQL Mixin</strong><br>
+<img src="https://raw.githubusercontent.com/marimo-team/marimo/main/docs/_static/readme-sql-cell.png" class="img-fluid" alt="Mixing DataFrame’s and SQL in Marimo"></p>
+<p><strong>Plotting Callbacks</strong><br>
+<video src="https://cms.marimo.io/landing/3.mp4" class="img-fluid" controls=""><a href="https://cms.marimo.io/landing/3.mp4">Embedding Selection Callback</a></video></p>
+<p><strong>Standouts:</strong></p>
+<ol type="1">
+<li>Deterministic Execution Order (annoying but helpful)
+<ol type="1">
+<li>It’s a tad bit confusing to have it possible to have cells in random order, but <strong>at least it’s reproducible</strong> compared to Jupyter!</li>
+</ol></li>
+<li>Built-in Package Management (especially handy for WASM)</li>
+<li>Pretty elements for a notebook (comparing with ipywidgets..)
+<ol type="1">
+<li>What’s even cooler is that you can easily combine UI components in a markdown string. Making a seamless flow!</li>
+</ol></li>
+</ol>
+</section>
+<section id="marimo-editor" class="level2">
+<h2 class="anchored" data-anchor-id="marimo-editor">Marimo Editor</h2>
+<p>While the editor is excellent I found it quite poor in picking up local project files outside the script itself for auto-completion. This is where <a href="https://docs.marimo.io/guides/editor_features/watching/">watching</a> helps:</p>
+<pre><code>marimo edit --watch </code></pre>
+<p><br>
+Which enables editing in your local IDE and watch changes in the browser. I think this is a nice balance where you can opt to edit directly in IDE or in browser depending on your current need. But VS Code / PyCharm’s built in Notebooks are unbeatable in the User Experience (i.e.&nbsp;Autocompletion + Visualization)! 🤓</p>
+<p><strong>If Marimo could pick up IntelliSense from the IDE that’d be a great improvement!</strong> Marimo handles “project” IntelliSense especially poor.</p>
+</section>
+<section id="marimo-gotchas" class="level2">
+<h2 class="anchored" data-anchor-id="marimo-gotchas">Marimo Gotchas</h2>
+<p>There’s a few things one need to think about when developing a Marimo app/notebook.</p>
+<section id="reactive-execution" class="level3">
+<h3 class="anchored" data-anchor-id="reactive-execution">Reactive Execution</h3>
+<p>The reactive nature of Marimo makes it reproducible, but building Apps with reactive execution makes it simple to accidentally “trigger” actions when you didn’t anticipate to. Especially as you might be used to Jupyter and not having “auto-run”.</p>
+<p><strong>Fixes:</strong></p>
+<ol type="1">
+<li><p>Set expensive/dangerous actions behind a button (define it in a function)</p></li>
+<li><p>Apply <code>mo.stop</code> to stop execution.</p></li>
+<li><p>Disable cell (<a href="https://docs.marimo.io/guides/reactivity/#disabling-cells">example</a>)</p></li>
+<li><p>Make “lazy execution” of cell or all cells. This will neatly gray cells that are out-of-sync</p></li>
+</ol>
+<p><img src="https://images.amplenote.com/384cdeec-d88b-11ef-b6ab-a76117c9f257/ec4f09a0-44df-433b-a0b1-f49b1c295418.png" class="img-fluid"> [^1]</p>
+<p><img src="https://images.amplenote.com/384cdeec-d88b-11ef-b6ab-a76117c9f257/08977551-7517-40c8-bf57-829cf7167b9c.png" class="img-fluid"> [^2]</p>
+</section>
+<section id="ui-vs-root-namespace" class="level3">
+<h3 class="anchored" data-anchor-id="ui-vs-root-namespace">UI vs root namespace</h3>
+<p>Marimo mixes <code>mo.ui.\*</code> and <code>mo.\*</code> namespace for different things.</p>
+<p><code>mo.ui.\*</code> includes reactive UI components, e.g.&nbsp;button &amp; slider, while <code>mo.\*</code> includes display UI components such as image or video.</p>
+<p>This is quite confusing and I think the namespacing issue is a larger one than one might anticipate, as you tend to get lost on where to find what you wish to draw.</p>
+<p>What’s cool though is that, just like Jupyter, Marimo tries to auto-display element using nice visualization.</p>
+<p><br>
+</p>
+</section>
+<section id="only-final-element-is-visible" class="level3">
+<h3 class="anchored" data-anchor-id="only-final-element-is-visible">Only final element is visible</h3>
+<p>Only the final component added is actually displayed, in my opinion all <code>mo.ui</code> components should be displayed if they’re added. It’d make more sense.</p>
+<p>One can wrap elements inside a markdown text, accordion or other type of “display multiple elements”.</p>
+
+
+</section>
+</section>
+</section>
+
+ ]]></description>
+  <category>python</category>
+  <category>app</category>
+  <category>notebook</category>
+  <guid>https://blog.londogard.com/posts/2025-02-17-marimo/</guid>
+  <pubDate>Mon, 17 Feb 2025 00:00:00 GMT</pubDate>
+</item>
 <item>
   <title>Image to Lego (Xmas Project)</title>
   <dc:creator>Hampus Londögård</dc:creator>
@@ -454,6 +731,7 @@ font-style: inherit;">10</span>])</span></code></pre></div>
 <p>This blog was supposed to be more in-depth but my enthusiasm was drastically cut and I felt like splitting it up into multiple smaller one, whereas <a href="../../posts/2024-10-24-data-loading-daft/">daft one</a> is already uploaded.</p>
 <blockquote class="blockquote">
 <p>I started writing a “recipe-book” for <code>daft</code> where I realized it wasn’t as smoothly integrated as a lot of other tools. I believe that the <code>DataFrame</code> format is both a winning and loosing concept, it’s very helpful but when you need to use two columns the way <code>Ray</code>, <code>HuggingFace Datasets</code> and others map data using <code>dict</code> is a winning concept for both <em>element by element</em> and <em>batch</em> mapping. With a <code>dict</code> way to map <code>DataFrame</code> I think that <code>daft</code> might end up the perfect tool.</p>
+<p>For now I believe Daft is better utilized as an ETL framework, but in the near future it might become great for ML too.</p>
 </blockquote>
 <p>Anyhow, today I’ll compare the developer experience and performance of different tools for data loading.</p>
 <ol type="1">
@@ -2704,39 +2982,26 @@ font-style: inherit;"># runs Solara App</span></span></code></pre></div>
   <pubDate>Wed, 20 Mar 2024 00:00:00 GMT</pubDate>
 </item>
 <item>
-  <title>TIL: Stlite - running streamlit in WASM through b64-encoded URL’s</title>
+  <title>TIL: Multiple Git Remotes</title>
   <dc:creator>Hampus Londögård</dc:creator>
-  <link>https://blog.londogard.com/posts/2024-02-22-stlite/</link>
+  <link>https://blog.londogard.com/posts/2024-02-18-git-remote.html</link>
   <description><![CDATA[ 
 
 
 
 
 
-<p><strong>Amazing one-off tools deployed as a URL that embeds a WASM app is officially here! 🤯</strong></p>
-<p>Wow, that was a mouthful! There’s a mini-breakdown of the tech utilized to enable this at the bottom.👇</p>
-<p>What does this mean? It means that I can build assistive apps that has the following properties:</p>
-<ol type="1">
-<li>Deplyed as a URL - <strong>no server, no nothing</strong>, simply share away 🦸</li>
-<li>Runs completely inside browser, on the user-device 💻</li>
-<li>Requires NO developer or developer environment to run! 😇</li>
-</ol>
-<p>This is what I call truly Serverless! Because code and everything is embedded in the URL and runs inside a contained environemnt in the browser it cannot be simpler to share one-off tools! I’m excited to utilize this a lot more to enable my colleagues in sister-teams!</p>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="https://blog.londogard.com/posts/2024-02-22-stlite/sample.jpeg" class="img-fluid figure-img"></p>
-<figcaption>Sample image of internal app I made</figcaption>
-</figure>
-</div>
-<p>Here is a URL for a tool that does real-time image processing <strong>in the browser</strong>: <a href="https://edit.share.stlite.net/?sampleAppId=realtime_image_processing">stlite.net</a>! Here’s where you can work inside the browser to build a script: <a href="https://edit.share.stlite.net/">edit.share.stlite.net</a>.</p>
-<p><strong>Tech breakdown that enables everything:</strong> 1. Emscripten/WASM enables C code running efficiently in the browser 2. Pyodide is a cPython port to Emscripten/WASM that works brilliantly, including micropip that enables a bunch of libraries 3. Stlite is a Streamlit port to Pyodide (with few caveats)</p>
-<p>P.S. I heard that Solara is potentially working on the same functionality natively 😉</p>
+<p>It is really simple actually. Simply call the following command:</p>
+<p><code>git remote add &lt;ALIAS&gt; &lt;GIT_URL_SSH&gt;</code></p>
+<p>To then push it is as simple as <code>git push &lt;ALIAS&gt;</code>.</p>
+<p>I use this to keep my repository in HuggingFace Spaces and GitHub at the same time.</p>
+<p>That’s it!</p>
 
 
 
  ]]></description>
   <category>TIL</category>
-  <guid>https://blog.londogard.com/posts/2024-02-22-stlite/</guid>
+  <guid>https://blog.londogard.com/posts/2024-02-18-git-remote.html</guid>
   <pubDate>Sun, 18 Feb 2024 00:00:00 GMT</pubDate>
 </item>
 <item>
@@ -2906,26 +3171,39 @@ font-style: inherit;">"--host=0.0.0.0"</span>]</span></code></pre></div>
   <pubDate>Sun, 18 Feb 2024 00:00:00 GMT</pubDate>
 </item>
 <item>
-  <title>TIL: Multiple Git Remotes</title>
+  <title>TIL: Stlite - running streamlit in WASM through b64-encoded URL’s</title>
   <dc:creator>Hampus Londögård</dc:creator>
-  <link>https://blog.londogard.com/posts/2024-02-18-git-remote.html</link>
+  <link>https://blog.londogard.com/posts/2024-02-22-stlite/</link>
   <description><![CDATA[ 
 
 
 
 
 
-<p>It is really simple actually. Simply call the following command:</p>
-<p><code>git remote add &lt;ALIAS&gt; &lt;GIT_URL_SSH&gt;</code></p>
-<p>To then push it is as simple as <code>git push &lt;ALIAS&gt;</code>.</p>
-<p>I use this to keep my repository in HuggingFace Spaces and GitHub at the same time.</p>
-<p>That’s it!</p>
+<p><strong>Amazing one-off tools deployed as a URL that embeds a WASM app is officially here! 🤯</strong></p>
+<p>Wow, that was a mouthful! There’s a mini-breakdown of the tech utilized to enable this at the bottom.👇</p>
+<p>What does this mean? It means that I can build assistive apps that has the following properties:</p>
+<ol type="1">
+<li>Deplyed as a URL - <strong>no server, no nothing</strong>, simply share away 🦸</li>
+<li>Runs completely inside browser, on the user-device 💻</li>
+<li>Requires NO developer or developer environment to run! 😇</li>
+</ol>
+<p>This is what I call truly Serverless! Because code and everything is embedded in the URL and runs inside a contained environemnt in the browser it cannot be simpler to share one-off tools! I’m excited to utilize this a lot more to enable my colleagues in sister-teams!</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://blog.londogard.com/posts/2024-02-22-stlite/sample.jpeg" class="img-fluid figure-img"></p>
+<figcaption>Sample image of internal app I made</figcaption>
+</figure>
+</div>
+<p>Here is a URL for a tool that does real-time image processing <strong>in the browser</strong>: <a href="https://edit.share.stlite.net/?sampleAppId=realtime_image_processing">stlite.net</a>! Here’s where you can work inside the browser to build a script: <a href="https://edit.share.stlite.net/">edit.share.stlite.net</a>.</p>
+<p><strong>Tech breakdown that enables everything:</strong> 1. Emscripten/WASM enables C code running efficiently in the browser 2. Pyodide is a cPython port to Emscripten/WASM that works brilliantly, including micropip that enables a bunch of libraries 3. Stlite is a Streamlit port to Pyodide (with few caveats)</p>
+<p>P.S. I heard that Solara is potentially working on the same functionality natively 😉</p>
 
 
 
  ]]></description>
   <category>TIL</category>
-  <guid>https://blog.londogard.com/posts/2024-02-18-git-remote.html</guid>
+  <guid>https://blog.londogard.com/posts/2024-02-22-stlite/</guid>
   <pubDate>Sun, 18 Feb 2024 00:00:00 GMT</pubDate>
 </item>
 <item>
@@ -8260,182 +8538,6 @@ Figure&nbsp;1: RandomSubsequenceSampler that allows randomizing batches but keep
   <category>data</category>
   <guid>https://blog.londogard.com/posts/2023-02-17-best-practices.html</guid>
   <pubDate>Sun, 19 Feb 2023 00:00:00 GMT</pubDate>
-</item>
-<item>
-  <title>Baby Monitor pt 2</title>
-  <dc:creator>Hampus Londögård</dc:creator>
-  <link>https://blog.londogard.com/posts/2023-02-06-baby-monitor-pt-p2/</link>
-  <description><![CDATA[ 
-
-
-
-
-
-<p>Back in action and finalizing the baby monitor!👶</p>
-<p><strong>TL;DR</strong> Built a baby monitor that included the following features:</p>
-<ol type="1">
-<li>Bidirectional Audio &amp; Unidirectional Video (Night &amp; Day Vision!)</li>
-<li>Temperature Sensor</li>
-<li>Motor (Servo) to move left/right &amp; up/down</li>
-</ol>
-<p>The project was born the day I met an old friend and saw his expensive baby monitor that he had been gifted, I needed to match it! 🤓</p>
-<!--truncate-->
-<p><strong>Result:</strong> <img src="https://blog.londogard.com/posts/2023-02-06-baby-monitor-pt-p2/20230206181407.png" class="img-fluid" alt="300"> I’m very happy about the results, my wife asked me to draw a smile on the creepy monitor, hence the smile! 😜 Video of it running live can be found at the end!</p>
-<section id="implementation-details" class="level2">
-<h2 class="anchored" data-anchor-id="implementation-details">Implementation Details</h2>
-<p>To implement and build this camera I had to combine both hardware and software into a package.</p>
-<section id="hardware-details" class="level3">
-<h3 class="anchored" data-anchor-id="hardware-details">Hardware Details</h3>
-<p>Most of my hardware was bought through Aliexpress, with few parts being from an old Pi.</p>
-<table class="caption-top table">
-<thead>
-<tr class="header">
-<th>Hardware</th>
-<th>Functionality</th>
-<th>Software Required/Used</th>
-<th>Notes</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>Raspberry Pi 3B+</td>
-<td>The Brain which powers everything</td>
-<td>Raspberry Pi OS Lite (Bullseye)</td>
-<td>This OS uses the new Open Source camera-stack, Libcamera!</td>
-</tr>
-<tr class="even">
-<td><a href="https://www.aliexpress.com/item/4000143479592.html">DS18B20</a></td>
-<td>Temperature Sensor</td>
-<td><a href="https://github.com/timofurrer/w1thermsensor">W1ThermSensor</a></td>
-<td>I wish I found this earlier, at first I parsed the raw file myself. And it was hard to find set-up instructions!</td>
-</tr>
-<tr class="odd">
-<td><a href="https://www.aliexpress.com/item/1623404058.html">Nylon FPV Servo</a></td>
-<td>Servo Motor (moving the camera)</td>
-<td><a href="https://gpiozero.readthedocs.io/en/stable/">gpiozero</a></td>
-<td>A brilliant library. It has to be noted that this servo works through Pulse Width Modulation (PWM) and to make the servos quite we need to set <code>servo.value=None</code> after setting it to a value. Complicates the configuration a little.</td>
-</tr>
-<tr class="even">
-<td><a href="https://www.aliexpress.com/item/32668508991.html">Raspberry Pi 4 Camera 5MP</a></td>
-<td>Camera with IR-cut (IR on/off via hardware automatically)</td>
-<td><a href="https://libcamera.org/">libcamera</a> / <a href="https://github.com/raspberrypi/picamera2">picamera2</a></td>
-<td>Very simple to use over all. Tricky that you needed to focus it yourself, I thought it was broken first! 😆</td>
-</tr>
-<tr class="odd">
-<td><a href="https://aiyprojects.withgoogle.com/voice-v1/">Microphone from Google AIY v1</a></td>
-<td>Record sound</td>
-<td>This is tricky because of the HAT, requires custom installation.</td>
-<td></td>
-</tr>
-<tr class="even">
-<td><a href="https://aiyprojects.withgoogle.com/voice-v1/">Speaker from Google AIY v1</a></td>
-<td>Play sound</td>
-<td></td>
-<td></td>
-</tr>
-<tr class="odd">
-<td><a href="https://aiyprojects.withgoogle.com/voice-v1/">Pi HAT from Google AIY v1</a></td>
-<td>Combine sensors, microphone &amp; speakers</td>
-<td></td>
-<td></td>
-</tr>
-</tbody>
-</table>
-</section>
-<section id="software-stack" class="level3">
-<h3 class="anchored" data-anchor-id="software-stack">Software Stack</h3>
-<p>To make use of my beautiful hardware I need software! Keeping things simple (KISS) I decided to use a Python backend and show it through a simple webapp. That way I can view the baby monitor from my PC, Smartphone &amp; anything that has a browser really.</p>
-<p>The end result became as follows 👇 <img src="https://blog.londogard.com/posts/2023-02-06-baby-monitor-pt-p2/20230206201818.png" class="img-fluid"></p>
-<section id="webapp-client" class="level4">
-<h4 class="anchored" data-anchor-id="webapp-client">Webapp Client</h4>
-<p>Over all I really enjoyed playing around with <a href="https://svelte.dev/">Svelte</a>. It felt very straight-forward and simple, although there’s less community and libraries compared to <a href="https://reactjs.org/">React</a>. All in all I’d give it one up compared to React because of simplicity, but I’m just a ordinary Backend Dev / Data Engineer+Scientist.</p>
-</section>
-<section id="serverbackend" class="level4">
-<h4 class="anchored" data-anchor-id="serverbackend">Server/Backend</h4>
-<p><a href="https://fastapi.tiangolo.com/">FastAPI</a> as always is a blessing to work with! The auto-generated swagger page, superb type integration and much more makes me feel right at home as someone who’s really a Scala-dev.😉 FastAPI has its drawbacks though, the streaming component definitely showed some rather large overhead. I had to fall back to raw http to have good performance 😰</p>
-<p>The end result became two backends, but I tried to keep the responsibilities clear and it worked out fine!</p>
-</section>
-</section>
-</section>
-<section id="end-result" class="level2">
-<h2 class="anchored" data-anchor-id="end-result">End Result</h2>
-<p><img src="https://blog.londogard.com/posts/2023-02-06-baby-monitor-pt-p2/20230206181407.png" class="img-fluid" alt="350"> And a video to show how real-time it is!</p>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><video src="Studio_Project.mp4" class="img-fluid" controls=""><a href="Studio_Project.mp4">Video</a></video></p>
-<figcaption>Test Video</figcaption>
-</figure>
-</div>
-<p>I’m very happy about the results!</p>
-<section id="images-of-the-building-process" class="level3">
-<h3 class="anchored" data-anchor-id="images-of-the-building-process">Images of the Building Process</h3>
-<p>And some images of when I built the monitor!</p>
-<table class="caption-top table">
-<colgroup>
-<col style="width: 30%">
-<col style="width: 69%">
-</colgroup>
-<thead>
-<tr class="header">
-<th>What</th>
-<th>Image</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>Building the Camera</td>
-<td><img src="https://blog.londogard.com/posts/2023-02-06-baby-monitor-pt-p2/20220924_200441.jpg" class="img-fluid" alt="350"></td>
-</tr>
-<tr class="even">
-<td>Connecting the final piece of Camera</td>
-<td><img src="https://blog.londogard.com/posts/2023-02-06-baby-monitor-pt-p2/20220924_201132.jpg" class="img-fluid" alt="350"></td>
-</tr>
-<tr class="odd">
-<td>Building Temperature Sensor</td>
-<td><img src="https://blog.londogard.com/posts/2023-02-06-baby-monitor-pt-p2/20220924_203146.jpg" class="img-fluid" alt="350"></td>
-</tr>
-<tr class="even">
-<td>Connecting Temperature, Pi &amp; Camera</td>
-<td><img src="https://blog.londogard.com/posts/2023-02-06-baby-monitor-pt-p2/20220927_174516.jpg" class="img-fluid" alt="350"></td>
-</tr>
-<tr class="odd">
-<td>Manual Temperature Validation</td>
-<td><img src="https://blog.londogard.com/posts/2023-02-06-baby-monitor-pt-p2/20220927_174522.jpg" class="img-fluid" alt="350"></td>
-</tr>
-<tr class="even">
-<td>Testing the Servo</td>
-<td><video src="20220927_195156.mp4" class="img-fluid" controls=""><a href="20220927_195156.mp4">Testing the Servo</a></video></td>
-</tr>
-<tr class="odd">
-<td>Connecting all in a paper box</td>
-<td><img src="https://blog.londogard.com/posts/2023-02-06-baby-monitor-pt-p2/20221204_191914.jpg" class="img-fluid" alt="350"></td>
-</tr>
-<tr class="even">
-<td>First Wooden Baby Monitor Prototype</td>
-<td><img src="https://blog.londogard.com/posts/2023-02-06-baby-monitor-pt-p2/20230108_160751.jpg" class="img-fluid" alt="350"></td>
-</tr>
-<tr class="odd">
-<td>Final Wooden Baby Monitor</td>
-<td><img src="https://blog.londogard.com/posts/2023-02-06-baby-monitor-pt-p2/signal-2023-01-08-20-34-58-840.jpg" class="img-fluid" alt="350"></td>
-</tr>
-</tbody>
-</table>
-</section>
-</section>
-<section id="a-sad-ending" class="level2">
-<h2 class="anchored" data-anchor-id="a-sad-ending">A sad ending</h2>
-<p>The servo motors showed to be too weak which interestingly means they’re too strong. As they try to move the housing it works slowly until it move everything at once which creates a force stronger than the pad that the monitor was standing on.</p>
-<p>The end result was… Sweet release of machine breakage 😢</p>
-<p><img src="https://blog.londogard.com/posts/2023-02-06-baby-monitor-pt-p2/20230120_185651.jpg" class="img-fluid" alt="350"> <img src="https://blog.londogard.com/posts/2023-02-06-baby-monitor-pt-p2/20230128_113031.jpg" class="img-fluid" alt="350"></p>
-<p>That’s it for this time! Now I look forward to become a father! 👨‍👩‍👧‍👦 ~Hampus Londögård</p>
-
-
-</section>
-
- ]]></description>
-  <category>python</category>
-  <guid>https://blog.londogard.com/posts/2023-02-06-baby-monitor-pt-p2/</guid>
-  <pubDate>Mon, 06 Feb 2023 00:00:00 GMT</pubDate>
 </item>
 </channel>
 </rss>

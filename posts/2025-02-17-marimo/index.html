@@ -7,10 +7,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Hampus Londögård">
-<meta name="dcterms.date" content="2024-12-17">
-<meta name="description" content="The last few weeks I’ve put Pixi to the test, utilizing it in real world usage">
+<meta name="dcterms.date" content="2025-02-17">
+<meta name="description" content="Marimo tries to replace multiple tools by being a Reactive Notebook (reproducible), Web App and Python Script at once. It’s a beautiful kit that could end up accelerating in adoption quickly.">
 
-<title>Pixi - Real World Usage – Londogard Blog</title>
+<title>Marimo - A new Notebook/App on the block! – Londogard Blog</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -22,40 +22,6 @@ ul.task-list li input[type="checkbox"] {
   width: 0.8em;
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
-}
-/* CSS for syntax highlighting */
-pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { line-height: 1.25; }
-pre > code.sourceCode > span:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode > span { color: inherit; text-decoration: inherit; }
-div.sourceCode { margin: 1em 0; }
-pre.sourceCode { margin: 0; }
-@media screen {
-div.sourceCode { overflow: auto; }
-}
-@media print {
-pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
-}
-pre.numberSource code
-  { counter-reset: source-line 0; }
-pre.numberSource code > span
-  { position: relative; left: -4em; counter-increment: source-line; }
-pre.numberSource code > span > a:first-child::before
-  { content: counter(source-line);
-    position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; display: inline-block;
-    -webkit-touch-callout: none; -webkit-user-select: none;
-    -khtml-user-select: none; -moz-user-select: none;
-    -ms-user-select: none; user-select: none;
-    padding: 0 4px; width: 4em;
-  }
-pre.numberSource { margin-left: 3em;  padding-left: 4px; }
-div.sourceCode
-  {   }
-@media screen {
-pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 </style>
 
@@ -107,8 +73,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 
 <link rel="stylesheet" href="../../styles.css">
-<meta name="twitter:title" content="Pixi - Real World Usage – Londogard Blog">
-<meta name="twitter:description" content="The last few weeks I’ve put Pixi to the test, utilizing it in real world usage">
+<meta name="twitter:title" content="Marimo - A new Notebook/App on the block! – Londogard Blog">
+<meta name="twitter:description" content="Marimo tries to replace multiple tools by being a Reactive Notebook (reproducible), Web App and Python Script at once. It’s a beautiful kit that could end up accelerating in adoption quickly.">
 <meta name="twitter:creator" content="@hlondogard">
 <meta name="twitter:card" content="summary">
 </head>
@@ -200,16 +166,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <header id="title-block-header" class="quarto-title-block default page-columns page-full">
   <div class="quarto-title-banner page-columns page-full">
     <div class="quarto-title column-body">
-      <h1 class="title">Pixi - Real World Usage</h1>
+      <h1 class="title">Marimo - A new Notebook/App on the block!</h1>
                   <div>
         <div class="description">
-          The last few weeks I’ve put Pixi to the test, utilizing it in real world usage
+          Marimo tries to replace multiple tools by being a Reactive Notebook (reproducible), Web App and Python Script at once. It’s a beautiful kit that could end up accelerating in adoption quickly.
         </div>
       </div>
                           <div class="quarto-categories">
                 <div class="quarto-category">python</div>
-                <div class="quarto-category">dependencies</div>
-                <div class="quarto-category">packaging</div>
+                <div class="quarto-category">app</div>
+                <div class="quarto-category">notebook</div>
               </div>
                   </div>
   </div>
@@ -227,7 +193,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <div>
       <div class="quarto-title-meta-heading">Published</div>
       <div class="quarto-title-meta-contents">
-        <p class="date">December 17, 2024</p>
+        <p class="date">February 17, 2025</p>
       </div>
     </div>
     
@@ -243,21 +209,27 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#pixi-docker-builds" id="toc-pixi-docker-builds" class="nav-link active" data-scroll-target="#pixi-docker-builds">Pixi Docker Builds</a>
+  <li><a href="#marimo" id="toc-marimo" class="nav-link active" data-scroll-target="#marimo">Marimo</a>
   <ul class="collapse">
-  <li><a href="#pixi-sample-docker-builds" id="toc-pixi-sample-docker-builds" class="nav-link" data-scroll-target="#pixi-sample-docker-builds">Pixi Sample Docker Builds</a></li>
-  <li><a href="#pixi-docker-build-on-aws-sagemaker" id="toc-pixi-docker-build-on-aws-sagemaker" class="nav-link" data-scroll-target="#pixi-docker-build-on-aws-sagemaker">Pixi Docker Build on AWS Sagemaker</a></li>
-  </ul></li>
-  <li><a href="#pixi-multi-platformenvironment" id="toc-pixi-multi-platformenvironment" class="nav-link" data-scroll-target="#pixi-multi-platformenvironment">Pixi Multi-Platform/Environment</a>
+  <li><a href="#usage" id="toc-usage" class="nav-link" data-scroll-target="#usage">Usage</a></li>
+  <li><a href="#quick-subjective-rankings" id="toc-quick-subjective-rankings" class="nav-link" data-scroll-target="#quick-subjective-rankings">Quick (Subjective) Rankings</a></li>
+  <li><a href="#marimo-intro" id="toc-marimo-intro" class="nav-link" data-scroll-target="#marimo-intro">Marimo Intro</a>
   <ul class="collapse">
-  <li><a href="#some-personal-comments" id="toc-some-personal-comments" class="nav-link" data-scroll-target="#some-personal-comments">Some Personal Comments</a></li>
+  <li><a href="#python" id="toc-python" class="nav-link" data-scroll-target="#python">Python</a></li>
+  <li><a href="#wasm" id="toc-wasm" class="nav-link" data-scroll-target="#wasm">WASM</a></li>
   </ul></li>
-  <li><a href="#pixi-build-slimmming" id="toc-pixi-build-slimmming" class="nav-link" data-scroll-target="#pixi-build-slimmming">Pixi Build Slimmming</a></li>
-  <li><a href="#pixi-vs-uv" id="toc-pixi-vs-uv" class="nav-link" data-scroll-target="#pixi-vs-uv">Pixi vs uv</a>
+  </ul></li>
+  <li><a href="#marimo-1" id="toc-marimo-1" class="nav-link" data-scroll-target="#marimo-1">Marimo</a>
   <ul class="collapse">
-  <li><a href="#what-is-the-one-big-uv-pro" id="toc-what-is-the-one-big-uv-pro" class="nav-link" data-scroll-target="#what-is-the-one-big-uv-pro">What is the one big <code>uv</code> pro?</a></li>
+  <li><a href="#a-basic-app-example" id="toc-a-basic-app-example" class="nav-link" data-scroll-target="#a-basic-app-example">A basic App Example</a></li>
+  <li><a href="#marimo-editor" id="toc-marimo-editor" class="nav-link" data-scroll-target="#marimo-editor">Marimo Editor</a></li>
+  <li><a href="#marimo-gotchas" id="toc-marimo-gotchas" class="nav-link" data-scroll-target="#marimo-gotchas">Marimo Gotchas</a>
+  <ul class="collapse">
+  <li><a href="#reactive-execution" id="toc-reactive-execution" class="nav-link" data-scroll-target="#reactive-execution">Reactive Execution</a></li>
+  <li><a href="#ui-vs-root-namespace" id="toc-ui-vs-root-namespace" class="nav-link" data-scroll-target="#ui-vs-root-namespace">UI vs root namespace</a></li>
+  <li><a href="#only-final-element-is-visible" id="toc-only-final-element-is-visible" class="nav-link" data-scroll-target="#only-final-element-is-visible">Only final element is visible</a></li>
   </ul></li>
-  <li><a href="#outro" id="toc-outro" class="nav-link" data-scroll-target="#outro">Outro</a></li>
+  </ul></li>
   </ul>
 </nav>
     </div>
@@ -268,109 +240,264 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 
 
-<p>Managing dependencies and environments across multiple platforms can be a nightmare. That’s why I was thrilled to discover <a href="pixi.sh/dev/">Pixi</a>. I’ve previous talked about Pixi on LinkedIn/Twitter, but haven’t used it in any “serious” project until recently and so far it has worked exceptional!</p>
-<p>Imagine a tool that combines the speed and efficiency of <a href="https://github.com/astral-sh/uv"><em>uv</em></a> with the robust package management of <a href="https://github.com/mamba-org/mamba"><em>mamba</em></a>. That’s Pixi in a nutshell. Built from the expertise drawn from as the mamba creators and utilizing <code>uv</code> for PyPi dependenciess, Pixi offers a streamlined, powerful way to manage Python environments. Compared to <em>mamba</em>, <em>pixi</em> takes things one step further as their PyPi-dependencies are tested with conda on top of the additional tools brought by pixi, such as <em>tasks</em>.</p>
-<p>Cherry on top? Pixi is lightning fast and enables multi-platform &amp; multi-environment inside a single file where everything is synced together.</p>
-<blockquote class="blockquote">
-<p>Multi-platform, multi-environment means that we can sync dependencies between osx-arm64, linux-64, CUDA, CPU, … - a standout feature!</p>
-</blockquote>
-<section id="pixi-docker-builds" class="level2">
-<h2 class="anchored" data-anchor-id="pixi-docker-builds">Pixi Docker Builds</h2>
-<p>After solving your local environment in a easy yet producible manner the next step is to solve it for your cloud workloads - <em>containerization</em>.</p>
-<p>Containerization is an important part of a developers toolkit in the modern world. To run cloud workloads it’s very common to deploy as a container, in Data Science this is for everything like Training, Inference and Data Pipelines.</p>
-<p>With pixi it’s quite straight-forward and they provide ready-to-use images through the <a href="https://github.com/prefix-dev/pixi-docker">pixi-docker</a> registry. There’s multiple base-images, including CUDA, to get started - it can’t be any simpler!</p>
-<section id="pixi-sample-docker-builds" class="level3">
-<h3 class="anchored" data-anchor-id="pixi-sample-docker-builds">Pixi Sample Docker Builds</h3>
-<p>Simple starter:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> pull ghcr.io/prefix-dev/pixi:latest</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Find the different tags on <a href="https://github.com/prefix-dev/pixi-docker?tab=readme-ov-file#pulling-the-images">Pixi Docker tags page</a>.</p>
-<p>Efficient Production build by using Docker Multi-Stage Build: <a href="https://github.com/prefix-dev/pixi-docker?tab=readme-ov-file#usage-with-shell-hook">prefix-docker/shell-hook</a>.</p>
+<section id="marimo" class="level1">
+<h1>Marimo</h1>
+<p>Marimo is the “new” kid on the block. Based on what Marimo tries to achieve you can’t help yourself but comparing it too other frameworks such as <em>Gradio, Jupyter, Streamlit, Solara &amp; Panel</em>.</p>
+<div class="callout callout-style-simple callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+A multitude of options
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><strong>The fact that there’s a plethora of options</strong> to build WASM apps/tools and “<em>literate programming”</em> through notebook-style <strong>is nothing short of amazing</strong><br>
+We’re in for a great time!</p>
+<p>Drawback? What do I choose!</p>
+</div>
+</div>
+<p>I’ll put a little focus on comparing, especially their WASM usage via <a href="https://pyodide.org/">pyodide</a>, where I the first time wrote about <a href="https://stlite.net/">stlite</a> in my <a href="https://blog.londogard.com/posts/2024-02-22-stlite/">blog</a> (Feb, 2024). Since I discovered WASM deployments via <em>base64-URLs</em> and <em>standalone-HTML-file</em> I was amazed at the opportunity to deploy simple-to-use tools for your colleagues.</p>
+<p>Marimo is a reactive notebook with built-in UI components that can be turned into an app easily. It tries to become great at additional battles, such as WASM.</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+My Final Thoughts
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-2" class="callout-2-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p><em>Marimo does great, it handles App use-case, Notebook and WASM phenomenally.</em> The UI components are sleek and combines in a smooth way. The one draw-back? You’ll have to rewire your brain a bit with <em>reactivity</em> rather than sequential execution!</p>
+<p>Interested to learn more? Read on!</p>
+</div>
+</div>
+</div>
+<section id="usage" class="level2">
+<h2 class="anchored" data-anchor-id="usage">Usage</h2>
+<p>I’ll start by sharing <strong>my current go-to tool(s)</strong> for each area of use, and then try to fit Marimo into this.</p>
+<ul>
+<li><strong>Heavy Applications</strong>: <a href="https://solara.dev/">Solara</a>
+<ul>
+<li>Pros: ‘React’ style of programming, very efficient bindings and updates</li>
+<li>Cons: Not the most modern UI,</li>
+</ul></li>
+<li><strong>Simple Applications</strong>: <a href="https://streamlit.io/">Streamlit</a>
+<ul>
+<li>Pros: Simple, Modern UI, Large Community</li>
+<li>Cons: The “execute everything on each change” execution is quite inefficient and with caching reasoning grows harder with time</li>
+</ul></li>
+<li><strong>WASM Apps</strong>: Streamlit via stlite</li>
+<li><strong>ML Demos with API</strong>: Gradio (and Streamlit)
+<ul>
+<li>Pros: Simple, provides <code>gradio_client</code> REST API by default (AMAZING)</li>
+<li>Cons: I hate building Gradio apps</li>
+</ul></li>
+<li><strong>Notebook</strong>: Jupyter</li>
+</ul>
+<p><em>Marimo could possibly replace most in the list</em>, but especially WASM Apps and Notebook. Potentially it can take on ML Demos and Simple Applications too, and why not Heavy?</p>
+<p>Marimo is perhaps too bold at trying to achieve it all, let’s dive into it!</p>
 </section>
-<section id="pixi-docker-build-on-aws-sagemaker" class="level3">
-<h3 class="anchored" data-anchor-id="pixi-docker-build-on-aws-sagemaker">Pixi Docker Build on AWS Sagemaker</h3>
-<p>Sagemaker can be quite challenging to work with. While deploying custom Docker builds is easiest using their own base image, this image is often bloated with unnecessary dependencies. Additionally, to run <code>@remote</code> jobs on AWS, you need to include a <code>conda</code> or <code>mamba</code> environment - something that <code>pixi</code> doesn’t inherently use.</p>
-<p><strong>So, how do we integrate Pixi with Sagemaker?</strong></p>
-<p>Here’s a workaround to make them play nicely together:</p>
+<section id="quick-subjective-rankings" class="level2">
+<h2 class="anchored" data-anchor-id="quick-subjective-rankings">Quick (Subjective) Rankings</h2>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 12%">
+<col style="width: 23%">
+<col style="width: 46%">
+<col style="width: 17%">
+</colgroup>
+<tbody>
+<tr class="odd">
+<td><strong>Action</strong></td>
+<td>🥇</td>
+<td>🥈</td>
+<td>🥉</td>
+</tr>
+<tr class="even">
+<td>WASM</td>
+<td>stlite, Marimo</td>
+<td>py.cafe (streamlit &amp; solara), gradio</td>
+<td>jupyter lite</td>
+</tr>
+<tr class="odd">
+<td>Notebook</td>
+<td>Jupyter &amp; Marimo</td>
+<td>Streamlit</td>
+<td>Solara, gradio</td>
+</tr>
+<tr class="even">
+<td>App</td>
+<td>Streamlit &amp; Solara</td>
+<td>Marimo, gradio</td>
+<td>Jupyter</td>
+</tr>
+</tbody>
+</table>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-3-contents" aria-controls="callout-3" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+WASM Notes
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-3" class="callout-3-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<ul>
+<li><code>stlite</code> can be deploy as single HTML file, but depends on network then (fetching CDN resources).</li>
+<li><code>marimo</code> can be deployed as a HTML folder that needs to be server, but requires no network.</li>
+<li><code>stlite</code>, <code>marimo</code>, and <code>py.cafe</code> all enable “base64-url-apps”, i.e.&nbsp;you can have a single URL that contains the full application and can run on their webpage!</li>
+<li><code>jupyterlite</code> is really good as a tool, but the share-ability is awful.</li>
+<li><code>gradio</code> works decently in WASM, but it has a big pro which is its API when running the real app. The - <code>gradio_client</code> is an amazing initiative.</li>
+</ul>
+<p>All in all I’m amazed regarding the tools that are available to run sandboxed in your browser (all based on <a href="https://pyodide.org/en/stable/">pyodide</a>). We’re programming in a really cool part of history!</p>
+</div>
+</div>
+</div>
+<p>If we put scores on each (3,2,1 for 1st, 2nd, and 3rd) we end up with the following:</p>
 <ol type="1">
-<li><strong>Include <code>micromamba</code>:</strong> Add <code>micromamba</code> (available on <code>conda-forge</code>) as a dependency in your <code>pixi.toml</code>. This will allow us to create a conda-like environment within our Pixi setup.
-<ul>
-<li>In the future this could be done using a simple shell script, which is a planned improvement in my own projects.</li>
-</ul></li>
-<li><strong>Add <code>micromamba</code> to <code>$PATH</code>:</strong> Ensure that the <code>micromamba</code> executable installed by Pixi is added to your system’s <code>$PATH</code>. This will make it accessible to Sagemaker.</li>
-<li><strong>Set Environment Variables:</strong> Configure necessary environment variables like <code>CONDA_PREFIX</code> to point to the appropriate location where <code>micromamba</code> will manage your environment.</li>
+<li><p><strong>Marimo &amp; Streamlit:</strong> <strong>8pts</strong></p></li>
+<li><p><strong>Solara:</strong> 6pts</p></li>
+<li><p><strong>Jupyter &amp; Gradio:</strong> 5pts</p></li>
 </ol>
-<p>With these steps, you’re ready to run your Pixi-managed projects on Sagemaker!</p>
-<p>In my experiments, this approach significantly reduced the size of my CUDA images from around 12 GB down to 4.5 GB - a massive improvement in terms of storage and deployment speed!</p>
+<p>It seems Marimo ends up covering all needs quite well based on my initial research.<br>
+Streamlit ends up in the top because of its strong community, and <code>stlite</code> really helps the WASM story-line.</p>
+<p>But how do you actually use Marimo, <strong><em>and can it beat Streamlit by having a smarter execution system?</em></strong></p>
+</section>
+<section id="marimo-intro" class="level2">
+<h2 class="anchored" data-anchor-id="marimo-intro">Marimo Intro</h2>
+<p>Marimo has two execution “environments”, Python and WASM.</p>
+<section id="python" class="level3">
+<h3 class="anchored" data-anchor-id="python">Python</h3>
+<p>This is essentially like running a Jupyter Notebook in your local python environment. It starts a marimo kernel that handles your execution:</p>
+<pre><code>marimo edit # open marimo editor and app</code></pre>
+</section>
+<section id="wasm" class="level3">
+<h3 class="anchored" data-anchor-id="wasm">WASM</h3>
+<p>Running in a sandboxed Python (pyodide) environment <em>inside</em> your browser! 🤯</p>
+<p>This is phenomenal way to share your “tools” with the team! The <code>stlite</code> approach of being able to embed everything inside a single HTML file (via CDN assets) makes this really cool to, but the URL with files as b64-encode is great too. For some company you might want to self-host which is <em>incredibly easy</em>.<br>
+I also posted an issue to actually enable single-HTML file like <code>stlite</code> (<a href="https://github.com/marimo-team/marimo/issues/3667">here</a> ).</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-4-contents" aria-controls="callout-4" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Resource Comparison (Marimo does well!)
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-4" class="callout-4-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>It seems that Marimo actually utilizes a lot less RAM to run a basic notebook which is a good thing!</p>
+<table class="caption-top table">
+<tbody>
+<tr class="odd">
+<td>App</td>
+<td>WASM Memory Consumption</td>
+</tr>
+<tr class="even">
+<td>Marimo</td>
+<td><strong>400 MB</strong></td>
+</tr>
+<tr class="odd">
+<td>stlite</td>
+<td>600 MB</td>
+</tr>
+<tr class="even">
+<td>jupyterlite</td>
+<td>&gt;1GB</td>
+</tr>
+<tr class="odd">
+<td>gradio_lite</td>
+<td>522 MB</td>
+</tr>
+<tr class="even">
+<td>pyodide (via <a href="https://pydantic.run/">pydantic.run</a> no UI or dependencies)</td>
+<td><strong>200 MB</strong></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
 </section>
 </section>
-<section id="pixi-multi-platformenvironment" class="level2">
-<h2 class="anchored" data-anchor-id="pixi-multi-platformenvironment">Pixi Multi-Platform/Environment</h2>
-<p>One of Pixi’s standout features is its seamless support for multi-platform and multi-environment projects. While I initially planned to delve deeper into this, prefix.dev recently published an excellent guide on the topic. I highly recommend checking out their documentation on <a href="https://pixi.sh/dev/features/pytorch/#mixing-macos-and-cuda-with-pypi-dependencies">combining different OS’s and environments (CPU, CUDA) with PyTorch</a> for a comprehensive overview.</p>
-<section id="some-personal-comments" class="level3">
-<h3 class="anchored" data-anchor-id="some-personal-comments">Some Personal Comments</h3>
-<p>Personally I find this part of pixi one of the biggest strengths, especially how easy it is to work with! To build a docker image you simply follow the basic example above, opting for <code>--feature=cuda</code>.<br>
-The part of keeping lock-files on everything, while allowing certain OS:es missing out on dependencies makes it very practical in real-world scenarios!</p>
 </section>
-</section>
-<section id="pixi-build-slimmming" class="level2">
-<h2 class="anchored" data-anchor-id="pixi-build-slimmming">Pixi Build Slimmming</h2>
-<p>When containerizing your code, it’s crucial to keep builds slim. Here are a few tricks to help you minimize your Pixi-based Docker images:</p>
+<section id="marimo-1" class="level1">
+<h1>Marimo</h1>
+<section id="a-basic-app-example" class="level2">
+<h2 class="anchored" data-anchor-id="a-basic-app-example">A basic App Example</h2>
+<p>I’ll share examples from <a href="https://docs.marimo.io/#a-reactive-programming-environment">docs.marimo.io</a> which is a good resource to get started.</p>
+<p><strong>UI Components:</strong><br>
+<video src="https://docs.marimo.io/_static/readme-ui.mp4" class="img-fluid" controls=""><a href="https://docs.marimo.io/_static/readme-ui.mp4">Marimo Slider &amp; Reactivity</a></video></p>
+<p><strong>DataFrame Explorer:</strong><br>
+<video src="https://docs.marimo.io/_static/docs-df.mp4" class="img-fluid" controls=""><a href="https://docs.marimo.io/_static/docs-df.mp4">Marimo DataFrame Explorer - I love it!</a></video><br>
+<strong>SQL Mixin</strong><br>
+<img src="https://raw.githubusercontent.com/marimo-team/marimo/main/docs/_static/readme-sql-cell.png" class="img-fluid" alt="Mixing DataFrame’s and SQL in Marimo"></p>
+<p><strong>Plotting Callbacks</strong><br>
+<video src="https://cms.marimo.io/landing/3.mp4" class="img-fluid" controls=""><a href="https://cms.marimo.io/landing/3.mp4">Embedding Selection Callback</a></video></p>
+<p><strong>Standouts:</strong></p>
 <ol type="1">
-<li><strong>Leverage <code>.dockerignore</code>:</strong> Create a <code>.dockerignore</code> file to exclude unnecessary files and directories (e.g., <code>.git</code>, <code>__pycache__</code>, tests) from your Docker build context.</li>
-<li><strong>Optimize Dependencies:</strong>
-<ul>
-<li>Carefully consider each dependency and remove any that are not strictly required for production.</li>
-<li>Utilize multiple environments within your <code>pixi.toml</code>, e.g.&nbsp;<code>prod</code> and <code>dev</code> environments. This allows you to exclude dev-specific dependencies (test, lint, ..) from your production container.</li>
-</ul></li>
-<li><strong>Employ Multi-Stage Docker Builds:</strong> Multi-stage builds reduces the image size. Use a build stage to install dependencies and compile your application, and then copy only the necessary artifacts to a smaller, leaner final image. The <code>pixi-docker</code> project provides guidance on using <a href="https://github.com/prefix-dev/pixi-docker?tab=readme-ov-file#usage-with-shell-hook">multi-stage builds with shell-hook</a>.</li>
-</ol>
-</section>
-<section id="pixi-vs-uv" class="level1">
-<h1>Pixi vs uv</h1>
-<p>While <em>uv</em> has gained significant traction in the Python community, I believe <em>Pixi</em> offers a more compelling solution for my specific needs, especially when it comes to complex, real-world projects.</p>
-<p>Why?</p>
+<li>Deterministic Execution Order (annoying but helpful)
 <ol type="1">
-<li><strong><code>tasks</code> are awesome.</strong> They might not be perfect but they’re great to me!</li>
-<li><strong>Multi-platform and Multi-environment projects</strong> (personal opinion) somehow ends up easier in Pixi
-<ul>
-<li>I really tried to embrace the <code>uv</code> approach as I appreciate it as more lightweight. But Pixi is somehow “smoother”.</li>
-</ul></li>
-<li><strong>Pixi has base-images with CUDA</strong>
-<ul>
-<li>Both tools are easy to build from a raw base-image too, so it’s not a huge problem</li>
-</ul></li>
-<li><strong>Access to <code>conda</code> packages</strong>
-<ul>
-<li>Some hate it, but I like getting pre-built binaries.</li>
-<li>It’s quite interesting to install shell tools via <code>conda</code> for container deployment.</li>
-</ul></li>
-<li><strong>Possible to work with other languages than Python</strong></li>
+<li>It’s a tad bit confusing to have it possible to have cells in random order, but <strong>at least it’s reproducible</strong> compared to Jupyter!</li>
+</ol></li>
+<li>Built-in Package Management (especially handy for WASM)</li>
+<li>Pretty elements for a notebook (comparing with ipywidgets..)
+<ol type="1">
+<li>What’s even cooler is that you can easily combine UI components in a markdown string. Making a seamless flow!</li>
+</ol></li>
 </ol>
-<section id="what-is-the-one-big-uv-pro" class="level3">
-<h3 class="anchored" data-anchor-id="what-is-the-one-big-uv-pro">What is the one big <code>uv</code> pro?</h3>
-<p><a href="https://docs.astral.sh/uv/guides/scripts/#declaring-script-dependencies">UV’s Inline Script Dependencies</a></p>
-<p>I think this feature is really cool, but as pixi utilize <code>uv</code> you can use it in <code>pixi</code> too! ;)</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># /// script</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="co"># dependencies = [</span></span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="co">#   "requests&lt;3",</span></span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="co">#   "rich",</span></span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="co"># ]</span></span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="co"># ///</span></span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> requests</span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> rich.pretty <span class="im">import</span> pprint</span>
-<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>resp <span class="op">=</span> requests.get(<span class="st">"https://peps.python.org/api/peps.json"</span>)</span>
-<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>data <span class="op">=</span> resp.json()</span>
-<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>pprint([(k, v[<span class="st">"title"</span>]) <span class="cf">for</span> k, v <span class="kw">in</span> data.items()][:<span class="dv">10</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
+<section id="marimo-editor" class="level2">
+<h2 class="anchored" data-anchor-id="marimo-editor">Marimo Editor</h2>
+<p>While the editor is excellent I found it quite poor in picking up local project files outside the script itself for auto-completion. This is where <a href="https://docs.marimo.io/guides/editor_features/watching/">watching</a> helps:</p>
+<pre><code>marimo edit --watch </code></pre>
+<p><br>
+Which enables editing in your local IDE and watch changes in the browser. I think this is a nice balance where you can opt to edit directly in IDE or in browser depending on your current need. But VS Code / PyCharm’s built in Notebooks are unbeatable in the User Experience (i.e.&nbsp;Autocompletion + Visualization)! 🤓</p>
+<p><strong>If Marimo could pick up IntelliSense from the IDE that’d be a great improvement!</strong> Marimo handles “project” IntelliSense especially poor.</p>
 </section>
-<section id="outro" class="level1">
-<h1>Outro</h1>
-<p>If you’re a Python developer struggling with dependency management, environment inconsistencies, or cumbersome container builds, I urge you to give Pixi a try. It’s a powerful tool that has the potential to streamline your workflow and make you a happier developer. Pixi has certainly made a significant difference in mine!</p>
-<p>Thanks for this time, Hampus Londögård</p>
+<section id="marimo-gotchas" class="level2">
+<h2 class="anchored" data-anchor-id="marimo-gotchas">Marimo Gotchas</h2>
+<p>There’s a few things one need to think about when developing a Marimo app/notebook.</p>
+<section id="reactive-execution" class="level3">
+<h3 class="anchored" data-anchor-id="reactive-execution">Reactive Execution</h3>
+<p>The reactive nature of Marimo makes it reproducible, but building Apps with reactive execution makes it simple to accidentally “trigger” actions when you didn’t anticipate to. Especially as you might be used to Jupyter and not having “auto-run”.</p>
+<p><strong>Fixes:</strong></p>
+<ol type="1">
+<li><p>Set expensive/dangerous actions behind a button (define it in a function)</p></li>
+<li><p>Apply <code>mo.stop</code> to stop execution.</p></li>
+<li><p>Disable cell (<a href="https://docs.marimo.io/guides/reactivity/#disabling-cells">example</a>)</p></li>
+<li><p>Make “lazy execution” of cell or all cells. This will neatly gray cells that are out-of-sync</p></li>
+</ol>
+<p><img src="https://images.amplenote.com/384cdeec-d88b-11ef-b6ab-a76117c9f257/ec4f09a0-44df-433b-a0b1-f49b1c295418.png" class="img-fluid"> [^1]</p>
+<p><img src="https://images.amplenote.com/384cdeec-d88b-11ef-b6ab-a76117c9f257/08977551-7517-40c8-bf57-829cf7167b9c.png" class="img-fluid"> [^2]</p>
+</section>
+<section id="ui-vs-root-namespace" class="level3">
+<h3 class="anchored" data-anchor-id="ui-vs-root-namespace">UI vs root namespace</h3>
+<p>Marimo mixes <code>mo.ui.\*</code> and <code>mo.\*</code> namespace for different things.</p>
+<p><code>mo.ui.\*</code> includes reactive UI components, e.g.&nbsp;button &amp; slider, while <code>mo.\*</code> includes display UI components such as image or video.</p>
+<p>This is quite confusing and I think the namespacing issue is a larger one than one might anticipate, as you tend to get lost on where to find what you wish to draw.</p>
+<p>What’s cool though is that, just like Jupyter, Marimo tries to auto-display element using nice visualization.</p>
+<p><br>
+</p>
+</section>
+<section id="only-final-element-is-visible" class="level3">
+<h3 class="anchored" data-anchor-id="only-final-element-is-visible">Only final element is visible</h3>
+<p>Only the final component added is actually displayed, in my opinion all <code>mo.ui</code> components should be displayed if they’re added. It’d make more sense.</p>
+<p>One can wrap elements inside a markdown text, accordion or other type of “display multiple elements”.</p>
 
 
+</section>
+</section>
 </section>
 
 </main> <!-- /main -->
