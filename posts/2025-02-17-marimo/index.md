@@ -22,7 +22,12 @@ I'll put a little focus on comparing, especially their WASM usage via [pyodide](
 
 Marimo is a reactive notebook with built-in UI components that can be turned into an app easily. It tries to become great at additional battles, such as WASM.
 
-Cutting to the chase: _Marimo does great, it handles App use-case, Notebook and WASM phenomenally._ The UI components are sleek and combines in a smooth way. The one draw-back? You'll have to rewire your brain a bit with _reactivity_ rather than sequential execution!
+::: {.callout-tip collapse="true"}
+### My Final Thoughts
+_Marimo does great, it handles App use-case, Notebook and WASM phenomenally._ The UI components are sleek and combines in a smooth way. The one draw-back? You'll have to rewire your brain a bit with _reactivity_ rather than sequential execution!
+
+Interested to learn more? Read on!
+:::
 
 ## Usage
 
