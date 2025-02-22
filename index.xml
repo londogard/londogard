@@ -9,8 +9,187 @@
 <link>https://blog.londogard.com/</link>
 <atom:link href="https://blog.londogard.com/index.xml" rel="self" type="application/rss+xml"/>
 <description>A blog which majorly focuses on Data Science, Data Engineering and sometimes Kotlin / Scala.</description>
-<generator>quarto-1.6.40</generator>
+<generator>quarto-1.6.41</generator>
 <lastBuildDate>Mon, 17 Feb 2025 00:00:00 GMT</lastBuildDate>
+<item>
+  <title>Gradio Client - An intro</title>
+  <dc:creator>Hampus Londögård</dc:creator>
+  <link>https://blog.londogard.com/posts/2025-02-20-gradio-client/</link>
+  <description><![CDATA[ 
+
+
+
+
+
+<section id="gradio-client" class="level1">
+<h1>Gradio Client</h1>
+<p>Most people in the AI-sphere (Deep Learning, LLM’s) are aware of the <a href="https://www.gradio.app/">Gradio</a> project (now under the <a href="https://huggingface.co/">huggingface</a> umbrella).</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Gradio in short
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Gradio is a simple Machine Learning App framework that provides easy components and reactivity. See for yourself:</p>
+<div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> gradio <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">as</span> gr</span>
+<span id="cb1-2"></span>
+<span id="cb1-3"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">def</span> greet(name):</span>
+<span id="cb1-4">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">return</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Hello "</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> name <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"!"</span></span>
+<span id="cb1-5"></span>
+<span id="cb1-6">demo <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> gr.Interface(fn<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>greet, inputs<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"text"</span>, outputs<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"text"</span>)</span>
+<span id="cb1-7">demo.launch()</span></code></pre></div>
+<p>One drawback is that <em>input, output</em>, and <em>function</em> are separated which reduces type-safety and removes all intellisense. This is a big one for me and makes me highly prefer <code>streamlit</code> &amp; <code>solara</code>. Though I can’t deny all the greatness Gradio provides to the table.</p>
+</div>
+</div>
+<p>Even though Gradio is well-known some people might’ve missed that they’ve added two new projects in their fast pace!</p>
+<ol type="1">
+<li><a href="https://www.gradio.app/guides/getting-started-with-the-python-client"><strong><code>gradio_client</code></strong></a>: A client that can call any Gradio Application (!)
+<ol type="1">
+<li>Gradio clients are easily deployed on HuggingFace, and there exist a ton of them. All are now accessible in a REST-like interface (including the compute)!</li>
+</ol></li>
+<li><a href="https://www.gradio.app/guides/gradio-lite"><strong><code>gradio_lite</code></strong></a>: A WASM version of Gradio.
+<ol type="1">
+<li>Very simple to embed a Gradio app inside a HTML file or JS app.</li>
+<li>They’ve implemented smooth solutions for things like Multi File, PIP Requirements and more.</li>
+<li>WASM brings <em>Serverless</em> deployment with <em>Low Latency</em> and high <em>Privacy</em>.</li>
+</ol></li>
+</ol>
+<section id="how-do-i-use-gradio-client" class="level2">
+<h2 class="anchored" data-anchor-id="how-do-i-use-gradio-client">How do I use Gradio Client?</h2>
+<p><strong>Step 1: Connect to a Client</strong></p>
+<div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">from</span> gradio_client <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> Client, handle_file</span>
+<span id="cb2-2"></span>
+<span id="cb2-3">client <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> Client(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"abidlabs/whisper"</span>)</span></code></pre></div>
+<p><strong>Step 2: Predict</strong></p>
+<div class="sourceCode" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1">client.predict(</span>
+<span id="cb3-2">    audio<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>handle_file(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"audio_sample.wav"</span>)</span>
+<span id="cb3-3">)</span>
+<span id="cb3-4"></span>
+<span id="cb3-5"><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&gt;&gt;</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"This is a test of the whisper speech recognition model."</span> </span></code></pre></div>
+<p>Easy right?!</p>
+<p>If we have multiple boxes / steps in the Gradio App we can call each of the components. The client usage of any Gradio App is <strong>easily found at the bottom.</strong></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://images.amplenote.com/627f2784-ef96-11ef-a1f4-4f6319174ddb/0c668288-7e63-4469-9d64-946abf665652.png" class="img-fluid figure-img"></p>
+<figcaption>Gradio Client Button in Gradio Apps (to the left)</figcaption>
+</figure>
+</div>
+<p>And that opens a new menu which shows how to use each box of the App.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://images.amplenote.com/627f2784-ef96-11ef-a1f4-4f6319174ddb/5dd37151-9c78-4e80-af48-94d9e78ca5a0.png" class="img-fluid figure-img"></p>
+<figcaption>The API documentation and How-To-Guide after clicking</figcaption>
+</figure>
+</div>
+</section>
+<section id="available-clients" class="level2">
+<h2 class="anchored" data-anchor-id="available-clients">Available Clients</h2>
+<p>Anyone can run this as it supports <em>regular REST requests</em>! They supply a <code>curl</code> sample on how to query the App. But they’ve got a <em>Python and JS native client.</em></p>
+</section>
+<section id="possibilities" class="level2">
+<h2 class="anchored" data-anchor-id="possibilities">Possibilities</h2>
+<p>Gradio implemented the whole thing in a way where you don’t need to do anything at all. In turn we now get user-friendly App that is easily deployed with an <em>automatically included REST API</em>. It’s two birds with one stone!</p>
+<p>Combining this “App+API” deployment with the free, or paid, <a href="https://huggingface.co/spaces">HuggingFace Spaces</a> creates a high-value package!</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+HuggingFace Spaces
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>HuggingFace (HF) Spaces is as simple deployments get:</p>
+<ul>
+<li>Free compute<sup>1</sup>
+<ul>
+<li><em>ZeroGPU available using Gradio SDK</em></li>
+</ul></li>
+<li>Natively Support <em>streamlit, Gradio, static (webapp)</em></li>
+<li>Support any app via Docker<sup>2</sup></li>
+</ul>
+<p>HF Spaces can deploy apps via <em>Client</em>, <em>git</em>, or <em>Drag n’ Drop</em>.<br>
+You get a public pretty URL <code>huggingface.co/spaces/&lt;USER&gt;/&lt;APP_NAME&gt;</code> to share. All in all a great tool that puts the power into developers hands!</p>
+</div>
+</div>
+</section>
+</section>
+<section id="outro" class="level1">
+<h1>Outro</h1>
+<p>This blog is really short and to the point. The Gradio Client is sweet and I really wanted to share the experience.<br>
+The combination of App+API written at the same time is exciting, when enhancing it with HuggingFace Spaces it all becomes magical. And Gradio’s “auto-share” when running locally that can then provide an API too is not too shabby 😉</p>
+<p>This is it for this time,<br>
+Hampus Londögård</p>
+
+
+</section>
+
+
+<div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
+
+<ol>
+<li id="fn1"><p>Pay for GPU and/or better CPU↩︎</p></li>
+<li id="fn2"><p>Multiple templates to get started fast↩︎</p></li>
+</ol>
+</section></div> ]]></description>
+  <category>python</category>
+  <category>app</category>
+  <category>rest</category>
+  <category>machine-learning</category>
+  <guid>https://blog.londogard.com/posts/2025-02-20-gradio-client/</guid>
+  <pubDate>Mon, 17 Feb 2025 00:00:00 GMT</pubDate>
+</item>
 <item>
   <title>Marimo - A new Notebook/App on the block!</title>
   <dc:creator>Hampus Londögård</dc:creator>
@@ -8405,199 +8584,6 @@ font-style: inherit;">2</span></span>
   <category>data</category>
   <guid>https://blog.londogard.com/posts/2023-03-20-deepchecks/</guid>
   <pubDate>Mon, 20 Mar 2023 00:00:00 GMT</pubDate>
-</item>
-<item>
-  <title>Best Practices Are Contextual</title>
-  <dc:creator>Hampus Londögård</dc:creator>
-  <link>https://blog.londogard.com/posts/2023-02-17-best-practices.html</link>
-  <description><![CDATA[ 
-
-
-
-
-
-<p>Today Best Practices are commonly presented as the <em>One True Solution™</em> without considering the context(s) in which the practice is to be applied. I believe that with todays frameworks &amp; methodologies it’s getting more and more common that people start following a kind of “hive-mind”, and who’s the driver? Usually the ones selling it…</p>
-<p>Of course there’s multiple other angles such as:</p>
-<ul>
-<li>“No on ever got fired by buying IBM” (or following MANGA best practices)</li>
-<li>Career Climbing
-<ul>
-<li>Who wouldn’t want to make their CV more interesting by applying a well-known technique or framework? Even if it doesn’t make sense for the application.</li>
-</ul></li>
-</ul>
-<p>Anyhow, this is the story of how we/I got caught in a best practice which actually <em>didn’t apply</em> in my context. Ironically giving a new advice! 😅 Who knows, perhaps it’ll end up being a trap in the future.. 🤔</p>
-<section id="background" class="level1">
-<h1>Background</h1>
-<p>We started a project where we had a lot of data, not Big Data, but a decent chunk of &gt; 100 GB.<br>
-Being active in the industry and following the latest trends I knew that streaming data rather than loading it all makes a lot of sense and is recommended in multiple libraries such as <a href="https://huggingface.co/docs/datasets/index">HuggingFace Datasets</a>.</p>
-<p>Further I knew that there’s certain file formats which works exceptionally when streaming, or <code>mmap</code>, to do a very cheap data load and usage.</p>
-<div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-<code>mmap</code>
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>Memory-mapping (<code>mmap</code>)&nbsp;is a solution to stream data into memory from disk, and back. This enables us to:</p>
-<ol type="1">
-<li>Transform a bigger-than-memory dataset and write to disk again.<br>
-</li>
-<li>Train on a bigger-than-memory dataset by streaming it into memory</li>
-</ol>
-</div>
-</div>
-<p>Using&nbsp;<code>mmap</code>&nbsp;combined with a good file format such as Apache Arrow is praised around by companies and libraries.</p>
-<div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Apache Arrow
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p><a href="https://arrow.apache.org/">Apache Arrow</a> is a column-based file format which is saved in a deserialized format, i.e.&nbsp;it is the same as it is in-memory.</p>
-<p>This results in incredibly efficient <code>mmap</code> where we can stream data into memory <em>without deserialize/serialize</em>! Further by being a OLAP (column-based) format you can slice the columns you use and not stream anything else. Exceptional!</p>
-</div>
-</div>
-<p>I’ve first-hand experience of the gains of using OLAP-based file formats such as <code>parquet</code> which additionally supply column-compression which is very efficient in analytics. How many rows contain the same date repeated? Now it’s cheap! 😉</p>
-<p>Based on my history of using&nbsp;<code>mmap</code>&nbsp;algorithmically (low-level) and OLAP files we ended up using&nbsp;<a href="https://huggingface.co/docs/datasets/index">🤗 Datasets</a>&nbsp;which is a library to work with datasets.&nbsp;</p>
-<div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-🤗 (HuggingFace)
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>HuggingFace&nbsp;is a company that helps other companies deploy State-of-the-Art text and image models while providing a huge Open Source community with a lot of datasets, models and much more.</p>
-</div>
-</div>
-<p>Their dataset API must be based on best practise right? What we later learned is that best practice really is contextual.&nbsp;<strong>This is the story.</strong></p>
-</section>
-<section id="problem-identification" class="level1">
-<h1>Problem Identification</h1>
-<p>As a primer, <em>how do you even identify this type of issue?</em> After all it’s very easy to hide such problems by using powerful compute in the cloud.</p>
-<p>The answer is rather simple, <em>if the training is equal fast using a CPU (M1) as GPU you’re thouroughly under-utilizing your GPU.</em></p>
-<p>There’s multiple instances where one would never notice as a lot of practicioneers tend to run directly on a cloud compute, but if you found this to be true you’d surely pause and reflect on your task, right?</p>
-<section id="step-1-dont-trust-environments" class="level2">
-<h2 class="anchored" data-anchor-id="step-1-dont-trust-environments">Step 1: Don’t Trust Environments</h2>
-<p>Don’t make your cloud compute solve all problems from the get-go, allow yourself to gradually move into the cloud by utilizing a <strong>Local-First approach</strong>. Allowing yourself to run locally just as easily as in the cloud opens a lot of possibilities such as:</p>
-<ul>
-<li>Quick iterations by running subset-training</li>
-<li>Improved Circular Data Analysis</li>
-<li>A certain satisfaction of simplicity</li>
-</ul>
-<p>I’ll write a blog on&nbsp;<em>Local First</em>-approach and all the bonuses of such workflow later.</p>
-<p>As we started our journey to find problem(s) in our “best-practice” training pipeline we need to understand what is actually happening - introducing debuggers &amp; profilers!</p>
-</section>
-<section id="step-2-embrace-debuggers-profilers" class="level2">
-<h2 class="anchored" data-anchor-id="step-2-embrace-debuggers-profilers">Step 2: Embrace Debuggers &amp; Profilers</h2>
-<p>PyCharm and VS Code includes some great debuggers which allows us to step into functions and execute different logic to further understand what’s happening under the hood. Further there’s great tools to track what happens post-run which are called Profilers.</p>
-<p>One such profiler is the&nbsp;<a href="https://pytorch.org/tutorials/recipes/recipes/profiler_recipe.html">PyTorch Profiler</a>&nbsp;that we embraced. Using a profiler we found that we spend <em>a lot of time</em> inside the DataLoader - which is not a good sign! We’d like to optimize GPU usage.</p>
-<p>We built a hypothesis, the Macbook Pro M1 has a much faster SSD and because of that it trains equally fast as the Azure VM based on bottlenecking in the DataLoader. The I/O-operations being much faster leads to equal performance even if it has slower mathematical operations.</p>
-<p>To make sure that Azure had a fair challenge we validated the following:</p>
-<ul class="task-list">
-<li><label><input type="checkbox" checked="">We’re&nbsp;<strong>not</strong>&nbsp;using a mounted storage but a downloaded dataset on the VM</label></li>
-<li><label><input type="checkbox" checked="">We’re using the correct VM</label></li>
-</ul>
-<p>All seem correct, what else can we do to improve? 🤔</p>
-<p>We decided to rethink our “best practice” pipeline. Where could we save time? What’s is actually the part of the DataLoader that’s slow?</p>
-</section>
-</section>
-<section id="rethinking-our-pipeline" class="level1">
-<h1>Rethinking our pipeline</h1>
-<p>We found the biggest bottleneck pretty fast.</p>
-<p><strong>🎯&nbsp;<em>Random Access Read</em></strong><br>
-Random Access is slow with high latency even on the best SSD’s, and this is why&nbsp;<em>Random Access Memory</em>&nbsp;(RAM) exist! It has improved substantially the last decade, but nonetheless it’s slow.</p>
-<p>We built a system that retrieves data from columnar storage but randomly. Our batches are sequential which helps a little, but we extract our batch starting point randomly, see Figure&nbsp;1. We’re solving a time series forecasting problem which also means we expand one data point into a window of the last X points to predict future Y points. This isn’t cheap either, to roll over data like this.<br>
-To keep a batch internally intact is very important for some models such as the Recurrent Neural Networks (RNN) that keeps an internal state being reset each batch.</p>
-<div id="fig-subsamp" class="quarto-float quarto-figure quarto-figure-center anchored">
-<figure class="quarto-float quarto-float-fig figure">
-<div aria-describedby="fig-subsamp-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="https://blog.londogard.com/posts/assets/randomsubsampler.png" height="300" class="figure-img">
-</div>
-<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-subsamp-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;1: RandomSubsequenceSampler that allows randomizing batches but keeping batches internally intact
-</figcaption>
-</figure>
-</div>
-<p>This means that by keeping more data in-memory (RAM) we can reduce our latency and bottleneck! Especially on VM’s with slower SSD’s such as Azure.🦸‍♂️</p>
-<p>With this realization decided to optimize our pipeline by sidestepping best-practice and building a simple but custom batch-operation.</p>
-<section id="optimizing-preprocessing" class="level3">
-<h3 class="anchored" data-anchor-id="optimizing-preprocessing">Optimizing Preprocessing&nbsp;</h3>
-<p>As we applied one optimization after another it built into this beautiful onion where we by each layer we removed we had new opportunities based on the new base.</p>
-<ol type="1">
-<li>Preprocess by batch rather than streaming data (by batch)
-<ul>
-<li>One batch being one file</li>
-</ul></li>
-</ol>
-<p>This sped up our preprocessing enough that we don’t need to cache it and thereby no need to do it on all data. This means that we could apply our second optimization.</p>
-<ol start="2" type="1">
-<li>Preprocess by a sliced batch, i.e.&nbsp;only columns used</li>
-</ol>
-<p>This sped up our pipeline and substantially reduced memory requirements leading us to our third and final optimization in pre-processing.</p>
-<ol start="3" type="1">
-<li>Scale the scalers on a sample of the data.</li>
-</ol>
-<p>All in all we had huge speedups in our preprocessing, as follows:</p>
-<ol type="1">
-<li>~ 10x faster</li>
-<li>~ 10x faster</li>
-<li>~ 2x faster</li>
-</ol>
-<p><strong>All in all our pipeline went from ~20 minutes to seconds!</strong></p>
-</section>
-<section id="optimizing-training-loop" class="level3">
-<h3 class="anchored" data-anchor-id="optimizing-training-loop">Optimizing Training Loop</h3>
-<p>With preprocessing completing in seconds rather than minutes we could move ahead to improve our training loop.&nbsp;</p>
-<p>Based on our learnings from the preprocessing iterations we knew that we could essentially load all data into memory if we sliced it, which we usually did, resulting in only using 1/8th or 1/16th of the dataset. Additionally we learned that we could get cloud compute with 2-300 GB RAM at Azure.</p>
-<p>Using this knowledge we applied the following optimization:</p>
-<ol type="1">
-<li>Load sliced data into RAM on-demand rather than reading by streaming it into memory</li>
-</ol>
-<p>Applying this change we saw huge efficiency gains but we still spent a lot of time in the <code>DataLoader</code>, why? We found that on each batch load we converted our data into a <code>torch.tensor</code> which should be pretty fast, but it still end up being a bottleneck. Next optimization became clear, why not keep it as a tensor from the get-go?</p>
-<ol start="2" type="1">
-<li>Load data into RAM as a dictionary&nbsp;<code>{"column": torch.tensor()}</code>&nbsp; with each column being key</li>
-</ol>
-<p><strong>Thus we achieved a really efficient (Deep Learning) pipeline, training being cut from hours to minutes! 🤯</strong></p>
-</section>
-</section>
-<section id="what-we-learned" class="level1">
-<h1>What we learned</h1>
-<ul>
-<li><strong>Best practices are contextual.</strong>
-<ul>
-<li>Custom&nbsp;<em>“dumb”</em>&nbsp;code&nbsp;could end up much more efficient.</li>
-</ul></li>
-<li>Start Simple.
-<ul>
-<li>Simpler is often better (apply KISS).</li>
-</ul></li>
-<li>Custom code is not always more complex than libraries because they hide complexity.</li>
-<li>Balance complexity and efficiency delicately.</li>
-</ul>
-<p>By batching data smarter and keeping a lot of it as tensors in-memory we had an incredible amount of gains.</p>
-<p>It’s simple, stupid and wonderful.</p>
-<p>~Hampus Londögård</p>
-
-
-</section>
-
- ]]></description>
-  <category>soft</category>
-  <category>pipeline</category>
-  <category>deep-learning</category>
-  <category>data</category>
-  <guid>https://blog.londogard.com/posts/2023-02-17-best-practices.html</guid>
-  <pubDate>Sun, 19 Feb 2023 00:00:00 GMT</pubDate>
 </item>
 </channel>
 </rss>

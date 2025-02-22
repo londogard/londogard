@@ -7,10 +7,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Hampus Londögård">
-<meta name="dcterms.date" content="2020-12-16">
-<meta name="description" content="How to do object detection using Transformers?">
+<meta name="dcterms.date" content="2025-02-17">
+<meta name="description" content="Gradio is well-known in the Machine Learning community, and recently they expanded their Apps to automatically include a REST API - Gradio Client, it’s awesome and here’s how it works!">
 
-<title>Object Detection (Workshop) – Londogard Blog</title>
+<title>Gradio Client - An intro – Londogard Blog</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -23,26 +23,60 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
-<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="../site_libs/quarto-nav/headroom.min.js"></script>
-<script src="../site_libs/clipboard/clipboard.min.js"></script>
-<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="../site_libs/quarto-search/fuse.min.js"></script>
-<script src="../site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="../">
-<link href="../favicon.ico" rel="icon">
-<script src="../site_libs/quarto-html/quarto.js"></script>
-<script src="../site_libs/quarto-html/popper.min.js"></script>
-<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="../site_libs/quarto-html/anchor.min.js"></script>
-<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-ba1dc69c819719ff92c66bffe944bb46.css" rel="stylesheet" id="quarto-text-highlighting-styles">
-<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-2213d22e36e8e52ed4c0e87820819647.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../../favicon.ico" rel="icon">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-ba1dc69c819719ff92c66bffe944bb46.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-2213d22e36e8e52ed4c0e87820819647.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -72,9 +106,9 @@ ul.task-list li input[type="checkbox"] {
 }</script>
 
 
-<link rel="stylesheet" href="../styles.css">
-<meta name="twitter:title" content="Object Detection (Workshop) – Londogard Blog">
-<meta name="twitter:description" content="How to do object detection using Transformers?">
+<link rel="stylesheet" href="../../styles.css">
+<meta name="twitter:title" content="Gradio Client - An intro – Londogard Blog">
+<meta name="twitter:description" content="Gradio is well-known in the Machine Learning community, and recently they expanded their Apps to automatically include a REST API - Gradio Client, it’s awesome and here’s how it works!">
 <meta name="twitter:creator" content="@hlondogard">
 <meta name="twitter:card" content="summary">
 </head>
@@ -86,10 +120,10 @@ ul.task-list li input[type="checkbox"] {
     <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
-    <a href="../index.html" class="navbar-brand navbar-brand-logo">
-    <img src="../favicon.ico" alt="" class="navbar-logo">
+    <a href="../../index.html" class="navbar-brand navbar-brand-logo">
+    <img src="../../favicon.ico" alt="" class="navbar-logo">
     </a>
-    <a class="navbar-brand" href="../index.html">
+    <a class="navbar-brand" href="../../index.html">
     <span class="navbar-title">Londogard Blog</span>
     </a>
   </div>
@@ -100,11 +134,11 @@ ul.task-list li input[type="checkbox"] {
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item">
-    <a class="nav-link" href="../"> 
+    <a class="nav-link" href="../../"> 
 <span class="menu-text">Blogs</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../pages/presentations.html"> 
+    <a class="nav-link" href="../../pages/presentations.html"> 
 <span class="menu-text">Presentations</span></a>
   </li>  
   <li class="nav-item">
@@ -114,11 +148,11 @@ ul.task-list li input[type="checkbox"] {
 </ul>
             <ul class="navbar-nav navbar-nav-scroll ms-auto">
   <li class="nav-item">
-    <a class="nav-link" href="../pages/about.html"> 
+    <a class="nav-link" href="../../pages/about.html"> 
 <span class="menu-text">About</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../pages/code_setup/code_setup.html"> 
+    <a class="nav-link" href="../../pages/code_setup/code_setup.html"> 
 <span class="menu-text">Dev Setup</span></a>
   </li>  
   <li class="nav-item compact">
@@ -151,7 +185,7 @@ ul.task-list li input[type="checkbox"] {
     </ul>
   </li>
   <li class="nav-item compact">
-    <a class="nav-link" href="../index.xml"> <i class="bi bi-rss" role="img" aria-label="Londogard Blog RSS">
+    <a class="nav-link" href="../../index.xml"> <i class="bi bi-rss" role="img" aria-label="Londogard Blog RSS">
 </i> 
 <span class="menu-text"></span></a>
   </li>  
@@ -166,14 +200,16 @@ ul.task-list li input[type="checkbox"] {
 <header id="title-block-header" class="quarto-title-block default page-columns page-full">
   <div class="quarto-title-banner page-columns page-full">
     <div class="quarto-title column-body">
-      <h1 class="title">Object Detection (Workshop)</h1>
+      <h1 class="title">Gradio Client - An intro</h1>
                   <div>
         <div class="description">
-          How to do object detection using Transformers?
+          Gradio is well-known in the Machine Learning community, and recently they expanded their Apps to automatically include a REST API - Gradio Client, it’s awesome and here’s how it works!
         </div>
       </div>
                           <div class="quarto-categories">
-                <div class="quarto-category">presentation</div>
+                <div class="quarto-category">python</div>
+                <div class="quarto-category">app</div>
+                <div class="quarto-category">rest</div>
                 <div class="quarto-category">machine-learning</div>
               </div>
                   </div>
@@ -192,7 +228,7 @@ ul.task-list li input[type="checkbox"] {
       <div>
       <div class="quarto-title-meta-heading">Published</div>
       <div class="quarto-title-meta-contents">
-        <p class="date">December 16, 2020</p>
+        <p class="date">February 17, 2025</p>
       </div>
     </div>
     
@@ -203,8 +239,20 @@ ul.task-list li input[type="checkbox"] {
   </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
-        
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#gradio-client" id="toc-gradio-client" class="nav-link active" data-scroll-target="#gradio-client">Gradio Client</a>
+  <ul class="collapse">
+  <li><a href="#how-do-i-use-gradio-client" id="toc-how-do-i-use-gradio-client" class="nav-link" data-scroll-target="#how-do-i-use-gradio-client">How do I use Gradio Client?</a></li>
+  <li><a href="#available-clients" id="toc-available-clients" class="nav-link" data-scroll-target="#available-clients">Available Clients</a></li>
+  <li><a href="#possibilities" id="toc-possibilities" class="nav-link" data-scroll-target="#possibilities">Possibilities</a></li>
+  </ul></li>
+  <li><a href="#outro" id="toc-outro" class="nav-link" data-scroll-target="#outro">Outro</a></li>
+  </ul>
+</nav>
     </div>
 <!-- main -->
 <main class="content quarto-banner-title-block" id="quarto-document-content">
@@ -213,14 +261,122 @@ ul.task-list li input[type="checkbox"] {
 
 
 
-<p>I did a presentation/workshop on Object Detection using Transformers. It’s a little bit confusing as the experience of the people that joined was very different, some even not knowing Python. <!--truncate--></p>
-<p>Thought it could make sense to share anyways. :)</p>
-<iframe width="100%" height="586" src="https://www.youtube.com/embed/RrodV266XDo" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen="">
-</iframe>
+<section id="gradio-client" class="level1">
+<h1>Gradio Client</h1>
+<p>Most people in the AI-sphere (Deep Learning, LLM’s) are aware of the <a href="https://www.gradio.app/">Gradio</a> project (now under the <a href="https://huggingface.co/">huggingface</a> umbrella).</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Gradio in short
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Gradio is a simple Machine Learning App framework that provides easy components and reactivity. See for yourself:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> gradio <span class="im">as</span> gr</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> greet(name):</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="st">"Hello "</span> <span class="op">+</span> name <span class="op">+</span> <span class="st">"!"</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>demo <span class="op">=</span> gr.Interface(fn<span class="op">=</span>greet, inputs<span class="op">=</span><span class="st">"text"</span>, outputs<span class="op">=</span><span class="st">"text"</span>)</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>demo.launch()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>One drawback is that <em>input, output</em>, and <em>function</em> are separated which reduces type-safety and removes all intellisense. This is a big one for me and makes me highly prefer <code>streamlit</code> &amp; <code>solara</code>. Though I can’t deny all the greatness Gradio provides to the table.</p>
+</div>
+</div>
+<p>Even though Gradio is well-known some people might’ve missed that they’ve added two new projects in their fast pace!</p>
+<ol type="1">
+<li><a href="https://www.gradio.app/guides/getting-started-with-the-python-client"><strong><code>gradio_client</code></strong></a>: A client that can call any Gradio Application (!)
+<ol type="1">
+<li>Gradio clients are easily deployed on HuggingFace, and there exist a ton of them. All are now accessible in a REST-like interface (including the compute)!</li>
+</ol></li>
+<li><a href="https://www.gradio.app/guides/gradio-lite"><strong><code>gradio_lite</code></strong></a>: A WASM version of Gradio.
+<ol type="1">
+<li>Very simple to embed a Gradio app inside a HTML file or JS app.</li>
+<li>They’ve implemented smooth solutions for things like Multi File, PIP Requirements and more.</li>
+<li>WASM brings <em>Serverless</em> deployment with <em>Low Latency</em> and high <em>Privacy</em>.</li>
+</ol></li>
+</ol>
+<section id="how-do-i-use-gradio-client" class="level2">
+<h2 class="anchored" data-anchor-id="how-do-i-use-gradio-client">How do I use Gradio Client?</h2>
+<p><strong>Step 1: Connect to a Client</strong></p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> gradio_client <span class="im">import</span> Client, handle_file</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>client <span class="op">=</span> Client(<span class="st">"abidlabs/whisper"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><strong>Step 2: Predict</strong></p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>client.predict(</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    audio<span class="op">=</span>handle_file(<span class="st">"audio_sample.wav"</span>)</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;</span> <span class="st">"This is a test of the whisper speech recognition model."</span> </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Easy right?!</p>
+<p>If we have multiple boxes / steps in the Gradio App we can call each of the components. The client usage of any Gradio App is <strong>easily found at the bottom.</strong></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://images.amplenote.com/627f2784-ef96-11ef-a1f4-4f6319174ddb/0c668288-7e63-4469-9d64-946abf665652.png" class="img-fluid figure-img"></p>
+<figcaption>Gradio Client Button in Gradio Apps (to the left)</figcaption>
+</figure>
+</div>
+<p>And that opens a new menu which shows how to use each box of the App.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://images.amplenote.com/627f2784-ef96-11ef-a1f4-4f6319174ddb/5dd37151-9c78-4e80-af48-94d9e78ca5a0.png" class="img-fluid figure-img"></p>
+<figcaption>The API documentation and How-To-Guide after clicking</figcaption>
+</figure>
+</div>
+</section>
+<section id="available-clients" class="level2">
+<h2 class="anchored" data-anchor-id="available-clients">Available Clients</h2>
+<p>Anyone can run this as it supports <em>regular REST requests</em>! They supply a <code>curl</code> sample on how to query the App. But they’ve got a <em>Python and JS native client.</em></p>
+</section>
+<section id="possibilities" class="level2">
+<h2 class="anchored" data-anchor-id="possibilities">Possibilities</h2>
+<p>Gradio implemented the whole thing in a way where you don’t need to do anything at all. In turn we now get user-friendly App that is easily deployed with an <em>automatically included REST API</em>. It’s two birds with one stone!</p>
+<p>Combining this “App+API” deployment with the free, or paid, <a href="https://huggingface.co/spaces">HuggingFace Spaces</a> creates a high-value package!</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+HuggingFace Spaces
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>HuggingFace (HF) Spaces is as simple deployments get:</p>
+<ul>
+<li>Free compute<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>
+<ul>
+<li><em>ZeroGPU available using Gradio SDK</em></li>
+</ul></li>
+<li>Natively Support <em>streamlit, Gradio, static (webapp)</em></li>
+<li>Support any app via Docker<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a></li>
+</ul>
+<p>HF Spaces can deploy apps via <em>Client</em>, <em>git</em>, or <em>Drag n’ Drop</em>.<br>
+You get a public pretty URL <code>huggingface.co/spaces/&lt;USER&gt;/&lt;APP_NAME&gt;</code> to share. All in all a great tool that puts the power into developers hands!</p>
+</div>
+</div>
+</section>
+</section>
+<section id="outro" class="level1">
+<h1>Outro</h1>
+<p>This blog is really short and to the point. The Gradio Client is sweet and I really wanted to share the experience.<br>
+The combination of App+API written at the same time is exciting, when enhancing it with HuggingFace Spaces it all becomes magical. And Gradio’s “auto-share” when running locally that can then provide an API too is not too shabby 😉</p>
+<p>This is it for this time,<br>
+Hampus Londögård</p>
 
 
+</section>
 
-</main> <!-- /main -->
+
+<div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
+
+<ol>
+<li id="fn1"><p>Pay for GPU and/or better CPU<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>Multiple templates to get started fast<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section></div></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
@@ -662,7 +818,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     <div class="nav-footer-center">
       <ul class="footer-items list-unstyled">
     <li class="nav-item">
-    <a class="nav-link" href="../pages/about.html">
+    <a class="nav-link" href="../../pages/about.html">
 <p>About</p>
 </a>
   </li>  
@@ -689,7 +845,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     </a>
   </li>  
     <li class="nav-item compact">
-    <a class="nav-link" href="../index.xml">
+    <a class="nav-link" href="../../index.xml">
       <i class="bi bi-rss" role="img" aria-label="Londogard Blog RSS">
 </i> 
     </a>
