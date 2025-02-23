@@ -1,0 +1,21 @@
+---
+title: "Self-Contained ML Models through MLFLow Model Registry"
+description: "Most in the machine learning community knows about MLFlow and uses it to track experiments. One of multiple 'extras' is the Model Registry. The Model Registry is quite cool and I'll share how you can build your self-contained ML models."
+categories: [python, mlflow, deployment, machine-learning]
+date: "2025-02-25"
+---
+
+# MLFlow Model Registry
+
+MLFlow is a popular tool to track your experiment to compare metrics, parameters and much more. It helps streamlining your job as a _data scientist_, and it also assist _machine learning engineers_ with the deployment of said models.
+
+## MLFlow MLModel
+
+MLModels is MLFlows "self-contained model" that can automatically build a Docker Container and run through the built-in `mlflow serve` command. It's an interesting concept that's not "phenomenal" or "innovating" but helps streamlining our lives, just like the "bread and butter" MLFlow Experiments.  
+That's also what I like about MLFlow, they don't try to take it too far - it's kept simple.
+
+### Flavours
+
+
+This is it for this time,\
+Hampus Londögård
