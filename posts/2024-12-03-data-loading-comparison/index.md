@@ -45,16 +45,16 @@ All of the chosen tools are quite awesome, but HuggingFace and Ray can export to
 : Table Summarization
 
 ## Mini Benchmark
-| Tool                     | Num_worker | Pin_memory | Cache | Configuration                | Time       |
-| ------------------------ | ---------- | ---------- | ----- | ---------------------------- | ---------- |
-| **HF Element**           | None       | None       | False | .map                         | 6m48s      |
-|                          | None       | None       | True  | .with_transform              | **3m23s**  |
-| **HF Batched**           | None       | None       | False | .map                         | 7m14s      |
-|                          | None       | None       | True  | .map                         | **3m22s**  |
-| **Torch Dataset/Loader** | None       | None       | -     | Default                      | **3m20s**  |
-| **Daft**                 | -          | -          | -     | daft-default                 | 14m55s     |
-|                          | -          | -          | -     | daft-native                  | **3m30s**  |
-| **Ray**                  | -          | -          | -     | Default                      | 7m41s      |
+| Tool                     | Num_worker | Pin_memory | Cache | Configuration   | Time      |
+| ------------------------ | ---------- | ---------- | ----- | --------------- | --------- |
+| **HF Element**           | None       | None       | False | .map            | 6m48s     |
+|                          | None       | None       | True  | .with_transform | **3m23s** |
+| **HF Batched**           | None       | None       | False | .map            | 7m14s     |
+|                          | None       | None       | True  | .map            | **3m22s** |
+| **Torch Dataset/Loader** | None       | None       | -     | Default         | **3m20s** |
+| **Daft**                 | -          | -          | -     | daft-default    | 14m55s    |
+|                          | -          | -          | -     | daft-native     | **3m30s** |
+| **Ray**                  | -          | -          | -     | Default         | 7m41s     |
 
 Running on full sized images we get a bit more interesting results:
 
@@ -252,7 +252,3 @@ Additionally HF Datasets / PyTorch DataLoaders feels more pythonic, where the la
 
 It'll sure be interesting to follow the progress being made, and I'm happy the dust isn't settled yet!
 
-
-# Appendix
-
-## Appendix A. _Additional Benchmarks_
