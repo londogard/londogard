@@ -1,0 +1,107 @@
+---
+title: "Gradio Client - An intro"
+description: "Gradio is well-known in the Machine Learning community, and recently they expanded their Apps to automatically include a REST API - Gradio Client, it's awesome and here's how it works!"
+categories: [python, app, rest, machine-learning]
+date: "2025-02-17"
+---
+
+# Gradio Client
+
+Most people in the AI-sphere (Deep Learning, LLM's) are aware of the [Gradio](https://www.gradio.app/) project (now under the [huggingface](https://huggingface.co/) umbrella).
+
+
+::: {.callout-tip}
+## Gradio in short
+
+Gradio is a simple Machine Learning App framework that provides easy components and reactivity. See for yourself:
+
+```python
+import gradio as gr
+
+def greet(name):
+    return "Hello " + name + "!"
+
+demo = gr.Interface(fn=greet, inputs="text", outputs="text")
+demo.launch()
+```
+
+One drawback is that _input, output_, and _function_ are separated which reduces type-safety and removes all intellisense. This is a big one for me and makes me highly prefer `streamlit` & `solara`. Though I can't deny all the greatness Gradio provides to the table.
+:::
+
+Even though Gradio is well-known some people might've missed that they've added two new projects in their fast pace!
+
+1. [**`gradio_client`**](https://www.gradio.app/guides/getting-started-with-the-python-client): A client that can call any Gradio Application (!)
+    1. Gradio clients are easily deployed on HuggingFace, and there exist a ton of them. All are now accessible in a REST-like interface (including the compute)!
+2. [**`gradio_lite`**](https://www.gradio.app/guides/gradio-lite): A WASM version of Gradio.
+    1. Very simple to embed a Gradio app inside a HTML file or JS app.
+    2. They've implemented smooth solutions for things like Multi File, PIP Requirements and more.
+    3. WASM brings _Serverless_ deployment with _Low Latency_ and high _Privacy_.
+
+## How do I use Gradio Client?
+
+**Step 1: Connect to a Client**
+
+```python
+from gradio_client import Client, handle_file
+
+client = Client("abidlabs/whisper")
+```
+
+**Step 2: Predict**
+
+```python
+client.predict(
+    audio=handle_file("audio_sample.wav")
+)
+
+>> "This is a test of the whisper speech recognition model." 
+```
+
+Easy right?!
+
+
+If we have multiple boxes / steps in the Gradio App we can call each of the components. The client usage of any Gradio App is **easily found at the bottom.**
+
+![Gradio Client Button in Gradio Apps (to the left)](https://images.amplenote.com/627f2784-ef96-11ef-a1f4-4f6319174ddb/0c668288-7e63-4469-9d64-946abf665652.png)
+
+And that opens a new menu which shows how to use each box of the App.
+
+![The API documentation and How-To-Guide after clicking](https://images.amplenote.com/627f2784-ef96-11ef-a1f4-4f6319174ddb/5dd37151-9c78-4e80-af48-94d9e78ca5a0.png)
+
+## Available Clients
+
+Anyone can run this as it supports _regular REST requests_! They supply a `curl` sample on how to query the App. But they've got a _Python and JS native client._
+
+
+## Possibilities
+
+Gradio implemented the whole thing in a way where you don't need to do anything at all. In turn we now get user-friendly App that is easily deployed with an _automatically included REST API_. It's two birds with one stone!
+
+
+Combining this "App+API" deployment with the free, or paid, [HuggingFace Spaces](https://huggingface.co/spaces) creates a high-value package!
+
+
+::: {.callout-tip}
+## HuggingFace Spaces
+
+HuggingFace (HF) Spaces is as simple deployments get:
+
+- Free compute^[Pay for GPU and/or better CPU]
+    - *ZeroGPU available using Gradio SDK*
+- Natively Support *streamlit, Gradio, static (webapp)*
+- Support any app via Docker^[Multiple templates to get started fast]
+
+HF Spaces can deploy apps via _Client_, _git_, or _Drag n' Drop_.  
+You get a public pretty URL `huggingface.co/spaces/<USER>/<APP_NAME>` to share.
+All in all a great tool that puts the power into developers hands!
+
+:::
+
+# Outro
+
+This blog is really short and to the point. The Gradio Client is sweet and I really wanted to share the experience. \
+The combination of App+API written at the same time is exciting, when enhancing it with HuggingFace Spaces it all becomes magical. And Gradio's "auto-share" when running locally that can then provide an API too is not too shabby 😉
+
+
+This is it for this time,\
+Hampus Londögård
