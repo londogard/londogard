@@ -9,7 +9,7 @@
 <link>https://blog.londogard.com/</link>
 <atom:link href="https://blog.londogard.com/index.xml" rel="self" type="application/rss+xml"/>
 <description>A blog which majorly focuses on Data Science, Data Engineering and sometimes Kotlin / Scala.</description>
-<generator>quarto-1.6.41</generator>
+<generator>quarto-1.6.42</generator>
 <lastBuildDate>Mon, 17 Feb 2025 00:00:00 GMT</lastBuildDate>
 <item>
   <title>Gradio Client - An intro</title>
@@ -1068,12 +1068,12 @@ font-style: inherit;">10</span>])</span></code></pre></div>
 <h2 class="anchored" data-anchor-id="mini-benchmark">Mini Benchmark</h2>
 <table class="caption-top table">
 <colgroup>
-<col style="width: 27%">
-<col style="width: 11%">
-<col style="width: 11%">
-<col style="width: 5%">
 <col style="width: 32%">
-<col style="width: 11%">
+<col style="width: 13%">
+<col style="width: 13%">
+<col style="width: 6%">
+<col style="width: 20%">
+<col style="width: 12%">
 </colgroup>
 <thead>
 <tr class="header">
@@ -1846,14 +1846,8 @@ font-style: inherit;">return</span> d_train, d_valid</span></code></pre></div>
 Working with <em>Daft</em> more and more I noticed that the DataFrame syntax sometimes becomes a big blocker and the simplicity of HF Datasets and Ray using <code>dict</code>’s in <code>.map</code> statements results in easier code and smoother integration with existing libraries.<br>
 Additionally HF Datasets / PyTorch DataLoaders feels more pythonic, where the latter is real simple. I can’t put my finger on it but they just seem easier to debug and understand.</p>
 <p>It’ll sure be interesting to follow the progress being made, and I’m happy the dust isn’t settled yet!</p>
-</section>
-<section id="appendix" class="level1">
-<h1>Appendix</h1>
-<section id="appendix-a.-additional-benchmarks" class="level2">
-<h2 class="anchored" data-anchor-id="appendix-a.-additional-benchmarks">Appendix A. <em>Additional Benchmarks</em></h2>
 
 
-</section>
 </section>
 
  ]]></description>
