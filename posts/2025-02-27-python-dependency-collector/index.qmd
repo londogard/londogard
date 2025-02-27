@@ -1,0 +1,34 @@
+---
+title: "TIL: Programatically Fetch Python Class/File Dependencies"
+description: "It's quite common in the Machine Learning realm to launch jobs remotely, and in serverless you essentially do the same. This small gist enables simple tree-shaking fetching (recursively) only relevant local files for your python Class, or file."
+categories: [python, dependencies]
+date: "2025-02-27"
+---
+
+# ImportCollector
+
+It's simple and requires 0 dependencies outside of the standard library.
+
+This script will recursively traverse the dependencies of a `Class` or _python-script_ and find all relevant dependencies from your local project.  
+It's useful in multiple types of project, such as (remote) Machine Learning training jobs and serverless deployments, where you don't want to include irrelevant files.
+
+{{< gist Lundez 097753678fe475a6bc30ca31f4624536 >}}
+
+# Why I built this
+
+When I was deploying/building a `MLFlow Model` I found that their `infer_code_paths` functionality is bugged, as shared in [mlflow/issues/14071](https://github.com/mlflow/mlflow/issues/14071) and my [blog about MLFlow Models](/posts/2025-02-25-mlflow-model), and that I needed something better to really recursively fetch dependencies.
+
+I found that through my nifty little script I could do this better than `mlflow` themselves. By updating the `load_context` function we could infer the `modules` by importing them, assisting `mlflow`'s `infer_code_paths` function.
+
+```python
+def load_context(self, context):
+    # MLFlow bug where parent class is not added to `infer_code_paths`.
+    # https://github.com/mlflow/mlflow/issues/14071
+    imports = get_dependencies(type(self))
+    for module in imports.modules:
+        importlib.import_module(module)
+```
+
+
+This is it for this time,  
+Hampus Londögård
