@@ -7,10 +7,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Hampus Londögård">
-<meta name="dcterms.date" content="2020-09-04">
-<meta name="description" content="SDKMan is a tool to make JDK swapping, and installation, simple. It’s really good!">
+<meta name="dcterms.date" content="2025-02-27">
+<meta name="description" content="It’s quite common in the Machine Learning realm to launch jobs remotely, and in serverless you essentially do the same. This small gist enables simple tree-shaking fetching (recursively) only relevant local files for your python Class, or file.">
 
-<title>TIL: SDKMan - The Software Development Kit Manager – Londogard Blog</title>
+<title>TIL: Programatically Fetch Python Class/File Dependencies – Londogard Blog</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -23,26 +23,60 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
-<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="../site_libs/quarto-nav/headroom.min.js"></script>
-<script src="../site_libs/clipboard/clipboard.min.js"></script>
-<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="../site_libs/quarto-search/fuse.min.js"></script>
-<script src="../site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="../">
-<link href="../favicon.ico" rel="icon">
-<script src="../site_libs/quarto-html/quarto.js"></script>
-<script src="../site_libs/quarto-html/popper.min.js"></script>
-<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="../site_libs/quarto-html/anchor.min.js"></script>
-<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-de84f8d6bb715db06a919283c2d1e787.css" rel="stylesheet" id="quarto-text-highlighting-styles">
-<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-a9032b0d264145a96171d9999fcda48e.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../../favicon.ico" rel="icon">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-de84f8d6bb715db06a919283c2d1e787.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-a9032b0d264145a96171d9999fcda48e.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -72,9 +106,9 @@ ul.task-list li input[type="checkbox"] {
 }</script>
 
 
-<link rel="stylesheet" href="../styles.css">
-<meta name="twitter:title" content="TIL: SDKMan - The Software Development Kit Manager – Londogard Blog">
-<meta name="twitter:description" content="SDKMan is a tool to make JDK swapping, and installation, simple. It’s really good!">
+<link rel="stylesheet" href="../../styles.css">
+<meta name="twitter:title" content="TIL: Programatically Fetch Python Class/File Dependencies – Londogard Blog">
+<meta name="twitter:description" content="It’s quite common in the Machine Learning realm to launch jobs remotely, and in serverless you essentially do the same. This small gist enables simple tree-shaking fetching (recursively) only relevant local files for your python Class, or file.">
 <meta name="twitter:creator" content="@hlondogard">
 <meta name="twitter:card" content="summary">
 </head>
@@ -86,10 +120,10 @@ ul.task-list li input[type="checkbox"] {
     <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
-    <a href="../index.html" class="navbar-brand navbar-brand-logo">
-    <img src="../favicon.ico" alt="" class="navbar-logo">
+    <a href="../../index.html" class="navbar-brand navbar-brand-logo">
+    <img src="../../favicon.ico" alt="" class="navbar-logo">
     </a>
-    <a class="navbar-brand" href="../index.html">
+    <a class="navbar-brand" href="../../index.html">
     <span class="navbar-title">Londogard Blog</span>
     </a>
   </div>
@@ -100,11 +134,11 @@ ul.task-list li input[type="checkbox"] {
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item">
-    <a class="nav-link" href="../"> 
+    <a class="nav-link" href="../../"> 
 <span class="menu-text">Blogs</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../pages/presentations.html"> 
+    <a class="nav-link" href="../../pages/presentations.html"> 
 <span class="menu-text">Presentations</span></a>
   </li>  
   <li class="nav-item">
@@ -114,11 +148,11 @@ ul.task-list li input[type="checkbox"] {
 </ul>
             <ul class="navbar-nav navbar-nav-scroll ms-auto">
   <li class="nav-item">
-    <a class="nav-link" href="../pages/about.html"> 
+    <a class="nav-link" href="../../pages/about.html"> 
 <span class="menu-text">About</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../pages/code_setup/code_setup.html"> 
+    <a class="nav-link" href="../../pages/code_setup/code_setup.html"> 
 <span class="menu-text">Dev Setup</span></a>
   </li>  
   <li class="nav-item compact">
@@ -151,7 +185,7 @@ ul.task-list li input[type="checkbox"] {
     </ul>
   </li>
   <li class="nav-item compact">
-    <a class="nav-link" href="../index.xml"> <i class="bi bi-rss" role="img" aria-label="Londogard Blog RSS">
+    <a class="nav-link" href="../../index.xml"> <i class="bi bi-rss" role="img" aria-label="Londogard Blog RSS">
 </i> 
 <span class="menu-text"></span></a>
   </li>  
@@ -166,15 +200,15 @@ ul.task-list li input[type="checkbox"] {
 <header id="title-block-header" class="quarto-title-block default page-columns page-full">
   <div class="quarto-title-banner page-columns page-full">
     <div class="quarto-title column-body">
-      <h1 class="title">TIL: SDKMan - The Software Development Kit Manager</h1>
+      <h1 class="title">TIL: Programatically Fetch Python Class/File Dependencies</h1>
                   <div>
         <div class="description">
-          SDKMan is a tool to make JDK swapping, and installation, simple. It’s really good!
+          It’s quite common in the Machine Learning realm to launch jobs remotely, and in serverless you essentially do the same. This small gist enables simple tree-shaking fetching (recursively) only relevant local files for your python Class, or file.
         </div>
       </div>
                           <div class="quarto-categories">
-                <div class="quarto-category">jvm</div>
-                <div class="quarto-category">TIL</div>
+                <div class="quarto-category">python</div>
+                <div class="quarto-category">dependencies</div>
               </div>
                   </div>
   </div>
@@ -192,7 +226,7 @@ ul.task-list li input[type="checkbox"] {
       <div>
       <div class="quarto-title-meta-heading">Published</div>
       <div class="quarto-title-meta-contents">
-        <p class="date">September 4, 2020</p>
+        <p class="date">February 27, 2025</p>
       </div>
     </div>
     
@@ -208,13 +242,8 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#sdkman---swapping-jdk-made-simple" id="toc-sdkman---swapping-jdk-made-simple" class="nav-link active" data-scroll-target="#sdkman---swapping-jdk-made-simple">SDKMan - Swapping JDK made simple</a>
-  <ul class="collapse">
-  <li><a href="#what" id="toc-what" class="nav-link" data-scroll-target="#what">What</a></li>
-  <li><a href="#how" id="toc-how" class="nav-link" data-scroll-target="#how">How</a></li>
-  <li><a href="#why" id="toc-why" class="nav-link" data-scroll-target="#why">Why</a></li>
-  <li><a href="#alternatives" id="toc-alternatives" class="nav-link" data-scroll-target="#alternatives">Alternatives</a></li>
-  </ul></li>
+  <li><a href="#importcollector" id="toc-importcollector" class="nav-link active" data-scroll-target="#importcollector">ImportCollector</a></li>
+  <li><a href="#why-i-built-this" id="toc-why-i-built-this" class="nav-link" data-scroll-target="#why-i-built-this">Why I built this</a></li>
   </ul>
 </nav>
     </div>
@@ -225,97 +254,27 @@ ul.task-list li input[type="checkbox"] {
 
 
 
-<section id="sdkman---swapping-jdk-made-simple" class="level1">
-<h1>SDKMan - Swapping JDK made simple</h1>
-<p>I’ve decided to not only write blogs but also small snippets, here comes the first one. <!--truncate--></p>
-<section id="what" class="level3">
-<h3 class="anchored" data-anchor-id="what">What</h3>
-<p><a href="https://sdkman.io/">SDKMan</a> is a tool to install, set and swap JDK.<br>
-SDKMan actually supports more than the Java JDK, among supported tooling is Java, Groovy, Scala, Kotlin and Ceylon. Ant, Gradle, Grails, Maven, SBT, Spark, Spring Boot, Vert.x and many others also supported.</p>
-<p>It’s written in Bash, only requires curl &amp; zip/unzip.</p>
-<p>So what SDKMan simplifies is 1. Installation of different JDKs, Gradle versions and so on 2. Swapping between JDKs 3. Allowing local (by folder basis) JDK-versions</p>
+<section id="importcollector" class="level1">
+<h1>ImportCollector</h1>
+<p>It’s simple and requires 0 dependencies outside of the standard library.</p>
+<p>This script will recursively traverse the dependencies of a <code>Class</code> or <em>python-script</em> and find all relevant dependencies from your local project.<br>
+It’s useful in multiple types of project, such as (remote) Machine Learning training jobs and serverless deployments, where you don’t want to include irrelevant files.</p>
+{{&lt; gist Lundez 097753678fe475a6bc30ca31f4624536 &gt;}}
 </section>
-<section id="how" class="level3">
-<h3 class="anchored" data-anchor-id="how">How</h3>
-<p>We start by installation #### Installation If you need a more detailed guide go to <a href="https://sdkman.io/install">this</a> page.<br>
-<strong>Downloading SDKMan</strong><br>
-<code>$ curl -s \"https://get.sdkman.io\" | bash</code></p>
-<p><strong>Installing</strong> <code>$ source \"$HOME/.sdkman/bin/sdkman-init.sh\"</code></p>
-<p><strong>Verification</strong> <code>$sdk version</code> - should return something along <code>sdkman X.Y.Z</code></p>
-<section id="usage" class="level4">
-<h4 class="anchored" data-anchor-id="usage">Usage</h4>
-<table class="caption-top table">
-<colgroup>
-<col style="width: 14%">
-<col style="width: 38%">
-<col style="width: 47%">
-</colgroup>
-<thead>
-<tr class="header">
-<th>What</th>
-<th>Command</th>
-<th>Comment</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>Install JDK</td>
-<td><code>$sdk install java</code></td>
-<td>Installs the <strong>latest stable</strong> version of Java JDK</td>
-</tr>
-<tr class="even">
-<td>Install specific version</td>
-<td><code>$sdk install scala 2.12.1</code></td>
-<td>Install scala 2.12.1</td>
-</tr>
-<tr class="odd">
-<td>Install local version</td>
-<td><code>$sdk install groovy 3.0.0-SNAPSHOT /path/to/groovy-3.0.0-SNAPSHOT</code></td>
-<td>Installs a JDK you have locally to the SDKMan. The version name <strong>must</strong> be unique!</td>
-</tr>
-<tr class="even">
-<td>Remove version</td>
-<td><code>$sdk uninstall scala 2.11.6</code></td>
-<td></td>
-</tr>
-<tr class="odd">
-<td>List candidates</td>
-<td><code>$sdk list java</code></td>
-<td>Lists all java candidates that are installable through SDKMan</td>
-</tr>
-<tr class="even">
-<td>Use version</td>
-<td><code>$sdk use scala 2.12.1</code></td>
-<td>Use the version said, this <strong>only changes the current shell</strong></td>
-</tr>
-<tr class="odd">
-<td>Default version</td>
-<td><code>$sdk default scala 2.11.1</code></td>
-<td>Changes version for all subsequent shells</td>
-</tr>
-<tr class="even">
-<td>Current version</td>
-<td><code>$sdk current</code></td>
-<td>Lists all currently selected versions</td>
-</tr>
-</tbody>
-</table>
-<p>Remember to point your JDK to the <code>./sdkman/candidates/java/current</code> path. Do the same for your IDE, such as IntelliJ-IDEA.</p>
-</section>
-</section>
-<section id="why" class="level3">
-<h3 class="anchored" data-anchor-id="why">Why</h3>
-<p>I’ve got different projects where I need to use different java versions. In one project I need JDK 14 to include <code>jpackage</code> and another one I’m forced to use JDK 8 (legacy system), to swap between these has never been simpler!</p>
-</section>
-<section id="alternatives" class="level3">
-<h3 class="anchored" data-anchor-id="alternatives">Alternatives</h3>
-<p><a href="https://www.jenv.be">jEnv</a> is a great alternative. According to some more JDK versions exists (haven’t checked myself), but overall it seems that SDKMan is the preferred alternative.<br>
-Looking at GitHub one can clearly see that SDKMan is more popular, both by stars, latest commit and forks - which should be a decent enough to make a choice.</p>
-<p>One thing I’ve learned both through work and my personal projects is that often it’s better to make an non-optimal decision rather than trying to find the perfect solution, because diving into the pile of research to perfection will take much more time than just getting started.</p>
-<p>-Hampus Londögård</p>
+<section id="why-i-built-this" class="level1">
+<h1>Why I built this</h1>
+<p>When I was deploying/building a <code>MLFlow Model</code> I found that their <code>infer_code_paths</code> functionality is bugged, as shared in <a href="https://github.com/mlflow/mlflow/issues/14071">mlflow/issues/14071</a> and my <a href="../../posts/2025-02-25-mlflow-model">blog about MLFlow Models</a>, and that I needed something better to really recursively fetch dependencies.</p>
+<p>I found that through my nifty little script I could do this better than <code>mlflow</code> themselves. By updating the <code>load_context</code> function we could infer the <code>modules</code> by importing them, assisting <code>mlflow</code>’s <code>infer_code_paths</code> function.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> load_context(<span class="va">self</span>, context):</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>    <span class="co"># MLFlow bug where parent class is not added to `infer_code_paths`.</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    <span class="co"># https://github.com/mlflow/mlflow/issues/14071</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>    imports <span class="op">=</span> get_dependencies(<span class="bu">type</span>(<span class="va">self</span>))</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> module <span class="kw">in</span> imports.modules:</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>        importlib.import_module(module)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>This is it for this time,<br>
+Hampus Londögård</p>
 
 
-</section>
 </section>
 
 </main> <!-- /main -->
@@ -760,7 +719,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     <div class="nav-footer-center">
       <ul class="footer-items list-unstyled">
     <li class="nav-item">
-    <a class="nav-link" href="../pages/about.html">
+    <a class="nav-link" href="../../pages/about.html">
 <p>About</p>
 </a>
   </li>  
@@ -787,7 +746,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     </a>
   </li>  
     <li class="nav-item compact">
-    <a class="nav-link" href="../index.xml">
+    <a class="nav-link" href="../../index.xml">
       <i class="bi bi-rss" role="img" aria-label="Londogard Blog RSS">
 </i> 
     </a>
