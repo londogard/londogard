@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" href="./favicon.ico" />
+    <!-- Preload is necessary because we show these images when we disconnect from the server,
+    but at that point we cannot load these images from the server -->
+    <link rel="preload" href="./assets/gradient-yHQUC_QB.png" as="image" />
+    <link rel="preload" href="./assets/noise-60BoTA8O.png" as="image" />
+    <!-- Preload the fonts -->
+    <link rel="preload" href="./assets/Lora-VariableFont_wght-B2ootaw-.ttf" as="font" crossorigin="anonymous" />
+    <link rel="preload" href="./assets/PTSans-Regular-CxL0S8W7.ttf" as="font" crossorigin="anonymous" />
+    <link rel="preload" href="./assets/PTSans-Bold-D9fedIX3.ttf" as="font" crossorigin="anonymous" />
+    <link rel="preload" href="./assets/FiraMono-Regular-BTCkDNvf.ttf" as="font" crossorigin="anonymous" />
+    <link rel="preload" href="./assets/FiraMono-Medium-DU3aDxX5.ttf" as="font" crossorigin="anonymous" />
+    <link rel="preload" href="./assets/FiraMono-Bold-CLVRCuM9.ttf" as="font" crossorigin="anonymous" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#000000" />
+    <meta name="description" content="a marimo app" />
+    <link rel="apple-touch-icon" href="./apple-touch-icon.png" />
+    <link rel="manifest" href="./manifest.json" />
+
+    <script data-marimo="true">
+      function __resizeIframe(obj) {
+        var scrollbarHeight = 20; // Max between windows, mac, and linux
+
+        function setHeight() {
+          var element = obj.contentWindow.document.documentElement;
+          // If there is no vertical scrollbar, we don't need to resize the iframe
+          if (element.scrollHeight === element.clientHeight) {
+            return;
+          }
+
+          // Create a new height that includes the scrollbar height if it's visible
+          var hasHorizontalScrollbar = element.scrollWidth > element.clientWidth;
+          var newHeight = element.scrollHeight + (hasHorizontalScrollbar ? scrollbarHeight : 0);
+
+          // Only update the height if it's different from the current height
+          if (obj.style.height !== `${newHeight}px`) {
+            obj.style.height = `${newHeight}px`;
+          }
+        }
+
+        // Resize the iframe to the height of the content and bottom scrollbar height
+        setHeight();
+
+        // Resize the iframe when the content changes
+        const resizeObserver = new ResizeObserver((entries) => {
+          setHeight();
+        });
+        resizeObserver.observe(obj.contentWindow.document.body);
+      }
+    </script>
+    <marimo-filename hidden>notebook.py</marimo-filename>
+    <marimo-mode data-mode='read' hidden></marimo-mode>
+    <marimo-version data-version='0.11.13' hidden></marimo-version>
+    <marimo-user-config data-config='{"completion": {"activate_on_typing": true, "copilot": false}, "display": {"theme": "light", "default_width": "medium", "dataframes": "rich", "code_editor_font_size": 14, "cell_output": "above"}, "formatting": {"line_length": 79}, "keymap": {"preset": "default", "overrides": {}}, "runtime": {"auto_instantiate": true, "auto_reload": "off", "on_cell_change": "autorun", "watcher_on_save": "lazy", "output_max_bytes": 8000000, "std_stream_max_bytes": 1000000}, "save": {"autosave": "off", "autosave_delay": 1000, "format_on_save": false}, "package_management": {"manager": "uv"}, "server": {"browser": "default", "follow_symlink": false}, "snippets": {"custom_paths": [], "include_default_snippets": true}}' data-overrides='{}' hidden></marimo-user-config>
+    <marimo-app-config data-config='{"width": "medium"}' hidden></marimo-app-config>
+    <marimo-server-token data-token='123' hidden></marimo-server-token>
+    <title>app</title>
+    <script type="module" crossorigin src="./assets/index-CmflHEIv.js"></script>
+    <link rel="stylesheet" crossorigin href="./assets/index-CPmHDmmB.css">
+  <marimo-wasm hidden=""></marimo-wasm>
+    <script>
+        if (window.location.protocol === 'file:') {
+            alert('Warning: This file must be served by an HTTP server to function correctly.');
+        }
+    </script>
+    
+    <style>
+        #save-button {
+            display: none !important;
+        }
+        #filename-input {
+            display: none !important;
+        }
+    </style>
+    <marimo-code hidden="" data-show-code="false">import%20marimo%0A%0A__generated_with%20%3D%20%220.11.13%22%0Aapp%20%3D%20marimo.App(width%3D%22medium%22)%0A%0A%0A%40app.cell%0Adef%20_()%3A%0A%20%20%20%20import%20polars%20as%20pl%0A%20%20%20%20import%20marimo%20as%20mo%0A%20%20%20%20import%20os%0A%20%20%20%20from%20pathlib%20import%20Path%0A%20%20%20%20import%20duckdb%0A%20%20%20%20import%20fsspec%0A%20%20%20%20import%20pyarrow%20as%20pa%0A%0A%20%20%20%20os.environ%5B%22MARIMO_OUTPUT_MAX_BYTES%22%5D%20%3D%20%2210_000_000%22%0A%20%20%20%20return%20Path%2C%20duckdb%2C%20fsspec%2C%20mo%2C%20os%2C%20pa%2C%20pl%0A%0A%0A%40app.cell%0Adef%20_(mo)%3A%0A%20%20%20%20mo.md(%0A%20%20%20%20%20%20%20%20r%22%22%22%0A%20%20%20%20%20%20%20%20%23%20File%20Conversion%0A%20%20%20%20%20%20%20%20Convert%20file%20formats%20back%20and%20forth.%0A%20%20%20%20%20%20%20%20%22%22%22%0A%20%20%20%20)%0A%20%20%20%20return%0A%0A%0A%40app.cell%0Adef%20_(mo)%3A%0A%20%20%20%20file%20%3D%20mo.ui.file(%5B%22.csv%22%2C%20%22.parquet%22%2C%20%22.json%22%5D%2C%20label%3D%22Upload%20File%3A%22)%0A%20%20%20%20file%0A%20%20%20%20return%20(file%2C)%0A%0A%0A%40app.cell%0Adef%20_(file%2C%20get_fmt%2C%20mo)%3A%0A%20%20%20%20title_c%20%3D%20mo.md(%22%23%23%20Convert%20File%22)%0A%0A%20%20%20%20fmts%20%3D%20%7B%22csv%22%2C%20%22json%22%2C%20%22parquet%22%7D%20-%20%7Bget_fmt(file.value%5B0%5D.name)%7D%0A%20%20%20%20formats%20%3D%20mo.ui.dropdown(fmts%2C%20label%3D%22Convert%20to%20format%3A%22%2C%20value%3Dlist(fmts)%5B0%5D)%0A%20%20%20%20return%20fmts%2C%20formats%2C%20title_c%0A%0A%0A%40app.cell%0Adef%20_(Path%2C%20df%2C%20duckdb%2C%20file%2C%20formats%2C%20mo)%3A%0A%20%20%20%20file_name%20%3D%20(%0A%20%20%20%20%20%20%20%20f%22%7BPath(file.value%5B0%5D.name).stem%7D.%7Bformats.value.replace('excel'%2C%20'xlsx')%7D%22%0A%20%20%20%20)%0A%0A%0A%20%20%20%20def%20write_file()%3A%0A%20%20%20%20%20%20%20%20out%20%3D%20file_name%0A%20%20%20%20%20%20%20%20if%20formats.value%20%3D%3D%20%22csv%22%3A%0A%20%20%20%20%20%20%20%20%20%20%20%20return%20df.write_csv().encode(%22UTF-8%22)%0A%20%20%20%20%20%20%20%20elif%20formats.value%20%3D%3D%20%22parquet%22%3A%0A%20%20%20%20%20%20%20%20%20%20%20%20duckdb.from_arrow(df.to_arrow()).write_parquet(file_name)%0A%20%20%20%20%20%20%20%20%20%20%20%20return%20file_name%0A%20%20%20%20%20%20%20%20elif%20formats.value%20%3D%3D%20%22json%22%3A%0A%20%20%20%20%20%20%20%20%20%20%20%20return%20df.to_pandas().to_json().encode(%22UTF-8%22)%0A%0A%0A%20%20%20%20download_file%20%3D%20mo.download(write_file%2C%20filename%3Dfile_name)%0A%20%20%20%20return%20download_file%2C%20file_name%2C%20write_file%0A%0A%0A%40app.cell%0Adef%20_(duckdb%2C%20pl)%3A%0A%20%20%20%20import%20pandas%20as%20pd%0A%20%20%20%20import%20io%0A%0A%0A%20%20%20%20def%20get_fmt(file_name%3A%20str)%20-%3E%20str%3A%0A%20%20%20%20%20%20%20%20return%20file_name.rsplit(%22.%22)%5B-1%5D%0A%0A%0A%20%20%20%20def%20read_file(file%3A%20%22FileUploadResults%22)%20-%3E%20pl.DataFrame%3A%0A%20%20%20%20%20%20%20%20fmt%20%3D%20get_fmt(file.name)%0A%20%20%20%20%20%20%20%20data%20%3D%20io.BytesIO(file.contents)%0A%0A%20%20%20%20%20%20%20%20if%20fmt%20%3D%3D%20%22csv%22%3A%0A%20%20%20%20%20%20%20%20%20%20%20%20return%20pl.read_csv(data)%0A%20%20%20%20%20%20%20%20elif%20fmt%20%3D%3D%20%22json%22%3A%0A%20%20%20%20%20%20%20%20%20%20%20%20return%20pl.from_arrow(duckdb.read_json(data))%0A%20%20%20%20%20%20%20%20elif%20fmt%20%3D%3D%20%22parquet%22%3A%0A%20%20%20%20%20%20%20%20%20%20%20%20return%20pl.from_pandas(pd.read_parquet(data))%0A%20%20%20%20return%20get_fmt%2C%20io%2C%20pd%2C%20read_file%0A%0A%0A%40app.cell%0Adef%20_(file%2C%20mo%2C%20read_file)%3A%0A%20%20%20%20title_e%20%3D%20mo.md(%0A%20%20%20%20%20%20%20%20%22%22%22%0A%20%20%20%20%23%23%20Explore%20File%0A%20%20%20%20Start%20exploring%20and%20plotting!%0A%20%20%20%20%22%22%22%0A%20%20%20%20)%0A%0A%20%20%20%20df%20%3D%20read_file(file.value%5B0%5D)%0A%20%20%20%20return%20df%2C%20title_e%0A%0A%0A%40app.cell%0Adef%20_(df%2C%20download_file%2C%20formats%2C%20mo%2C%20title_c%2C%20title_e)%3A%0A%20%20%20%20%23%20%22Transform%20DataFrame%22%3A%20mo.ui.dataframe(df)%2C%0A%20%20%20%20df_explore%20%3D%20mo.vstack(%0A%20%20%20%20%20%20%20%20%5B%0A%20%20%20%20%20%20%20%20%20%20%20%20mo.md(%22%23%23%20DataFrame%20(with%20stats)%22)%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20df%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20mo.md(%22%23%23%20Visualization%20(plots%3A%20limit%3D10_000)%22)%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20mo.ui.data_explorer(df.limit(10_000))%2C%0A%20%20%20%20%20%20%20%20%5D%0A%20%20%20%20)%0A%0A%20%20%20%20tab_explore%20%3D%20mo.vstack(%5Btitle_e%2C%20df_explore%5D)%0A%0A%0A%20%20%20%20tab_convert%20%3D%20mo.vstack(%5Btitle_c%2C%20formats%2C%20download_file%5D)%0A%20%20%20%20mo.ui.tabs(%7B%22Convert%22%3A%20tab_convert%2C%20%22Explore%22%3A%20tab_explore%7D)%0A%20%20%20%20return%20df_explore%2C%20tab_convert%2C%20tab_explore%0A%0A%0A%40app.cell%0Adef%20_()%3A%0A%20%20%20%20return%0A%0A%0Aif%20__name__%20%3D%3D%20%22__main__%22%3A%0A%20%20%20%20app.run()%0A</marimo-code></head>
+  <body>
+    <div id="root"></div>
+  </body>
+</html>

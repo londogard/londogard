@@ -1,0 +1,9 @@
+---
+title: "WASM Apps"
+page-layout: full
+title-block-banner: true
+---
+
+We've the following WASM apps available:
+
+1. [Spreadsheet Explorer/Converter (CSV, JSON & Parquet)](/pages/app_spreadsheet.qmd)
