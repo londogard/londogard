@@ -39,6 +39,7 @@ website:
       - pages/presentations.qmd
       - text: "Londogard Projects↗"
         href: https://londogard.com/projects
+      - pages/apps.qmd
       right:
       - pages/about.qmd
       - pages/code_setup/code_setup.qmd
@@ -64,6 +65,7 @@ bibliography: references.bib
 
 format:
   html:
+    resources: ["/assets/wasm/**"]
     highlight-style: github
     theme: cosmo
     css: styles.css
