@@ -10,7 +10,143 @@
 <atom:link href="https://blog.londogard.com/index.xml" rel="self" type="application/rss+xml"/>
 <description>A blog which majorly focuses on Data Science, Data Engineering and sometimes Kotlin / Scala.</description>
 <generator>quarto-1.6.42</generator>
-<lastBuildDate>Thu, 27 Feb 2025 00:00:00 GMT</lastBuildDate>
+<lastBuildDate>Sun, 02 Mar 2025 00:00:00 GMT</lastBuildDate>
+<item>
+  <title>Marimo WASM Apps</title>
+  <dc:creator>Hampus Londögård</dc:creator>
+  <link>https://blog.londogard.com/posts/2025-03-02-marimo-spreadsheets/</link>
+  <description><![CDATA[ 
+
+
+
+
+
+<p>This post will be short, I recently built a WASM app that allows you to 1) convert between Parquet/CSV/JSON and 2) explore the data using Marimos built-in tooling.</p>
+<p>I shared an initial introduction to marimo in a <a href="../../posts/2025-02-17-marimo">blog earlier</a>.</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Tip
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>In short <strong>marimo</strong> is an up-and-coming Notebook that also have “App-mode” and can run using WASM.</p>
+</div>
+</div>
+<section id="appconverter" class="level2">
+<h2 class="anchored" data-anchor-id="appconverter">App:Converter</h2>
+<p>There’s multiple libraries suppoted in Pyodide, Python WASM, among them: <code>polars</code>, <code>duckdb</code> and <code>pandas</code>.<br>
+All these libraries are exceptional, with <code>pandas</code> as a exception 😉, to do Data Science and work with tabular data. They also have read/write support for <code>JSON</code>, <code>CSV</code> and <code>parquet</code> files.</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Tip
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><strong>Parquet</strong> is an awesome format for reading data, it’s <em>small, fast &amp; efficient</em> which in turn enables magnitudes better performance (10-100x easily).</p>
+</div>
+</div>
+<p>These tools enable my simple <em>converter</em> that allows more people to easily move <em>from CSV/JSON to Parquet</em>, and in turn have faster plotting!</p>
+<p>As always there’s some problems implementing:</p>
+<ul>
+<li><code>polars</code> doesn’t support parquet/JSON in WASM
+<ul>
+<li>–&gt; fall-back to <code>duckdb</code>.</li>
+<li><code>duckdb</code> can’t read parquet from<code>io.BytesIO</code>
+<ul>
+<li>–&gt; fall-back to… <code>pandas</code> 🤦‍♂️.</li>
+<li>Luckily we can quickly call <code>pl.from_pandas</code> to run <code>polars</code>!</li>
+</ul></li>
+</ul></li>
+</ul>
+<p>I hope to add more formats moving forwards, such as <code>ndjson</code> and <code>xlsx</code>.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://blog.londogard.com/posts/2025-03-02-marimo-spreadsheets/image.png" class="img-fluid figure-img"></p>
+<figcaption>Convert (src: parquet-file) that automatically infer available targets</figcaption>
+</figure>
+</div>
+</section>
+<section id="appexplore" class="level2">
+<h2 class="anchored" data-anchor-id="appexplore">App:Explore</h2>
+<p>Data Exploration - a important part and initial step when working with data of any type.<br>
+When exploring your dataset it’s good to have a streamlined way of working. Marimo has some excellent tooling to quickly structure your data. <strong>I’ve added all these tools in my simple WASM app</strong>, things include like:</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://blog.londogard.com/posts/2025-03-02-marimo-spreadsheets/image-1.png" class="img-fluid figure-img"></p>
+<figcaption><strong>DataFrame with Statistics in the header</strong></figcaption>
+</figure>
+</div>
+<div>
+
+</div>
+<div class="quarto-layout-panel" data-layout-ncol="2">
+<div class="quarto-layout-row">
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: flex-start;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://blog.londogard.com/posts/2025-03-02-marimo-spreadsheets/image-2.png" class="img-fluid figure-img"></p>
+<figcaption><strong>“Click” Plotting - select X,Y, …</strong></figcaption>
+</figure>
+</div>
+</div>
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: flex-start;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://blog.londogard.com/posts/2025-03-02-marimo-spreadsheets/image-3.png" class="img-fluid figure-img"></p>
+<figcaption>Another example</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<p>These tools combine into a quite neat exploration app. If you run this notebook locally you can easily hit up the <em>code cells</em> and modify the DataFrames manually and keep utilizing the nifty UI features such as statistics in DataFrame columns or visualization.</p>
+<p>All in all this is a simple quick-starter, I think this app can be helpful for those who wants to explore their data, advaned or simple.</p>
+</section>
+<section id="result" class="level2">
+<h2 class="anchored" data-anchor-id="result">Result</h2>
+<div class="callout callout-style-simple callout-tip no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+WASM Spreadsheet Explorer/Converter (CSV, JSON &amp; Parquet) App
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><a href="../../pages/app_spreadsheet.html">Also available as stand-alone</a></p>
+
+<iframe width="100%" height="720" src="../../assets/wasm/spreadsheet/app/index.html"></iframe>
+</div>
+</div>
+</section>
+<section id="outro" class="level1">
+<h1>Outro</h1>
+<p>I’ll keep adding more WASM apps with time. I love Pyodide.</p>
+<p>Combining WASM with Marimo, or <code>stlite</code>, feels like such a natural fit.<br>
+Marimo to me combines the perfection of Notebook Exploration with Apps, hence I opted for Marimo now.</p>
+<p>Moving on I’ll add more in-depth blogs about Marimo and why it’s awesome, embedding WASM snippets and more.</p>
+<p>Thanks for this time,<br>
+Hampus Londögård</p>
+
+
+</section>
+
+ ]]></description>
+  <category>python</category>
+  <category>wasm</category>
+  <category>app</category>
+  <guid>https://blog.londogard.com/posts/2025-03-02-marimo-spreadsheets/</guid>
+  <pubDate>Sun, 02 Mar 2025 00:00:00 GMT</pubDate>
+</item>
 <item>
   <title>TIL: Programatically Fetch Python Class/File Dependencies</title>
   <dc:creator>Hampus Londögård</dc:creator>
@@ -6522,63 +6658,6 @@ LOAD httpfs;</code></pre>
   <category>pipeline</category>
   <guid>https://blog.londogard.com/posts/2023-05-05-duckdb.html</guid>
   <pubDate>Wed, 03 May 2023 00:00:00 GMT</pubDate>
-</item>
-<item>
-  <title>Pandera - Type your Data Pipelines (WIP)</title>
-  <dc:creator>Hampus Londögård</dc:creator>
-  <link>https://blog.londogard.com/posts/2023-04-30-pandera.html</link>
-  <description><![CDATA[ 
-
-
-
-
-
-<p>Pandera - a way to type your data pipelines in Python!<br>
-Personally I feel like the documentation is really good, feel free to check <a href="https://pandera.readthedocs.io/en/stable/">it out</a>.</p>
-<div class="callout callout-style-default callout-warning callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Warning
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>This blog is a continuous work and WIP.</p>
-</div>
-</div>
-<p>Through decorators it smoothly integrates into your other Python-code. The validation is done run-time, the only possible way in Python, unlike other typed languages, e.g.&nbsp;Scala.</p>
-<p><strong>What makes me exited</strong> about <code>pandera</code>?</p>
-<ol type="1">
-<li>Robust &amp; Clean Pipelines.</li>
-<li>Reproducible and Testable.</li>
-<li>Integrates with other great ecosystems like <code>pydantic</code>, <code>fastapi</code> &amp; <code>mypy</code>.</li>
-</ol>
-<p>What makes me <strong>not exited</strong> about <code>pandera</code>?</p>
-<ol type="1">
-<li><strong>No <code>polars</code> support yet</strong></li>
-<li>It validates through <strong>run-time crashes</strong> (because of Python)
-<ul>
-<li>It helps that <code>pandera</code> has <code>lazy evaluation</code>, but still it’s runtime!</li>
-</ul></li>
-</ol>
-<section id="how-im-using-pandera-in-production-setting" class="level2">
-<h2 class="anchored" data-anchor-id="how-im-using-pandera-in-production-setting">How I’m using <code>pandera</code> in production setting</h2>
-<p>Because life is how life is a lot of our pipelines, especially ML pipelines, are written fully in Python. I’m really happy to have tools like <code>polars</code> which makes it a tad bit speedier, but in all honesty I’d deeply prefer to use a fully typed language like Kotlin or Scala.</p>
-<p>To build maintainable pipelines we need to know what to expect and what to do in the unexpected, in Python we glue these pieces together unlike strongly typed languages where it’s built into the core itself.</p>
-<p>But because life is how life is we use Python and <code>pandera</code> shines brightly in making the non-typed world a little bit better.</p>
-<p>In our ML pipelines we decorate inputs to make sure we have the right data as expected before training our models. <code>pandera</code> fits really nicely into an organisation that has a structured orchestration tool like <code>dagster</code> or similar.</p>
-
-
-</section>
-
- ]]></description>
-  <category>data</category>
-  <category>pipeline</category>
-  <category>type</category>
-  <guid>https://blog.londogard.com/posts/2023-04-30-pandera.html</guid>
-  <pubDate>Sun, 30 Apr 2023 00:00:00 GMT</pubDate>
 </item>
 </channel>
 </rss>
