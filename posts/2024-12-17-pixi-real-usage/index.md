@@ -93,6 +93,13 @@ Why?
 
 I think this feature is really cool, but as pixi utilize `uv` you can use it in `pixi` too! ;)
 
+::: {.callout-tip}
+#### How to run in 'inline script' in Pixi
+Simply call `pixi exec uv run a.py`. See the [docs (cli/#exec)](https://pixi.sh/latest/reference/cli/#exec) where you're able to also run shell-scripts with a [shebang](https://pixi.sh/latest/advanced/shebang/).
+
+**Edit:** Added this callout 2025-03-07.
+:::
+
 ```python
 # /// script
 # dependencies = [
