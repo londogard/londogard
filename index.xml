@@ -1254,6 +1254,20 @@ The part of keeping lock-files on everything, while allowing certain OS:es missi
 <h3 class="anchored" data-anchor-id="what-is-the-one-big-uv-pro">What is the one big <code>uv</code> pro?</h3>
 <p><a href="https://docs.astral.sh/uv/guides/scripts/#declaring-script-dependencies">UV’s Inline Script Dependencies</a></p>
 <p>I think this feature is really cool, but as pixi utilize <code>uv</code> you can use it in <code>pixi</code> too! ;)</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+How to run in ‘inline script’ in Pixi
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Simply call <code>pixi exec uv run a.py</code>. See the <a href="https://pixi.sh/latest/reference/cli/#exec">docs (cli/#exec)</a> where you’re able to also run shell-scripts with a <a href="https://pixi.sh/latest/advanced/shebang/">shebang</a>.</p>
+<p><strong>Edit:</strong> Added this callout 2025-03-07.</p>
+</div>
+</div>
 <div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><span class="co" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;"># /// script</span></span>
