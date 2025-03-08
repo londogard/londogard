@@ -10,7 +10,44 @@
 <atom:link href="https://blog.londogard.com/index.xml" rel="self" type="application/rss+xml"/>
 <description>A blog which majorly focuses on Data Science, Data Engineering and sometimes Kotlin / Scala.</description>
 <generator>quarto-1.6.42</generator>
-<lastBuildDate>Sun, 02 Mar 2025 00:00:00 GMT</lastBuildDate>
+<lastBuildDate>Fri, 07 Mar 2025 00:00:00 GMT</lastBuildDate>
+<item>
+  <title>DeepSeek’s smallpond - a distributed duckdb</title>
+  <dc:creator>Hampus Londögård</dc:creator>
+  <link>https://blog.londogard.com/posts/2025-03-07-deepseek-smallpond/</link>
+  <description><![CDATA[ 
+
+
+
+
+
+<p>There has been a lot of buss around <a href="https://www.deepseek.com/">DeepSeek</a> (R1) and their Open Source mission, and lately they released their full stack to train State-of-the-Art LLM’s.<br>
+One of the tools is a <em>Distributed Data Processing</em> framework named <a href="https://github.com/deepseek-ai/smallpond"><em>“smallpond”</em></a> built on top of <a href="https://duckdb.org/"><em>DuckDB</em></a> <em>&amp;</em> <a href="https://www.ray.io/"><em>Ray</em></a>.<br>
+Mike made an excellent write-up on his <a href="https://www.definite.app/blog/smallpond">blog.</a></p>
+<p><strong>The summary?</strong> It’s a tool that you can’t even <a href="https://x.com/suchenzang/status/1895437762427560236">buy with millions $</a>, insanely valuable Open Source code! Draw-back? A lot of setup, early days with few (if any) guides.<br>
+<strong>When should I use it?</strong> When you start to have more than 10 TB of data to query, especially above 1 PB.</p>
+<p><strong>My thoughts</strong> are that</p>
+<ol type="1">
+<li><em>smallpond</em> brings the “modern data stack” closer to end-user for truly Big Data, but not close enough.
+<ul>
+<li>We see <em>Apache Arrow</em> and <em>Ray</em> (a lot more lean than say <a href="https://airflow.apache.org/">Apache Airflow</a>) as key technologies, and the engines are interchangable between DuckDB and Polars.</li>
+</ul></li>
+<li>There’s other competition trying similar, e.g.&nbsp;<a href="https://pola.rs/posts/polars-cloud-what-we-are-building/">Polars Cloud</a> (albeit potentially not Open Source it’s an exciting future)!</li>
+<li>There’s other competition rather looking at vertical scaling, e.g.&nbsp;<a href="https://motherduck.com/">Motherduck</a> .</li>
+</ol>
+<p>At the end of the day Motherducks approach resonates a lot more to me, by storing data cleverly we can easily query huge amount of data efficiently on a single machine through metadata scanning, especially with vertical scaling. <em>It’s also the simplest approach.</em></p>
+<p>But some days you might be in need of that <em>brute-force</em> because there isn’t time, competence or your problem simply requires loading and working with <em>insane amounts of data</em>, i.e.&nbsp;LLM training.</p>
+<p>All in all <em>smallpond</em> and <em>3FS</em> are great additions to the open source community and extends the “distributed truly big data processing” which is a valuable target. Though I can’t help but think and hope that there’ll be even simpler tools moving forward.</p>
+
+
+
+ ]]></description>
+  <category>python</category>
+  <category>data</category>
+  <category>distributed</category>
+  <guid>https://blog.londogard.com/posts/2025-03-07-deepseek-smallpond/</guid>
+  <pubDate>Fri, 07 Mar 2025 00:00:00 GMT</pubDate>
+</item>
 <item>
   <title>Marimo WASM Apps</title>
   <dc:creator>Hampus Londögård</dc:creator>
@@ -6576,103 +6613,6 @@ Figure&nbsp;1: DataFrame Comparison of 10k runs on <a href="https://github.com/p
   <category>dataframe</category>
   <guid>https://blog.londogard.com/posts/2023-05-06-kotlin-vs-polars-dataframe.html</guid>
   <pubDate>Sat, 06 May 2023 00:00:00 GMT</pubDate>
-</item>
-<item>
-  <title>DuckDB - Quacking Data (WIP)</title>
-  <dc:creator>Hampus Londögård</dc:creator>
-  <link>https://blog.londogard.com/posts/2023-05-05-duckdb.html</link>
-  <description><![CDATA[ 
-
-
-
-
-
-<blockquote class="blockquote">
-<p>DuckDB is a relational database management system (RDBMS) that is used for managing data stored in relations, which are essentially tables. DuckDB is an in-process OLAP DBMS written in C++. It has no dependencies, is easy to set up, and is optimized to perform queries on data. It is similar to SQLite for Analytics. DuckDB is designed to run on a single machine, and it is not a multi-tenant database. It is perfect for data practitioners that want to perform local analytical workloads easily and quickly.</p>
-</blockquote>
-<div class="callout callout-style-default callout-warning callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Warning
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>This blog is a continuous work and WIP.</p>
-</div>
-</div>
-<section id="duckdb---quacking-data" class="level1">
-<h1>DuckDB - Quacking Data</h1>
-<p>DuckDB is the OLAP-version of SQLite. It’s <em>simple</em>, <em>feature rich</em>, <em>fast</em> and most importantly <em>free</em>. It reall is an incredible tool for quick local analytical workloads. It has very impressive results in the <a href="https://duckdblabs.github.io/db-benchmark/">H2O-benchmark</a> resulting in a jack-of-all-trades for analytics.</p>
-<p>It has neat integration into:</p>
-<ol type="1">
-<li><code>pandas</code></li>
-<li><strong><code>polars</code></strong></li>
-<li>Arrow, PostgreSQL, <code>parquet</code>, <code>deltalake</code>, …</li>
-</ol>
-<p>Where you simply query on top of the datastructure which makes the query incredibly efficient even if it’s not “DuckDB”-format. It all becomes painless and efficient through the <a href="https://arrow.apache.org">Apache Arrow-protocol</a>. Arrow is a <em>cross-language development platform for in-memory analytics</em> which is very fast, because the underlying structure remains we never copy data between DuckDB and <code>polars</code> as an example. Rather DuckDB operates on <code>polars</code> Arrow dataset. Cool? Yes! 🤓</p>
-<p>Lately they’ve added superb <a href="https://duckdb.org/2023/04/28/spatial.html">Spatial Support</a> where they leverage <a href="https://gdal.org/">GDAL</a>.</p>
-<p>Recently <a href="https://motherduck.com/">Motherduck</a> gave a talk on how <a href="https://motherduck.com/blog/big-data-is-dead/"><em>Big Data is Dead</em></a>, where a BigQuery founding engineer laid out the average customer doesn’t have Big Data. Jordan Tigani notes the following trends.</p>
-<div id="fig-queries" class="quarto-layout-panel">
-<figure class="quarto-float quarto-float-fig figure">
-<div aria-describedby="fig-queries-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<div class="quarto-layout-row">
-<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: flex-start;">
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="https://blog.londogard.com/posts/assets/average_load.jpg" class="img-fluid figure-img"></p>
-<figcaption>Data Sizes at Companies</figcaption>
-</figure>
-</div>
-</div>
-<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: flex-start;">
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="https://blog.londogard.com/posts/assets/query_intensity.jpg" class="img-fluid figure-img"></p>
-<figcaption>Query Intensity on Data by Age</figcaption>
-</figure>
-</div>
-</div>
-</div>
-</div>
-<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-queries-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;1: Jordan Tigani’s ‘Feel of the Industry’
-</figcaption>
-</figure>
-</div>
-<p>Further Jordan notes that from 2006 to 2023 we see a huge increase in how powerful single nodes are. In 2006 you could get 2GB RAM, today a standard instance has 256 GB RAM and if you slap your wallet at the problem you can get 24TB (!) RAM.</p>
-<p>Through this power of a single node more than 99.9% of all problems should be possible to solve through a single node where DuckDB can reign supreme.</p>
-</section>
-<section id="how-am-i-using-duckdb-in-my-professional-life" class="level1">
-<h1>How am I using DuckDB in my professional life?</h1>
-<p>DuckDB is integral to my workflow. I use it when <code>polars</code> is not enough. Because DuckDB can easily query <code>parquet</code> we’re good to go in most Machine Learning setups.</p>
-<p>Connecting directly to S3 is as simple as using the official <a href="https://duckdb.org/docs/guides/import/s3_import.html"><code>httpfs</code> extension</a> which is done in the following way:</p>
-<pre><code>INSTALL httpfs; # run once
-
-LOAD httpfs;</code></pre>
-</section>
-<section id="how-i-want-to-move-forward-with-duckdb" class="level1">
-<h1>How I want to move forward with DuckDB</h1>
-<p>I have so many plans on what I wish to achieve.</p>
-<section id="poor-mans-data-lake" class="level2">
-<h2 class="anchored" data-anchor-id="poor-mans-data-lake">Poor Mans Data Lake</h2>
-<p>I have been thinking a lot lately on building my own Data Lake using DuckDB, <code>polars</code> &amp; <code>dagster</code>. This would be greatly inspired by <code>dagster</code>’s <a href="https://dagster.io/blog/duckdb-data-lake">blog - ‘Poor Mans Data Lake’</a>.</p>
-</section>
-<section id="best-practices-write-up" class="level2">
-<h2 class="anchored" data-anchor-id="best-practices-write-up">Best Practices Write-Up</h2>
-<p>Additionally it’d be very interesting to set up a “Best Practices” using “Local First” tooling such as DuckDB &amp; <code>polars</code>. When to use what and how they differentiate.</p>
-
-
-</section>
-</section>
-
- ]]></description>
-  <category>data</category>
-  <category>pipeline</category>
-  <guid>https://blog.londogard.com/posts/2023-05-05-duckdb.html</guid>
-  <pubDate>Wed, 03 May 2023 00:00:00 GMT</pubDate>
 </item>
 </channel>
 </rss>
