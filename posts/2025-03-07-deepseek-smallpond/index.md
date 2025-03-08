@@ -1,5 +1,5 @@
 ---
-title: "DeepSeek's smallpond - a distributed duckdb"
+title: "Mini: DeepSeek's smallpond - a distributed duckdb"
 description: "Open Source software that'd cost millions if not billions of $! I share my quick thoughts on _smallpond_ that runs DuckDB distributed through Ray by DeepSeek (creators of R1 LLM)."
 categories: [python, data, distributed]
 date: "2025-03-07"
