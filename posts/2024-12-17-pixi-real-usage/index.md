@@ -99,7 +99,8 @@ Simply call `pixi exec uv run a.py`. See the [docs (cli/#exec)](https://pixi.sh/
 
 A bonus of `exec` is that if you instead use the "pixi-native" ~~`--scope`~~ `--spec` it supports conda too, e.g. `pixi exec -s polars -s altair python` to run a temporary python venv with `polars` & `altair`.
 
-**Edit:** Added this callout 2025-03-07 and updated 2025-03-10 based on feedback from _markusschlenker_.
+**Edit:** Added this callout 2025-03-07 and updated 2025-03-10 based on feedback from _markusschlenker_.  
+**Edit 2:** I want to add that you can also easily add `uv` as a global tool (like installing it), through `pixi global install uv`.
 :::
 
 ```python
