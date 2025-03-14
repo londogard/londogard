@@ -6,4 +6,5 @@ title-block-banner: true
 
 We've the following WASM apps available:
 
-1. [Spreadsheet Explorer/Converter (CSV, JSON & Parquet)](/pages/app_spreadsheet.qmd)
+1. [Spreadsheet Explorer/Converter (CSV, JSON & Parquet)](/pages/apps/app_spreadsheet.qmd)
+2. [Zero DCE++ running in WASM/js (onnxruntime)](/pages/apps/nightvision.qmd)
