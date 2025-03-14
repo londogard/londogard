@@ -91,15 +91,15 @@ Why?
 ### What is the one big `uv` pro?  
 [UV's Inline Script Dependencies](https://docs.astral.sh/uv/guides/scripts/#declaring-script-dependencies)
 
-I think this feature is really cool, but as pixi utilize `uv` you can use it in `pixi` too! ;)
+I think this feature is really cool, ~~but as pixi utilize `uv` you can use it in `pixi` too! ;)~~ but it's quite easy to replicate in `pixi` as well (including with `uv`)! ;)
 
 ::: {.callout-tip}
 #### How to run in 'inline script' in Pixi
-Simply call `pixi exec uv run a.py`. See the [docs (cli/#exec)](https://pixi.sh/latest/reference/cli/#exec) where you're able to also run shell-scripts with a [shebang](https://pixi.sh/latest/advanced/shebang/).
+Simply call `pixi exec uv run a.py`. See the [docs (cli/#exec)](https://pixi.sh/latest/reference/cli/#exec) where you're able to also run shell-scripts with a [shebang](https://pixi.sh/latest/advanced/shebang/). This will actually install `uv` in a temporary env, and then use that `uv`.
 
-A bonus of `exec` is that if you instead use the "pixi-native" `--scope` it supports conda too.
+A bonus of `exec` is that if you instead use the "pixi-native" ~~`--scope`~~ `--spec` it supports conda too, e.g. `pixi exec -s polars -s altair python` to run a temporary python venv with `polars` & `altair`.
 
-**Edit:** Added this callout 2025-03-07.
+**Edit:** Added this callout 2025-03-07 and updated 2025-03-10 based on feedback from _markusschlenker_.
 :::
 
 ```python
