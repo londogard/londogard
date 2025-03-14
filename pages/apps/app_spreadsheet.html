@@ -6,11 +6,8 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="author" content="Hampus Londögård">
-<meta name="dcterms.date" content="2025-03-02">
-<meta name="description" content="I built a simple but sweet tool to assist you with CSV, JSON &amp; Parquet files. Explore data? Convert? Play around - I got you covered!">
 
-<title>Marimo WASM Apps – Londogard Blog</title>
+<title>WASM Spreadsheet Explorer/Converter (CSV, JSON &amp; Parquet) – Londogard Blog</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -73,13 +70,10 @@ ul.task-list li input[type="checkbox"] {
 
 
 <link rel="stylesheet" href="../../styles.css">
-<meta name="twitter:title" content="Marimo WASM Apps – Londogard Blog">
-<meta name="twitter:description" content="I built a simple but sweet tool to assist you with CSV, JSON &amp; Parquet files. Explore data? Convert? Play around - I got you covered!">
-<meta name="twitter:image" content="https://blog.londogard.com/posts/2025-03-02-marimo-spreadsheets/image.png">
+<meta name="twitter:title" content="WASM Spreadsheet Explorer/Converter (CSV, JSON &amp; Parquet) – Londogard Blog">
+<meta name="twitter:description" content="A blog which majorly focuses on Data Science, Data Engineering and sometimes Kotlin / Scala.">
 <meta name="twitter:creator" content="@hlondogard">
-<meta name="twitter:image-height" content="512">
-<meta name="twitter:image-width" content="674">
-<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:card" content="summary">
 </head>
 
 <body class="nav-fixed">
@@ -172,182 +166,42 @@ ul.task-list li input[type="checkbox"] {
 <!-- content -->
 <header id="title-block-header" class="quarto-title-block default page-columns page-full">
   <div class="quarto-title-banner page-columns page-full">
-    <div class="quarto-title column-body">
-      <h1 class="title">Marimo WASM Apps</h1>
-                  <div>
-        <div class="description">
-          I built a simple but sweet tool to assist you with CSV, JSON &amp; Parquet files. Explore data? Convert? Play around - I got you covered!
-        </div>
-      </div>
-                          <div class="quarto-categories">
-                <div class="quarto-category">python</div>
-                <div class="quarto-category">wasm</div>
-                <div class="quarto-category">app</div>
-              </div>
-                  </div>
+    <div class="quarto-title column-page">
+      <h1 class="title">WASM Spreadsheet Explorer/Converter (CSV, JSON &amp; Parquet)</h1>
+                      </div>
   </div>
     
   
-  <div class="quarto-title-meta">
+  <div class="quarto-title-meta column-page">
 
-      <div>
-      <div class="quarto-title-meta-heading">Author</div>
-      <div class="quarto-title-meta-contents">
-               <p>Hampus Londögård </p>
-            </div>
-    </div>
       
-      <div>
-      <div class="quarto-title-meta-heading">Published</div>
-      <div class="quarto-title-meta-contents">
-        <p class="date">March 2, 2025</p>
-      </div>
-    </div>
     
       
     </div>
     
   
-  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        <nav id="TOC" role="doc-toc" class="toc-active">
-    <h2 id="toc-title">On this page</h2>
-   
-  <ul>
-  <li><a href="#appconverter" id="toc-appconverter" class="nav-link active" data-scroll-target="#appconverter">App:Converter</a></li>
-  <li><a href="#appexplore" id="toc-appexplore" class="nav-link" data-scroll-target="#appexplore">App:Explore</a></li>
-  <li><a href="#result" id="toc-result" class="nav-link" data-scroll-target="#result">Result</a></li>
-  <li><a href="#outro" id="toc-outro" class="nav-link" data-scroll-target="#outro">Outro</a></li>
-  </ul>
-</nav>
-    </div>
+    
 <!-- main -->
-<main class="content quarto-banner-title-block" id="quarto-document-content">
+<main class="content quarto-banner-title-block column-page" id="quarto-document-content">
 
 
 
 
 
-<p>This post will be short, I recently built a WASM app that allows you to 1) convert between Parquet/CSV/JSON and 2) explore the data using Marimos built-in tooling.</p>
-<p>I shared an initial introduction to marimo in a <a href="../../posts/2025-02-17-marimo">blog earlier</a>.</p>
-<div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Tip
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>In short <strong>marimo</strong> is an up-and-coming Notebook that also have “App-mode” and can run using WASM.</p>
-</div>
-</div>
-<section id="appconverter" class="level2">
-<h2 class="anchored" data-anchor-id="appconverter">App:Converter</h2>
-<p>There’s multiple libraries suppoted in Pyodide, Python WASM, among them: <code>polars</code>, <code>duckdb</code> and <code>pandas</code>.<br>
-All these libraries are exceptional, with <code>pandas</code> as a exception 😉, to do Data Science and work with tabular data. They also have read/write support for <code>JSON</code>, <code>CSV</code> and <code>parquet</code> files.</p>
-<div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Tip
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p><strong>Parquet</strong> is an awesome format for reading data, it’s <em>small, fast &amp; efficient</em> which in turn enables magnitudes better performance (10-100x easily).</p>
-</div>
-</div>
-<p>These tools enable my simple <em>converter</em> that allows more people to easily move <em>from CSV/JSON to Parquet</em>, and in turn have faster plotting!</p>
-<p>As always there’s some problems implementing:</p>
 <ul>
-<li><code>polars</code> doesn’t support parquet/JSON in WASM
-<ul>
-<li>–&gt; fall-back to <code>duckdb</code>.</li>
-<li><code>duckdb</code> can’t read parquet from<code>io.BytesIO</code>
-<ul>
-<li>–&gt; fall-back to… <code>pandas</code> 🤦‍♂️.</li>
-<li>Luckily we can quickly call <code>pl.from_pandas</code> to run <code>polars</code>!</li>
-</ul></li>
-</ul></li>
+<li>WASM ✅</li>
+<li>CSV &lt;&gt; JSON &lt;&gt; Parquet ✅</li>
+<li>Awesome exploration mode? ✅</li>
 </ul>
-<p>I hope to add more formats moving forwards, such as <code>ndjson</code> and <code>xlsx</code>.</p>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="image.png" class="img-fluid figure-img"></p>
-<figcaption>Convert (src: parquet-file) that automatically infer available targets</figcaption>
-</figure>
-</div>
-</section>
-<section id="appexplore" class="level2">
-<h2 class="anchored" data-anchor-id="appexplore">App:Explore</h2>
-<p>Data Exploration - a important part and initial step when working with data of any type.<br>
-When exploring your dataset it’s good to have a streamlined way of working. Marimo has some excellent tooling to quickly structure your data. <strong>I’ve added all these tools in my simple WASM app</strong>, things include like:</p>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="image-1.png" class="img-fluid figure-img"></p>
-<figcaption><strong>DataFrame with Statistics in the header</strong></figcaption>
-</figure>
-</div>
-<div>
-
-</div>
-<div class="quarto-layout-panel" data-layout-ncol="2">
-<div class="quarto-layout-row">
-<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: flex-start;">
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="image-2.png" class="img-fluid figure-img"></p>
-<figcaption><strong>“Click” Plotting - select X,Y, …</strong></figcaption>
-</figure>
-</div>
-</div>
-<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: flex-start;">
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="image-3.png" class="img-fluid figure-img"></p>
-<figcaption>Another example</figcaption>
-</figure>
-</div>
-</div>
-</div>
-</div>
-<p>These tools combine into a quite neat exploration app. If you run this notebook locally you can easily hit up the <em>code cells</em> and modify the DataFrames manually and keep utilizing the nifty UI features such as statistics in DataFrame columns or visualization.</p>
-<p>All in all this is a simple quick-starter, I think this app can be helpful for those who wants to explore their data, advaned or simple.</p>
-</section>
-<section id="result" class="level2">
-<h2 class="anchored" data-anchor-id="result">Result</h2>
-<div class="callout callout-style-simple callout-tip no-icon callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon no-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-WASM Spreadsheet Explorer/Converter (CSV, JSON &amp; Parquet) App
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p><a href="../../pages/app_spreadsheet.qmd">Also available as stand-alone</a></p>
-
+<p>Here we go!</p>
+<hr>
 <iframe width="100%" height="720" src="../../assets/wasm/spreadsheet/app/index.html"></iframe>
-</div>
-</div>
-</section>
-<section id="outro" class="level1">
-<h1>Outro</h1>
-<p>I’ll keep adding more WASM apps with time. I love Pyodide.</p>
-<p>Combining WASM with Marimo, or <code>stlite</code>, feels like such a natural fit.<br>
-Marimo to me combines the perfection of Notebook Exploration with Apps, hence I opted for Marimo now.</p>
-<p>Moving on I’ll add more in-depth blogs about Marimo and why it’s awesome, embedding WASM snippets and more.</p>
-<p>Thanks for this time,<br>
-Hampus Londögård</p>
+<hr>
 
 
-</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">

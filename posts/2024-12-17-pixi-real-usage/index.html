@@ -366,7 +366,8 @@ How to run in ‘inline script’ in Pixi
 <div class="callout-body-container callout-body">
 <p>Simply call <code>pixi exec uv run a.py</code>. See the <a href="https://pixi.sh/latest/reference/cli/#exec">docs (cli/#exec)</a> where you’re able to also run shell-scripts with a <a href="https://pixi.sh/latest/advanced/shebang/">shebang</a>. This will actually install <code>uv</code> in a temporary env, and then use that <code>uv</code>.</p>
 <p>A bonus of <code>exec</code> is that if you instead use the “pixi-native” <del><code>--scope</code></del> <code>--spec</code> it supports conda too, e.g.&nbsp;<code>pixi exec -s polars -s altair python</code> to run a temporary python venv with <code>polars</code> &amp; <code>altair</code>.</p>
-<p><strong>Edit:</strong> Added this callout 2025-03-07 and updated 2025-03-10 based on feedback from <em>markusschlenker</em>.</p>
+<p><strong>Edit:</strong> Added this callout 2025-03-07 and updated 2025-03-10 based on feedback from <em>markusschlenker</em>.<br>
+<strong>Edit 2:</strong> I want to add that you can also easily add <code>uv</code> as a global tool (like installing it), through <code>pixi global install uv</code>.</p>
 </div>
 </div>
 <div class="sourceCode" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># /// script</span></span>
