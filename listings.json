@@ -2,6 +2,7 @@
   {
     "listing": "/index.html",
     "items": [
+      "/posts/2025-03-19-wasm-python-js-inference/index.html",
       "/posts/2025-03-07-deepseek-smallpond/index.html",
       "/posts/2025-03-02-marimo-spreadsheets/index.html",
       "/posts/2025-02-27-python-dependency-collector/index.html",

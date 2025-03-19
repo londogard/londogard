@@ -10,7 +10,252 @@
 <atom:link href="https://blog.londogard.com/index.xml" rel="self" type="application/rss+xml"/>
 <description>A blog which majorly focuses on Data Science, Data Engineering and sometimes Kotlin / Scala.</description>
 <generator>quarto-1.6.42</generator>
-<lastBuildDate>Fri, 07 Mar 2025 00:00:00 GMT</lastBuildDate>
+<lastBuildDate>Wed, 19 Mar 2025 00:00:00 GMT</lastBuildDate>
+<item>
+  <title>Transformers.js.py accelerated on-device inference with Python WASM</title>
+  <dc:creator>Hampus Londögård</dc:creator>
+  <link>https://blog.londogard.com/posts/2025-03-19-wasm-python-js-inference/</link>
+  <description><![CDATA[ 
+
+
+
+
+
+<p><a href="https://huggingface.co/docs/transformers.js/en/index">Transformers.js</a> is an ambitious project by HuggingFace to bring <em>transformers</em> to Web/JS and simplify inference on-device, running <code>onnxruntime-web</code> under-the-hood.<br>
+I’ve written blogs and apps with <code>onnxruntime-web</code><sup>1</sup>, and I must say - I’m a sucker for efficient on-device inference!</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+ONNX Runtime and <code>onnxruntime-web</code>
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-1" class="callout-1-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p><code>onnxruntime-web</code> helps run models efficiently directly in your browser (JS) through the default backend <em>WASM</em> (cpu).</p>
+<p>Additionally you can accelerate inference via GPU/NPU when swapping backend to either <code>WebGL</code>, <code>WebGPU</code>, or <code>WebNN</code>. I think this is really cool as we can now develop Progressive Web Apps (PWA) that accelerate their inference using a smartphones NPU - crazy!</p>
+<p>ONNX Runtime also supports many other ways to run inference, e.g.&nbsp;JVM, .NET, Python, and C++.</p>
+</div>
+</div>
+</div>
+<p>And recently I learned about a thin wrapper around <code>transformers.js</code>, namely <a href="https://github.com/whitphx/transformers.js.py">Transformers.js.py</a> that proxies the API to <a href="https://pyodide.org/en/stable/">Pyodide</a><sup>2</sup>.<br>
+Right below 👇 I share how to run Object Detection.</p>
+<section id="how-to-object-detection-inference" class="level2">
+<h2 class="anchored" data-anchor-id="how-to-object-detection-inference">How to: Object Detection Inference</h2>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>infer.py</strong></pre>
+</div>
+<div class="sourceCode" id="annotated-cell-1" data-filename="infer.py" style="background: #f1f3f5;"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><a class="code-annotation-anchor" data-target-cell="annotated-cell-1" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-1-1" class="code-annotation-target"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">from</span> transformers_js_py <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> import_transformers_js, as_url</span>
+<span id="annotated-cell-1-2">transformers <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">await</span> import_transformers_js()</span>
+<span id="annotated-cell-1-3">pipeline <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> transformers.pipeline</span>
+<span id="annotated-cell-1-4"></span>
+<span id="annotated-cell-1-5">img <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"&lt;URL_OR_PATH_TO_AN_IMAGE&gt;"</span></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-1" data-target-annotation="2" onclick="event.preventDefault();">2</a><span id="annotated-cell-1-6" class="code-annotation-target">pipe <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">await</span> pipeline(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"object-detection"</span>)</span>
+<span id="annotated-cell-1-7"></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-1" data-target-annotation="3" onclick="event.preventDefault();">3</a><span id="annotated-cell-1-8" class="code-annotation-target">pred <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">await</span> pipe(as_url(img))</span>
+<span id="annotated-cell-1-9"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">print</span>(pred) <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># list of predictions [{"score": float, "label": str, "box": dict[str, int]}, ...]</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div>
+</div>
+<dl class="code-annotation-container-grid">
+<dt data-target-cell="annotated-cell-1" data-target-annotation="1">1</dt>
+<dd>
+<span data-code-cell="annotated-cell-1" data-code-lines="1,2,3" data-code-annotation="1">Import library and “import” <code>pipeline</code></span>
+</dd>
+<dt data-target-cell="annotated-cell-1" data-target-annotation="2">2</dt>
+<dd>
+<span data-code-cell="annotated-cell-1" data-code-lines="6" data-code-annotation="2">Set up <code>pipeline</code> object, downloading model and making things ready to run</span>
+</dd>
+<dt data-target-cell="annotated-cell-1" data-target-annotation="3">3</dt>
+<dd>
+<span data-code-cell="annotated-cell-1" data-code-lines="8" data-code-annotation="3">Run inference. <code>as_url</code> converts local/virtual files to a URL as <code>pipeline</code> object requires URL’s that can be opened in the JS context.</span>
+</dd>
+</dl>
+<p>I share how to customize the inference in Section&nbsp;3 and a full-fledged WebApp with on-device inference using Marimo in Section&nbsp;4</p>
+</section>
+<section id="why-transformer.js.py-pyodide" class="level2">
+<h2 class="anchored" data-anchor-id="why-transformer.js.py-pyodide">Why <code>transformer.js.py</code> + <code>pyodide</code></h2>
+<p>There’s a good question here: <em>why not run JS directly?</em><br>
+I don’t have a great answer, it’s all about trade-offs.</p>
+<p>JS enables “native” usage which likely works better in real-time applications, as it runs JS-&gt;WASM rather than WASM-&gt;JS-&gt;WASM.<br>
+What JS doesn’t have is a robust data science ecosystem, unlike Python. “Merging” the two through Pyodide makes sense, and further its fun! 🤓</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+A quick Pro/Con list of JS vs Pyodide
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-2" class="callout-2-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p><strong>Why JS?</strong></p>
+<ul>
+<li><strong>Pros:</strong>
+<ul>
+<li>Faster / Realtime (as no WASM/JS communication)</li>
+<li>Native integration in webapps</li>
+</ul></li>
+<li><strong>Cons:</strong>
+<ul>
+<li>Not great data science tools</li>
+</ul></li>
+</ul>
+<p><strong>Why Python (Pyodide)?</strong></p>
+<ul>
+<li><strong>Pros:</strong>
+<ul>
+<li>Great ecosystem (PIL.Image, numpy, altair, polars, …)</li>
+<li>Familarity</li>
+<li>Simpler PoC UI tools available (marimo, streamlit, solara, jupyterlite)</li>
+</ul></li>
+<li><strong>Cons:</strong>
+<ul>
+<li>Overhead moving data from Pyodide (WASM) to JS
+<ul>
+<li>Hard to make realtime because of this</li>
+</ul></li>
+</ul></li>
+</ul>
+</div>
+</div>
+</div>
+</section>
+<section id="sec-usage" class="level2">
+<h2 class="anchored" data-anchor-id="sec-usage">Inference Customization</h2>
+<p>To select a specific model define the name as you build the pipeline.</p>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>infer_options.py</strong></pre>
+</div>
+<div class="sourceCode" id="annotated-cell-2" data-filename="infer_options.py" style="background: #f1f3f5;"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><span id="annotated-cell-2-1">pipe <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">await</span> pipeline(</span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-2" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-2-2" class="code-annotation-target">  <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"object-detection"</span>, <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># task_name</span></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-2" data-target-annotation="2" onclick="event.preventDefault();">2</a><span id="annotated-cell-2-3" class="code-annotation-target">  <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Xenova/yolos-tiny"</span>, <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># model_name</span></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-2" data-target-annotation="3" onclick="event.preventDefault();">3</a><span id="annotated-cell-2-4" class="code-annotation-target">  {</span>
+<span id="annotated-cell-2-5">    dtype: <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"q4"</span>, <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># default "q8" for WASM.</span></span>
+<span id="annotated-cell-2-6">    device: <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"webgpu"</span>, <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># default "WASM" (cpu)</span></span>
+<span id="annotated-cell-2-7">    use_external_data_format: <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"false"</span> <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># default "false", set "true" to load &gt;= 2GB model</span></span>
+<span id="annotated-cell-2-8">  }</span>
+<span id="annotated-cell-2-9">)</span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div>
+</div>
+<dl class="code-annotation-container-grid">
+<dt data-target-cell="annotated-cell-2" data-target-annotation="1">1</dt>
+<dd>
+<span data-code-cell="annotated-cell-2" data-code-lines="2" data-code-annotation="1">Find all available tasks and their linked model-list <a href="https://huggingface.co/docs/transformers.js/index#tasks">here</a>.</span>
+</dd>
+<dt data-target-cell="annotated-cell-2" data-target-annotation="2">2</dt>
+<dd>
+<span data-code-cell="annotated-cell-2" data-code-lines="3" data-code-annotation="2">Find all available Object Detection models <a href="https://huggingface.co/models?pipeline_tag=object-detection&amp;library=transformers.js">here</a>.</span>
+</dd>
+<dt data-target-cell="annotated-cell-2" data-target-annotation="3">3</dt>
+<dd>
+<span data-code-cell="annotated-cell-2" data-code-lines="4,5,6,7,8" data-code-annotation="3">Find all options <a href="https://huggingface.co/docs/transformers.js/en/api/utils/hub#utilshubmodelspecificpretrainedoptions--code-object-code">here</a> and <a href="https://huggingface.co/docs/transformers.js/en/api/utils/hub#utilshubmodelspecificpretrainedoptions--code-object-code">here</a>.</span>
+</dd>
+</dl>
+<p>Simple right?<br>
+I’m continuously impressed by how far we’ve gotten. On-device inference, even with acceleration, is a painless thing today. If you want simplicity I recommend <code>web</code> and otherwise to use the <em>mobile</em>/<em>native</em> releases or alternatively <a href="https://ai.google.dev/edge/litert">LiteRT</a> (previously TFLite).</p>
+<p>What’s left?<br>
+Improving the JS data science ecosystem, for now I prefer Pyodide because of the vast ecosystem. Though I’d like to congratulate <code>transformers.js</code> at successfully making inference simple for people who simply wants a blackbox. Personally I usually want to work with data before/after inference which requires better tools that Pyodide provides.</p>
+</section>
+<section id="sec-marimo" class="level2">
+<h2 class="anchored" data-anchor-id="sec-marimo">WASM App using Marimo</h2>
+<p>If you’ve read my blog you know I recently discovered <a href="https://marimo.io/">Marimo</a>, and as always with new tools you try to use them, perhaps a bit too much, whenever you can.<br>
+I thought I’d give it a shot to integrate with <code>transformer.js.py</code> and run the inference fully on-device with WASM.<br>
+It’s certainly not real-time, but ~5 seconds per image is OK I’d say.</p>
+<div id="fig-infernce" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-infernce-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="quarto-video"><video id="video_shortcode_videojs_video1" class="video-js vjs-default-skin vjs-fluid" controls="" preload="auto" data-setup="{}" title=""><source src="on-device-preds.mp4"></video></div>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-infernce-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1: Marimo WASM App running inference on two images.
+</figcaption>
+</figure>
+</div>
+<p>All in all I think this approach is quite neat and could provide very useful, especially for Proof-of-Concepts or Internal Tooling.</p>
+<p>Run the app yourself via my <a href="https://marimo.io/p/@hlondogard/notebook-transformer-js-py-object-detection-wasm?show-code=false">marimo.io WASM notebook</a>. Show the code by clicking the three dots in top-right corner.</p>
+<p>Thanks for this time,<br>
+Hampus Londögård</p>
+
+
+</section>
+
+
+<div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
+
+<ol>
+<li id="fn1"><p>through JS / KotlinJS perspective↩︎</p></li>
+<li id="fn2"><p>Pyodide is CPython port to WASM, enabling Python running directly in the browser↩︎</p></li>
+</ol>
+</section></div> ]]></description>
+  <category>python</category>
+  <category>wasm</category>
+  <category>js</category>
+  <category>inference</category>
+  <category>onnxruntime</category>
+  <guid>https://blog.londogard.com/posts/2025-03-19-wasm-python-js-inference/</guid>
+  <pubDate>Wed, 19 Mar 2025 00:00:00 GMT</pubDate>
+</item>
 <item>
   <title>Mini: DeepSeek’s smallpond - a distributed duckdb</title>
   <dc:creator>Hampus Londögård</dc:creator>
@@ -6542,78 +6787,6 @@ font-style: inherit;">with</span> c2:</span>
   <category>webapp</category>
   <guid>https://blog.londogard.com/posts/2023-06-30-solara/</guid>
   <pubDate>Fri, 30 Jun 2023 00:00:00 GMT</pubDate>
-</item>
-<item>
-  <title>Kotlin DataFrame vs Polars DataFrame</title>
-  <dc:creator>Hampus Londögård</dc:creator>
-  <link>https://blog.londogard.com/posts/2023-05-06-kotlin-vs-polars-dataframe.html</link>
-  <description><![CDATA[ 
-
-
-
-
-
-<p><strong>N.B.</strong> added dataset and link to Datalore Notebooks.</p>
-<p>Benchmarking is notourusly hard, hence I know these results are not fully show-casing possibilities of the JVM. Nontheless, they’re results.</p>
-<section id="benchmark-details" class="level2">
-<h2 class="anchored" data-anchor-id="benchmark-details">Benchmark Details</h2>
-<ol type="1">
-<li>Pre-downloaded CSV (dataset: <a href="https://github.com/plotly/datasets/raw/master/all_stocks_5yr.csv">Plotly All Stocks 5 Years</a>)</li>
-<li>Use Eager-API as Kotlin DataFrame does not have a Lazy API (this would help <code>polars</code> further)</li>
-<li>Run 10k times to make sure the JVM isn’t a slow starter (one should do this even better using <a href="https://github.com/openjdk/jmh">JMH</a> and their API to benchmark)</li>
-</ol>
-</section>
-<section id="results" class="level2">
-<h2 class="anchored" data-anchor-id="results">Results</h2>
-<p>The results speak clearly.</p>
-<div id="fig-dfs" class="quarto-layout-panel">
-<figure class="quarto-float quarto-float-fig figure">
-<div aria-describedby="fig-dfs-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<div class="quarto-layout-row">
-<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: flex-start;">
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="https://blog.londogard.com/posts/assets/kotlin.png" class="img-fluid figure-img"></p>
-<figcaption>Kotlin DataFrame (5.4s) <a href="https://datalore.jetbrains.com/notebook/IpONsMtuU4rzMXd6MwMYnh/PSh1Gzu1kUBrhIrl90nu14">Datalore Notebook</a></figcaption>
-</figure>
-</div>
-</div>
-<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: flex-start;">
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="https://blog.londogard.com/posts/assets/polars.png" class="img-fluid figure-img"></p>
-<figcaption>polars DataFrame (2.6s) <a href="https://datalore.jetbrains.com/notebook/IpONsMtuU4rzMXd6MwMYnh/iKhywUCjfhXdmQWjwd6eT3">Datalore Notebook</a></figcaption>
-</figure>
-</div>
-</div>
-</div>
-</div>
-<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-dfs-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;1: DataFrame Comparison of 10k runs on <a href="https://github.com/plotly/datasets/raw/master/all_stocks_5yr.csv">Plotly All Stocks 5 Years</a>.
-</figcaption>
-</figure>
-</div>
-<ol type="1">
-<li><code>polars</code> is 2x faster (!).</li>
-<li><code>polars</code> uses 1GB less RAM.</li>
-<li><code>polars</code> actually downloaded the same CSV file 12x faster, and caches the result internally unlike Kotlin for later instant usage.</li>
-</ol>
-</section>
-<section id="thoughts" class="level2">
-<h2 class="anchored" data-anchor-id="thoughts">Thoughts</h2>
-<p>I think it’s interesting to see how much faster <code>polars</code> is, even if I use eager API and don’t use any fancy feature(s) like <code>groupBy</code> that’s optimized like crazy.</p>
-<p>It really showcases what a powerhouse Rust is to run intensive applications with, and now I’m left wondering if perhaps one should wrap <code>polars</code> on the JVM. 🤓 This has been done for other platforms, such as <a href="https://pola-rs.github.io/nodejs-polars/index.html">NodeJS</a>, <a href="https://rpolars.github.io/index.html">R</a> &amp; <a href="https://github.com/elixir-nx/explorer">Elixir</a>.</p>
-<p>Wrapping Rust from the JVM isn’t easy today though, but with the new progress with <a href="https://developer.okta.com/blog/2022/04/08/state-of-ffi-java">Project Panama</a> it should be easier. Project Panama introduces a simpler, safer and more efficient way to call Native code from the JVM through the <em>Foreign Function &amp; Memory API</em>. I expect it to become even better as it’s currently only in preview… 😉</p>
-<p>That’s all for now.<br>
-~Hampus</p>
-
-
-</section>
-
- ]]></description>
-  <category>dataframe</category>
-  <guid>https://blog.londogard.com/posts/2023-05-06-kotlin-vs-polars-dataframe.html</guid>
-  <pubDate>Sat, 06 May 2023 00:00:00 GMT</pubDate>
 </item>
 </channel>
 </rss>
