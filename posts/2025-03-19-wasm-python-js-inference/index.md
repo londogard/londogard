@@ -10,6 +10,8 @@ I've written blogs and apps with `onnxruntime-web`^[through JS / KotlinJS perspe
 
 ![Marimo WASM App: Before/After Prediction](image.png)
 
+Test it live [here](https://marimo.io/p/@hlondogard/notebook-transformer-js-py-object-detection-wasm?show-code=false), and yes it runs on your device in the browser!
+
 ::: {.callout-tip collapse="true"}
 # ONNX Runtime and `onnxruntime-web`
 
