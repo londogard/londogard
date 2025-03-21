@@ -23,6 +23,12 @@
 
 <p><a href="https://huggingface.co/docs/transformers.js/en/index">Transformers.js</a> is an ambitious project by HuggingFace to bring <em>transformers</em> to Web/JS and simplify inference on-device, running <code>onnxruntime-web</code> under-the-hood.<br>
 I’ve written blogs and apps with <code>onnxruntime-web</code><sup>1</sup>, and I must say - I’m a sucker for efficient on-device inference!</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://blog.londogard.com/posts/2025-03-19-wasm-python-js-inference/image.png" class="img-fluid figure-img"></p>
+<figcaption>Marimo WASM App: Before/After Prediction</figcaption>
+</figure>
+</div>
 <div class="callout callout-style-default callout-tip callout-titled">
 <div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
