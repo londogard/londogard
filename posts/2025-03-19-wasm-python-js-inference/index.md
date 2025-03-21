@@ -8,6 +8,8 @@ date: "2025-03-19"
 [Transformers.js](https://huggingface.co/docs/transformers.js/en/index) is an ambitious project by HuggingFace to bring _transformers_ to Web/JS and simplify inference on-device, running `onnxruntime-web` under-the-hood.  
 I've written blogs and apps with `onnxruntime-web`^[through JS / KotlinJS perspective], and I must say - I'm a sucker for efficient on-device inference!  
 
+![Marimo WASM App: Before/After Prediction](image.png)
+
 ::: {.callout-tip collapse="true"}
 # ONNX Runtime and `onnxruntime-web`
 
