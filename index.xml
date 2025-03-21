@@ -29,6 +29,7 @@ I’ve written blogs and apps with <code>onnxruntime-web</code><sup>1</sup>, and
 <figcaption>Marimo WASM App: Before/After Prediction</figcaption>
 </figure>
 </div>
+<p>Test it live <a href="https://marimo.io/p/@hlondogard/notebook-transformer-js-py-object-detection-wasm?show-code=false">here</a>, and yes it runs on your device in the browser!</p>
 <div class="callout callout-style-default callout-tip callout-titled">
 <div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">

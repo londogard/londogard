@@ -641,7 +641,7 @@
     "href": "posts/2025-03-19-wasm-python-js-inference/index.html",
     "title": "Transformers.js.py accelerated on-device inference with Python WASM",
     "section": "",
-    "text": "Transformers.js is an ambitious project by HuggingFace to bring transformers to Web/JS and simplify inference on-device, running onnxruntime-web under-the-hood.\nI’ve written blogs and apps with onnxruntime-web1, and I must say - I’m a sucker for efficient on-device inference!\nAnd recently I learned about a thin wrapper around transformers.js, namely Transformers.js.py that proxies the API to Pyodide2.\nRight below 👇 I share how to run Object Detection."
+    "text": "Transformers.js is an ambitious project by HuggingFace to bring transformers to Web/JS and simplify inference on-device, running onnxruntime-web under-the-hood.\nI’ve written blogs and apps with onnxruntime-web1, and I must say - I’m a sucker for efficient on-device inference!\nTest it live here, and yes it runs on your device in the browser!\nAnd recently I learned about a thin wrapper around transformers.js, namely Transformers.js.py that proxies the API to Pyodide2.\nRight below 👇 I share how to run Object Detection."
   },
   {
     "objectID": "posts/2025-03-19-wasm-python-js-inference/index.html#how-to-object-detection-inference",
