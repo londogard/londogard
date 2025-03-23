@@ -283,11 +283,28 @@ I’ve written blogs and apps with <code>onnxruntime-web</code><a href="#fn1" cl
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-ONNX Runtime and <code>onnxruntime-web</code>
+Embedded Live Demo (running on device, in browser)
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
 <div id="callout-1" class="callout-1-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>I’m not sure why the width can’t resolve itself, if you can’t use it try <a href="https://marimo.io/p/@hlondogard/notebook-transformer-js-py-object-detection-wasm?show-code=false">here</a>.</p>
+<iframe src="https://marimo.io/p/@hlondogard/notebook-transformer-js-py-object-detection-wasm?show-code=false&amp;embed=true" frameborder="0" width="100%" height="600px"></iframe>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+ONNX Runtime and <code>onnxruntime-web</code>
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-2" class="callout-2-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <p><code>onnxruntime-web</code> helps run models efficiently directly in your browser (JS) through the default backend <em>WASM</em> (cpu).</p>
 <p>Additionally you can accelerate inference via GPU/NPU when swapping backend to either <code>WebGL</code>, <code>WebGPU</code>, or <code>WebNN</code>. I think this is really cool as we can now develop Progressive Web Apps (PWA) that accelerate their inference using a smartphones NPU - crazy!</p>
@@ -336,7 +353,7 @@ I don’t have a great answer, it’s all about trade-offs.</p>
 <p>JS enables “native” usage which likely works better in real-time applications, as it runs JS-&gt;WASM rather than WASM-&gt;JS-&gt;WASM.<br>
 What JS doesn’t have is a robust data science ecosystem, unlike Python. “Merging” the two through Pyodide makes sense, and further its fun! 🤓</p>
 <div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-3-contents" aria-controls="callout-3" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
@@ -345,7 +362,7 @@ A quick Pro/Con list of JS vs Pyodide
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
-<div id="callout-2" class="callout-2-contents callout-collapse collapse">
+<div id="callout-3" class="callout-3-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <p><strong>Why JS?</strong></p>
 <ul>
