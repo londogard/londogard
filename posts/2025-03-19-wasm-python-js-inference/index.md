@@ -12,6 +12,21 @@ I've written blogs and apps with `onnxruntime-web`^[through JS / KotlinJS perspe
 
 Test it live [here](https://marimo.io/p/@hlondogard/notebook-transformer-js-py-object-detection-wasm?show-code=false), and yes it runs on your device in the browser!
 
+
+::: {.callout-tip collapse="true"}
+# Embedded Live Demo (running on device, in browser)
+I'm not sure why the width can't resolve itself, if you can't use it try [here](https://marimo.io/p/@hlondogard/notebook-transformer-js-py-object-detection-wasm?show-code=false).
+
+```{=html}
+<iframe
+  src="https://marimo.io/p/@hlondogard/notebook-transformer-js-py-object-detection-wasm?show-code=false&embed=true"
+  frameBorder="0"
+  width="100%"
+  height="600px"
+></iframe>
+```
+:::
+
 ::: {.callout-tip collapse="true"}
 # ONNX Runtime and `onnxruntime-web`
 
