@@ -1,6 +1,7 @@
 ---
 title: "Londogard Blog"
 listing:
+  id: sample-listings
   contents: posts
   sort: "date desc"
   type: default
@@ -11,3 +12,13 @@ listing:
 page-layout: full
 title-block-banner: true
 ---
+
+# Londogard AB
+
+Read more about us in [About](pages/about.qmd).
+
+In here we share our work and exciting side-projects!
+
+# Blogs
+::: {#sample-listings}
+:::
