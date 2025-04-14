@@ -816,7 +816,28 @@
     "href": "pages/about.html",
     "title": "About",
     "section": "",
-    "text": "At Londogard we find order in chaos by creating structures and understanding out of unstructured data. Our belief is that by creating understanding of data new possibilities open up and a lot of automation is possible where today manual tedious work is applied.\nOur goal is to employ Machine Learning models that makes sense and provide value rather than being made to tick of a check-box. The aim is to provide Efficient, Performant, Measurable & Understandable models.\n\nEfficient should truly run on a single small machine (the edge).\n\nPerformant achieving very close to State-of-the-Art performance, striking a good balance of performance & efficiency.\n\nMeasurable in a way that makes sense for your personal use-case. Not some random metrics.\n\nUnderstandable to the level where you understand why a prediction was made as it was.\n\nThrough our blog & demos we try to show-case powerful models that all run on the same single Raspberry Pi 4 (4GB)\nEmail us @ dev@londogard.com"
+    "text": "At Londogard we find order in chaos by creating structures and understanding out of unstructured data. Our belief is that by creating understanding of data new possibilities open up and a lot of automation is possible where today manual tedious work is applied.\nOur goal is to deploy Machine Learning models that makes sense and provide value rather than being made to tick of a check-box. The aim is to provide Efficient1, Performant2, Measurable3 & Understandable4 models.\nThrough our blog & demos we try to share powerful models and concepts that we find interesting or exciting!"
+  },
+  {
+    "objectID": "pages/about.html#who-are-we",
+    "href": "pages/about.html#who-are-we",
+    "title": "About",
+    "section": "Who are we?",
+    "text": "Who are we?"
+  },
+  {
+    "objectID": "pages/about.html#contact-us",
+    "href": "pages/about.html#contact-us",
+    "title": "About",
+    "section": "Contact us",
+    "text": "Contact us\nSee social buttons or email us at dev@londogard.com."
+  },
+  {
+    "objectID": "pages/about.html#footnotes",
+    "href": "pages/about.html#footnotes",
+    "title": "About",
+    "section": "Footnotes",
+    "text": "Footnotes\n\n\nEfficient should truly run on a single small machine (the edge).↩︎\nPerformant achieving very close to State-of-the-Art performance, striking a good balance of performance & efficiency.↩︎\nMeasurable in a way that makes sense for your personal use-case. Not random metrics that no-one understands and doesn’t map to real-world performance.↩︎\nUnderstandable to the level where you understand why a prediction was made as it was.↩︎"
   },
   {
     "objectID": "pages/apps.html",
