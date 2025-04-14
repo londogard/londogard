@@ -34,13 +34,11 @@ Through our blog & demos we try to share powerful models and concepts that we fi
 
 ::: {layout-ncol=2}
 # Hampus Londögård
-_Senior Machine Learning Engineer & AI Cloud Lead  @ Verisure_
-
+_Senior Machine Learning Engineer & AI Cloud Lead  @ Verisure_   
 Have worked with multiple technologies across the Data & AI space. Currently enjoying working with highly efficient local tools such as Polars and training models using PyTorch.
 
 # Dennis Londögård
-_Software Developer (Big Data)  @ Apple via AFRY_
-
+_Software Developer (Big Data)  @ Apple via AFRY_   
 Has worked a lot with Scala, both backend (Play) and Data (Apache Spark).
 :::
 
