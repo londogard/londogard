@@ -9,8 +9,36 @@
 <link>https://blog.londogard.com/</link>
 <atom:link href="https://blog.londogard.com/index.xml" rel="self" type="application/rss+xml"/>
 <description>A blog which majorly focuses on Data Science, Data Engineering and sometimes Kotlin / Scala.</description>
-<generator>quarto-1.6.43</generator>
-<lastBuildDate>Wed, 19 Mar 2025 00:00:00 GMT</lastBuildDate>
+<generator>quarto-1.7.33</generator>
+<lastBuildDate>Fri, 29 Aug 2025 00:00:00 GMT</lastBuildDate>
+<item>
+  <title>TIL: s5cmd</title>
+  <dc:creator>Hampus Londögård</dc:creator>
+  <link>https://blog.londogard.com/posts/2025-08-29-til-s5cmd/</link>
+  <description><![CDATA[ 
+
+
+
+
+
+<p><strong>TL;DR</strong> s5cmd provided us a 30x speedup compared to a custom Python threading loop when downloading S3 objects. It’s easy to use and fits right in your workflow today!</p>
+<hr>
+<p>When working with code, or anything really, you always apply trade-offs. One example is <em>simplicity</em> versus <em>runtime efficiency</em>, often talked about in <em>CPU-cycles</em> versus <em>brain-cycles</em>, where the latter usually wins. But sometimes the trade-off is hard, s5cmd is such a case - it’s a single new dependencies with massive gains.</p>
+<p><em><a href="https://github.com/peak/s5cmd">S5cmd</a> is a very fast S3 and local filesystem execution tool</em>. For those that care it’s written in Go, which is a fast language, by Google, that builds small simple binaries.</p>
+<p>I can’t share specific numbers from work, but the speedup is <em>approximately 30x compared to a (simple) custom threading pool in Python</em>, that’s huge! Joshua Robinson found the same numbers in his <a href="https://joshua-robinson.medium.com/s5cmd-for-high-performance-object-storage-7071352cc09d">blog</a> when comparing with s3cmd / aws-cli.</p>
+<p>In our case the single dependency addition was worth it because the efficiency and cost-reduction overweighs the cons, especially as the dependency itself is very lean.</p>
+<p>I hope someone who’s in need of a faster S3 download/upload tool reads this and manages to speed their tooling up! 😊</p>
+<p>Thanks for this time, Hampus Londögård</p>
+
+
+
+ ]]></description>
+  <category>aws</category>
+  <category>s3</category>
+  <category>til</category>
+  <guid>https://blog.londogard.com/posts/2025-08-29-til-s5cmd/</guid>
+  <pubDate>Fri, 29 Aug 2025 00:00:00 GMT</pubDate>
+</item>
 <item>
   <title>Transformers.js.py accelerated on-device inference with Python WASM</title>
   <dc:creator>Hampus Londögård</dc:creator>
@@ -390,9 +418,6 @@ When exploring your dataset it’s good to have a streamlined way of working. Ma
 <figcaption><strong>DataFrame with Statistics in the header</strong></figcaption>
 </figure>
 </div>
-<div>
-
-</div>
 <div class="quarto-layout-panel" data-layout-ncol="2">
 <div class="quarto-layout-row">
 <div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: flex-start;">
@@ -677,185 +702,6 @@ font-style: inherit;">True</span>,</span>
   <category>machine-learning</category>
   <guid>https://blog.londogard.com/posts/2025-02-25-mlflow-model/</guid>
   <pubDate>Tue, 25 Feb 2025 00:00:00 GMT</pubDate>
-</item>
-<item>
-  <title>Gradio Client - An intro</title>
-  <dc:creator>Hampus Londögård</dc:creator>
-  <link>https://blog.londogard.com/posts/2025-02-20-gradio-client/</link>
-  <description><![CDATA[ 
-
-
-
-
-
-<section id="gradio-client" class="level1">
-<h1>Gradio Client</h1>
-<p>Most people in the AI-sphere (Deep Learning, LLM’s) are aware of the <a href="https://www.gradio.app/">Gradio</a> project (now under the <a href="https://huggingface.co/">huggingface</a> umbrella).</p>
-<div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Gradio in short
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>Gradio is a simple Machine Learning App framework that provides easy components and reactivity. See for yourself:</p>
-<div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><span class="im" style="color: #00769E;
-background-color: null;
-font-style: inherit;">import</span> gradio <span class="im" style="color: #00769E;
-background-color: null;
-font-style: inherit;">as</span> gr</span>
-<span id="cb1-2"></span>
-<span id="cb1-3"><span class="kw" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">def</span> greet(name):</span>
-<span id="cb1-4">    <span class="cf" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">return</span> <span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"Hello "</span> <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">+</span> name <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">+</span> <span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"!"</span></span>
-<span id="cb1-5"></span>
-<span id="cb1-6">demo <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> gr.Interface(fn<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span>greet, inputs<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span><span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"text"</span>, outputs<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span><span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"text"</span>)</span>
-<span id="cb1-7">demo.launch()</span></code></pre></div>
-<p>One drawback is that <em>input, output</em>, and <em>function</em> are separated which reduces type-safety and removes all intellisense. This is a big one for me and makes me highly prefer <code>streamlit</code> &amp; <code>solara</code>. Though I can’t deny all the greatness Gradio provides to the table.</p>
-</div>
-</div>
-<p>Even though Gradio is well-known some people might’ve missed that they’ve added two new projects in their fast pace!</p>
-<ol type="1">
-<li><a href="https://www.gradio.app/guides/getting-started-with-the-python-client"><strong><code>gradio_client</code></strong></a>: A client that can call any Gradio Application (!)
-<ol type="1">
-<li>Gradio clients are easily deployed on HuggingFace, and there exist a ton of them. All are now accessible in a REST-like interface (including the compute)!</li>
-</ol></li>
-<li><a href="https://www.gradio.app/guides/gradio-lite"><strong><code>gradio_lite</code></strong></a>: A WASM version of Gradio.
-<ol type="1">
-<li>Very simple to embed a Gradio app inside a HTML file or JS app.</li>
-<li>They’ve implemented smooth solutions for things like Multi File, PIP Requirements and more.</li>
-<li>WASM brings <em>Serverless</em> deployment with <em>Low Latency</em> and high <em>Privacy</em>.</li>
-</ol></li>
-</ol>
-<section id="how-do-i-use-gradio-client" class="level2">
-<h2 class="anchored" data-anchor-id="how-do-i-use-gradio-client">How do I use Gradio Client?</h2>
-<p><strong>Step 1: Connect to a Client</strong></p>
-<div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><span class="im" style="color: #00769E;
-background-color: null;
-font-style: inherit;">from</span> gradio_client <span class="im" style="color: #00769E;
-background-color: null;
-font-style: inherit;">import</span> Client, handle_file</span>
-<span id="cb2-2"></span>
-<span id="cb2-3">client <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> Client(<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"abidlabs/whisper"</span>)</span></code></pre></div>
-<p><strong>Step 2: Predict</strong></p>
-<div class="sourceCode" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1">client.predict(</span>
-<span id="cb3-2">    audio<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span>handle_file(<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"audio_sample.wav"</span>)</span>
-<span id="cb3-3">)</span>
-<span id="cb3-4"></span>
-<span id="cb3-5"><span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">&gt;&gt;</span> <span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"This is a test of the whisper speech recognition model."</span> </span></code></pre></div>
-<p>Easy right?!</p>
-<p>If we have multiple boxes / steps in the Gradio App we can call each of the components. The client usage of any Gradio App is <strong>easily found at the bottom.</strong></p>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="https://images.amplenote.com/627f2784-ef96-11ef-a1f4-4f6319174ddb/0c668288-7e63-4469-9d64-946abf665652.png" class="img-fluid figure-img"></p>
-<figcaption>Gradio Client Button in Gradio Apps (to the left)</figcaption>
-</figure>
-</div>
-<p>And that opens a new menu which shows how to use each box of the App.</p>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="https://images.amplenote.com/627f2784-ef96-11ef-a1f4-4f6319174ddb/5dd37151-9c78-4e80-af48-94d9e78ca5a0.png" class="img-fluid figure-img"></p>
-<figcaption>The API documentation and How-To-Guide after clicking</figcaption>
-</figure>
-</div>
-</section>
-<section id="available-clients" class="level2">
-<h2 class="anchored" data-anchor-id="available-clients">Available Clients</h2>
-<p>Anyone can run this as it supports <em>regular REST requests</em>! They supply a <code>curl</code> sample on how to query the App. But they’ve got a <em>Python and JS native client.</em></p>
-</section>
-<section id="possibilities" class="level2">
-<h2 class="anchored" data-anchor-id="possibilities">Possibilities</h2>
-<p>Gradio implemented the whole thing in a way where you don’t need to do anything at all. In turn we now get user-friendly App that is easily deployed with an <em>automatically included REST API</em>. It’s two birds with one stone!</p>
-<p>Combining this “App+API” deployment with the free, or paid, <a href="https://huggingface.co/spaces">HuggingFace Spaces</a> creates a high-value package!</p>
-<div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-HuggingFace Spaces
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>HuggingFace (HF) Spaces is as simple deployments get:</p>
-<ul>
-<li>Free compute<sup>1</sup>
-<ul>
-<li><em>ZeroGPU available using Gradio SDK</em></li>
-</ul></li>
-<li>Natively Support <em>streamlit, Gradio, static (webapp)</em></li>
-<li>Support any app via Docker<sup>2</sup></li>
-</ul>
-<p>HF Spaces can deploy apps via <em>Client</em>, <em>git</em>, or <em>Drag n’ Drop</em>.<br>
-You get a public pretty URL <code>huggingface.co/spaces/&lt;USER&gt;/&lt;APP_NAME&gt;</code> to share. All in all a great tool that puts the power into developers hands!</p>
-</div>
-</div>
-</section>
-</section>
-<section id="outro" class="level1">
-<h1>Outro</h1>
-<p>This blog is really short and to the point. The Gradio Client is sweet and I really wanted to share the experience.<br>
-The combination of App+API written at the same time is exciting, when enhancing it with HuggingFace Spaces it all becomes magical. And Gradio’s “auto-share” when running locally that can then provide an API too is not too shabby 😉</p>
-<p>This is it for this time,<br>
-Hampus Londögård</p>
-
-
-</section>
-
-
-<div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
-
-<ol>
-<li id="fn1"><p>Pay for GPU and/or better CPU↩︎</p></li>
-<li id="fn2"><p>Multiple templates to get started fast↩︎</p></li>
-</ol>
-</section></div> ]]></description>
-  <category>python</category>
-  <category>app</category>
-  <category>rest</category>
-  <category>machine-learning</category>
-  <guid>https://blog.londogard.com/posts/2025-02-20-gradio-client/</guid>
-  <pubDate>Mon, 17 Feb 2025 00:00:00 GMT</pubDate>
 </item>
 <item>
   <title>Marimo - A new Notebook/App on the block!</title>
@@ -1195,6 +1041,185 @@ Hampus Londögård</p>
   <pubDate>Mon, 17 Feb 2025 00:00:00 GMT</pubDate>
 </item>
 <item>
+  <title>Gradio Client - An intro</title>
+  <dc:creator>Hampus Londögård</dc:creator>
+  <link>https://blog.londogard.com/posts/2025-02-20-gradio-client/</link>
+  <description><![CDATA[ 
+
+
+
+
+
+<section id="gradio-client" class="level1">
+<h1>Gradio Client</h1>
+<p>Most people in the AI-sphere (Deep Learning, LLM’s) are aware of the <a href="https://www.gradio.app/">Gradio</a> project (now under the <a href="https://huggingface.co/">huggingface</a> umbrella).</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Gradio in short
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Gradio is a simple Machine Learning App framework that provides easy components and reactivity. See for yourself:</p>
+<div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> gradio <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">as</span> gr</span>
+<span id="cb1-2"></span>
+<span id="cb1-3"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">def</span> greet(name):</span>
+<span id="cb1-4">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">return</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Hello "</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> name <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"!"</span></span>
+<span id="cb1-5"></span>
+<span id="cb1-6">demo <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> gr.Interface(fn<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>greet, inputs<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"text"</span>, outputs<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"text"</span>)</span>
+<span id="cb1-7">demo.launch()</span></code></pre></div>
+<p>One drawback is that <em>input, output</em>, and <em>function</em> are separated which reduces type-safety and removes all intellisense. This is a big one for me and makes me highly prefer <code>streamlit</code> &amp; <code>solara</code>. Though I can’t deny all the greatness Gradio provides to the table.</p>
+</div>
+</div>
+<p>Even though Gradio is well-known some people might’ve missed that they’ve added two new projects in their fast pace!</p>
+<ol type="1">
+<li><a href="https://www.gradio.app/guides/getting-started-with-the-python-client"><strong><code>gradio_client</code></strong></a>: A client that can call any Gradio Application (!)
+<ol type="1">
+<li>Gradio clients are easily deployed on HuggingFace, and there exist a ton of them. All are now accessible in a REST-like interface (including the compute)!</li>
+</ol></li>
+<li><a href="https://www.gradio.app/guides/gradio-lite"><strong><code>gradio_lite</code></strong></a>: A WASM version of Gradio.
+<ol type="1">
+<li>Very simple to embed a Gradio app inside a HTML file or JS app.</li>
+<li>They’ve implemented smooth solutions for things like Multi File, PIP Requirements and more.</li>
+<li>WASM brings <em>Serverless</em> deployment with <em>Low Latency</em> and high <em>Privacy</em>.</li>
+</ol></li>
+</ol>
+<section id="how-do-i-use-gradio-client" class="level2">
+<h2 class="anchored" data-anchor-id="how-do-i-use-gradio-client">How do I use Gradio Client?</h2>
+<p><strong>Step 1: Connect to a Client</strong></p>
+<div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">from</span> gradio_client <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> Client, handle_file</span>
+<span id="cb2-2"></span>
+<span id="cb2-3">client <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> Client(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"abidlabs/whisper"</span>)</span></code></pre></div>
+<p><strong>Step 2: Predict</strong></p>
+<div class="sourceCode" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1">client.predict(</span>
+<span id="cb3-2">    audio<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>handle_file(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"audio_sample.wav"</span>)</span>
+<span id="cb3-3">)</span>
+<span id="cb3-4"></span>
+<span id="cb3-5"><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&gt;&gt;</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"This is a test of the whisper speech recognition model."</span> </span></code></pre></div>
+<p>Easy right?!</p>
+<p>If we have multiple boxes / steps in the Gradio App we can call each of the components. The client usage of any Gradio App is <strong>easily found at the bottom.</strong></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://images.amplenote.com/627f2784-ef96-11ef-a1f4-4f6319174ddb/0c668288-7e63-4469-9d64-946abf665652.png" class="img-fluid figure-img"></p>
+<figcaption>Gradio Client Button in Gradio Apps (to the left)</figcaption>
+</figure>
+</div>
+<p>And that opens a new menu which shows how to use each box of the App.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://images.amplenote.com/627f2784-ef96-11ef-a1f4-4f6319174ddb/5dd37151-9c78-4e80-af48-94d9e78ca5a0.png" class="img-fluid figure-img"></p>
+<figcaption>The API documentation and How-To-Guide after clicking</figcaption>
+</figure>
+</div>
+</section>
+<section id="available-clients" class="level2">
+<h2 class="anchored" data-anchor-id="available-clients">Available Clients</h2>
+<p>Anyone can run this as it supports <em>regular REST requests</em>! They supply a <code>curl</code> sample on how to query the App. But they’ve got a <em>Python and JS native client.</em></p>
+</section>
+<section id="possibilities" class="level2">
+<h2 class="anchored" data-anchor-id="possibilities">Possibilities</h2>
+<p>Gradio implemented the whole thing in a way where you don’t need to do anything at all. In turn we now get user-friendly App that is easily deployed with an <em>automatically included REST API</em>. It’s two birds with one stone!</p>
+<p>Combining this “App+API” deployment with the free, or paid, <a href="https://huggingface.co/spaces">HuggingFace Spaces</a> creates a high-value package!</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+HuggingFace Spaces
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>HuggingFace (HF) Spaces is as simple deployments get:</p>
+<ul>
+<li>Free compute<sup>1</sup>
+<ul>
+<li><em>ZeroGPU available using Gradio SDK</em></li>
+</ul></li>
+<li>Natively Support <em>streamlit, Gradio, static (webapp)</em></li>
+<li>Support any app via Docker<sup>2</sup></li>
+</ul>
+<p>HF Spaces can deploy apps via <em>Client</em>, <em>git</em>, or <em>Drag n’ Drop</em>.<br>
+You get a public pretty URL <code>huggingface.co/spaces/&lt;USER&gt;/&lt;APP_NAME&gt;</code> to share. All in all a great tool that puts the power into developers hands!</p>
+</div>
+</div>
+</section>
+</section>
+<section id="outro" class="level1">
+<h1>Outro</h1>
+<p>This blog is really short and to the point. The Gradio Client is sweet and I really wanted to share the experience.<br>
+The combination of App+API written at the same time is exciting, when enhancing it with HuggingFace Spaces it all becomes magical. And Gradio’s “auto-share” when running locally that can then provide an API too is not too shabby 😉</p>
+<p>This is it for this time,<br>
+Hampus Londögård</p>
+
+
+</section>
+
+
+<div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
+
+<ol>
+<li id="fn1"><p>Pay for GPU and/or better CPU↩︎</p></li>
+<li id="fn2"><p>Multiple templates to get started fast↩︎</p></li>
+</ol>
+</section></div> ]]></description>
+  <category>python</category>
+  <category>app</category>
+  <category>rest</category>
+  <category>machine-learning</category>
+  <guid>https://blog.londogard.com/posts/2025-02-20-gradio-client/</guid>
+  <pubDate>Mon, 17 Feb 2025 00:00:00 GMT</pubDate>
+</item>
+<item>
   <title>Image to Lego (Xmas Project)</title>
   <dc:creator>Hampus Londögård</dc:creator>
   <link>https://blog.londogard.com/posts/2025-01-09-img-2-lego/</link>
@@ -1214,9 +1239,6 @@ I’ve been passionately working on what might be my most entertaining project s
 <section id="result-demo" class="level1">
 <h1>Result / Demo</h1>
 <p>I built an Gradio application, mainly as a learning excercise. Usually I prefer Streamlit or Solara for my applications, but Gradio is growing fast and I wanted to try it in a “real project”.</p>
-<div>
-
-</div>
 <div class="quarto-layout-panel" data-layout="[[2,1], [1,1]]">
 <div class="quarto-layout-row">
 <div class="quarto-layout-cell" style="flex-basis: 66.7%;justify-content: flex-start;">
@@ -4242,9 +4264,6 @@ font-style: inherit;">"--host=0.0.0.0"</span>]</span></code></pre></div>
 <p>See <a href="../2023-09-10-highlights-lol">previous blog</a> to learn more about model training.</p>
 <section id="videos" class="level2 page-columns page-full">
 <h2 class="anchored" data-anchor-id="videos">Videos</h2>
-<div>
-
-</div>
 <div class="column-page-inset quarto-layout-panel" data-layout-ncol="3">
 <div class="quarto-layout-row">
 <div class="quarto-layout-cell" style="flex-basis: 33.3%;justify-content: flex-start;">
@@ -4288,9 +4307,6 @@ Inference Page
 </div>
 <div id="callout-1" class="callout-1-contents callout-collapse collapse page-columns page-full">
 <div class="callout-body-container callout-body page-columns page-full">
-<div>
-
-</div>
 <div class="column-page-inset quarto-layout-panel" data-layout-ncol="2">
 <div class="quarto-layout-row">
 <div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: flex-start;">
@@ -4326,9 +4342,6 @@ Other Pages
 </div>
 <div id="callout-2" class="callout-2-contents callout-collapse collapse page-columns page-full">
 <div class="callout-body-container callout-body page-columns page-full">
-<div>
-
-</div>
 <div class="column-page-inset quarto-layout-panel" data-layout-ncol="3">
 <div class="quarto-layout-row">
 <div class="quarto-layout-cell" style="flex-basis: 33.3%;justify-content: flex-start;">
@@ -5950,867 +5963,6 @@ font-style: inherit;">=</span>data)</span></code></pre></div>
   <category>fun</category>
   <guid>https://blog.londogard.com/posts/2023-09-10-highlights-lol/</guid>
   <pubDate>Sun, 10 Sep 2023 00:00:00 GMT</pubDate>
-</item>
-<item>
-  <title>Solara - ‘A new Reactive Streamlit’</title>
-  <dc:creator>Hampus Londögård</dc:creator>
-  <link>https://blog.londogard.com/posts/2023-06-30-solara/</link>
-  <description><![CDATA[ 
-
-
-
-
-
-<p>Solara (<a href="https://solara.dev/">solara.dev</a>) is a fresh and exciting web framework that enables React-style state-handling while keeping UI (almost) as easy as Streamlit (<a href="https://streamlit.io/">streamlit.io</a>). Further by design it seems to have a bigger industrial potential than Streamlit.<br>
-In this post I’ll introduce Solara and compare it to the more well known Streamlit that can be used to build web apps and interactive Data Dashboards.</p>
-<p>Solara and Streamlit are web frameworks which makes it very easy to write a full-stack app that can be everything from a small Proof-of-Concept to a big complicated Data Dashboard. There exist other competitors such as <a href="https://dash.plotly.com/">Dash</a>, <a href="https://panel.holoviz.org/">Panel</a> and <a href="https://voila.readthedocs.io/en/stable/">Voila</a> which we’ll not include in-depth as comparison between those and Streamlit has been done previously.</p>
-<p>I’m very excited to see where Solara ends up in the future. I believe it has a bright future ahead. During my initial tests it seems like a solid framework, there’s still some rough edges to fix but all in all it’s really good!</p>
-<p>Here’s my quick introduction and comparison with Streamlit!</p>
-<section id="streamlit-and-why-its-awesome" class="level3">
-<h3 class="anchored" data-anchor-id="streamlit-and-why-its-awesome">Streamlit and why it’s awesome</h3>
-<p>I’m a huge Streamlit fan. There’s a lot to love, the first time I tried it everything clicked. It’s simple and good looking, the User Experience (UX) and Developer Experience (DX) is exceptional. Using it I can easily build beautiful web apps in no time, efficient Data Dashboards and small Proof-of-Concepts (PoC).</p>
-<p>With that said everything has a drawback, and Streamlit’s is performance once it scales to large. Streamlit works by rerunning everything in the script top-down once a change happens in the web app. This makes it incredibly simple to reason about and reduces the number of bugs, but it also builds what can become a huge bottleneck and slow down the app.&nbsp;</p>
-<p>Streamlit solves this by introducing&nbsp;<code>cache</code> which allows reusing results from expensive computations and in the UI they reuse components to make the flow smother if nothing changes, this is done using the internal&nbsp;<code>state</code>. Once you start modifying&nbsp;<code>state</code>&nbsp; and&nbsp;<code>cache</code>&nbsp;the complexity grows quickly and the app becomes much harder to reason about.</p>
-<p>Streamlit could solve this by enabling better API’s which allows better “data-flow” choices, like the&nbsp;<code>st.form</code>&nbsp; enables non-recalculated views unless submitted.</p>
-<p>For now though… Let’s try&nbsp;<strong><code>solara</code></strong>&nbsp;a new exciting framework which does exactly this, but without the same simplicity.</p>
-</section>
-<section id="solara-introduction" class="level3">
-<h3 class="anchored" data-anchor-id="solara-introduction">Solara Introduction</h3>
-<p>Solara is a similar framework to Streamlit, but rather than rerunning everything top-down every time it uses a reactive approach through&nbsp;<code>reacton</code>&nbsp;(<a href="https://github.com/widgetti/reacton">github.com/widgetti/reacton</a>) that is a pure Python port of React to&nbsp;<code>ipywidgets</code>.</p>
-<p>This means that only components that are using the reactive variable is rerun, which is very exciting! The performance improvements becomes great at the cost of a more declarative state-handling.</p>
-<p>In Streamlit state is handled for you, in Solara state is separated from the component, like react, which means you handle it explicitly and further reduce hidden magic that in the end sometimes leads to a fragile complex app as the app grows.<br>
-<a href="https://shiny.rstudio.com/py/docs/comp-streamlit.html#streamlit-requires-rewriting">shiny.rstudio.com</a> shares examples of how complex state-handling can become in <code>streamlit</code>. What cannot be shared easily is how badly this scales with app size and complexity. The global state can, and probably sometimes will, lead to hard-to-find bugs and a hard time to achieve high-performant apps.</p>
-<p>An example app and deeper introduction can be found in a later section.</p>
-</section>
-<section id="solara-versus-streamlit" class="level2">
-<h2 class="anchored" data-anchor-id="solara-versus-streamlit">🥊Solara versus Streamlit</h2>
-<p>In here I’ll compare Solara and Streamlit, for a more in-depth usage see later sections.</p>
-<section id="tldr" class="level3">
-<h3 class="anchored" data-anchor-id="tldr">TL;DR</h3>
-<p>Code is on GitHub&nbsp;<a href="https://github.com/Lundez/solara_app">lundez/solara_app</a> / Section&nbsp;1, and I added suggested improvements via&nbsp;<a href="https://github.com/widgetti/solara/pull/180">PR#180</a>&nbsp;and&nbsp;<a href="https://github.com/widgetti/solara/issues/177">Issue#177</a>&nbsp;to Solara.</p>
-<ul>
-<li><strong>Con:</strong>&nbsp;Higher learning curve (floor) as you handle state manually (no magic), but with better DX I see it beating Streamlit because of the higher ceiling that brings new possibilities.
-<ul>
-<li><strong>Pro:</strong>&nbsp;Bonus: we learn the React paradigm which is widely used in frontend! A win-win for developers.</li>
-</ul></li>
-<li><strong>Pro:</strong>&nbsp;A better industrial thinking
-<ol type="1">
-<li>Testing is actually handled E2E by using&nbsp;<code>playwright</code>&nbsp; –&nbsp;<a href="https://solara.dev/docs/howto/testing">docs</a>.</li>
-<li>Routing is first-class citizen –&nbsp;<a href="https://solara.dev/docs/understanding/routing">docs</a>.</li>
-<li>Embeddable, in flask/fastAPI/… –&nbsp;<a href="https://solara.dev/docs/deploying/self-hosted">docs</a>.</li>
-</ol></li>
-<li><strong>Con:</strong>&nbsp;UX is not as good as Streamlit.</li>
-<li><strong>Pro:</strong>&nbsp;Embeddable in Notebooks making it simpler to go&nbsp;<em>really fast</em>.</li>
-<li><strong>Pro:</strong>&nbsp;Access to all&nbsp;<code>ipywidgets</code>&nbsp;which is an incredible ecosystem.&nbsp;</li>
-</ul>
-<p>Additionally compared to another interesting framework like&nbsp;<a href="https://panel.holoviz.org/" title="https://panel.holoviz.org/">Panel</a>&nbsp;it’s much simpler IMO.</p>
-<p>Most certainly Solara has a bright future if the development and maintenance is kept up, with additional marketing it can become a great competitor in the space for Gradio, Streamlit and others.</p>
-</section>
-</section>
-<section id="solara-introduction-1" class="level2">
-<h2 class="anchored" data-anchor-id="solara-introduction-1">Solara Introduction</h2>
-<p>All code is available on GitHub&nbsp;<a href="https://github.com/Lundez/solara_app" title="https://github.com/Lundez/solara_app">lundez/solara_app</a> and Section&nbsp;1.</p>
-<section id="a-simple-app" class="level3">
-<h3 class="anchored" data-anchor-id="a-simple-app">A simple app</h3>
-<p>Using Solara to build a simple app is pretty clean, we can clearly see the&nbsp;<code>react</code>&nbsp;-hook being used for&nbsp;<code>file</code>&nbsp; which is cool!</p>
-<p>The entry-point in Solara is defined as a <code>component</code> named <code>Page</code>. This is automatically picked up and rendered. To show in a notebook you simply use&nbsp;<code>display(Page())</code>.&nbsp;</p>
-<div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><span class="im" style="color: #00769E;
-background-color: null;
-font-style: inherit;">import</span> solara</span>
-<span id="cb1-2"><span class="im" style="color: #00769E;
-background-color: null;
-font-style: inherit;">import</span> polars <span class="im" style="color: #00769E;
-background-color: null;
-font-style: inherit;">as</span> pl</span>
-<span id="cb1-3"></span>
-<span id="cb1-4"><span class="at" style="color: #657422;
-background-color: null;
-font-style: inherit;">@solara.component</span></span>
-<span id="cb1-5"><span class="kw" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">def</span> Page():</span>
-<span id="cb1-6">    <span class="bu" style="color: null;
-background-color: null;
-font-style: inherit;">file</span>, set_file <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> solara.use_state(<span class="va" style="color: #111111;
-background-color: null;
-font-style: inherit;">None</span>)</span>
-<span id="cb1-7">    solara.Markdown(<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"# Solara Example App (Starbucks Data)"</span>)</span>
-<span id="cb1-8">    solara.FileDrop(on_file<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span>set_file, lazy<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span><span class="va" style="color: #111111;
-background-color: null;
-font-style: inherit;">False</span>)</span>
-<span id="cb1-9">    <span class="cf" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">if</span> <span class="bu" style="color: null;
-background-color: null;
-font-style: inherit;">file</span> <span class="kw" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">is</span> <span class="kw" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">not</span> <span class="va" style="color: #111111;
-background-color: null;
-font-style: inherit;">None</span>:</span>
-<span id="cb1-10">        df <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> pl.read_csv(<span class="bu" style="color: null;
-background-color: null;
-font-style: inherit;">file</span>[<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"data"</span>], null_values<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span><span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"-"</span>).drop_nulls()</span>
-<span id="cb1-11">        solara.DataFrame(df.to_pandas()) <span class="co" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;"># currently does not support polars</span></span>
-<span id="cb1-12">    <span class="cf" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">else</span>:</span>
-<span id="cb1-13">        solara.Text(<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"Make sure to upload a file"</span>)</span></code></pre></div>
-<p>And run it through</p>
-<div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><span class="ex" style="color: null;
-background-color: null;
-font-style: inherit;">solara</span> run app.py</span>
-<span id="cb2-2"><span class="co" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;"># use solara run --host localhost app.py on WSL until PR#180 or other is merged</span></span></code></pre></div>
-<p>Quite simple right? It’s incredibly similar to how you run Streamlit 😉.</p>
-</section>
-<section id="working-more-with-state" class="level3">
-<h3 class="anchored" data-anchor-id="working-more-with-state">Working more with state</h3>
-<p>In the previous code we only used the state inside the same component, that’s all fine but it’s not a very good use-case.</p>
-<p>Solara introduces 2 other types of state,&nbsp;<code>reactive</code>&nbsp; and&nbsp;<code>use_reactive</code>. Both very similar but&nbsp;<code>use_reactive</code>&nbsp; is only possible to use locally inside a&nbsp;<code>component</code>. The&nbsp;<code>reactive</code>&nbsp;function should only be used outside of components, for application wide state. If you use it inside a <code>component</code> it’ll be reset as the re-render happens, which is not what you’d expect.</p>
-<p>As such we define a&nbsp;<code>reactive</code>&nbsp; variable&nbsp;<code>sodium</code>.</p>
-<div class="sourceCode" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1">sodium <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> solara.reactive(<span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">0</span>)</span></code></pre></div>
-<p>further we bind this to a slider</p>
-<div class="sourceCode" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1">solara.SliderInt(value<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span>sodium)</span></code></pre></div>
-<p>where it’ll automatically update whenever a user changes the slider.<br>
-We can then send this to a child-component which would be updated as well when it’s changed.</p>
-<div class="sourceCode" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1">ChildPage(sodium)</span></code></pre></div>
-<p>See&nbsp;<a href="https://github.com/Lundez/solara_app" title="https://github.com/Lundez/solara_app">lundez/solara_app</a>&nbsp;to get a little more complex scenario.</p>
-<p>And that’s my quick and dirty introduction to Solara!</p>
-</section>
-</section>
-<section id="solara-and-streamlit-comparison" class="level2">
-<h2 class="anchored" data-anchor-id="solara-and-streamlit-comparison">Solara and Streamlit comparison</h2>
-<p>A comparison between the two is available in Section&nbsp;1, where I use multiple components and share state between them. If you add some logging you can see that <strong>Solara doesn’t rerun code unnecessarily</strong>.</p>
-<section id="quick-facts" class="level3">
-<h3 class="anchored" data-anchor-id="quick-facts">Quick Facts</h3>
-<table class="caption-top table">
-<tbody>
-<tr class="odd">
-<td>Measurement</td>
-<td>Solara</td>
-<td>Streamlit</td>
-</tr>
-<tr class="even">
-<td>#lines of code (LOC)</td>
-<td>53</td>
-<td><strong>49</strong></td>
-</tr>
-<tr class="odd">
-<td>Simplicity (0-5)</td>
-<td>3</td>
-<td><strong>4</strong></td>
-</tr>
-<tr class="even">
-<td>Performance (0-5)</td>
-<td><strong>4</strong></td>
-<td>3</td>
-</tr>
-<tr class="odd">
-<td>UX (0-5) - images in Section&nbsp;0.3.2.3</td>
-<td>3</td>
-<td><strong>5</strong></td>
-</tr>
-</tbody>
-</table>
-<p>Streamlit wins most, but with the performance and possibilities of Solara I still see it as a very capable contender. With, hopefully soon, improved UX and DX&nbsp;<code>solara</code>&nbsp; can grow to be really big!</p>
-<p>In the TL;DR section you can see some other niceties of Solara such as Testing, Embeddability and more!&nbsp;</p>
-</section>
-<section id="deeper-comparison" class="level3">
-<h3 class="anchored" data-anchor-id="deeper-comparison">Deeper Comparison</h3>
-<section id="state-and-pythonicism" class="level4">
-<h4 class="anchored" data-anchor-id="state-and-pythonicism">State and ‘pythonicism’</h4>
-<p>The&nbsp;<code>React</code> paradigm, while cool, is&nbsp;<strong>certainly not pythonic</strong>&nbsp;at all! I believe that the&nbsp;<strong>initial “PoC”-stage implementation should be simpler</strong>&nbsp;to get started with. To “turn the knobs” and squeeze performance as is possible is great and should certainly be available for the more performance intense sections.</p>
-<p>The positive of all this is that we learn the “React-paradigm” and we handle state explicitly, i.e.&nbsp;no Streamlit magic!&nbsp;</p>
-<p><strong>It’s a tie.</strong></p>
-</section>
-<section id="embeddability" class="level4">
-<h4 class="anchored" data-anchor-id="embeddability">Embeddability</h4>
-<p>The embedability of Solara is a clear winner, being able to include it in our FastAPI backend or building an app initially directly in a Jupyter Notebook is insanely good.</p>
-<p><strong>Solara wins.</strong></p>
-</section>
-<section id="sec-ux" class="level4">
-<h4 class="anchored" data-anchor-id="sec-ux">Components &amp; UX</h4>
-<p>Streamlits components are better and more beautiful but Solara is not far behind, and with the possibility to use all components from&nbsp;<code>ipywidget</code>-ecosystem makes it incredibily powerful.</p>
-<p>I see this as a huge boon.</p>
-<section id="image-comparisons-of-components" class="level5">
-<h5 class="anchored" data-anchor-id="image-comparisons-of-components">Image Comparisons of Components</h5>
-<div>
-
-</div>
-<div class="quarto-layout-panel" data-layout-ncol="2">
-<div class="quarto-layout-row">
-<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: flex-start;">
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="https://blog.londogard.com/posts/2023-06-30-solara/assets/solara_no_file.png" class="img-fluid figure-img"></p>
-<figcaption><strong>Solara No File</strong> – bad design and too raw</figcaption>
-</figure>
-</div>
-</div>
-<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: flex-start;">
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="https://blog.londogard.com/posts/2023-06-30-solara/assets/streamlit_no_file.png" class="img-fluid figure-img"></p>
-<figcaption><strong>Streamlit No File</strong> – clear in both drag &amp; select files</figcaption>
-</figure>
-</div>
-</div>
-</div>
-<div class="quarto-layout-row">
-<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: flex-start;">
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="https://blog.londogard.com/posts/2023-06-30-solara/assets/solara_file.png" class="img-fluid figure-img"></p>
-<figcaption><strong>Solara With File</strong> – we cannot remove file clearly</figcaption>
-</figure>
-</div>
-</div>
-<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: flex-start;">
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="https://blog.londogard.com/posts/2023-06-30-solara/assets/streamlit_file.png" class="img-fluid figure-img"></p>
-<figcaption><strong>Streamlit With File</strong> – file can be removed easily</figcaption>
-</figure>
-</div>
-</div>
-</div>
-<div class="quarto-layout-row">
-<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: flex-start;">
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="https://blog.londogard.com/posts/2023-06-30-solara/assets/solara_slider.png" class="img-fluid figure-img"></p>
-<figcaption><strong>Solara Slider</strong> – we don’t know the values</figcaption>
-</figure>
-</div>
-</div>
-<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: flex-start;">
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="https://blog.londogard.com/posts/2023-06-30-solara/assets/streamlit_slider.png" class="img-fluid figure-img"></p>
-<figcaption><strong>Streamlit Slider</strong> – values are clear</figcaption>
-</figure>
-</div>
-</div>
-</div>
-<div class="quarto-layout-row">
-<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: flex-start;">
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="https://blog.londogard.com/posts/2023-06-30-solara/assets/solara_slider_active.png" class="img-fluid figure-img"></p>
-<figcaption><strong>Solara Moving Slider</strong> – we now see values</figcaption>
-</figure>
-</div>
-</div>
-<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: flex-start;">
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="https://blog.londogard.com/posts/2023-06-30-solara/assets/streamlit_slider_active.png" class="img-fluid figure-img"></p>
-<figcaption><strong>Streamlit Moving Slider</strong></figcaption>
-</figure>
-</div>
-</div>
-</div>
-<div class="quarto-layout-row">
-<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: flex-start;">
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="https://blog.londogard.com/posts/2023-06-30-solara/assets/solara_df.png" class="img-fluid figure-img"></p>
-<figcaption><strong>Solara DataFrame</strong> – great with defaulted pagination, no sorting though.</figcaption>
-</figure>
-</div>
-</div>
-<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: flex-start;">
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="https://blog.londogard.com/posts/2023-06-30-solara/assets/streamlit_df.png" class="img-fluid figure-img"></p>
-<figcaption><strong>Streamlit DataFrame</strong> – we can sort and the columns are clearly separated, it’s also searchable</figcaption>
-</figure>
-</div>
-</div>
-</div>
-</div>
-<p><strong>It’s a small win for Streamlit,</strong>&nbsp;Streamlit clearly wins the ‘simplicity’, ‘design’ and ‘clearness’ but Solara has a bonus for the amount of widgets available through <code>ipywidgets</code> ecosystem.</p>
-</section>
-</section>
-<section id="readability" class="level4">
-<h4 class="anchored" data-anchor-id="readability">Readability</h4>
-<p>Because&nbsp;<code>solara</code>&nbsp; has less magic I believe Solara is easier to reason about in a complex app, but in the PoC’s and simple apps Streamlit is just as simple.</p>
-<p><strong>It’s a tie</strong>, but Solara wins as the app grows.</p>
-</section>
-</section>
-</section>
-<section id="outro" class="level2">
-<h2 class="anchored" data-anchor-id="outro">Outro</h2>
-<p>I believe that&nbsp;<code>streamlit</code>&nbsp; still is the best framework to get started with, but in 6 months from now on I can see&nbsp;<code>solara</code>&nbsp; as the better option.</p>
-<p>If you’re developing a dashboard or app that needs high performance and industrial strength I can see&nbsp;<code>solara</code>&nbsp; as a better choice.</p>
-<p>I’ll happily try to help Solara grow!</p>
-<p>~Hampus Londögård</p>
-<p><strong>P.S.</strong> thanks to <code>@maartenbreddels</code> and <code>@Gordon#1568</code> (Solara’s Discord) for all the help.</p>
-</section>
-<section id="sec-appendix" class="level1">
-<h1>Appendix</h1>
-<p>I include full code here as well. These are taken from <a href="https://github.com/Lundez/solara_app">lundez/solara_app</a> the 29/6 2023.</p>
-<section id="solara-app" class="level2">
-<h2 class="anchored" data-anchor-id="solara-app">Solara App</h2>
-<p>Run using <code>solara run &lt;filename&gt;</code>.</p>
-<div class="sourceCode" id="cb6" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><span class="im" style="color: #00769E;
-background-color: null;
-font-style: inherit;">from</span> dataclasses <span class="im" style="color: #00769E;
-background-color: null;
-font-style: inherit;">import</span> dataclass</span>
-<span id="cb6-2"><span class="im" style="color: #00769E;
-background-color: null;
-font-style: inherit;">import</span> solara</span>
-<span id="cb6-3"><span class="im" style="color: #00769E;
-background-color: null;
-font-style: inherit;">import</span> polars <span class="im" style="color: #00769E;
-background-color: null;
-font-style: inherit;">as</span> pl</span>
-<span id="cb6-4"><span class="im" style="color: #00769E;
-background-color: null;
-font-style: inherit;">import</span> solara.express <span class="im" style="color: #00769E;
-background-color: null;
-font-style: inherit;">as</span> px</span>
-<span id="cb6-5"></span>
-<span id="cb6-6"><span class="at" style="color: #657422;
-background-color: null;
-font-style: inherit;">@solara.component</span></span>
-<span id="cb6-7"><span class="kw" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">def</span> Page():</span>
-<span id="cb6-8">    <span class="bu" style="color: null;
-background-color: null;
-font-style: inherit;">file</span>, set_file <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> solara.use_state(<span class="va" style="color: #111111;
-background-color: null;
-font-style: inherit;">None</span>)</span>
-<span id="cb6-9">    </span>
-<span id="cb6-10">    solara.Markdown(<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"# Solara Example App (Starbucks Data)"</span>)</span>
-<span id="cb6-11">    solara.FileDrop(on_file<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span>set_file, lazy<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span><span class="va" style="color: #111111;
-background-color: null;
-font-style: inherit;">False</span>)</span>
-<span id="cb6-12">    <span class="cf" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">if</span> <span class="bu" style="color: null;
-background-color: null;
-font-style: inherit;">file</span> <span class="kw" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">is</span> <span class="kw" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">not</span> <span class="va" style="color: #111111;
-background-color: null;
-font-style: inherit;">None</span>:</span>
-<span id="cb6-13">        df <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> pl.read_csv(<span class="bu" style="color: null;
-background-color: null;
-font-style: inherit;">file</span>[<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"data"</span>], null_values<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span><span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"-"</span>).drop_nulls()</span>
-<span id="cb6-14">        DFViews(df)</span>
-<span id="cb6-15">    <span class="cf" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">else</span>:</span>
-<span id="cb6-16">        solara.Text(<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"Make sure to upload a file"</span>)</span>
-<span id="cb6-17"></span>
-<span id="cb6-18"><span class="at" style="color: #657422;
-background-color: null;
-font-style: inherit;">@dataclass</span></span>
-<span id="cb6-19"><span class="kw" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">class</span> FilterValues:</span>
-<span id="cb6-20">    sodium: <span class="bu" style="color: null;
-background-color: null;
-font-style: inherit;">tuple</span>[<span class="bu" style="color: null;
-background-color: null;
-font-style: inherit;">int</span>, <span class="bu" style="color: null;
-background-color: null;
-font-style: inherit;">int</span>]</span>
-<span id="cb6-21">    carb: <span class="bu" style="color: null;
-background-color: null;
-font-style: inherit;">tuple</span>[<span class="bu" style="color: null;
-background-color: null;
-font-style: inherit;">int</span>, <span class="bu" style="color: null;
-background-color: null;
-font-style: inherit;">int</span>]</span>
-<span id="cb6-22"></span>
-<span id="cb6-23"><span class="at" style="color: #657422;
-background-color: null;
-font-style: inherit;">@solara.component</span></span>
-<span id="cb6-24"><span class="kw" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">def</span> Filters(df: pl.DataFrame, filters: solara.Reactive[FilterValues]):</span>
-<span id="cb6-25">    <span class="cf" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">with</span> solara.Card(<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"Filter DataFrame"</span>):</span>
-<span id="cb6-26">        carbs <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> solara.use_reactive((df[<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"Carb. (g)"</span>].<span class="bu" style="color: null;
-background-color: null;
-font-style: inherit;">min</span>(), df[<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"Carb. (g)"</span>].<span class="bu" style="color: null;
-background-color: null;
-font-style: inherit;">max</span>()))</span>
-<span id="cb6-27">        sodium <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> solara.use_reactive((df[<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"Sodium"</span>].<span class="bu" style="color: null;
-background-color: null;
-font-style: inherit;">min</span>(), df[<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"Sodium"</span>].<span class="bu" style="color: null;
-background-color: null;
-font-style: inherit;">max</span>()))</span>
-<span id="cb6-28">        solara.SliderRangeInt(<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"Carbs (g)"</span>, value<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span>carbs, <span class="bu" style="color: null;
-background-color: null;
-font-style: inherit;">min</span><span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span>df[<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"Carb. (g)"</span>].<span class="bu" style="color: null;
-background-color: null;
-font-style: inherit;">min</span>(), <span class="bu" style="color: null;
-background-color: null;
-font-style: inherit;">max</span><span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span>df[<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"Carb. (g)"</span>].<span class="bu" style="color: null;
-background-color: null;
-font-style: inherit;">max</span>())</span>
-<span id="cb6-29">        solara.SliderRangeInt(<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"Sodium"</span>, value<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span>sodium, <span class="bu" style="color: null;
-background-color: null;
-font-style: inherit;">min</span><span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span>df[<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"Sodium"</span>].<span class="bu" style="color: null;
-background-color: null;
-font-style: inherit;">min</span>(), <span class="bu" style="color: null;
-background-color: null;
-font-style: inherit;">max</span><span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span>df[<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"Sodium"</span>].<span class="bu" style="color: null;
-background-color: null;
-font-style: inherit;">max</span>())</span>
-<span id="cb6-30">        </span>
-<span id="cb6-31">        <span class="cf" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">with</span> solara.CardActions():</span>
-<span id="cb6-32">            solara.Button(<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"Submit"</span>, on_click<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span><span class="kw" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">lambda</span>: filters.<span class="bu" style="color: null;
-background-color: null;
-font-style: inherit;">set</span>(FilterValues(sodium.value, carbs.value)))</span>
-<span id="cb6-33"></span>
-<span id="cb6-34"><span class="at" style="color: #657422;
-background-color: null;
-font-style: inherit;">@solara.component</span></span>
-<span id="cb6-35"><span class="kw" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">def</span> FilteredPage(df: pl.DataFrame, filter_values: solara.Reactive[FilterValues]):</span>
-<span id="cb6-36">    df <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> df.<span class="bu" style="color: null;
-background-color: null;
-font-style: inherit;">filter</span>(pl.col(<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"Sodium"</span>).is_between(filter_values.value.sodium[<span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">0</span>], filter_values.value.sodium[<span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">1</span>]) <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">&amp;</span></span>
-<span id="cb6-37">                   pl.col(<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"Carb. (g)"</span>).is_between(filter_values.value.carb[<span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">0</span>], filter_values.value.carb[<span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">1</span>]))</span>
-<span id="cb6-38">    DFVis(df)</span>
-<span id="cb6-39"></span>
-<span id="cb6-40"><span class="at" style="color: #657422;
-background-color: null;
-font-style: inherit;">@solara.component</span></span>
-<span id="cb6-41"><span class="kw" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">def</span> DFVis(df: pl.DataFrame):</span>
-<span id="cb6-42">    solara.Markdown(<span class="ss" style="color: #20794D;
-background-color: null;
-font-style: inherit;">f"## DataFrame"</span>)</span>
-<span id="cb6-43">    solara.DataFrame(df.to_pandas(), items_per_page<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span><span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">5</span>)</span>
-<span id="cb6-44">    px.histogram(df, x<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span>[<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"Carb. (g)"</span>, <span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"Sodium"</span>])</span>
-<span id="cb6-45"></span>
-<span id="cb6-46"><span class="at" style="color: #657422;
-background-color: null;
-font-style: inherit;">@solara.component</span></span>
-<span id="cb6-47"><span class="kw" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">def</span> DFViews(df: pl.DataFrame):</span>
-<span id="cb6-48">    filter_values <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> solara.use_reactive(FilterValues((df[<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"Carb. (g)"</span>].<span class="bu" style="color: null;
-background-color: null;
-font-style: inherit;">min</span>(), df[<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"Carb. (g)"</span>].<span class="bu" style="color: null;
-background-color: null;
-font-style: inherit;">max</span>()), (df[<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"Sodium"</span>].<span class="bu" style="color: null;
-background-color: null;
-font-style: inherit;">min</span>(), df[<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"Sodium"</span>].<span class="bu" style="color: null;
-background-color: null;
-font-style: inherit;">max</span>())))</span>
-<span id="cb6-49">    Filters(df, filter_values)</span>
-<span id="cb6-50">    <span class="cf" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">with</span> solara.Columns():</span>
-<span id="cb6-51">            DFVis(df)</span>
-<span id="cb6-52">            FilteredPage(df, filter_values)</span></code></pre></div>
-</section>
-<section id="streamlit-app" class="level2">
-<h2 class="anchored" data-anchor-id="streamlit-app">Streamlit App</h2>
-<p>Run using <code>streamlit run &lt;filename&gt;</code>.</p>
-<div class="sourceCode" id="cb7" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><span class="im" style="color: #00769E;
-background-color: null;
-font-style: inherit;">from</span> dataclasses <span class="im" style="color: #00769E;
-background-color: null;
-font-style: inherit;">import</span> dataclass</span>
-<span id="cb7-2"><span class="im" style="color: #00769E;
-background-color: null;
-font-style: inherit;">import</span> streamlit <span class="im" style="color: #00769E;
-background-color: null;
-font-style: inherit;">as</span> st</span>
-<span id="cb7-3"><span class="im" style="color: #00769E;
-background-color: null;
-font-style: inherit;">import</span> polars <span class="im" style="color: #00769E;
-background-color: null;
-font-style: inherit;">as</span> pl</span>
-<span id="cb7-4"><span class="im" style="color: #00769E;
-background-color: null;
-font-style: inherit;">import</span> plotly.express <span class="im" style="color: #00769E;
-background-color: null;
-font-style: inherit;">as</span> px</span>
-<span id="cb7-5"></span>
-<span id="cb7-6"><span class="kw" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">def</span> Page():</span>
-<span id="cb7-7">    st.markdown(<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"# Streamlit Example App (Starbucks Data)"</span>)</span>
-<span id="cb7-8">    <span class="bu" style="color: null;
-background-color: null;
-font-style: inherit;">file</span> <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> st.file_uploader(<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"Upload a file"</span>)</span>
-<span id="cb7-9">    <span class="cf" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">if</span> <span class="bu" style="color: null;
-background-color: null;
-font-style: inherit;">file</span> <span class="kw" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">is</span> <span class="kw" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">not</span> <span class="va" style="color: #111111;
-background-color: null;
-font-style: inherit;">None</span>:</span>
-<span id="cb7-10">        df <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> pl.read_csv(<span class="bu" style="color: null;
-background-color: null;
-font-style: inherit;">file</span>, null_values<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span><span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"-"</span>).drop_nulls()</span>
-<span id="cb7-11">        DFViews(df)</span>
-<span id="cb7-12">    <span class="cf" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">else</span>:</span>
-<span id="cb7-13">        st.write(<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"Make sure to upload a file"</span>)</span>
-<span id="cb7-14"></span>
-<span id="cb7-15"><span class="at" style="color: #657422;
-background-color: null;
-font-style: inherit;">@dataclass</span></span>
-<span id="cb7-16"><span class="kw" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">class</span> FilterValues:</span>
-<span id="cb7-17">    sodium: <span class="bu" style="color: null;
-background-color: null;
-font-style: inherit;">tuple</span>[<span class="bu" style="color: null;
-background-color: null;
-font-style: inherit;">int</span>, <span class="bu" style="color: null;
-background-color: null;
-font-style: inherit;">int</span>]</span>
-<span id="cb7-18">    carb: <span class="bu" style="color: null;
-background-color: null;
-font-style: inherit;">tuple</span>[<span class="bu" style="color: null;
-background-color: null;
-font-style: inherit;">int</span>, <span class="bu" style="color: null;
-background-color: null;
-font-style: inherit;">int</span>]</span>
-<span id="cb7-19"></span>
-<span id="cb7-20"><span class="kw" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">def</span> Filters(df: pl.DataFrame) <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">-&gt;</span> FilterValues:</span>
-<span id="cb7-21">    <span class="cf" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">with</span> st.form(<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"df_filer"</span>):</span>
-<span id="cb7-22">        st.write(<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"**Filter DataFrame**"</span>)</span>
-<span id="cb7-23">        carbs <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> (df[<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"Carb. (g)"</span>].<span class="bu" style="color: null;
-background-color: null;
-font-style: inherit;">min</span>(), df[<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"Carb. (g)"</span>].<span class="bu" style="color: null;
-background-color: null;
-font-style: inherit;">max</span>())</span>
-<span id="cb7-24">        sodium <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> (df[<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"Sodium"</span>].<span class="bu" style="color: null;
-background-color: null;
-font-style: inherit;">min</span>(), df[<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"Sodium"</span>].<span class="bu" style="color: null;
-background-color: null;
-font-style: inherit;">max</span>())</span>
-<span id="cb7-25">        carbs <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> st.slider(<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"Carb. (g)"</span>, min_value<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span>carbs[<span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">0</span>], max_value<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span>carbs[<span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">1</span>], value<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span>carbs)</span>
-<span id="cb7-26">        sodium <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> st.slider(<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"Sodium"</span>, min_value<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span>sodium[<span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">0</span>], max_value<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span>sodium[<span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">1</span>], value<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span>sodium)</span>
-<span id="cb7-27">        </span>
-<span id="cb7-28">        st.form_submit_button(<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"Submit"</span>)</span>
-<span id="cb7-29">    <span class="cf" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">return</span> FilterValues(sodium, carbs)</span>
-<span id="cb7-30"></span>
-<span id="cb7-31"><span class="kw" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">def</span> FilteredPage(df: pl.DataFrame, filter_values: FilterValues):</span>
-<span id="cb7-32">    df <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> df.<span class="bu" style="color: null;
-background-color: null;
-font-style: inherit;">filter</span>(pl.col(<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"Sodium"</span>).is_between(filter_values.sodium[<span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">0</span>], filter_values.sodium[<span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">1</span>]) <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">&amp;</span></span>
-<span id="cb7-33">                   pl.col(<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"Carb. (g)"</span>).is_between(filter_values.carb[<span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">0</span>], filter_values.carb[<span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">1</span>]))</span>
-<span id="cb7-34">    DFVis(df)</span>
-<span id="cb7-35"></span>
-<span id="cb7-36"><span class="kw" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">def</span> DFVis(df: pl.DataFrame):</span>
-<span id="cb7-37">    st.markdown(<span class="ss" style="color: #20794D;
-background-color: null;
-font-style: inherit;">f"## DataFrame"</span>)</span>
-<span id="cb7-38">    st.dataframe(df.to_pandas())</span>
-<span id="cb7-39">    st.write(px.histogram(df, x<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span>[<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"Carb. (g)"</span>, <span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"Sodium"</span>]))</span>
-<span id="cb7-40"></span>
-<span id="cb7-41"><span class="kw" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">def</span> DFViews(df: pl.DataFrame):</span>
-<span id="cb7-42">    filters <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> Filters(df)</span>
-<span id="cb7-43">    c1, c2 <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> st.columns(<span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">2</span>)</span>
-<span id="cb7-44">    <span class="cf" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">with</span> c1:</span>
-<span id="cb7-45">        DFVis(df)</span>
-<span id="cb7-46">    <span class="cf" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">with</span> c2:</span>
-<span id="cb7-47">        FilteredPage(df, filters)</span>
-<span id="cb7-48"></span>
-<span id="cb7-49">Page()</span></code></pre></div>
-
-
-</section>
-</section>
-
- ]]></description>
-  <category>data</category>
-  <category>dashboard</category>
-  <category>webapp</category>
-  <guid>https://blog.londogard.com/posts/2023-06-30-solara/</guid>
-  <pubDate>Fri, 30 Jun 2023 00:00:00 GMT</pubDate>
 </item>
 </channel>
 </rss>
