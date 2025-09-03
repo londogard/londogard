@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.7.33">
+<meta name="generator" content="quarto-1.7.34">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -40,7 +40,7 @@ ul.task-list li input[type="checkbox"] {
 <script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-59898bd1c6b9d2bb783127feaa000c76.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-9582434199d49cc9e91654cdeeb4866b.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
 <link href="../../site_libs/bootstrap/bootstrap-8ab00b4506aff93bb9d672c7d73166bb.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
@@ -219,8 +219,6 @@ ul.task-list li input[type="checkbox"] {
 
 
 
-<p><strong>TL;DR</strong> s5cmd provided us a 30x speedup compared to a custom Python threading loop when downloading S3 objects. It’s easy to use and fits right in your workflow today!</p>
-<hr>
 <p>When working with code, or anything really, you always apply trade-offs. One example is <em>simplicity</em> versus <em>runtime efficiency</em>, often talked about in <em>CPU-cycles</em> versus <em>brain-cycles</em>, where the latter usually wins. But sometimes the trade-off is hard, s5cmd is such a case - it’s a single new dependencies with massive gains.</p>
 <p><em><a href="https://github.com/peak/s5cmd">S5cmd</a> is a very fast S3 and local filesystem execution tool</em>. For those that care it’s written in Go, which is a fast language, by Google, that builds small simple binaries.</p>
 <p>I can’t share specific numbers from work, but the speedup is <em>approximately 30x compared to a (simple) custom threading pool in Python</em>, that’s huge! Joshua Robinson found the same numbers in his <a href="https://joshua-robinson.medium.com/s5cmd-for-high-performance-object-storage-7071352cc09d">blog</a> when comparing with s3cmd / aws-cli.</p>

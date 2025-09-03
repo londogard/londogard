@@ -7,10 +7,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Hampus Londögård">
-<meta name="dcterms.date" content="2025-03-07">
-<meta name="description" content="Open Source software that’d cost millions if not billions of $! I share my quick thoughts on smallpond that runs DuckDB distributed through Ray by DeepSeek (creators of R1 LLM).">
+<meta name="dcterms.date" content="2025-09-03">
+<meta name="description" content="TL;DR Using PIL.resize with LANCOZ and reducing_gap=2 has some really high speeds and good results all in all, we’re talking multiple magnitudes faster.">
 
-<title>Mini: DeepSeek’s smallpond - a distributed duckdb – Londogard Blog</title>
+<title>Resizing Images: PIL, cv2 and scikit-image – Londogard Blog</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -74,8 +74,8 @@ ul.task-list li input[type="checkbox"] {
 
 
 <link rel="stylesheet" href="../../styles.css">
-<meta name="twitter:title" content="Mini: DeepSeek’s smallpond - a distributed duckdb – Londogard Blog">
-<meta name="twitter:description" content="Open Source software that’d cost millions if not billions of $! I share my quick thoughts on smallpond that runs DuckDB distributed through Ray by DeepSeek (creators of R1 LLM).">
+<meta name="twitter:title" content="Resizing Images: PIL, cv2 and scikit-image – Londogard Blog">
+<meta name="twitter:description" content="TL;DR Using PIL.resize with LANCOZ and reducing_gap=2 has some really high speeds and good results all in all, we’re talking multiple magnitudes faster.">
 <meta name="twitter:creator" content="@hlondogard">
 <meta name="twitter:card" content="summary">
 </head>
@@ -171,16 +171,15 @@ ul.task-list li input[type="checkbox"] {
 <header id="title-block-header" class="quarto-title-block default page-columns page-full">
   <div class="quarto-title-banner page-columns page-full">
     <div class="quarto-title column-body">
-      <h1 class="title">Mini: DeepSeek’s smallpond - a distributed duckdb</h1>
+      <h1 class="title">Resizing Images: PIL, cv2 and scikit-image</h1>
                   <div>
         <div class="description">
-          Open Source software that’d cost millions if not billions of $! I share my quick thoughts on <em>smallpond</em> that runs DuckDB distributed through Ray by DeepSeek (creators of R1 LLM).
+          <strong>TL;DR</strong> Using PIL.resize with LANCOZ and <code>reducing_gap=2</code> has some really high speeds and good results all in all, we’re talking <em>multiple magnitudes</em> faster.
         </div>
       </div>
                           <div class="quarto-categories">
                 <div class="quarto-category">python</div>
-                <div class="quarto-category">data</div>
-                <div class="quarto-category">distributed</div>
+                <div class="quarto-category">cv</div>
               </div>
                   </div>
   </div>
@@ -198,7 +197,7 @@ ul.task-list li input[type="checkbox"] {
       <div>
       <div class="quarto-title-meta-heading">Published</div>
       <div class="quarto-title-meta-contents">
-        <p class="date">March 7, 2025</p>
+        <p class="date">September 3, 2025</p>
       </div>
     </div>
     
@@ -209,8 +208,14 @@ ul.task-list li input[type="checkbox"] {
   </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
-        
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#quick-benchmarks" id="toc-quick-benchmarks" class="nav-link active" data-scroll-target="#quick-benchmarks">Quick benchmarks:</a></li>
+  </ul>
+</nav>
     </div>
 <!-- main -->
 <main class="content quarto-banner-title-block" id="quarto-document-content">
@@ -219,25 +224,81 @@ ul.task-list li input[type="checkbox"] {
 
 
 
-<p>There has been a lot of buss around <a href="https://www.deepseek.com/">DeepSeek</a> (R1) and their Open Source mission, and lately they released their full stack to train State-of-the-Art LLM’s.<br>
-One of the tools is a <em>Distributed Data Processing</em> framework named <a href="https://github.com/deepseek-ai/smallpond"><em>“smallpond”</em></a> built on top of <a href="https://duckdb.org/"><em>DuckDB</em></a> <em>&amp;</em> <a href="https://www.ray.io/"><em>Ray</em></a>.<br>
-Mike made an excellent write-up on his <a href="https://www.definite.app/blog/smallpond">blog.</a></p>
-<p><strong>The summary?</strong> It’s a tool that you can’t even <a href="https://x.com/suchenzang/status/1895437762427560236">buy with millions $</a>, insanely valuable Open Source code! Draw-back? A lot of setup, early days with few (if any) guides.<br>
-<strong>When should I use it?</strong> When you start to have more than 10 TB of data to query, especially above 1 PB.</p>
-<p><strong>My thoughts</strong> are that</p>
-<ol type="1">
-<li><em>smallpond</em> brings the “modern data stack” closer to end-user for truly Big Data, but not close enough.
-<ul>
-<li>We see <em>Apache Arrow</em> and <em>Ray</em> (a lot more lean than say <a href="https://airflow.apache.org/">Apache Airflow</a>) as key technologies, and the engines are interchangable between DuckDB and Polars.</li>
-</ul></li>
-<li>There’s other competition trying similar, e.g.&nbsp;<a href="https://pola.rs/posts/polars-cloud-what-we-are-building/">Polars Cloud</a> (albeit potentially not Open Source it’s an exciting future)!</li>
-<li>There’s other competition rather looking at vertical scaling, e.g.&nbsp;<a href="https://motherduck.com/">Motherduck</a> .</li>
-</ol>
-<p>At the end of the day Motherducks approach resonates a lot more to me, by storing data cleverly we can easily query huge amount of data efficiently on a single machine through metadata scanning, especially with vertical scaling. <em>It’s also the simplest approach.</em></p>
-<p>But some days you might be in need of that <em>brute-force</em> because there isn’t time, competence or your problem simply requires loading and working with <em>insane amounts of data</em>, i.e.&nbsp;LLM training.</p>
-<p>All in all <em>smallpond</em> and <em>3FS</em> are great additions to the open source community and extends the “distributed truly big data processing” which is a valuable target. Though I can’t help but think and hope that there’ll be even simpler tools moving forward.</p>
+<p>ℹ️ This is a really small piece of “nothing”, but it might save you (and future me) some time!</p>
+<hr>
+<p>Recently I started playing around with <a href="http://scikit-image.org/">scikit-image</a> library which is really cool. I found that they had a decent resizing tool, but diving deeper it actually turned out to be <strong>really slow</strong>.<br>
+I’d even go as far as to say that the anti-aliasing (AA) of scikit-image might be too agressive, but you can tune it luckily.<br>
+In comparison PIL seems really performant with sane defaults, while OpenCV is a bit low-level and requires a manual gaussian filter to achieve good results.</p>
+<p>This is likely not a bottleneck in anyones pipeline, but I love bags of freebies and when running a server on a Raspberry Pi it’s always nice to have some extra performance.</p>
+<section id="quick-benchmarks" class="level2">
+<h2 class="anchored" data-anchor-id="quick-benchmarks">Quick benchmarks:</h2>
+<blockquote class="blockquote">
+<p>Please note that this benchmark is not scientific, it’s a simple <code>timeit(number=100)</code>, but it’s quite telling anyhow!</p>
+</blockquote>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Mode</th>
+<th>Timer</th>
+<th>Person</th>
+<th>Chess Board</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Original</td>
+<td>N/A</td>
+<td><img src="https://images.amplenote.com/8a41f494-8709-11f0-a85e-7b379051e4bb/94dbe4f6-7765-40d5-8dec-46cf479a2aea.jpg" class="img-fluid" alt="94dbe4f6-7765-40d5-8dec-46cf479a2aea.jpg"></td>
+<td><img src="https://images.amplenote.com/8a41f494-8709-11f0-a85e-7b379051e4bb/ffa23487-4156-4fb5-a8dd-12e0a4eaad0a.png" class="img-fluid"></td>
+</tr>
+<tr class="even">
+<td>PIL.resize(LANCOZ, reducing_gaps=None)</td>
+<td>9.18</td>
+<td><img src="https://images.amplenote.com/8a41f494-8709-11f0-a85e-7b379051e4bb/2277afbe-3a8b-4380-8a01-f4eff080f7b0.png" class="img-fluid" alt="2277afbe-3a8b-4380-8a01-f4eff080f7b0.png|160.03750610351562"></td>
+<td><img src="https://images.amplenote.com/8a41f494-8709-11f0-a85e-7b379051e4bb/ec46b283-7c5b-4cef-ac33-e7c02cc79d9f.png" class="img-fluid" alt="ec46b283-7c5b-4cef-ac33-e7c02cc79d9f.png|441.0375061035156"></td>
+</tr>
+<tr class="odd">
+<td>PIL.resize(LANCOZ, reducing_gaps=2)</td>
+<td><strong>0.0003</strong></td>
+<td><img src="https://images.amplenote.com/8a41f494-8709-11f0-a85e-7b379051e4bb/b1959e2a-9ee3-47b0-8c94-42cf8a6eec84.png" class="img-fluid" alt="b1959e2a-9ee3-47b0-8c94-42cf8a6eec84.png|165.03750610351562"></td>
+<td><img src="https://images.amplenote.com/8a41f494-8709-11f0-a85e-7b379051e4bb/4b5441bb-fa02-478d-a9f8-1c709d63fd13.png" class="img-fluid" alt="4b5441bb-fa02-478d-a9f8-1c709d63fd13.png|441.0375061035156"></td>
+</tr>
+<tr class="even">
+<td>ski.resize(aa=True)</td>
+<td>69.15</td>
+<td><img src="https://images.amplenote.com/8a41f494-8709-11f0-a85e-7b379051e4bb/8f9ab362-866b-42a4-9bd1-282f36240684.png" class="img-fluid" alt="8f9ab362-866b-42a4-9bd1-282f36240684.png|167.03750610351562"></td>
+<td><img src="https://images.amplenote.com/8a41f494-8709-11f0-a85e-7b379051e4bb/188cf8f3-d157-4034-98cb-b81c68fa02a0.png" class="img-fluid" alt="188cf8f3-d157-4034-98cb-b81c68fa02a0.png|441.0375061035156"></td>
+</tr>
+<tr class="odd">
+<td>cv2.resize(INTER_AREA)</td>
+<td>5.88</td>
+<td><img src="https://images.amplenote.com/8a41f494-8709-11f0-a85e-7b379051e4bb/0d26dab6-389b-48e1-b354-d62deb862ae3.png" class="img-fluid" alt="0d26dab6-389b-48e1-b354-d62deb862ae3.png|168.03750610351562"></td>
+<td><img src="https://images.amplenote.com/8a41f494-8709-11f0-a85e-7b379051e4bb/9693c723-e405-4db6-ba7c-c7716a2291c6.png" class="img-fluid"></td>
+</tr>
+<tr class="even">
+<td>cv2.resize(LANCOZ + GaussBlur)</td>
+<td>4.25</td>
+<td><img src="https://images.amplenote.com/8a41f494-8709-11f0-a85e-7b379051e4bb/1747bfaa-bf53-455d-ba32-f3535bf8585f.png" class="img-fluid" alt="1747bfaa-bf53-455d-ba32-f3535bf8585f.png|174.03750610351562"></td>
+<td><img src="https://images.amplenote.com/8a41f494-8709-11f0-a85e-7b379051e4bb/3a715f42-ff02-465e-bca8-4290c16eeb3d.png" class="img-fluid"></td>
+</tr>
+<tr class="odd">
+<td>cv2.resize(LANCOZ)</td>
+<td>0.033</td>
+<td><img src="https://images.amplenote.com/8a41f494-8709-11f0-a85e-7b379051e4bb/a8fa7498-da6c-4881-93fe-a34697b961e1.png" class="img-fluid" alt="a8fa7498-da6c-4881-93fe-a34697b961e1.png|178.03750610351562"></td>
+<td><img src="https://images.amplenote.com/8a41f494-8709-11f0-a85e-7b379051e4bb/fb425821-e7a3-4e0c-8b77-11c66dc32245.png" class="img-fluid"></td>
+</tr>
+</tbody>
+</table>
+<p>~Hampus Londögård</p>
 
 
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
