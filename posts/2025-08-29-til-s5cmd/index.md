@@ -5,10 +5,6 @@ categories: [aws, s3, til]
 date: "2025-08-29"
 ---
 
-**TL;DR** s5cmd provided us a 30x speedup compared to a custom Python threading loop when downloading S3 objects. It's easy to use and fits right in your workflow today!
-
----
-
 When working with code, or anything really, you always apply trade-offs. One example is _simplicity_ versus _runtime efficiency_, often talked about in _CPU-cycles_ versus _brain-cycles_, where the latter usually wins. But sometimes the trade-off is hard, s5cmd is such a case - it's a single new dependencies with massive gains.
 
 _[S5cmd](https://github.com/peak/s5cmd) is a very fast S3 and local filesystem execution tool_. For those that care it's written in Go, which is a fast language, by Google, that builds small simple binaries.
