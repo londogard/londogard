@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.7.34">
+<meta name="generator" content="quarto-1.8.25">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -71,14 +71,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../favicon.ico" rel="icon">
 <script src="../site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/axe/axe-check.js" type="module"></script>
 <script src="../site_libs/quarto-html/popper.min.js"></script>
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-9582434199d49cc9e91654cdeeb4866b.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-065a5179aebd64318d7ea99d77b64a9e.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-969ddfa49e00a70eb3423444dbc81f6c.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-065a5179aebd64318d7ea99d77b64a9e.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-8ab00b4506aff93bb9d672c7d73166bb.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-7d3a565c23c4d3b0e7c030e96a8964f3.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark-7d3a565c23c4d3b0e7c030e96a8964f3.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-7d3a565c23c4d3b0e7c030e96a8964f3.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -123,7 +128,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
     <a href="../index.html" class="navbar-brand navbar-brand-logo">
-    <img src="../favicon.ico" alt="" class="navbar-logo">
+    <img src="../favicon.ico" alt="" class="navbar-logo light-content">
+    <img src="../favicon.ico" alt="" class="navbar-logo dark-content">
     </a>
     <a class="navbar-brand" href="../index.html">
     <span class="navbar-title">Londogard Blog</span>
@@ -278,7 +284,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Structured Query Language (SQL) is as the name, once spelled out, a Domain Specific Language (DSL) just like regex. It’s basically a programming language written to facilitate and simplify the experience with the underlying engine. By using a DSL you gain capabilities that would be natural to integrate with most languages, and it also makes the engine do the same with the same code across languages.</p>
 <p>I think that Regex and SQL are the most famous DSLs and for good reason, having regex work (almost) the same across languages simplifies the guides and the same applies to SQL.</p>
 <p>Going forward let’s see how we communicate with a SQL-db from a programming language like Java using their famous jdbc (Java Database Connectivity) which is the driver that communicates with the db.</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode kotlin code-with-copy"><code class="sourceCode kotlin"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="cf">try</span> <span class="op">{</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode kotlin code-with-copy"><code class="sourceCode kotlin"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="cf">try</span> <span class="op">{</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>      System<span class="op">.</span><span class="kw">out</span><span class="op">.</span>println<span class="op">(</span>\<span class="st">"Connecting to database...</span><span class="sc">\"</span><span class="st">);</span></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>      conn <span class="op">=</span> DriverManager<span class="op">.</span>getConnection<span class="op">(</span>DB_URL<span class="op">,</span>USER<span class="op">,</span>PASS<span class="op">);</span></span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
@@ -308,14 +314,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>      stmt<span class="op">.</span>close<span class="op">();</span></span>
 <span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a>      conn<span class="op">.</span>close<span class="op">();</span></span>
 <span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a>   <span class="op">}</span> <span class="cf">catch</span> <span class="op">(</span>SQLException se<span class="op">)</span> <span class="op">{</span></span>
-<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a>    <span class="op">....</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a>    <span class="op">....</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Not very convenient right? Personally I think this looks horrible, it’s filled with horrible getters &amp; setters like we’re stuck in the Middle Ages or something. Personally my mind directly flows to serialization and how that must work somehow with databases, and that’s right - we can move into the future today!</p>
 </section>
 <section id="moving-one-abstraction-level-up" class="level3">
 <h3 class="anchored" data-anchor-id="moving-one-abstraction-level-up">Moving one abstraction level up</h3>
 <p>Welcome <a href="https://developer.android.com/topic/libraries/architecture/room">Room</a> &amp; <a href="http://scala-slick.org/">slick</a> (two libraries I’ve experience with) to the room! Both of these libraries provide a type of serialization to classes and more convenient syntax to write the code. The first one heavily leans on annotation to make it work while the other one uses a more slick approach of "copying" the way you work with the standard Scala Collections (<code>filter, map, flatMap, reduce</code> etc).</p>
 <p>I’d say that both do count as ORMs but they’re still not as abstract as other solutions such as <em>peewee</em> which we’ll discuss later. Let’s get into Room and how it works. First you define entities like a class with the added annotation <code>@Entity</code> and then you define a <em>Data Access Object</em> (DAO) to interact with the table / object. The DAO is where you define your queries, let’s take a look.</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode kotlin code-with-copy"><code class="sourceCode kotlin"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="at">@Dao</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode kotlin code-with-copy"><code class="sourceCode kotlin"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="at">@Dao</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="kw">interface</span> UserDao <span class="op">{</span></span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">@Query</span><span class="op">(</span>\<span class="st">"SELECT * FROM user</span><span class="sc">\"</span><span class="st">)</span></span>
 <span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>    <span class="kw">fun</span> <span class="fu">getAll</span><span class="op">():</span> <span class="dt">List</span><span class="op">&lt;</span><span class="dt">User</span><span class="op">&gt;</span></span>
@@ -323,10 +329,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">@Query</span><span class="op">(</span>\"<span class="va">SELECT</span> * <span class="va">FROM</span> <span class="va">user</span> <span class="va">WHERE</span> <span class="va">uid</span> <span class="va">IN</span> (<span class="op">:</span><span class="dt">userIds</span><span class="op">)</span>\")</span>
 <span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>    <span class="kw">fun</span> <span class="fu">loadAllByIds</span><span class="op">(</span><span class="va">userIds</span><span class="op">:</span> <span class="dt">IntArray</span><span class="op">):</span> <span class="dt">List</span><span class="op">&lt;</span><span class="dt">User</span><span class="op">&gt;</span></span>
 <span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="op">...</span></span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>In my opinion this approach strikes a really good balance between simple-to-use but still powerful and very configurable because you still use SQL, a bonus here is that it’s safe from SQL-injection as you’re making use of so-called <code>prepared-statements</code> (<a href="https://en.wikipedia.org/wiki/Prepared_statement">wikipedia</a>). The biggest drawback is that it’s hard to write easy-to-read SQL in the annotation and for the annotation-haters we’ve a lot of annotations (which often slows down the compile-time noticeably among other things).</p>
 <p>Moving on we’ve <code>slick</code> which is also a really cool approach! <code>slick</code> allows you to this but instead you write your queries in something that feels like using the normal Scala Collection library. This allows you to use <code>map</code>, <code>filter</code>, <code>reduce</code> etc to create queries, and even <code>for-comprehension</code>. Let’s see!</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode scala code-with-copy"><code class="sourceCode scala"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co">// Read all coffees and print them to the console</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode scala code-with-copy"><code class="sourceCode scala"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co">// Read all coffees and print them to the console</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">println</span><span class="op">(</span>\<span class="st">"Coffees:</span><span class="ch">\"</span><span class="st">)</span></span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>db<span class="op">.</span><span class="fu">run</span><span class="op">(</span>coffees<span class="op">.</span>result<span class="op">).</span><span class="fu">map</span><span class="op">(</span>_<span class="op">.</span>foreach <span class="op">{</span></span>
 <span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>  <span class="cf">case</span> <span class="op">(</span>name<span class="op">,</span> supID<span class="op">,</span> price<span class="op">,</span> sales<span class="op">,</span> total<span class="op">)</span> <span class="op">=&gt;</span></span>
@@ -344,14 +350,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>  users</span>
 <span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">filter</span><span class="op">(</span>_<span class="op">.</span>id <span class="op">===</span> id<span class="op">)</span></span>
 <span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span>result<span class="op">.</span>headOption</span>
-<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>  <span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>  <span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Pretty slick right?</p>
 </section>
 <section id="moving-another-level-up-python-peewee" class="level3">
 <h3 class="anchored" data-anchor-id="moving-another-level-up-python-peewee">Moving another level up (Python + Peewee)</h3>
 <p>Ok, maybe it’s not actually moving one level up from <code>slick</code> but I’d say it’s still a little bit further away from raw SQL as we make more use of objects, in the case of <code>slick</code> you can more easily see the generated SQL-code. Let’s take a look at <a href="http://docs.peewee-orm.com/en/latest/index.html">peewee</a> which supports most databases (sqlite, mysql, postgresql and cockroachdb).</p>
 <p>So where do we begin? Create the database and tables! It’s done by initiating a database and then creating different classes which each maps to their own tables automatically.</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode kotlin code-with-copy"><code class="sourceCode kotlin"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>db <span class="op">=</span> SqliteDatabase<span class="op">(</span><span class="er">'</span>people<span class="op">.</span>db<span class="er">'</span><span class="op">)</span> # create the db</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode kotlin code-with-copy"><code class="sourceCode kotlin"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>db <span class="op">=</span> SqliteDatabase<span class="op">(</span><span class="er">'</span>people<span class="op">.</span>db<span class="er">'</span><span class="op">)</span> # create the db</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Person<span class="op">(</span><span class="va">Model</span><span class="op">):</span></span>
 <span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    <span class="dt">name</span> = <span class="dt">CharField</span><span class="op">()</span></span>
@@ -366,20 +372,20 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>    <span class="dt">animal_type</span> = <span class="dt">CharField</span><span class="op">()</span></span>
 <span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>    <span class="kw">class</span> Meta<span class="op">:</span></span>
-<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>        <span class="dt">database</span> = <span class="dt">db</span> # <span class="dt">this</span> <span class="dt">model</span> <span class="dt">uses</span> <span class="dt">the</span> \"<span class="dt">people</span>.<span class="dt">db</span>\" <span class="dt">database</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>        <span class="dt">database</span> = <span class="dt">db</span> # <span class="dt">this</span> <span class="dt">model</span> <span class="dt">uses</span> <span class="dt">the</span> \"<span class="dt">people</span>.<span class="dt">db</span>\" <span class="dt">database</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>And how would one create entries and then query them? It’s simply done through object creation as in the following examples.</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>uncle_bob <span class="op">=</span> Person(name<span class="op">=</span><span class="st">'Bob'</span>, birthday<span class="op">=</span>date(<span class="dv">1960</span>, <span class="dv">1</span>, <span class="dv">15</span>))</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>uncle_bob <span class="op">=</span> Person(name<span class="op">=</span><span class="st">'Bob'</span>, birthday<span class="op">=</span>date(<span class="dv">1960</span>, <span class="dv">1</span>, <span class="dv">15</span>))</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>uncle_bob.save()</span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Sometimes the class already has a \"create method\" as in</span></span>
 <span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>Person.create(name<span class="op">=</span><span class="st">'Sarah'</span>, birthday<span class="op">=</span>date(<span class="dv">1980</span>, <span class="dv">10</span>, <span class="dv">20</span>))</span>
 <span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="co"># And create a pet which belongs to uncle_bob</span></span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>bob_dog <span class="op">=</span> Pet.create(owner<span class="op">=</span>uncle_bob, name<span class="op">=</span><span class="st">'Doggy'</span>, animal_type<span class="op">=</span><span class="st">'dog'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>bob_dog <span class="op">=</span> Pet.create(owner<span class="op">=</span>uncle_bob, name<span class="op">=</span><span class="st">'Doggy'</span>, animal_type<span class="op">=</span><span class="st">'dog'</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>And to query the tables we also make use of the object fully, as in the following small example.</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>bobby <span class="op">=</span> Person.select().where(Person.name <span class="op">==</span> <span class="st">'Bob'</span>).get()</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>bobby <span class="op">=</span> Person.select().where(Person.name <span class="op">==</span> <span class="st">'Bob'</span>).get()</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="co"># or all persons!</span></span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> person <span class="kw">in</span> Person.select():</span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(person.name)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(person.name)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Now we’ve gone through the different abstraction layers that you usually see available in most languages. Going forward I’d like to show SQLDelight which turns the abstraction a little bit upside down.</p>
 </section>
 <section id="sqldelight-abstraction-level-left-to-the-right" class="level3">
@@ -420,7 +426,7 @@ VALUES ?;</code></pre>
 <li>Queries for each table</li>
 </ul>
 <p>And on top of this you’ll have <em>full</em> typing, which is pretty damn awesome! Let’s take a look at how we’d use this from Kotlin.</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode kotlin code-with-copy"><code class="sourceCode kotlin"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co">// Not optimal code, should use injection or something in reality for the db.</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode kotlin code-with-copy"><code class="sourceCode kotlin"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co">// Not optimal code, should use injection or something in reality for the db.</span></span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="kw">val</span> <span class="va">database</span> <span class="op">=</span> Database<span class="op">(</span>driver<span class="op">)</span></span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="kw">val</span> <span class="va">personQueries</span><span class="op">:</span> PersonQueries <span class="op">=</span> database<span class="op">.</span>personQueries</span>
@@ -435,7 +441,7 @@ VALUES ?;</code></pre>
 <span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a><span class="kw">val</span> <span class="va">person</span> <span class="op">=</span> Person<span class="op">(</span>\<span class="st">"Ronald McDonald</span><span class="sc">\"</span><span class="st">, Date(2020, 1, 5))</span></span>
 <span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>personQueries<span class="op">.</span>insertPerson<span class="op">(</span>person<span class="op">)</span></span>
 <span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>println<span class="op">(</span>personQueries<span class="op">.</span>selectAll<span class="op">().</span>executeAsList<span class="op">())</span></span>
-<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a><span class="co">// Prints [Person.Impl(\"Bob\", Date(2010, 1, 10)), Person.Impl(\"Ronald McDonald\", Date(2020, 1, 5))]</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a><span class="co">// Prints [Person.Impl(\"Bob\", Date(2010, 1, 10)), Person.Impl(\"Ronald McDonald\", Date(2020, 1, 5))]</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Let me just say, I’m amazed about this kind of reverse thinking of generating code from SQL. It gives us the convenience of a ORM but the flexibility of raw SQL :happy:.</p>
 </section>
 <section id="comparison-table" class="level3">
@@ -558,13 +564,14 @@ VALUES ?;</code></pre>
       e.clearSelection();
     }
     const getTextToCopy = function(trigger) {
-        const codeEl = trigger.previousElementSibling.cloneNode(true);
-        for (const childEl of codeEl.children) {
-          if (isCodeAnnotation(childEl)) {
-            childEl.remove();
-          }
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
         }
-        return codeEl.innerText;
+      }
+      return codeEl.innerText;
     }
     const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
       text: getTextToCopy

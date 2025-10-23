@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.7.34">
+<meta name="generator" content="quarto-1.8.25">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -71,14 +71,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../../favicon.ico" rel="icon">
 <script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../site_libs/quarto-html/axe/axe-check.js" type="module"></script>
 <script src="../../site_libs/quarto-html/popper.min.js"></script>
 <script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-9582434199d49cc9e91654cdeeb4866b.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-065a5179aebd64318d7ea99d77b64a9e.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark-969ddfa49e00a70eb3423444dbc81f6c.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-065a5179aebd64318d7ea99d77b64a9e.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-8ab00b4506aff93bb9d672c7d73166bb.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-7d3a565c23c4d3b0e7c030e96a8964f3.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-dark-7d3a565c23c4d3b0e7c030e96a8964f3.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-7d3a565c23c4d3b0e7c030e96a8964f3.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -126,7 +131,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
     <a href="../../index.html" class="navbar-brand navbar-brand-logo">
-    <img src="../../favicon.ico" alt="" class="navbar-logo">
+    <img src="../../favicon.ico" alt="" class="navbar-logo light-content">
+    <img src="../../favicon.ico" alt="" class="navbar-logo dark-content">
     </a>
     <a class="navbar-brand" href="../../index.html">
     <span class="navbar-title">Londogard Blog</span>
@@ -434,12 +440,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="screenshots" class="level2 page-columns page-full">
 <h2 class="anchored" data-anchor-id="screenshots">Screenshots</h2>
 <div class="callout callout-style-default callout-tip callout-titled page-columns page-full">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Inference Page
+<span class="screen-reader-only">Tip</span>Inference Page
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
@@ -469,12 +475,12 @@ Inference Page
 </div>
 </div>
 <div class="callout callout-style-default callout-tip callout-titled page-columns page-full">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Other Pages
+<span class="screen-reader-only">Tip</span>Other Pages
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
@@ -519,21 +525,21 @@ Other Pages
 <h3 class="anchored" data-anchor-id="building-progress-loaders-in-solara">Building Progress Loaders in Solara</h3>
 <p>I created a component to wrap Progress on top of the <code>use_thread</code>&nbsp; returned <code>solara.Result</code>&nbsp; class. This is very useful when you’re writing code and want a “prettier” spinner with some text.</p>
 <p>The possibility to create re-usable components which are stateful like this is exciting!</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="at">@solara.component</span>()</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="at">@solara.component</span>()</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> ProgressDynamic(</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    msg: <span class="bu">str</span>,</span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>    result: solara.Result[Any],</span>
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>):</span>
 <span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> result.state <span class="op">==</span> solara.ResultState.RUNNING:</span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>        Progress(msg)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>        Progress(msg)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>This is a quite simple class, yet it cleans up a lot of code when called like:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>res <span class="op">=</span> write_video.use_thread(</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>res <span class="op">=</span> write_video.use_thread(</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    tstamp[<span class="st">"start"</span>],</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    tstamp[<span class="st">"end"</span>],</span>
 <span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>    selected_vid,</span>
 <span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>    Path(file_name).stem,</span>
 <span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>Progress(<span class="st">"Building Clip..."</span>, res)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>Progress(<span class="st">"Building Clip..."</span>, res)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="imgs/image.png" class="img-fluid figure-img"></p>
@@ -547,7 +553,7 @@ Other Pages
 <section id="trickle-down-to-child" class="level4">
 <h4 class="anchored" data-anchor-id="trickle-down-to-child">Trickle Down to Child</h4>
 <p>One way to use state hierarchy is to provide from parent to child a <code>solara.reactive</code> which enables downstream users to atomically update as parent, or anyone, updates said state variable.</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="at">@solara.component</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="at">@solara.component</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> CutOffChartSelection(</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    cut_off: solara.Reactive[<span class="bu">int</span>],</span>
 <span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>    df: pl.DataFrame,</span>
@@ -564,7 +570,7 @@ Other Pages
 <span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>    <span class="cf">with</span> div:</span>
 <span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>        fig <span class="op">=</span> px.line(df, x<span class="op">=</span><span class="st">"timestamp"</span>, y<span class="op">=</span><span class="st">"preds"</span>, line_shape<span class="op">=</span><span class="st">"hv"</span>)</span>
 <span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>        fig.add_hline(y<span class="op">=</span>cut_off.value, line_color<span class="op">=</span><span class="st">"red"</span>)</span>
-<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>        solara.FigurePlotly(fig)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>        solara.FigurePlotly(fig)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>What’s important here?</p>
 <ol type="1">
 <li>Note how I set <code>div = solara.Column()</code>&nbsp; this lets me re-order UI and disregard execution flow.&nbsp;</li>
@@ -575,7 +581,7 @@ Other Pages
 <h4 class="anchored" data-anchor-id="trickle-up-to-parent">Trickle Up to Parent</h4>
 <p>State does not only trickle up, as the <code>solara.reactive</code> is the same as every other use we can change state in a child and trickle up to parent and other consumers!</p>
 <p>It’s a very simple and clean approach to state, kudos React and Solara!</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="at">@solara.component</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="at">@solara.component</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> ModelFileSelectComponent(</span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    <span class="bu">file</span>: solara.Reactive[<span class="bu">str</span>],</span>
 <span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    model: solara.Reactive[<span class="bu">str</span>],</span>
@@ -585,7 +591,7 @@ Other Pages
 <span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">with</span> solara.Card(<span class="st">"Select Video/Model"</span>):</span>
 <span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>        <span class="cf">with</span> solara.Columns():</span>
 <span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>            solara.Select(<span class="st">"Select File"</span>, values<span class="op">=</span>files, value<span class="op">=</span><span class="bu">file</span>)</span>
-<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>            solara.Select(<span class="st">"Select Model"</span>, values<span class="op">=</span>models, value<span class="op">=</span>model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>            solara.Select(<span class="st">"Select Model"</span>, values<span class="op">=</span>models, value<span class="op">=</span>model)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>In this component we can see that we insert <code>file: solara.Reactive</code>&nbsp; which is edited through the <code>solara.Select</code>. This creates a clean trickle-up flow and allow us to hide details.</p>
 <blockquote class="blockquote">
 <p>⚠️ It would be even cleaner if our component could return this reactive variable, rather than declaring it in parent.</p>
@@ -597,14 +603,14 @@ Other Pages
 <p>When working with UI it’s important to not block the main thread, sometimes called <em>the rendering thread</em>.&nbsp;</p>
 <p>If we block the main thread <strong>the app becomes frozen</strong> and doesn’t respond. This becomes a bad user experience.</p>
 <p><strong>It’s solved by using threads</strong> which fortunately Solara makes a breeze. There’s two ways to apply threading.</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 1. Memoized function</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 1. Memoized function</span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="at">@solara.memoize</span></span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> slow_func(...): ...</span>
 <span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>result <span class="op">=</span> slove_func.use_thread(...)</span>
 <span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="co"># 2. Run thread directly</span></span>
 <span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> slow_func_2(...): ...</span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>result <span class="op">=</span> solara.use_thread(<span class="kw">lambda</span>: slow_func_2(...), dependencies<span class="op">=</span>...)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>result <span class="op">=</span> solara.use_thread(<span class="kw">lambda</span>: slow_func_2(...), dependencies<span class="op">=</span>...)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Both approaches results in <code>solara.Result</code> value that updates itself as it progress.</p>
 <blockquote class="blockquote">
 <p><code>solara.Result[T]</code> has two important values.</p>
@@ -615,19 +621,19 @@ Other Pages
 </blockquote>
 <p>The result is a smooth experience through threads. The developer side is not as perfect and feels underdeveloped, I end up writing something that feels almost like an anti-pattern with a bunch of if-elses to figure if result is done.</p>
 <p>I can see a future where you call a <code>.use_thread</code> with something like <code>apply_progress=True</code> and also inject your own <code>solara.Reactive</code> to allow a more reactive approach to the result. The current result is clear code though, that’s explainable even on GitHub - as shared below.</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>res <span class="op">=</span> write_video.use_thread(...)</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>res <span class="op">=</span> write_video.use_thread(...)</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> res.state <span class="op">==</span> solara.ResultState.RUNNING:</span>
 <span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>    Progress(<span class="st">"Writing video..."</span>)</span>
 <span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="cf">elif</span> res.state <span class="op">==</span> solara.ResultState.FINISHED:</span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>    show_finished_ui(...)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>    show_finished_ui(...)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Again, this is no problem once-in-a-while, but if you’re using threads heavily it becomes a if-else craze.</p>
 <p><strong>All in all it’s a good experience to include threading though, something unimaginable in Streamlit!</strong></p>
 </section>
 <section id="plotly-callbacks" class="level3">
 <h3 class="anchored" data-anchor-id="plotly-callbacks">Plotly Callbacks</h3>
 <p>I implemented a really cool Plotly Callback through Solara’s integration. It allows the user to select a subset of the video by “zooming”/”dragging”. It’s a clean approach to selecting sub-parts of videos to build the full video, i.e.&nbsp;one game at a time and not the full stream! See <a href="#fig-plotly" class="quarto-xref">Figure&nbsp;1</a>.</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> update_vals(relayout_dict: <span class="bu">dict</span>[<span class="bu">str</span>, Any] <span class="op">|</span> <span class="va">None</span>):</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> update_vals(relayout_dict: <span class="bu">dict</span>[<span class="bu">str</span>, Any] <span class="op">|</span> <span class="va">None</span>):</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> relayout_dict <span class="kw">is</span> <span class="kw">not</span> <span class="va">None</span>:</span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>        layout <span class="op">=</span> relayout_dict[<span class="st">"relayout_data"</span>]</span>
 <span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>        start_stop.value <span class="op">=</span> [</span>
@@ -635,7 +641,7 @@ Other Pages
 <span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>            parser.parse(layout[<span class="st">"xaxis.range[1]"</span>], ignoretz<span class="op">=</span><span class="va">True</span>),</span>
 <span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>        ]</span>
 <span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>solara.FigurePlotly(fig, on_relayout<span class="op">=</span>update_vals)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>solara.FigurePlotly(fig, on_relayout<span class="op">=</span>update_vals)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div id="fig-plotly" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-plotly-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
@@ -737,13 +743,14 @@ For now there was a decent work-around, rather than using Tabs I use Select to c
       e.clearSelection();
     }
     const getTextToCopy = function(trigger) {
-        const codeEl = trigger.previousElementSibling.cloneNode(true);
-        for (const childEl of codeEl.children) {
-          if (isCodeAnnotation(childEl)) {
-            childEl.remove();
-          }
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
         }
-        return codeEl.innerText;
+      }
+      return codeEl.innerText;
     }
     const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
       text: getTextToCopy

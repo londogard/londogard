@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.7.34">
+<meta name="generator" content="quarto-1.8.25">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -61,7 +61,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </style>
 
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script><script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js" integrity="sha384-ZvpUoO/+PpLXR1lu4jmpXWu80pZlYUAfxl5NsBMWOEPSjUn/6Z/hRTt8+pR6L4N2" crossorigin="anonymous"></script><script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
 <script src="../../site_libs/quarto-nav/headroom.min.js"></script>
 <script src="../../site_libs/clipboard/clipboard.min.js"></script>
 <script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
@@ -71,14 +71,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../../favicon.ico" rel="icon">
 <script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../site_libs/quarto-html/axe/axe-check.js" type="module"></script>
 <script src="../../site_libs/quarto-html/popper.min.js"></script>
 <script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-9582434199d49cc9e91654cdeeb4866b.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-065a5179aebd64318d7ea99d77b64a9e.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark-969ddfa49e00a70eb3423444dbc81f6c.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-065a5179aebd64318d7ea99d77b64a9e.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-8ab00b4506aff93bb9d672c7d73166bb.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-7d3a565c23c4d3b0e7c030e96a8964f3.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-dark-7d3a565c23c4d3b0e7c030e96a8964f3.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-7d3a565c23c4d3b0e7c030e96a8964f3.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -106,7 +111,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-label": "Search"
   }
 }</script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" integrity="sha512-c3Nl8+7g4LMSTdrm621y7kf9v3SDPnhxLNhcjFJbKECVnmZHTdo+IRO05sNLTH/D3vA6u1X32ehoLC7WFVdheg==" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/requirejs@2.3.6/require.min.js" integrity="sha384-c9c+LnTbwQ3aujuU7ULEPVvgLs+Fn6fJUvIGTsuu1ZcCf11fiEubah0ttpca4ntM sha384-6V1/AdqZRWk1KAlWbKBlGhN7VG4iE/yAZcO6NZPMF8od0vukrvr0tg4qY6NSrItx" crossorigin="anonymous"></script>
 
 <script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
 
@@ -124,7 +129,7 @@ const typesetMath = (el) => {
     var macros = [];
     for (var i = 0; i < mathElements.length; i++) {
       var texText = mathElements[i].firstChild;
-      if (mathElements[i].tagName == "SPAN") {
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
         window.katex.render(texText.data, mathElements[i], {
           displayMode: mathElements[i].classList.contains('display'),
           throwOnError: false,
@@ -158,7 +163,8 @@ window.Quarto = {
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
     <a href="../../index.html" class="navbar-brand navbar-brand-logo">
-    <img src="../../favicon.ico" alt="" class="navbar-logo">
+    <img src="../../favicon.ico" alt="" class="navbar-logo light-content">
+    <img src="../../favicon.ico" alt="" class="navbar-logo dark-content">
     </a>
     <a class="navbar-brand" href="../../index.html">
     <span class="navbar-title">Londogard Blog</span>
@@ -324,35 +330,35 @@ In <a href="https://blog.londogard.com/blog/timeseries-pt-3">part #3</a> we’ll
 <p>Feel free to ignore the cells and simply run them, the lazy style 🥱</p>
 <p>Installing the important libraries…</p>
 <div id="cell-5" class="cell" data-execution_count="45">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> IPython.display <span class="im">import</span> clear_output</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> IPython.display <span class="im">import</span> clear_output</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>pip install <span class="op">-</span>U pandas_datareader</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>pip install plotly</span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>pip install matplotlib<span class="op">==</span><span class="fl">3.1.3</span></span>
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>clear_output()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>clear_output()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>And importing them…</p>
 <div id="cell-7" class="cell" data-execution_count="46">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd <span class="co"># data processing, CSV file I/O (e.g. pd.read_csv)</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd <span class="co"># data processing, CSV file I/O (e.g. pd.read_csv)</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np  <span class="co"># linear algebra</span></span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas_datareader <span class="im">as</span> pdr</span>
 <span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> seaborn <span class="im">as</span> sns</span>
 <span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> datetime <span class="im">import</span> datetime</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> datetime <span class="im">import</span> datetime</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section id="minor-analysis" class="level3">
 <h3 class="anchored" data-anchor-id="minor-analysis">Minor Analysis</h3>
 <div id="cell-9" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;colab&quot;,&quot;value&quot;:{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;,&quot;height&quot;:362}}" data-outputid="30c02dfc-a3f9-4827-c563-305ab92bd0a0" data-execution_count="47">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pdr.get_data_yahoo([<span class="st">'AAPL'</span>, <span class="st">'GOOGL'</span>, <span class="st">'AMZN'</span>, <span class="st">'MSFT'</span>, <span class="st">'GE'</span>])</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>df.head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pdr.get_data_yahoo([<span class="st">'AAPL'</span>, <span class="st">'GOOGL'</span>, <span class="st">'AMZN'</span>, <span class="st">'MSFT'</span>, <span class="st">'GE'</span>])</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>df.head()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="47">
 <div id="df-927c0c71-d45f-4ed9-9876-1638997ddaf0">
     <div class="colab-df-container">
       <div>
 
 
-<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
 <thead>
 <tr class="header">
 <th data-quarto-table-cell-role="th">Attributes</th>
@@ -413,7 +419,7 @@ In <a href="https://blog.londogard.com/blog/timeseries-pt-3">part #3</a> we’ll
 </thead>
 <tbody>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">2017-03-13</td>
+<th data-quarto-table-cell-role="th">2017-03-13</th>
 <td>32.856758</td>
 <td>864.580017</td>
 <td>854.590027</td>
@@ -437,7 +443,7 @@ In <a href="https://blog.londogard.com/blog/timeseries-pt-3">part #3</a> we’ll
 <td>3924414.0</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">2017-03-14</td>
+<th data-quarto-table-cell-role="th">2017-03-14</th>
 <td>32.807198</td>
 <td>865.909973</td>
 <td>852.530029</td>
@@ -461,7 +467,7 @@ In <a href="https://blog.londogard.com/blog/timeseries-pt-3">part #3</a> we’ll
 <td>2964208.0</td>
 </tr>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">2017-03-15</td>
+<th data-quarto-table-cell-role="th">2017-03-15</th>
 <td>33.154182</td>
 <td>868.390015</td>
 <td>852.969971</td>
@@ -485,7 +491,7 @@ In <a href="https://blog.londogard.com/blog/timeseries-pt-3">part #3</a> we’ll
 <td>3268564.0</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">2017-03-16</td>
+<th data-quarto-table-cell-role="th">2017-03-16</th>
 <td>33.208458</td>
 <td>870.000000</td>
 <td>853.419983</td>
@@ -509,7 +515,7 @@ In <a href="https://blog.londogard.com/blog/timeseries-pt-3">part #3</a> we’ll
 <td>2756910.0</td>
 </tr>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">2017-03-17</td>
+<th data-quarto-table-cell-role="th">2017-03-17</th>
 <td>33.043243</td>
 <td>872.369995</td>
 <td>852.309998</td>
@@ -614,7 +620,7 @@ In <a href="https://blog.londogard.com/blog/timeseries-pt-3">part #3</a> we’ll
 <p>Looks fine, but how much data did we download?<br>
 We can view the <code>.index</code> which is a <code>DateTimeIndex</code> and figure out how it stretches.</p>
 <div id="cell-11" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;colab&quot;,&quot;value&quot;:{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;}}" data-outputid="815a3040-f46d-4ca6-ca9c-339ef3244d96" data-execution_count="48">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>df.index[<span class="dv">0</span>],df.index[<span class="op">-</span><span class="dv">1</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>df.index[<span class="dv">0</span>],df.index[<span class="op">-</span><span class="dv">1</span>]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="48">
 <pre><code>(Timestamp('2017-03-13 00:00:00'), Timestamp('2022-03-11 00:00:00'))</code></pre>
 </div>
@@ -625,11 +631,11 @@ Now let us analyze this data further by looking at if the stocks correlate someh
 <p><strong>N.B.</strong> this analysis was first done by Heidi Mach, it’s something I would never have done myself. Really cool results incoming!</p>
 </blockquote>
 <div id="cell-13" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;colab&quot;,&quot;value&quot;:{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;,&quot;height&quot;:237}}" data-outputid="294b3e74-cfc1-4d6c-971c-d88b4dfdee8c" data-execution_count="49">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>df[<span class="st">'Adj Close'</span>].corr().style.background_gradient(cmap<span class="op">=</span><span class="st">"Blues"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>df[<span class="st">'Adj Close'</span>].corr().style.background_gradient(cmap<span class="op">=</span><span class="st">"Blues"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="49">
 
 
-<table id="T_126ef_" class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true">
+<table id="T_126ef_" class="dataframe caption-top table table-sm table-striped small">
 <thead>
 <tr class="header">
 <th class="index_name level0" data-quarto-table-cell-role="th">Symbols</th>
@@ -650,7 +656,7 @@ Now let us analyze this data further by looking at if the stocks correlate someh
 </thead>
 <tbody>
 <tr class="odd">
-<td id="T_126ef_level0_row0" class="row_heading level0 row0" data-quarto-table-cell-role="th">AAPL</td>
+<th id="T_126ef_level0_row0" class="row_heading level0 row0" data-quarto-table-cell-role="th">AAPL</th>
 <td id="T_126ef_row0_col0" class="data row0 col0">1.000000</td>
 <td id="T_126ef_row0_col1" class="data row0 col1">0.951499</td>
 <td id="T_126ef_row0_col2" class="data row0 col2">0.935116</td>
@@ -658,7 +664,7 @@ Now let us analyze this data further by looking at if the stocks correlate someh
 <td id="T_126ef_row0_col4" class="data row0 col4">-0.283789</td>
 </tr>
 <tr class="even">
-<td id="T_126ef_level0_row1" class="row_heading level0 row1" data-quarto-table-cell-role="th">GOOGL</td>
+<th id="T_126ef_level0_row1" class="row_heading level0 row1" data-quarto-table-cell-role="th">GOOGL</th>
 <td id="T_126ef_row1_col0" class="data row1 col0">0.951499</td>
 <td id="T_126ef_row1_col1" class="data row1 col1">1.000000</td>
 <td id="T_126ef_row1_col2" class="data row1 col2">0.866575</td>
@@ -666,7 +672,7 @@ Now let us analyze this data further by looking at if the stocks correlate someh
 <td id="T_126ef_row1_col4" class="data row1 col4">-0.192826</td>
 </tr>
 <tr class="odd">
-<td id="T_126ef_level0_row2" class="row_heading level0 row2" data-quarto-table-cell-role="th">AMZN</td>
+<th id="T_126ef_level0_row2" class="row_heading level0 row2" data-quarto-table-cell-role="th">AMZN</th>
 <td id="T_126ef_row2_col0" class="data row2 col0">0.935116</td>
 <td id="T_126ef_row2_col1" class="data row2 col1">0.866575</td>
 <td id="T_126ef_row2_col2" class="data row2 col2">1.000000</td>
@@ -674,7 +680,7 @@ Now let us analyze this data further by looking at if the stocks correlate someh
 <td id="T_126ef_row2_col4" class="data row2 col4">-0.499768</td>
 </tr>
 <tr class="even">
-<td id="T_126ef_level0_row3" class="row_heading level0 row3" data-quarto-table-cell-role="th">MSFT</td>
+<th id="T_126ef_level0_row3" class="row_heading level0 row3" data-quarto-table-cell-role="th">MSFT</th>
 <td id="T_126ef_row3_col0" class="data row3 col0">0.978268</td>
 <td id="T_126ef_row3_col1" class="data row3 col1">0.960291</td>
 <td id="T_126ef_row3_col2" class="data row3 col2">0.944313</td>
@@ -682,7 +688,7 @@ Now let us analyze this data further by looking at if the stocks correlate someh
 <td id="T_126ef_row3_col4" class="data row3 col4">-0.374930</td>
 </tr>
 <tr class="odd">
-<td id="T_126ef_level0_row4" class="row_heading level0 row4" data-quarto-table-cell-role="th">GE</td>
+<th id="T_126ef_level0_row4" class="row_heading level0 row4" data-quarto-table-cell-role="th">GE</th>
 <td id="T_126ef_row4_col0" class="data row4 col0">-0.283789</td>
 <td id="T_126ef_row4_col1" class="data row4 col1">-0.192826</td>
 <td id="T_126ef_row4_col2" class="data row4 col2">-0.499768</td>
@@ -696,11 +702,11 @@ Now let us analyze this data further by looking at if the stocks correlate someh
 <p>Holy macaron, that’s a lot more correlated data than I expected! 🙀</p>
 <p>The <code>seaborn</code> library has a function called <code>pairplot</code> which plots this correlation, but using the points which is visually interesting in comparison to simply seeing the table above.</p>
 <div id="cell-15" class="cell" data-execution_count="50">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> df[<span class="st">'Adj Close'</span>]</span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> df.drop(columns<span class="op">=</span><span class="st">"GE"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> df[<span class="st">'Adj Close'</span>]</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> df.drop(columns<span class="op">=</span><span class="st">"GE"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div id="cell-16" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;colab&quot;,&quot;value&quot;:{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;,&quot;height&quot;:743}}" data-outputid="23dadb4b-2411-4611-9146-e89bfdec20b3" data-execution_count="51">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>sns.pairplot(df)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>sns.pairplot(df)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -718,14 +724,14 @@ Now let us analyze this data further by looking at if the stocks correlate someh
 <p>The end-goal of a model is to generalize a problem and find the local minima which optimizes the funtion for the data points. By only looking at the same data we can’t be sure we generalized correctly.</p>
 <p>And the code 👩‍💻</p>
 <div id="cell-18" class="cell" data-execution_count="52">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.linear_model <span class="im">import</span> LinearRegression</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.linear_model <span class="im">import</span> LinearRegression</span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> train_test_split</span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> r2_score, mean_absolute_error</span>
 <span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>non_google_df <span class="op">=</span> df.drop(columns<span class="op">=</span><span class="st">"GOOGL"</span>)</span>
 <span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>X_train, X_valid, y_train, y_valid <span class="op">=</span> train_test_split(non_google_df, df[<span class="st">'GOOGL'</span>], test_size<span class="op">=</span><span class="fl">0.2</span>)</span>
 <span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>clf <span class="op">=</span> LinearRegression()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>clf <span class="op">=</span> LinearRegression()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>We got our data divided into <code>valid</code> and <code>train</code>, we got a regression model in our <code>clf</code>.</p>
 <p>Let us predict the data and view our <code>r2_score</code> and <code>mean_absolute_error</code>.</p>
@@ -736,10 +742,10 @@ Best possible score is 1.0 and it can be negative (because the model can be arbi
 <p><strong>mean_absolute_error:</strong> <em>Mean absolute error regression loss.</em></p>
 </blockquote>
 <div id="cell-20" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;colab&quot;,&quot;value&quot;:{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;}}" data-outputid="bbfa8ca2-1236-46e8-cb5b-9b7b7331f395" data-execution_count="53">
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>clf.fit(X_train, y_train)</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>clf.fit(X_train, y_train)</span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>preds <span class="op">=</span> clf.predict(X_valid)</span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>r2_score(y_valid, preds), mean_absolute_error(y_valid, preds)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>r2_score(y_valid, preds), mean_absolute_error(y_valid, preds)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="53">
 <pre><code>(0.9495278677136834, 120.88640110098741)</code></pre>
 </div>
@@ -748,9 +754,9 @@ Best possible score is 1.0 and it can be negative (because the model can be arbi
 <p>That’s actually not bad at all, the <code>mean_absolute_error</code> being 129.7 is not very telling. Either we have to view the data to understand the magnituide, or we can apply <code>MAPE</code> which is the <em>Mean Absolute Percentage Error</em>.</p>
 <p>Not sure if I’m lazy or simply want to show you the other function 🤔, but I’ll use <code>MAPE</code>!</p>
 <div id="cell-22" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;colab&quot;,&quot;value&quot;:{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;}}" data-outputid="59815881-bd03-45ea-c4b8-be820589ecc0" data-execution_count="54">
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> mean_absolute_percentage_error</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> mean_absolute_percentage_error</span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>mean_absolute_percentage_error(y_valid, preds)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>mean_absolute_percentage_error(y_valid, preds)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="54">
 <pre><code>0.07891126366405354</code></pre>
 </div>
@@ -759,9 +765,9 @@ Best possible score is 1.0 and it can be negative (because the model can be arbi
 Pretty acceptable considering we have not done anything except deliver data to one of the simplest models that exists!</p>
 <p>Let’s show this visually!</p>
 <div id="cell-24" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;colab&quot;,&quot;value&quot;:{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;,&quot;height&quot;:542}}" data-outputid="e3a2586b-8588-4d7d-f6ea-0fed94b2c9c8" data-execution_count="55">
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> plotly.express <span class="im">as</span> px</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> plotly.express <span class="im">as</span> px</span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>px.line(y<span class="op">=</span>[y_valid, preds])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>px.line(y<span class="op">=</span>[y_valid, preds])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display">
 
 <meta charset="utf-8">
@@ -805,7 +811,7 @@ Show Plotly Chart (code cell only visible in active notebook)
 <p>Looks pretty good, but it is very messy… Something is off right?</p>
 <p>The index is not a <code>DateTimeIndex</code> anymore because we shuffled the data in <code>train_test_split</code> – a big difference is thereby applied.</p>
 <div id="cell-27" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;colab&quot;,&quot;value&quot;:{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;,&quot;height&quot;:286}}" data-outputid="8b839cd7-ff15-438f-cd80-159ac6729e56" data-execution_count="56">
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>y_valid.plot()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>y_valid.plot()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -815,8 +821,8 @@ Show Plotly Chart (code cell only visible in active notebook)
 </div>
 </div>
 <div id="cell-28" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;colab&quot;,&quot;value&quot;:{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;,&quot;height&quot;:286}}" data-outputid="777de95c-94e6-46ae-bc1f-e1a157dfe52f" data-execution_count="57">
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>y_valid.plot(legend<span class="op">=</span><span class="st">"Valid"</span>)</span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>pd.Series(preds, index<span class="op">=</span>y_valid.index).plot(legend<span class="op">=</span><span class="st">"Pred"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>y_valid.plot(legend<span class="op">=</span><span class="st">"Valid"</span>)</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>pd.Series(preds, index<span class="op">=</span>y_valid.index).plot(legend<span class="op">=</span><span class="st">"Pred"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -834,13 +840,13 @@ Show Plotly Chart (code cell only visible in active notebook)
 </ol>
 <p>Let’s start with the second point, <code>scikit-learn</code> has a multitude of regression-models, one being <code>RandomForestRegressor</code> that’s pretty strong.</p>
 <div id="cell-30" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;colab&quot;,&quot;value&quot;:{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;}}" data-outputid="33608654-a20f-489e-9a91-5cbbfa0d824e" data-execution_count="58">
-<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.ensemble <span class="im">import</span> RandomForestRegressor</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.ensemble <span class="im">import</span> RandomForestRegressor</span>
 <span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>clf <span class="op">=</span> RandomForestRegressor()</span>
 <span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>clf.fit(X_train, y_train)</span>
 <span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>preds <span class="op">=</span> clf.predict(X_valid)</span>
-<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>r2_score(y_valid, preds), mean_absolute_percentage_error(y_valid, preds)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>r2_score(y_valid, preds), mean_absolute_percentage_error(y_valid, preds)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="58">
 <pre><code>(0.9963567300739637, 0.016329169939121136)</code></pre>
 </div>
@@ -849,8 +855,8 @@ Show Plotly Chart (code cell only visible in active notebook)
 <p>That’s actually crazy. And <code>MAPE</code> is not even 2%.</p>
 <p>Let’s view it!</p>
 <div id="cell-32" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;colab&quot;,&quot;value&quot;:{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;,&quot;height&quot;:286}}" data-outputid="627760c9-f103-4948-86bc-a9bc1b5162e9" data-execution_count="59">
-<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>y_valid.plot(legend<span class="op">=</span><span class="st">"Valid"</span>)</span>
-<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>pd.Series(preds, index<span class="op">=</span>y_valid.index).plot(legend<span class="op">=</span><span class="st">"Pred"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>y_valid.plot(legend<span class="op">=</span><span class="st">"Valid"</span>)</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>pd.Series(preds, index<span class="op">=</span>y_valid.index).plot(legend<span class="op">=</span><span class="st">"Pred"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -876,7 +882,7 @@ We should make use of the previous days data to make sure we are not “cheating
 <a href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.shift.html"><code>pd.DataFrame.shift</code></a>: <em>Shift index by desired number of periods with an optional time freq.</em></p>
 </blockquote>
 <div id="cell-34" class="cell" data-execution_count="60">
-<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> fit_validate_plot(X_train, X_valid, y_train, y_valid):</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> fit_validate_plot(X_train, X_valid, y_train, y_valid):</span>
 <span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>  clf <span class="op">=</span> RandomForestRegressor()</span>
 <span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>  clf.fit(X_train, y_train)</span>
 <span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a></span>
@@ -887,14 +893,14 @@ We should make use of the previous days data to make sure we are not “cheating
 <span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a><span class="ss">  $R^2$: </span><span class="sc">{</span>r2_score(y_valid, preds)<span class="sc">}</span></span>
 <span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a><span class="ss">  MAPE: </span><span class="sc">{</span>mean_absolute_percentage_error(y_valid, preds)<span class="sc">}</span></span>
 <span id="cb20-11"><a href="#cb20-11" aria-hidden="true" tabindex="-1"></a><span class="ss">  MAE: </span><span class="sc">{</span>mean_absolute_error(y_valid, preds)<span class="sc">}</span></span>
-<span id="cb20-12"><a href="#cb20-12" aria-hidden="true" tabindex="-1"></a><span class="ss">  """</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb20-12"><a href="#cb20-12" aria-hidden="true" tabindex="-1"></a><span class="ss">  """</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>And making use of it will now be easy! 😍<br>
 <em>Refactoring</em> and <em>abstractions</em> are incredibly important.</p>
 <div id="cell-36" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;colab&quot;,&quot;value&quot;:{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;,&quot;height&quot;:356}}" data-outputid="ca9d91bf-db54-45dc-bdff-416d71946606" data-execution_count="61">
-<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>X_train, X_valid, y_train, y_valid <span class="op">=</span> train_test_split(df.drop(columns<span class="op">=</span><span class="st">"GOOGL"</span>).shift(<span class="dv">1</span>).iloc[<span class="dv">1</span>:], df[<span class="st">'GOOGL'</span>].iloc[<span class="dv">1</span>:], test_size<span class="op">=</span><span class="fl">0.2</span>)</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>X_train, X_valid, y_train, y_valid <span class="op">=</span> train_test_split(df.drop(columns<span class="op">=</span><span class="st">"GOOGL"</span>).shift(<span class="dv">1</span>).iloc[<span class="dv">1</span>:], df[<span class="st">'GOOGL'</span>].iloc[<span class="dv">1</span>:], test_size<span class="op">=</span><span class="fl">0.2</span>)</span>
 <span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>fit_validate_plot(X_train, X_valid, y_train, y_valid)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>fit_validate_plot(X_train, X_valid, y_train, y_valid)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
   $R^2$: 0.993020486528333
@@ -915,9 +921,9 @@ We should make use of the previous days data to make sure we are not “cheating
 <p>It’d be interesting to investigate how badly we overfit the data, but that’s for another day.</p>
 <p>And how about if we <strong>don’t</strong> shuffle the data? E.g. we do an actual forecast and not regression!</p>
 <div id="cell-38" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;colab&quot;,&quot;value&quot;:{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;,&quot;height&quot;:363}}" data-outputid="a7a1a8f0-81db-42e1-9626-3fe373bcff36" data-execution_count="62">
-<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>X_train, X_valid, y_train, y_valid <span class="op">=</span> train_test_split(df.drop(columns<span class="op">=</span><span class="st">"GOOGL"</span>).shift(<span class="dv">1</span>).iloc[<span class="dv">1</span>:], df[<span class="st">'GOOGL'</span>].iloc[<span class="dv">1</span>:], test_size<span class="op">=</span><span class="fl">0.2</span>, shuffle<span class="op">=</span><span class="va">False</span>)</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>X_train, X_valid, y_train, y_valid <span class="op">=</span> train_test_split(df.drop(columns<span class="op">=</span><span class="st">"GOOGL"</span>).shift(<span class="dv">1</span>).iloc[<span class="dv">1</span>:], df[<span class="st">'GOOGL'</span>].iloc[<span class="dv">1</span>:], test_size<span class="op">=</span><span class="fl">0.2</span>, shuffle<span class="op">=</span><span class="va">False</span>)</span>
 <span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>fit_validate_plot(X_train, X_valid, y_train, y_valid)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>fit_validate_plot(X_train, X_valid, y_train, y_valid)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
   $R^2$: -7.266054917956771
@@ -944,17 +950,17 @@ How will we try to achieve this practically? <strong>LogReturn</strong></p>
 <p>💡 You can also take the %-difference, which according to Taylors Theorem will approximate the LogReturn.</p>
 </blockquote>
 <div id="cell-42" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;colab&quot;,&quot;value&quot;:{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;,&quot;height&quot;:237}}" data-outputid="766ad31a-0bc3-40c9-c7f1-cc8cae8b02a1" data-execution_count="64">
-<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> log_return(x: pd.DataFrame) <span class="op">-&gt;</span> pd.DataFrame:</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> log_return(x: pd.DataFrame) <span class="op">-&gt;</span> pd.DataFrame:</span>
 <span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> x.<span class="bu">apply</span>(<span class="kw">lambda</span> x: np.log(x<span class="op">/</span>x.shift(<span class="dv">1</span>))).dropna()</span>
 <span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>log_return(df).head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>log_return(df).head()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="64">
 <div id="df-9ca86099-a642-4dc3-a989-8b49e39801fa">
     <div class="colab-df-container">
       <div>
 
 
-<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
 <thead>
 <tr class="header">
 <th data-quarto-table-cell-role="th">Symbols</th>
@@ -973,35 +979,35 @@ How will we try to achieve this practically? <strong>LogReturn</strong></p>
 </thead>
 <tbody>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">2017-03-14</td>
+<th data-quarto-table-cell-role="th">2017-03-14</th>
 <td>-0.001510</td>
 <td>0.001537</td>
 <td>-0.002413</td>
 <td>-0.004647</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">2017-03-15</td>
+<th data-quarto-table-cell-role="th">2017-03-15</th>
 <td>0.010521</td>
 <td>0.002860</td>
 <td>0.000516</td>
 <td>0.005265</td>
 </tr>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">2017-03-16</td>
+<th data-quarto-table-cell-role="th">2017-03-16</th>
 <td>0.001636</td>
 <td>0.001852</td>
 <td>0.000527</td>
 <td>-0.001700</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">2017-03-17</td>
+<th data-quarto-table-cell-role="th">2017-03-17</th>
 <td>-0.004987</td>
 <td>0.002720</td>
 <td>-0.001301</td>
 <td>0.003552</td>
 </tr>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">2017-03-20</td>
+<th data-quarto-table-cell-role="th">2017-03-20</th>
 <td>0.010446</td>
 <td>-0.005126</td>
 <td>0.005453</td>
@@ -1086,10 +1092,10 @@ How will we try to achieve this practically? <strong>LogReturn</strong></p>
 </div>
 </div>
 <div id="cell-43" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;colab&quot;,&quot;value&quot;:{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;,&quot;height&quot;:363}}" data-outputid="0c9b45ed-6a15-4659-f22e-459a61bd611a" data-execution_count="65">
-<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>df_lr <span class="op">=</span> log_return(df)</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>df_lr <span class="op">=</span> log_return(df)</span>
 <span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>X_train, X_valid, y_train, y_valid <span class="op">=</span> train_test_split(df_lr.drop(columns<span class="op">=</span><span class="st">"GOOGL"</span>).shift(<span class="dv">1</span>).iloc[<span class="dv">1</span>:], df_lr[<span class="st">'GOOGL'</span>].iloc[<span class="dv">1</span>:], test_size<span class="op">=</span><span class="fl">0.2</span>, shuffle<span class="op">=</span><span class="va">False</span>)</span>
 <span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>fit_validate_plot(X_train, X_valid, y_train, y_valid)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>fit_validate_plot(X_train, X_valid, y_train, y_valid)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
   $R^2$: -0.13772674709610588
@@ -1113,14 +1119,14 @@ And that’s really because we weren’t forecasting before, we were solving a <
 <h3 class="anchored" data-anchor-id="predicting-based-on-historical-performance">Predicting Based on historical performance</h3>
 <p>We might predict based on historical performance.</p>
 <div id="cell-46" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;colab&quot;,&quot;value&quot;:{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;,&quot;height&quot;:237}}" data-outputid="15808f37-33f9-4405-efbd-de5d82182d00" data-execution_count="66">
-<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>df.head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>df.head()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="66">
 <div id="df-3fd0b1f9-d206-428c-b3e3-560e4d5e8f7b">
     <div class="colab-df-container">
       <div>
 
 
-<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
 <thead>
 <tr class="header">
 <th data-quarto-table-cell-role="th">Symbols</th>
@@ -1139,35 +1145,35 @@ And that’s really because we weren’t forecasting before, we were solving a <
 </thead>
 <tbody>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">2017-03-13</td>
+<th data-quarto-table-cell-role="th">2017-03-13</th>
 <td>32.856758</td>
 <td>864.580017</td>
 <td>854.590027</td>
 <td>60.405796</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">2017-03-14</td>
+<th data-quarto-table-cell-role="th">2017-03-14</th>
 <td>32.807198</td>
 <td>865.909973</td>
 <td>852.530029</td>
 <td>60.125748</td>
 </tr>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">2017-03-15</td>
+<th data-quarto-table-cell-role="th">2017-03-15</th>
 <td>33.154182</td>
 <td>868.390015</td>
 <td>852.969971</td>
 <td>60.443142</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">2017-03-16</td>
+<th data-quarto-table-cell-role="th">2017-03-16</th>
 <td>33.208458</td>
 <td>870.000000</td>
 <td>853.419983</td>
 <td>60.340446</td>
 </tr>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">2017-03-17</td>
+<th data-quarto-table-cell-role="th">2017-03-17</th>
 <td>33.043243</td>
 <td>872.369995</td>
 <td>852.309998</td>
@@ -1252,15 +1258,15 @@ And that’s really because we weren’t forecasting before, we were solving a <
 </div>
 </div>
 <div id="cell-47" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;colab&quot;,&quot;value&quot;:{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;,&quot;height&quot;:237}}" data-outputid="86915b90-fad6-446f-aeda-b7e0eda643d2" data-execution_count="67">
-<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> df[[<span class="st">'GOOGL'</span>]]</span>
-<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>df.head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> df[[<span class="st">'GOOGL'</span>]]</span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>df.head()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="67">
 <div id="df-be52915c-d990-43e5-8399-f66a09540cef">
     <div class="colab-df-container">
       <div>
 
 
-<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
 <thead>
 <tr class="header">
 <th data-quarto-table-cell-role="th">Symbols</th>
@@ -1273,23 +1279,23 @@ And that’s really because we weren’t forecasting before, we were solving a <
 </thead>
 <tbody>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">2017-03-13</td>
+<th data-quarto-table-cell-role="th">2017-03-13</th>
 <td>864.580017</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">2017-03-14</td>
+<th data-quarto-table-cell-role="th">2017-03-14</th>
 <td>865.909973</td>
 </tr>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">2017-03-15</td>
+<th data-quarto-table-cell-role="th">2017-03-15</th>
 <td>868.390015</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">2017-03-16</td>
+<th data-quarto-table-cell-role="th">2017-03-16</th>
 <td>870.000000</td>
 </tr>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">2017-03-17</td>
+<th data-quarto-table-cell-role="th">2017-03-17</th>
 <td>872.369995</td>
 </tr>
 </tbody>
@@ -1374,13 +1380,13 @@ And that’s really because we weren’t forecasting before, we were solving a <
 ❌ Historical Data</p>
 <p>So what should we do? One way to solve this is to use <code>shift</code> multiple times.</p>
 <div id="cell-49" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;colab&quot;,&quot;value&quot;:{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;,&quot;height&quot;:376}}" data-outputid="8ba470d3-4e33-4328-dfda-6a3e342168fe" data-execution_count="68">
-<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> build_history(df: pd.DataFrame, num_back: <span class="bu">int</span>) <span class="op">-&gt;</span> pd.DataFrame:</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb30"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> build_history(df: pd.DataFrame, num_back: <span class="bu">int</span>) <span class="op">-&gt;</span> pd.DataFrame:</span>
 <span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(num_back):</span>
 <span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>    df.loc[:, <span class="ss">f"t_</span><span class="sc">{</span>i<span class="sc">}</span><span class="ss">"</span>] <span class="op">=</span> df[<span class="st">'GOOGL'</span>].shift(i <span class="op">+</span> <span class="dv">1</span>)</span>
 <span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a>  </span>
 <span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> df</span>
 <span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-7"><a href="#cb30-7" aria-hidden="true" tabindex="-1"></a>build_history(df, <span class="dv">3</span>).head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb30-7"><a href="#cb30-7" aria-hidden="true" tabindex="-1"></a>build_history(df, <span class="dv">3</span>).head()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>/usr/local/lib/python3.7/dist-packages/pandas/core/indexing.py:1667: SettingWithCopyWarning:
 
@@ -1397,7 +1403,7 @@ See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stab
       <div>
 
 
-<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
 <thead>
 <tr class="header">
 <th data-quarto-table-cell-role="th">Symbols</th>
@@ -1416,35 +1422,35 @@ See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stab
 </thead>
 <tbody>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">2017-03-13</td>
+<th data-quarto-table-cell-role="th">2017-03-13</th>
 <td>864.580017</td>
 <td>NaN</td>
 <td>NaN</td>
 <td>NaN</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">2017-03-14</td>
+<th data-quarto-table-cell-role="th">2017-03-14</th>
 <td>865.909973</td>
 <td>864.580017</td>
 <td>NaN</td>
 <td>NaN</td>
 </tr>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">2017-03-15</td>
+<th data-quarto-table-cell-role="th">2017-03-15</th>
 <td>868.390015</td>
 <td>865.909973</td>
 <td>864.580017</td>
 <td>NaN</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">2017-03-16</td>
+<th data-quarto-table-cell-role="th">2017-03-16</th>
 <td>870.000000</td>
 <td>868.390015</td>
 <td>865.909973</td>
 <td>864.580017</td>
 </tr>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">2017-03-17</td>
+<th data-quarto-table-cell-role="th">2017-03-17</th>
 <td>872.369995</td>
 <td>870.000000</td>
 <td>868.390015</td>
@@ -1537,16 +1543,16 @@ This is actually <em>very</em> memory intense as our data grows X times, one tim
 <code>axis</code> attribute tells if you wish to drop rows or columns based on <code>NaN</code>, default is row.</p>
 </blockquote>
 <div id="cell-51" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;colab&quot;,&quot;value&quot;:{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;,&quot;height&quot;:237}}" data-outputid="4be0a6dc-e417-4145-bbe1-7dd62598d1c4" data-execution_count="69">
-<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> build_history(df, <span class="dv">7</span>)</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb32"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> build_history(df, <span class="dv">7</span>)</span>
 <span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> df.dropna()</span>
-<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a>df.head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a>df.head()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="69">
 <div id="df-59e1b8c6-bd27-48b0-ae16-4353faa11715">
     <div class="colab-df-container">
       <div>
 
 
-<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
 <thead>
 <tr class="header">
 <th data-quarto-table-cell-role="th">Symbols</th>
@@ -1573,7 +1579,7 @@ This is actually <em>very</em> memory intense as our data grows X times, one tim
 </thead>
 <tbody>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">2017-03-22</td>
+<th data-quarto-table-cell-role="th">2017-03-22</th>
 <td>849.799988</td>
 <td>850.140015</td>
 <td>867.909973</td>
@@ -1584,7 +1590,7 @@ This is actually <em>very</em> memory intense as our data grows X times, one tim
 <td>864.580017</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">2017-03-23</td>
+<th data-quarto-table-cell-role="th">2017-03-23</th>
 <td>839.650024</td>
 <td>849.799988</td>
 <td>850.140015</td>
@@ -1595,7 +1601,7 @@ This is actually <em>very</em> memory intense as our data grows X times, one tim
 <td>865.909973</td>
 </tr>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">2017-03-24</td>
+<th data-quarto-table-cell-role="th">2017-03-24</th>
 <td>835.140015</td>
 <td>839.650024</td>
 <td>849.799988</td>
@@ -1606,7 +1612,7 @@ This is actually <em>very</em> memory intense as our data grows X times, one tim
 <td>868.390015</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">2017-03-27</td>
+<th data-quarto-table-cell-role="th">2017-03-27</th>
 <td>838.510010</td>
 <td>835.140015</td>
 <td>839.650024</td>
@@ -1617,7 +1623,7 @@ This is actually <em>very</em> memory intense as our data grows X times, one tim
 <td>870.000000</td>
 </tr>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">2017-03-28</td>
+<th data-quarto-table-cell-role="th">2017-03-28</th>
 <td>840.630005</td>
 <td>838.510010</td>
 <td>835.140015</td>
@@ -1717,10 +1723,10 @@ As previously,</p>
 <li>Validate</li>
 </ol>
 <div id="cell-53" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;colab&quot;,&quot;value&quot;:{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;,&quot;height&quot;:363}}" data-outputid="47455138-565c-4b79-df0f-50b0991f6c05" data-execution_count="70">
-<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>df_lr <span class="op">=</span> log_return(df)</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb33"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>df_lr <span class="op">=</span> log_return(df)</span>
 <span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>X_train, X_valid, y_train, y_valid <span class="op">=</span> train_test_split(df_lr.iloc[:, <span class="dv">1</span>:], df_lr[<span class="st">'GOOGL'</span>], test_size<span class="op">=</span><span class="fl">0.2</span>, shuffle<span class="op">=</span><span class="va">False</span>)</span>
 <span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a>fit_validate_plot(X_train, X_valid, y_train, y_valid)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a>fit_validate_plot(X_train, X_valid, y_train, y_valid)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
   $R^2$: -0.12436497765470134
@@ -1743,7 +1749,7 @@ As previously,</p>
 <li>Any other ideas? Try ’em out!</li>
 </ol>
 <div id="cell-55" class="cell" data-execution_count="71">
-<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Test your own ideas</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb35"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Test your own ideas</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>If you didn’t try previously, try appling a rolling mean and rerun <code>fit_validate_plot</code> as this should reduce the “swings” and thereby be a little bit more predictable.</p>
 <blockquote class="blockquote">
@@ -1752,8 +1758,8 @@ In other words: We slide a window on our data and do calculations, in our case <
 </blockquote>
 <p>Validating what <code>rolling.mean()</code> does to our data:</p>
 <div id="cell-57" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;colab&quot;,&quot;value&quot;:{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;,&quot;height&quot;:294}}" data-outputid="1e6adef2-8c43-47e5-81be-08490febfe05" data-execution_count="79">
-<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>df[<span class="st">'GOOGL_ROLLING'</span>] <span class="op">=</span> df[<span class="st">'GOOGL'</span>].rolling(<span class="dv">3</span>).mean()  <span class="co"># Rolling over 3 days mean</span></span>
-<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>df[<span class="op">-</span><span class="dv">100</span>:].plot(y<span class="op">=</span>[<span class="st">'GOOGL'</span>, <span class="st">'GOOGL_ROLLING'</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb36"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>df[<span class="st">'GOOGL_ROLLING'</span>] <span class="op">=</span> df[<span class="st">'GOOGL'</span>].rolling(<span class="dv">3</span>).mean()  <span class="co"># Rolling over 3 days mean</span></span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>df[<span class="op">-</span><span class="dv">100</span>:].plot(y<span class="op">=</span>[<span class="st">'GOOGL'</span>, <span class="st">'GOOGL_ROLLING'</span>])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -1764,9 +1770,9 @@ In other words: We slide a window on our data and do calculations, in our case <
 </div>
 <p>Zooming 🔍</p>
 <div id="cell-59" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;colab&quot;,&quot;value&quot;:{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;,&quot;height&quot;:542}}" data-outputid="e4b57a80-83b2-4578-849c-46a337e3516d" data-execution_count="73">
-<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a>df_last_months <span class="op">=</span> df[df.index <span class="op">&gt;</span> datetime(<span class="dv">2021</span>, <span class="dv">6</span>, <span class="dv">6</span>)]</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb37"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a>df_last_months <span class="op">=</span> df[df.index <span class="op">&gt;</span> datetime(<span class="dv">2021</span>, <span class="dv">6</span>, <span class="dv">6</span>)]</span>
 <span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a>df_last_months.plot(y<span class="op">=</span>[<span class="st">'GOOGL'</span>, <span class="st">'GOOGL_ROLLING'</span>], backend<span class="op">=</span><span class="st">'plotly'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a>df_last_months.plot(y<span class="op">=</span>[<span class="st">'GOOGL'</span>, <span class="st">'GOOGL_ROLLING'</span>], backend<span class="op">=</span><span class="st">'plotly'</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display">
 
 <meta charset="utf-8">
@@ -1813,10 +1819,10 @@ Show Plotly Chart (code cell only visible in active notebook)
 </blockquote>
 <p>And validating what this does to our prediction.</p>
 <div id="cell-62" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;colab&quot;,&quot;value&quot;:{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;,&quot;height&quot;:363}}" data-outputid="c14c216a-0032-4e35-e74e-5cd8ffdc55d9" data-execution_count="74">
-<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a>df_lr <span class="op">=</span> df.pct_change().dropna().rolling(<span class="dv">3</span>).mean().dropna()</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb38"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a>df_lr <span class="op">=</span> df.pct_change().dropna().rolling(<span class="dv">3</span>).mean().dropna()</span>
 <span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>X_train, X_valid, y_train, y_valid <span class="op">=</span> train_test_split(df_lr.iloc[:, <span class="dv">1</span>:], df_lr[<span class="st">'GOOGL'</span>], test_size<span class="op">=</span><span class="fl">0.2</span>, shuffle<span class="op">=</span><span class="va">False</span>)</span>
 <span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb38-4"><a href="#cb38-4" aria-hidden="true" tabindex="-1"></a>fit_validate_plot(X_train, X_valid, y_train, y_valid)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb38-4"><a href="#cb38-4" aria-hidden="true" tabindex="-1"></a>fit_validate_plot(X_train, X_valid, y_train, y_valid)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
   $R^2$: 0.8925898146393952
@@ -1839,18 +1845,18 @@ Show Plotly Chart (code cell only visible in active notebook)
 </blockquote>
 <p>Let’s reverse our transformation to see what we’d actually predict in the end.</p>
 <div id="cell-64" class="cell" data-execution_count="75">
-<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a>y_rolling <span class="op">=</span> df[<span class="st">'GOOGL'</span>].rolling(<span class="dv">3</span>).mean().dropna()</span>
-<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a>y_train_non_scaled, y_valid_non_scaled <span class="op">=</span> train_test_split(y_rolling, test_size<span class="op">=</span><span class="fl">0.2</span>, shuffle<span class="op">=</span><span class="va">False</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb40"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a>y_rolling <span class="op">=</span> df[<span class="st">'GOOGL'</span>].rolling(<span class="dv">3</span>).mean().dropna()</span>
+<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a>y_train_non_scaled, y_valid_non_scaled <span class="op">=</span> train_test_split(y_rolling, test_size<span class="op">=</span><span class="fl">0.2</span>, shuffle<span class="op">=</span><span class="va">False</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div id="cell-65" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;colab&quot;,&quot;value&quot;:{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;,&quot;height&quot;:542}}" data-outputid="c2ec153b-c5fa-4a23-8caf-cdc29d22e93e" data-execution_count="80">
-<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a>clf <span class="op">=</span> RandomForestRegressor()</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb41"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a>clf <span class="op">=</span> RandomForestRegressor()</span>
 <span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a>clf.fit(X_train, y_train)</span>
 <span id="cb41-3"><a href="#cb41-3" aria-hidden="true" tabindex="-1"></a>preds <span class="op">=</span> clf.predict(X_valid)</span>
 <span id="cb41-4"><a href="#cb41-4" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb41-5"><a href="#cb41-5" aria-hidden="true" tabindex="-1"></a>preds <span class="op">=</span> (preds <span class="op">+</span> <span class="dv">1</span>).cumprod() <span class="co"># Cummulative multiplication, first day + 1%, but then we got -1%, that's 1.01 * 0.99</span></span>
 <span id="cb41-6"><a href="#cb41-6" aria-hidden="true" tabindex="-1"></a>preds <span class="op">=</span> preds <span class="op">*</span> y_train_non_scaled.iloc[<span class="op">-</span><span class="dv">1</span>] <span class="co"># Scaling it up based on the last training value</span></span>
 <span id="cb41-7"><a href="#cb41-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb41-8"><a href="#cb41-8" aria-hidden="true" tabindex="-1"></a>pd.DataFrame({<span class="st">'Preds'</span>: preds, <span class="st">'Valid Rolling'</span>: y_valid_non_scaled[<span class="dv">1</span>:], <span class="st">'Valid'</span>: df[<span class="st">'GOOGL'</span>].iloc[<span class="op">-</span><span class="bu">len</span>(preds):]}).plot(backend<span class="op">=</span><span class="st">'plotly'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb41-8"><a href="#cb41-8" aria-hidden="true" tabindex="-1"></a>pd.DataFrame({<span class="st">'Preds'</span>: preds, <span class="st">'Valid Rolling'</span>: y_valid_non_scaled[<span class="dv">1</span>:], <span class="st">'Valid'</span>: df[<span class="st">'GOOGL'</span>].iloc[<span class="op">-</span><span class="bu">len</span>(preds):]}).plot(backend<span class="op">=</span><span class="st">'plotly'</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display">
 
 <meta charset="utf-8">
@@ -1978,13 +1984,14 @@ Show Plotly Chart (code cell only visible in active notebook)
       e.clearSelection();
     }
     const getTextToCopy = function(trigger) {
-        const codeEl = trigger.previousElementSibling.cloneNode(true);
-        for (const childEl of codeEl.children) {
-          if (isCodeAnnotation(childEl)) {
-            childEl.remove();
-          }
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
         }
-        return codeEl.innerText;
+      }
+      return codeEl.innerText;
     }
     const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
       text: getTextToCopy

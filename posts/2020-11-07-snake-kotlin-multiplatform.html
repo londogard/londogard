@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.7.34">
+<meta name="generator" content="quarto-1.8.25">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -71,14 +71,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../favicon.ico" rel="icon">
 <script src="../site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/axe/axe-check.js" type="module"></script>
 <script src="../site_libs/quarto-html/popper.min.js"></script>
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-9582434199d49cc9e91654cdeeb4866b.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-065a5179aebd64318d7ea99d77b64a9e.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-969ddfa49e00a70eb3423444dbc81f6c.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-065a5179aebd64318d7ea99d77b64a9e.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-8ab00b4506aff93bb9d672c7d73166bb.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-7d3a565c23c4d3b0e7c030e96a8964f3.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark-7d3a565c23c4d3b0e7c030e96a8964f3.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-7d3a565c23c4d3b0e7c030e96a8964f3.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -123,7 +128,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
     <a href="../index.html" class="navbar-brand navbar-brand-logo">
-    <img src="../favicon.ico" alt="" class="navbar-logo">
+    <img src="../favicon.ico" alt="" class="navbar-logo light-content">
+    <img src="../favicon.ico" alt="" class="navbar-logo dark-content">
     </a>
     <a class="navbar-brand" href="../index.html">
     <span class="navbar-title">Londogard Blog</span>
@@ -469,25 +475,25 @@ The final, and perhaps obvious, one I’d like to mention straight away is that 
 </ol>
 <p>First off, we need to draw something. This is easiest done through the Swing library which is included in the default jdk, some might call it old but hey - it does the job.Create a file called <code>main.kt</code> in <code>src/jvmMain/kotlin</code>.</p>
 <p>Swing has a built-in threading solution (almost too bad, because <code>Coroutines</code> are awesome in Kotlin!) and the best way to start the GUI is by using the existing <code>EventQueue</code> class and its <code>invokeLater</code> function. <code>invokeLater</code> makes sure the code runs last in the <code>EventQueue</code> if you add more methods, which makes sense - you want to draw the UI as the final thing.</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode kotlin code-with-copy"><code class="sourceCode kotlin"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">fun</span> <span class="fu">main</span><span class="op">()</span> <span class="op">{</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode kotlin code-with-copy"><code class="sourceCode kotlin"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">fun</span> <span class="fu">main</span><span class="op">()</span> <span class="op">{</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>    EventQueue<span class="op">.</span>invokeLater <span class="op">{</span></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>        JFrame<span class="op">().</span>apply <span class="op">{</span></span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>            title <span class="op">=</span> <span class="st">"Snake"</span></span>
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>            isVisible <span class="op">=</span> <span class="kw">true</span></span>
 <span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span></span>
 <span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Where the <code>apply</code> is a context wrapper that takes the object and uses it as context (<code>this</code>) inside of the block/scope (<code>{}</code>). See its signature:</p>
 <p><code>inline fun &lt;T&gt; T.apply(block: T.() -&gt; Unit): T</code></p>
 <p>This would equate to</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode kotlin code-with-copy"><code class="sourceCode kotlin"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">val</span> <span class="va">jframe</span> <span class="op">=</span> JFrame<span class="op">()</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode kotlin code-with-copy"><code class="sourceCode kotlin"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">val</span> <span class="va">jframe</span> <span class="op">=</span> JFrame<span class="op">()</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>jframe<span class="op">.</span>title <span class="op">=</span> <span class="st">"Snake"</span></span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>jframe<span class="op">.</span>isVisible <span class="op">=</span> <span class="kw">true</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>jframe<span class="op">.</span>isVisible <span class="op">=</span> <span class="kw">true</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>in more Java-like syntax. Why use <code>apply</code>? It allows us to achieve some interesting chaining concepts which I really enjoy.</p>
 <p>Now run the <code>main</code>-function, there should be a green “run”-button at the left, press that. Hopefully it compiles and a window will appear, with the title set to “Snake”.</p>
 <p>Awesome! We need to render something inside of the box, a game soon enough, let’s see how we can achieve that.</p>
 <p>Adding some minor refactoring and some new classes we can draw something</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode kotlin code-with-copy"><code class="sourceCode kotlin"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Board<span class="op">:</span> <span class="dt">JPanel</span><span class="op">()</span> <span class="op">{</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode kotlin code-with-copy"><code class="sourceCode kotlin"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Board<span class="op">:</span> <span class="dt">JPanel</span><span class="op">()</span> <span class="op">{</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    init <span class="op">{</span></span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>        TODO<span class="op">(</span><span class="st">"""</span></span>
 <span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="st">        - Set background to black</span></span>
@@ -513,7 +519,7 @@ The final, and perhaps obvious, one I’d like to mention straight away is that 
 <span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a>    EventQueue<span class="op">.</span>invokeLater <span class="op">{</span></span>
 <span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a>        GUI<span class="op">()</span></span>
 <span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
-<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>What are we doing?<br>
 <code>JFrame</code> was refactored <code>GUI</code> which then is a subclass of <code>JFrame</code>, with a few extra attributes added such as <code>defaultCloseOperation = EXIT_ON_CLOSE</code> that makes sure the program exits if we close the window, feel free to test it out!<br>
 Further a <code>Board</code> was added which extends <code>JPanel</code>, it’s in the <code>Board</code> the game will be rendered.<br>
@@ -521,13 +527,13 @@ Finally, <code>add(Board())</code> allows us to add our <code>Board</code> to th
 <p>Run!<br>
 Something is not right.. The background seems black enough, but the size is most likely not correct. We can’t even resize as <code>isResizable=false</code> was set.<br>
 Make sure to add <code>pack()</code> at the end, as in</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode kotlin code-with-copy"><code class="sourceCode kotlin"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> GUI<span class="op">:</span> <span class="dt">JFrame</span><span class="op">()</span> <span class="op">{</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode kotlin code-with-copy"><code class="sourceCode kotlin"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> GUI<span class="op">:</span> <span class="dt">JFrame</span><span class="op">()</span> <span class="op">{</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    init <span class="op">{</span></span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>        <span class="op">{</span> <span class="co">/** same code as before */</span> <span class="op">}</span></span>
 <span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>        add<span class="op">(</span>Board<span class="op">())</span></span>
 <span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>        pack<span class="op">()</span></span>
 <span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>What <code>pack()</code> does is that it packs and resizes the <code>JFrame</code> to include all its component(s) and their current size(s).</p>
 <p>Super! We’re now able to render our <code>Board</code> and see the whole board.</p>
 <section id="drawing-the-snake-apple" class="level3">
@@ -538,7 +544,7 @@ I’ll keep it simple and will make the Board exist of a few cells, all pretty l
 <blockquote class="blockquote">
 <p><em>Disclaimer:</em> the code might not be the most idiomatic, but I try to introduce a few concepts.</p>
 </blockquote>
-<div class="sourceCode" id="cb5"><pre class="sourceCode kotlin code-with-copy"><code class="sourceCode kotlin"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Board<span class="op">:</span> <span class="dt">JPanel</span><span class="op">()</span> <span class="op">{</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode kotlin code-with-copy"><code class="sourceCode kotlin"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Board<span class="op">:</span> <span class="dt">JPanel</span><span class="op">()</span> <span class="op">{</span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    init <span class="op">{</span> <span class="co">/** same code as before */</span> <span class="op">}</span></span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    <span class="kw">override</span> <span class="kw">fun</span> <span class="fu">paintComponent</span><span class="op">(</span><span class="va">g</span><span class="op">:</span> <span class="dt">Graphics</span><span class="op">?)</span> <span class="op">{</span></span>
@@ -552,7 +558,7 @@ I’ll keep it simple and will make the Board exist of a few cells, all pretty l
 <span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>        g2d<span class="op">.</span>fill<span class="op">(</span>Rectangle<span class="op">(</span><span class="dv">5</span><span class="op">,</span> <span class="dv">7</span><span class="op">,</span> <span class="dv">1</span><span class="op">,</span> <span class="dv">1</span><span class="op">))</span></span>
 <span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>        g2d<span class="op">.</span>fill<span class="op">(</span>Rectangle<span class="op">(</span><span class="dv">5</span><span class="op">,</span> <span class="dv">8</span><span class="op">,</span> <span class="dv">1</span><span class="op">,</span> <span class="dv">1</span><span class="op">))</span></span>
 <span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
-<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Once again, let’s dive into what’s happening ‘under the hood’.</p>
 <p>First, we override the function <code>paintComponent</code> which renders <code>Board</code> layout. The input is a <strong>nullable <code>Graphics</code></strong>, which is shown by the type having a <code>?</code> at the end. This is a cool property of Kotlin, if something can be <code>null</code> it actually is a type. No <code>Option</code>/<code>Maybe</code>, just pure type.</p>
 <p>Then <code>Graphics?</code> is cast to non-null <code>Graphics2D</code> through a safe approach using <code>as?</code>, without <code>?</code> the cast can crash, with <code>?</code> the cast would return <code>null</code> if failing.</p>
@@ -572,8 +578,8 @@ I’ll keep it simple and will make the Board exist of a few cells, all pretty l
 </ul>
 <blockquote class="blockquote">
 <p><strong>Side-note:</strong> For those wondering how you safely execute on <code>null</code>s by chaining, like you do with Monads (<code>Option</code>)</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode kotlin code-with-copy"><code class="sourceCode kotlin"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="kw">val</span> <span class="va">nullableGraphics</span><span class="op">:</span> Graphics<span class="op">?</span> <span class="op">=</span> <span class="kw">null</span></span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>nullableGraphics<span class="op">?.</span>scale<span class="op">(</span><span class="fl">20.0</span><span class="op">,</span> <span class="fl">20.0</span><span class="op">)</span>   <span class="co">// This is safe! No operation executed if null</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode kotlin code-with-copy"><code class="sourceCode kotlin"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="kw">val</span> <span class="va">nullableGraphics</span><span class="op">:</span> Graphics<span class="op">?</span> <span class="op">=</span> <span class="kw">null</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>nullableGraphics<span class="op">?.</span>scale<span class="op">(</span><span class="fl">20.0</span><span class="op">,</span> <span class="fl">20.0</span><span class="op">)</span>   <span class="co">// This is safe! No operation executed if null</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </blockquote>
 <p>Summing up, we now know how to render stuff on the <code>Board</code> and it’s all very static.<br>
 The next step is to make the rendering less static and I believe the natural step from now is to create the data structures that’ll contain the game &amp; its state. Then we can make sure the data structures are able to update, so we can render new states.</p>
@@ -582,18 +588,18 @@ The next step is to make the rendering less static and I believe the natural ste
 <h3 class="anchored" data-anchor-id="creating-the-data-structures">Creating the data structures</h3>
 <p>Data structures are required to have a game state, that is the score and position of everything.</p>
 <p>The natural state is <code>Game</code> which contains everything, let’s begin by creating a <code>Game</code> structure which contains the size of the <code>Board</code>.</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode kotlin code-with-copy"><code class="sourceCode kotlin"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">data</span> <span class="kw">class</span> Game<span class="op">(</span><span class="kw">val</span> <span class="va">width</span><span class="op">:</span> <span class="dt">Int</span><span class="op">,</span> <span class="kw">val</span> <span class="va">height</span><span class="op">:</span> <span class="dt">Int</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode kotlin code-with-copy"><code class="sourceCode kotlin"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">data</span> <span class="kw">class</span> Game<span class="op">(</span><span class="kw">val</span> <span class="va">width</span><span class="op">:</span> <span class="dt">Int</span><span class="op">,</span> <span class="kw">val</span> <span class="va">height</span><span class="op">:</span> <span class="dt">Int</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <blockquote class="blockquote">
 <p><strong>Side-note:</strong> A <code>data class</code> is essentially the same as a <code>case class</code> from Scala. And for those who don’t know what a <code>case class</code> is it’s basically a <code>class</code> that simplifies a lot of stuff, mainly used as a data structure.<br>
 You get <code>equals</code>, getters &amp; setters, and much more for free.<br>
 Anyone from Java knows how awesome this is.</p>
 </blockquote>
 <p>Moving on we need to define the cells mentioned, something like</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode kotlin code-with-copy"><code class="sourceCode kotlin"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="kw">data</span> <span class="kw">class</span> Cell<span class="op">(</span><span class="kw">val</span> <span class="va">x</span><span class="op">:</span> <span class="dt">Int</span><span class="op">,</span> <span class="kw">val</span> <span class="va">y</span><span class="op">:</span> <span class="dt">Int</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode kotlin code-with-copy"><code class="sourceCode kotlin"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="kw">data</span> <span class="kw">class</span> Cell<span class="op">(</span><span class="kw">val</span> <span class="va">x</span><span class="op">:</span> <span class="dt">Int</span><span class="op">,</span> <span class="kw">val</span> <span class="va">y</span><span class="op">:</span> <span class="dt">Int</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Wrapping up our current state we got most of what we need, <code>Game</code> which contains our game state &amp; <code>Cell</code> which is our co-ordinates.<br>
 The next step is to actually draw the <code>Cell</code>’s and wrap the <code>Cell</code> in other classes such as <code>Apple</code> and <code>Snake</code>.</p>
 <p>Let’s add all the required code.</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode kotlin code-with-copy"><code class="sourceCode kotlin"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="kw">data</span> <span class="kw">class</span> Apples<span class="op">(</span><span class="kw">val</span> <span class="va">cells</span><span class="op">:</span> <span class="dt">Set</span>&lt;<span class="va">Cell</span>&gt; <span class="op">=</span> emptySet<span class="op">())</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode kotlin code-with-copy"><code class="sourceCode kotlin"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="kw">data</span> <span class="kw">class</span> Apples<span class="op">(</span><span class="kw">val</span> <span class="va">cells</span><span class="op">:</span> <span class="dt">Set</span>&lt;<span class="va">Cell</span>&gt; <span class="op">=</span> emptySet<span class="op">())</span></span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="kw">data</span> <span class="kw">class</span> Snake<span class="op">(</span><span class="kw">val</span> <span class="va">cells</span><span class="op">:</span> <span class="dt">List</span>&lt;<span class="va">Cell</span>&gt;<span class="op">)</span> <span class="op">{</span></span>
 <span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>    <span class="kw">val</span> <span class="va">head</span><span class="op">:</span> Cell <span class="op">=</span> TODO<span class="op">(</span><span class="st">"Take the first cell."</span><span class="op">)</span></span>
@@ -633,7 +639,7 @@ The next step is to actually draw the <code>Cell</code>’s and wrap the <code>C
 <span id="cb9-38"><a href="#cb9-38" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb9-39"><a href="#cb9-39" aria-hidden="true" tabindex="-1"></a>        TODO<span class="op">(</span><span class="st">"Render the apples using the color RED"</span><span class="op">)</span></span>
 <span id="cb9-40"><a href="#cb9-40" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
-<span id="cb9-41"><a href="#cb9-41" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb9-41"><a href="#cb9-41" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Fixing the added <code>TODO</code>s and keeping the same <code>GUI</code> &amp; <code>fun main</code> we can now run the code. You should be seeing something like</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
@@ -652,15 +658,15 @@ The next step is to actually draw the <code>Cell</code>’s and wrap the <code>C
 <section id="adding-a-direction" class="level4">
 <h4 class="anchored" data-anchor-id="adding-a-direction">Adding a Direction</h4>
 <p>To be able to move we need to know what directions to move in. In my humble opinion this is simplest done through a <code>Enum</code>.</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode kotlin code-with-copy"><code class="sourceCode kotlin"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="kw">enum</span> <span class="kw">class</span> Direction <span class="op">{</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode kotlin code-with-copy"><code class="sourceCode kotlin"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="kw">enum</span> <span class="kw">class</span> Direction <span class="op">{</span></span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>    UP<span class="op">,</span></span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>    DOWN<span class="op">,</span></span>
 <span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>    LEFT<span class="op">,</span></span>
 <span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>    RIGHT</span>
-<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Simple enough. But let’s make it better, even though pre-optimization is the root of all evil it is sometimes fun :grinning:.<br>
 Enums in Kotlin are pretty awesome, they can both keep values and have methods! Let’s add <code>dx</code> and <code>dy</code>.</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode kotlin code-with-copy"><code class="sourceCode kotlin"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="kw">enum</span> <span class="kw">class</span> Direction<span class="op">(</span><span class="kw">val</span> <span class="va">dx</span><span class="op">:</span> <span class="dt">Int</span><span class="op">,</span> <span class="kw">val</span> <span class="va">dy</span><span class="op">:</span> <span class="dt">Int</span><span class="op">)</span> <span class="op">{</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="sourceCode kotlin code-with-copy"><code class="sourceCode kotlin"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="kw">enum</span> <span class="kw">class</span> Direction<span class="op">(</span><span class="kw">val</span> <span class="va">dx</span><span class="op">:</span> <span class="dt">Int</span><span class="op">,</span> <span class="kw">val</span> <span class="va">dy</span><span class="op">:</span> <span class="dt">Int</span><span class="op">)</span> <span class="op">{</span></span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">// --&gt;</span></span>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>    <span class="co">// |</span></span>
 <span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>    <span class="co">// v</span></span>
@@ -668,10 +674,10 @@ Enums in Kotlin are pretty awesome, they can both keep values and have methods! 
 <span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>    DOWN<span class="op">(</span><span class="dv">0</span><span class="op">,</span> <span class="dv">1</span><span class="op">),</span></span>
 <span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>    LEFT<span class="op">(-</span><span class="dv">1</span><span class="op">,</span> <span class="dv">0</span><span class="op">),</span></span>
 <span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>    RIGHT<span class="op">(</span><span class="dv">1</span><span class="op">,</span> <span class="dv">0</span><span class="op">);</span></span>
-<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Through <code>dx</code> and <code>dy</code> we can add it to the current cell to move in the direction which <code>Direction</code> is!</p>
 <p>Updating <code>Snake.kt</code> &amp; <code>Cell.kt</code> to have <code>Cell</code> with <code>Direction</code> and some <code>turn</code>.</p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode kotlin code-with-copy"><code class="sourceCode kotlin"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="kw">data</span> <span class="kw">class</span> Cell<span class="op">(</span><span class="kw">val</span> <span class="va">x</span><span class="op">:</span> <span class="dt">Int</span><span class="op">,</span> <span class="kw">val</span> <span class="va">y</span><span class="op">:</span> <span class="dt">Int</span><span class="op">)</span> <span class="op">{</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="sourceCode kotlin code-with-copy"><code class="sourceCode kotlin"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="kw">data</span> <span class="kw">class</span> Cell<span class="op">(</span><span class="kw">val</span> <span class="va">x</span><span class="op">:</span> <span class="dt">Int</span><span class="op">,</span> <span class="kw">val</span> <span class="va">y</span><span class="op">:</span> <span class="dt">Int</span><span class="op">)</span> <span class="op">{</span></span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">fun</span> <span class="fu">move</span><span class="op">(</span><span class="va">direction</span><span class="op">:</span> <span class="dt">Direction</span><span class="op">)</span> <span class="op">=</span> TODO<span class="op">(</span><span class="st">"Create new cell which moves in direction. OBS: Remember Direction now has dx, dy!"</span><span class="op">)</span></span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
 <span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a></span>
@@ -686,26 +692,26 @@ Enums in Kotlin are pretty awesome, they can both keep values and have methods! 
 <span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a>        <span class="kw">return</span> TODO<span class="op">(</span><span class="st">"Create a new Snake with the updated position!"</span><span class="op">)</span></span>
 <span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
 <span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a>    <span class="kw">fun</span> <span class="fu">turn</span><span class="op">(</span><span class="va">newDirection</span><span class="op">:</span> <span class="dt">Direction</span><span class="op">?)</span> <span class="op">=</span> TODO<span class="op">(</span><span class="st">"Make sure to turn correctly"</span><span class="op">)</span></span>
-<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>This is all fine &amp; dandy, but there is some improvements to be made that’ll clean up the code.<br>
 I mentioned that Kotlin <code>Enums</code> can have methods, which is awesome. We can simplify the <code>turn</code>-logic by adding a method to <code>Direction</code>, namely <code>isOppositeTo</code>. See the code below.</p>
-<div class="sourceCode" id="cb13"><pre class="sourceCode kotlin code-with-copy"><code class="sourceCode kotlin"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="kw">enum</span> <span class="kw">class</span> Direction<span class="op">(</span><span class="kw">val</span> <span class="va">dx</span><span class="op">:</span> <span class="dt">Int</span><span class="op">,</span> <span class="kw">val</span> <span class="va">dy</span><span class="op">:</span> <span class="dt">Int</span><span class="op">)</span> <span class="op">{</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="sourceCode kotlin code-with-copy"><code class="sourceCode kotlin"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="kw">enum</span> <span class="kw">class</span> Direction<span class="op">(</span><span class="kw">val</span> <span class="va">dx</span><span class="op">:</span> <span class="dt">Int</span><span class="op">,</span> <span class="kw">val</span> <span class="va">dy</span><span class="op">:</span> <span class="dt">Int</span><span class="op">)</span> <span class="op">{</span></span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">/** Same code as previously */</span></span>
 <span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>    <span class="kw">fun</span> <span class="fu">isOppositeTo</span><span class="op">(</span><span class="va">that</span><span class="op">:</span> <span class="dt">Direction</span><span class="op">)</span> <span class="op">=</span></span>
 <span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>        dx <span class="op">+</span> that<span class="op">.</span>dx <span class="op">==</span> <span class="dv">0</span> <span class="op">&amp;&amp;</span> dy <span class="op">+</span> that<span class="op">.</span>dy <span class="op">==</span> <span class="dv">0</span></span>
-<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Right, we can now turn the snake and render the game. We need the <code>Game</code>-state to update to actually re-render the updated Snake, let’s add a <code>update</code>-function that does this.</p>
-<div class="sourceCode" id="cb14"><pre class="sourceCode kotlin code-with-copy"><code class="sourceCode kotlin"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="kw">fun</span> <span class="fu">update</span><span class="op">(</span><span class="va">direction</span><span class="op">:</span> <span class="dt">Direction</span><span class="op">?):</span> <span class="dt">Game</span> <span class="op">{</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14"><pre class="sourceCode kotlin code-with-copy"><code class="sourceCode kotlin"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="kw">fun</span> <span class="fu">update</span><span class="op">(</span><span class="va">direction</span><span class="op">:</span> <span class="dt">Direction</span><span class="op">?):</span> <span class="dt">Game</span> <span class="op">{</span></span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">return</span> TODO<span class="op">(</span><span class="st">"""</span></span>
 <span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="st">    Make sure to</span></span>
 <span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="st">        1. Turn snake in direction</span></span>
 <span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a><span class="st">        2. Move</span></span>
 <span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a><span class="st">        3. Update the game state by returning Game</span></span>
 <span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a><span class="st">    """</span><span class="op">)</span></span>
-<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>And our GUI</p>
-<div class="sourceCode" id="cb15"><pre class="sourceCode kotlin code-with-copy"><code class="sourceCode kotlin"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Board<span class="op">:</span> <span class="dt">JPanel</span><span class="op">()</span> <span class="op">{</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb15"><pre class="sourceCode kotlin code-with-copy"><code class="sourceCode kotlin"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Board<span class="op">:</span> <span class="dt">JPanel</span><span class="op">()</span> <span class="op">{</span></span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">var</span> <span class="va">dir</span><span class="op">:</span> Direction <span class="op">=</span> Direction<span class="op">.</span>RIGHT</span>
 <span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>    <span class="kw">var</span> <span class="va">game</span><span class="op">:</span> Game <span class="op">=</span> Game<span class="op">(</span></span>
 <span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>        <span class="dv">20</span><span class="op">,</span></span>
@@ -726,14 +732,14 @@ I mentioned that Kotlin <code>Enums</code> can have methods, which is awesome. W
 <span id="cb15-19"><a href="#cb15-19" aria-hidden="true" tabindex="-1"></a>            <span class="op">}</span></span>
 <span id="cb15-20"><a href="#cb15-20" aria-hidden="true" tabindex="-1"></a>        <span class="op">})</span></span>
 <span id="cb15-21"><a href="#cb15-21" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
-<span id="cb15-22"><a href="#cb15-22" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb15-22"><a href="#cb15-22" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>In our <code>init</code> (equal to a constructor) we add a <code>keyListener</code> which will listen on whenever we move. We moved <code>game</code> to be a <code>var</code> which allows us to change the reference.</p>
 <blockquote class="blockquote">
 <p><strong>Side-note:</strong> The difference between a <code>val</code> and <code>var</code> is not about immutability of the value, but rather that you cannot change the pointer to the object. By using <code>val</code> the compiler don’t allow you to change the reference.</p>
-<div class="sourceCode" id="cb16"><pre class="sourceCode kotlin code-with-copy"><code class="sourceCode kotlin"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="kw">val</span> <span class="va">a</span> <span class="op">=</span> <span class="dv">1</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb16"><pre class="sourceCode kotlin code-with-copy"><code class="sourceCode kotlin"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="kw">val</span> <span class="va">a</span> <span class="op">=</span> <span class="dv">1</span></span>
 <span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>a <span class="op">=</span> <span class="dv">3</span> <span class="co">// CRASH -- This is not allowed</span></span>
 <span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="kw">var</span> <span class="va">b</span> <span class="op">=</span> <span class="dv">1</span></span>
-<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>b <span class="op">=</span> <span class="dv">3</span> <span class="co">// b = 3, this is allowed.</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>b <span class="op">=</span> <span class="dv">3</span> <span class="co">// b = 3, this is allowed.</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Please note that this means that if your object is mutable, you can mutate the state of the object even though it’s a <code>val</code>.</p>
 </blockquote>
 <p>Why put <code>game</code> on a <code>var</code> you might ask? Otherwise how would we update our <code>Game</code> as the data structure itself is “immutable”, i.e.&nbsp;cannot be changed, which would mean that we’d need to add a new <code>Game</code> object each time and save it on the stack (never cleaning it up) and that’d pretty fast make the application crash because of <code>out of memory</code>.</p>
@@ -743,16 +749,16 @@ I mentioned that Kotlin <code>Enums</code> can have methods, which is awesome. W
 </blockquote>
 <p>In conclusion this gives us an incredibly simple game, the snake moves whenever we press a key as we <em>still don’t have a game loop</em> based on time. So how do we add a game loop based on time?</p>
 <p>The JVM got you covered! In the <code>keyListener</code> remove the update &amp; repaint, then add a <code>timer</code></p>
-<div class="sourceCode" id="cb17"><pre class="sourceCode kotlin code-with-copy"><code class="sourceCode kotlin"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>fixedRateTimer<span class="op">(</span>TODO<span class="op">(</span><span class="st">"Explore options to use for the timer and how they work"</span><span class="op">))</span> <span class="op">{</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb17"><pre class="sourceCode kotlin code-with-copy"><code class="sourceCode kotlin"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>fixedRateTimer<span class="op">(</span>TODO<span class="op">(</span><span class="st">"Explore options to use for the timer and how they work"</span><span class="op">))</span> <span class="op">{</span></span>
 <span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>    TODO<span class="op">(</span><span class="st">"Insert a game loop here, essentially the same as done in the keyListener previously!"</span><span class="op">)</span></span>
-<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Run the game! …amazing right?</p>
 <p>We now move our snake, and it moves by itself if we don’t. But the game is still pretty boring… We never die, no apples can be eaten and finally no new apples appear. We have a few additions to make to make the game a bit challenging..</p>
 <p>Let’s start by fixing the apples. Update the <code>Apples.kt</code> to randomly add apples to the board when calling <code>grow()</code>.</p>
 <blockquote class="blockquote">
 <p>To simplify the logic we use a <code>set</code> which means that all apples added are unique.</p>
 </blockquote>
-<div class="sourceCode" id="cb18"><pre class="sourceCode kotlin code-with-copy"><code class="sourceCode kotlin"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="kw">data</span> <span class="kw">class</span> Apples<span class="op">(</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb18"><pre class="sourceCode kotlin code-with-copy"><code class="sourceCode kotlin"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="kw">data</span> <span class="kw">class</span> Apples<span class="op">(</span></span>
 <span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">val</span> <span class="va">width</span><span class="op">:</span> <span class="dt">Int</span><span class="op">,</span></span>
 <span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>    <span class="kw">val</span> <span class="va">height</span><span class="op">:</span> <span class="dt">Int</span><span class="op">,</span></span>
 <span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>    <span class="kw">val</span> <span class="va">cells</span><span class="op">:</span> <span class="dt">Set</span>&lt;<span class="va">Cell</span>&gt; <span class="op">=</span> emptySet<span class="op">(),</span></span>
@@ -765,23 +771,23 @@ I mentioned that Kotlin <code>Enums</code> can have methods, which is awesome. W
 <span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a><span class="st">        Otherwise add a new cell.</span></span>
 <span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a><span class="st">        """</span><span class="op">)</span></span>
 <span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
-<span id="cb18-14"><a href="#cb18-14" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb18-14"><a href="#cb18-14" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Then we should allow the Snake to eat them, make sure to add <code>eat(apples: Apples)</code> method and implement it for <code>Snake.kt</code>.</p>
-<div class="sourceCode" id="cb19"><pre class="sourceCode kotlin code-with-copy"><code class="sourceCode kotlin"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="kw">fun</span> <span class="fu">eat</span><span class="op">(</span><span class="va">apples</span><span class="op">:</span> <span class="dt">Apples</span><span class="op">):</span> <span class="dt">Pair</span><span class="op">&lt;</span><span class="dt">Snake</span>, <span class="dt">Apples</span><span class="op">&gt;</span> <span class="op">{</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb19"><pre class="sourceCode kotlin code-with-copy"><code class="sourceCode kotlin"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="kw">fun</span> <span class="fu">eat</span><span class="op">(</span><span class="va">apples</span><span class="op">:</span> <span class="dt">Apples</span><span class="op">):</span> <span class="dt">Pair</span><span class="op">&lt;</span><span class="dt">Snake</span>, <span class="dt">Apples</span><span class="op">&gt;</span> <span class="op">{</span></span>
 <span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">return</span> TODO<span class="op">(</span><span class="st">"""</span></span>
 <span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a><span class="st">    If our head is on a Apple location, return a pair of Snake and Apple untouched.</span></span>
 <span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a><span class="st">    Otherwise make sure to remove the apple from apples and increase body size of snake!</span></span>
 <span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a><span class="st">    """</span><span class="op">)</span></span>
-<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>At the end of all this we need the <code>Game.kt</code> to allow this logic to be used. This is done through updating <code>update</code> to allow the snake to <code>eat</code> apples and also <code>grow</code> apples to add new ones.</p>
 <p>Great! We can eat apples, add new apples and all. But we’re still pretty invincible and we’ll just keep going forever. We need to make sure that the end can be lost, let’s do it by adding a new attribute <code>isOver</code> to <code>Game.kt</code></p>
-<div class="sourceCode" id="cb20"><pre class="sourceCode kotlin code-with-copy"><code class="sourceCode kotlin"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="kw">val</span> <span class="va">score</span><span class="op">:</span> <span class="kw">Int</span> <span class="op">=</span> TODO<span class="op">(</span><span class="st">"Score based on snakes size, e.g. cell size"</span><span class="op">)</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb20"><pre class="sourceCode kotlin code-with-copy"><code class="sourceCode kotlin"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="kw">val</span> <span class="va">score</span><span class="op">:</span> <span class="kw">Int</span> <span class="op">=</span> TODO<span class="op">(</span><span class="st">"Score based on snakes size, e.g. cell size"</span><span class="op">)</span></span>
 <span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="kw">val</span> <span class="va">isOver</span><span class="op">:</span> <span class="kw">Boolean</span> <span class="op">=</span> TODO<span class="op">(</span><span class="st">"Game is over if snake head in tail or snake head not on the map!"</span><span class="op">)</span></span>
 <span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a><span class="kw">fun</span> <span class="fu">update</span><span class="op">(</span><span class="va">dir</span><span class="op">:</span> <span class="dt">Direction</span><span class="op">):</span> <span class="dt">Game</span> <span class="op">{</span></span>
 <span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="op">(</span>isOver<span class="op">)</span> <span class="kw">return</span> <span class="kw">this</span></span>
 <span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>    <span class="op">{</span> <span class="co">/** same code as was here before */</span> <span class="op">}</span></span>
-<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
 </section>
 </section>
@@ -789,7 +795,7 @@ I mentioned that Kotlin <code>Enums</code> can have methods, which is awesome. W
 <h2 class="anchored" data-anchor-id="wrapping-up-the-code-with-some-minor-refactoring-new-functionality">Wrapping up the code with some minor refactoring / new functionality</h2>
 <p>Kotlin has a wonderful concept of <strong>extension functions</strong>, which simply is incredible. An extension function extends a class with new functionality. Did you ever wish <code>Double</code> had a rounding to string? <code>fun Double.roundTo(n: Int): String = "%.${decimals}f".format(this)</code> solves this for you! Now your <code>Double</code>’s automatically gives you a hint to use <code>.roundTo</code> as one of <code>Double</code>’s built-in functions!</p>
 <p>With these we can update our main-method to be a tiny bit cleaner.</p>
-<div class="sourceCode" id="cb21"><pre class="sourceCode kotlin code-with-copy"><code class="sourceCode kotlin"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>g2d<span class="op">.</span>color <span class="op">=</span> Color<span class="op">.</span>GREEN</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb21"><pre class="sourceCode kotlin code-with-copy"><code class="sourceCode kotlin"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>g2d<span class="op">.</span>color <span class="op">=</span> Color<span class="op">.</span>GREEN</span>
 <span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>game<span class="op">.</span>snake<span class="op">.</span>tail<span class="op">.</span>forEach <span class="op">{</span> cell <span class="op">-&gt;</span> g2d<span class="op">.</span>fill<span class="op">(</span>Rectangle<span class="op">(</span>cell<span class="op">.</span>x<span class="op">,</span> cell<span class="op">.</span>y<span class="op">,</span> <span class="dv">1</span><span class="op">,</span> <span class="dv">1</span><span class="op">))</span> <span class="op">}</span></span>
 <span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a><span class="co">// Turns into --&gt;</span></span>
@@ -801,7 +807,7 @@ I mentioned that Kotlin <code>Enums</code> can have methods, which is awesome. W
 <span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb21-11"><a href="#cb21-11" aria-hidden="true" tabindex="-1"></a><span class="co">/**</span></span>
 <span id="cb21-12"><a href="#cb21-12" aria-hidden="true" tabindex="-1"></a><span class="co">    Which allows us to just call `g2d.renderCells(Color.GREEN, game.snake.tail)` etc.</span></span>
-<span id="cb21-13"><a href="#cb21-13" aria-hidden="true" tabindex="-1"></a><span class="co">*/</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb21-13"><a href="#cb21-13" aria-hidden="true" tabindex="-1"></a><span class="co">*/</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p><strong>What more improvements can be made?</strong></p>
 <p>Exercises left for the reader:</p>
 <ol type="1">
@@ -829,8 +835,8 @@ The idea is that this part will be solved by yourself during the workshop this i
 <p><strong>KeyListener</strong> <code>document.onkeydown = { event -&gt; onkeydown(event).also { keyDir -&gt; dir = keyDir } }</code> where <code>onkeydown</code> is your own method that handles key-events.</p>
 <p><strong>Timer</strong> <code>window.setInterval({ game = game.update(dir); render(canvas, game) }, 200)</code></p>
 <p><strong>Canvas</strong></p>
-<div class="sourceCode" id="cb22"><pre class="sourceCode kotlin code-with-copy"><code class="sourceCode kotlin"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="kw">val</span> <span class="va">canvas</span> <span class="op">=</span> document<span class="op">.</span>getElementById<span class="op">(</span><span class="st">"snake-canvas"</span><span class="op">)</span> <span class="kw">as</span> HTMLCanvasElement</span>
-<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="kw">val</span> <span class="va">ctx</span> <span class="op">=</span> canvas<span class="op">.</span>getContext<span class="op">(</span><span class="st">"2d"</span><span class="op">)</span> <span class="kw">as</span> CanvasRenderingContext2D</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb22"><pre class="sourceCode kotlin code-with-copy"><code class="sourceCode kotlin"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="kw">val</span> <span class="va">canvas</span> <span class="op">=</span> document<span class="op">.</span>getElementById<span class="op">(</span><span class="st">"snake-canvas"</span><span class="op">)</span> <span class="kw">as</span> HTMLCanvasElement</span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="kw">val</span> <span class="va">ctx</span> <span class="op">=</span> canvas<span class="op">.</span>getContext<span class="op">(</span><span class="st">"2d"</span><span class="op">)</span> <span class="kw">as</span> CanvasRenderingContext2D</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>On this <code>ctx</code> from the canvas you can use <code>fillRect</code> to draw rectangles, and <code>fillStyle</code> to set color.</p>
 <p><strong>HTML-Canvas</strong><br>
 <code>&lt;canvas id="snake-canvas" width="400px" height="300px"&gt;&lt;/canvas&gt;</code> (put in <code>index.html</code>)</p>
@@ -844,12 +850,12 @@ The idea is that this part will be solved by yourself during the workshop this i
 <p>For the Native target the GUI will be supported through the library <code>ncurses</code> which unfortunately is only supported on Linux &amp; MacOS. If you’ve windows you can solve this through <em>Windows Subsystem for Linux</em> (WSL).</p>
 <p>Begin by creating <code>src/nativeMain/kotlin/main.kt</code>.</p>
 <p>To begin, in the main-function do the following:</p>
-<div class="sourceCode" id="cb23"><pre class="sourceCode kotlin code-with-copy"><code class="sourceCode kotlin"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="kw">fun</span> <span class="fu">maint</span><span class="op">():</span> <span class="dt">Unit</span> <span class="op">=</span> memScoped <span class="op">{</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb23"><pre class="sourceCode kotlin code-with-copy"><code class="sourceCode kotlin"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="kw">fun</span> <span class="fu">maint</span><span class="op">():</span> <span class="dt">Unit</span> <span class="op">=</span> memScoped <span class="op">{</span></span>
 <span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">// insert code</span></span>
-<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>The <code>memScoped</code> part means that all memory allocated in the block is automatically disposed at the end, incredibly useful! :happy:</p>
 <p>Then reading how to use <code>ncurses</code> we can figure out how to init this. The final end-goal being</p>
-<div class="sourceCode" id="cb24"><pre class="sourceCode kotlin code-with-copy"><code class="sourceCode kotlin"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="kw">fun</span> <span class="fu">main</span><span class="op">():</span> <span class="dt">Unit</span> <span class="op">=</span> memScoped <span class="op">{</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb24"><pre class="sourceCode kotlin code-with-copy"><code class="sourceCode kotlin"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="kw">fun</span> <span class="fu">main</span><span class="op">():</span> <span class="dt">Unit</span> <span class="op">=</span> memScoped <span class="op">{</span></span>
 <span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>    initscr<span class="op">()</span></span>
 <span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>    defer <span class="op">{</span> endwin<span class="op">()</span> <span class="op">}</span></span>
@@ -887,7 +893,7 @@ The idea is that this part will be solved by yourself during the workshop this i
 <span id="cb24-36"><a href="#cb24-36" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
 <span id="cb24-37"><a href="#cb24-37" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb24-38"><a href="#cb24-38" aria-hidden="true" tabindex="-1"></a>    wrefresh<span class="op">(</span><span class="kw">this</span><span class="op">)</span></span>
-<span id="cb24-39"><a href="#cb24-39" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb24-39"><a href="#cb24-39" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Try running it in the terminal.</p>
 <p>This blog was created as a companion to a workshop I’m gonna do at AFRY, it has a bit more content including a presentation in person.</p>
 <p>All the finished code is available <a href="https://github.com/londogard/snake-js-jvm-native/tree/completed_project">here</a>, if you prefer the unfinished code head to <a href="https://github.com/londogard/snake-js-jvm-native">master-branch</a>.</p>
@@ -950,13 +956,14 @@ The idea is that this part will be solved by yourself during the workshop this i
       e.clearSelection();
     }
     const getTextToCopy = function(trigger) {
-        const codeEl = trigger.previousElementSibling.cloneNode(true);
-        for (const childEl of codeEl.children) {
-          if (isCodeAnnotation(childEl)) {
-            childEl.remove();
-          }
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
         }
-        return codeEl.innerText;
+      }
+      return codeEl.innerText;
     }
     const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
       text: getTextToCopy

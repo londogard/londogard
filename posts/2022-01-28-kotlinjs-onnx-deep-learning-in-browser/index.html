@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.7.34">
+<meta name="generator" content="quarto-1.8.25">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -71,14 +71,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../../favicon.ico" rel="icon">
 <script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../site_libs/quarto-html/axe/axe-check.js" type="module"></script>
 <script src="../../site_libs/quarto-html/popper.min.js"></script>
 <script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-9582434199d49cc9e91654cdeeb4866b.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-065a5179aebd64318d7ea99d77b64a9e.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark-969ddfa49e00a70eb3423444dbc81f6c.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-065a5179aebd64318d7ea99d77b64a9e.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-8ab00b4506aff93bb9d672c7d73166bb.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-7d3a565c23c4d3b0e7c030e96a8964f3.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-dark-7d3a565c23c4d3b0e7c030e96a8964f3.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-7d3a565c23c4d3b0e7c030e96a8964f3.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -127,7 +132,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
     <a href="../../index.html" class="navbar-brand navbar-brand-logo">
-    <img src="../../favicon.ico" alt="" class="navbar-logo">
+    <img src="../../favicon.ico" alt="" class="navbar-logo light-content">
+    <img src="../../favicon.ico" alt="" class="navbar-logo dark-content">
     </a>
     <a class="navbar-brand" href="../../index.html">
     <span class="navbar-title">Londogard Blog</span>
@@ -304,7 +310,7 @@ Having sweet syntax, superb typing I feel a great preference toward KotlinJS eve
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Open Neural Network Exchange (ONNX)
+<span class="screen-reader-only">Tip</span>Open Neural Network Exchange (ONNX)
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -347,7 +353,7 @@ Please note that the focus will be ONNX, as such I’ll save some <code>fritz2</
 <h3 class="anchored" data-anchor-id="basic-ui">Basic UI</h3>
 <p><strong>Getting the skeleton UI up</strong><br>
 In the “main” file of the js-folder, but not as in js-code 😉, you’ll need to set up a file and image element.</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode kotlin code-with-copy"><code class="sourceCode kotlin"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">fun</span> <span class="fu">main</span><span class="op">()</span> <span class="op">{</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode kotlin code-with-copy"><code class="sourceCode kotlin"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">fun</span> <span class="fu">main</span><span class="op">()</span> <span class="op">{</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">val</span> <span class="va">imgSrc</span> <span class="op">=</span> RootStore<span class="op">(</span><span class="st">""</span><span class="op">)</span></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    render <span class="op">{</span></span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>        <span class="kw">val</span> <span class="va">srcImg</span> <span class="op">=</span> img<span class="op">(</span>id <span class="op">=</span> <span class="st">"img-from"</span><span class="op">)</span> <span class="op">{</span></span>
@@ -360,7 +366,7 @@ In the “main” file of the js-folder, but not as in js-code 😉, you’ll ne
 <span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>        button <span class="op">{</span> text<span class="op">(</span><span class="st">"Single select"</span><span class="op">)</span> <span class="op">}</span></span>
 <span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
 <span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span>map <span class="op">{</span> file <span class="op">-&gt;</span> <span class="st">"data:</span><span class="ss">${</span>file<span class="op">.</span>type<span class="ss">}</span><span class="st">;base64,</span><span class="ss">${</span>file<span class="op">.</span>content<span class="ss">}</span><span class="st">"</span> <span class="op">}</span> handledBy imgSrc<span class="op">.</span>update</span>
-<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Breaking down what’s done</p>
 <ol type="1">
 <li>A <code>RootStore</code> is a abstraction on top of a <code>(Mutable)StateFlow</code> which is a <code>Flow</code> with a state.
@@ -378,7 +384,7 @@ In the “main” file of the js-folder, but not as in js-code 😉, you’ll ne
 <p>The connector between <code>file</code> and <code>imgSrc</code> is dirty, I hoped to be able to load the <code>b64</code> content directly into a <code>UInt8ClampedArray</code> to have optimal performance, but because the <code>b64</code>-string actually contains PNG/JPEG headers and other things the perfomance gains versus simplicity is not worth it. Hence I transform it from the <code>b64</code>-string (<code>data:image/pdf;base64,&lt;content&gt;</code>) to image and then extract <code>ImageData</code> - annoying but clean.<br>
 The detail that <code>&lt;content&gt;</code> in <code>b64</code>-string is only the pixel data haunted me for a long time… I couldn’t figure why my arrays had the wrong dimensions! 😅</p>
 <p>The next step: transfer image from this component to another, while allowing a transformation (neural network inference) in-between.</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode kotlin code-with-copy"><code class="sourceCode kotlin"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co">// highlight-start</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode kotlin code-with-copy"><code class="sourceCode kotlin"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co">// highlight-start</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="kw">fun</span> <span class="fu">loadImgToCanvas</span><span class="op">(</span><span class="va">img</span><span class="op">:</span> <span class="dt">Image</span><span class="op">,</span> <span class="va">canvas</span><span class="op">:</span> <span class="dt">Canvas</span><span class="op">,</span> <span class="va">context</span><span class="op">:</span> <span class="dt">CanvasRenderingContext2D</span><span class="op">)</span> <span class="op">{</span></span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="op">(</span>img<span class="op">.</span>domNode<span class="op">.</span>src<span class="op">.</span>isNotEmpty<span class="op">())</span> <span class="op">{</span></span>
 <span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>        canvas<span class="op">.</span>width <span class="op">=</span> img<span class="op">.</span>domNode<span class="op">.</span>naturalWidth</span>
@@ -403,7 +409,7 @@ The detail that <code>&lt;content&gt;</code> in <code>b64</code>-string is only 
 <span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a>        <span class="co">// highlight-next-line</span></span>
 <span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a>        srcImg<span class="op">.</span>domNode<span class="op">.</span>onload <span class="op">{</span> loadImgToCanvas<span class="op">(</span>srcImg<span class="op">,</span> targetCanvas<span class="op">,</span> imgContext<span class="op">)</span> <span class="op">}</span></span>
 <span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
-<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Whenever <code>srcImg.onload</code> event happens we call <code>loadImgToCanvas</code> which loads <code>img</code> on our canvas.<br>
 <strong>Why did I choose to not have a new <code>&lt;img&gt;</code>?</strong> Because we later need to use <code>ImageData</code> and this is the way to have the minimum number of data transitions, trust me 😉.</p>
 <p>Let’s start adding bindings for ONNX!</p>
@@ -411,27 +417,27 @@ The detail that <code>&lt;content&gt;</code> in <code>b64</code>-string is only 
 <section id="binding-onnx-and-webruntime" class="level3">
 <h3 class="anchored" data-anchor-id="binding-onnx-and-webruntime">Binding ONNX and webruntime</h3>
 <p>Binding TS/JS is as simple as a <code>.d.ts</code>-file in TS. You define the component to bind, declare the types, e.g.&nbsp;function name, input and outout. Simple as that!</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode kotlin code-with-copy"><code class="sourceCode kotlin"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="at">@file</span><span class="op">:</span><span class="at">JsModule</span><span class="op">(</span><span class="st">"onnxruntime-web"</span><span class="op">)</span>   <span class="co">// npm-package</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode kotlin code-with-copy"><code class="sourceCode kotlin"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="at">@file</span><span class="op">:</span><span class="at">JsModule</span><span class="op">(</span><span class="st">"onnxruntime-web"</span><span class="op">)</span>   <span class="co">// npm-package</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="at">@file</span><span class="op">:</span><span class="at">JsNonModule</span></span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  </span>
 <span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="kw">import</span> <span class="im">kotlin</span><span class="op">.</span><span class="im">js</span><span class="op">.</span><span class="im">Promise</span>  </span>
 <span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>  </span>
 <span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="kw">external</span> <span class="kw">abstract</span> <span class="kw">class</span> InferenceSession <span class="op">{</span>  </span>
 <span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>    <span class="kw">fun</span> <span class="fu">run</span><span class="op">(</span><span class="va">feeds</span><span class="op">:</span> <span class="dt">FeedsType</span><span class="op">):</span> <span class="dt">Promise</span><span class="op">&lt;</span><span class="dt">ReturnType</span><span class="op">&gt;</span> <span class="co">// FeedsType / ReturnType separately defined the same way as InferenceSession &amp; run.</span></span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Moving further we’ll add a method to extract <code>ImageData</code>’s <code>UInt8ClampedArray</code> from a <code>img</code>-element using a <code>canvas</code>-element with its <code>CanvasRenderingContext2D</code> (lots of JS/web words, the most I’ll have in a sentence, peeew! 😅)</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode kotlin code-with-copy"><code class="sourceCode kotlin"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">fun</span> <span class="fu">imgToUInt8ClampedArray</span><span class="op">(</span><span class="va">img</span><span class="op">:</span> <span class="dt">HTMLImageElement</span><span class="op">,</span> <span class="va">ctx</span><span class="op">:</span> <span class="dt">CanvasRenderingContext2D</span><span class="op">):</span> <span class="dt">Uint8ClampedArray</span> <span class="op">{</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode kotlin code-with-copy"><code class="sourceCode kotlin"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">fun</span> <span class="fu">imgToUInt8ClampedArray</span><span class="op">(</span><span class="va">img</span><span class="op">:</span> <span class="dt">HTMLImageElement</span><span class="op">,</span> <span class="va">ctx</span><span class="op">:</span> <span class="dt">CanvasRenderingContext2D</span><span class="op">):</span> <span class="dt">Uint8ClampedArray</span> <span class="op">{</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">val</span> <span class="va">canvas</span> <span class="op">=</span> ctx<span class="op">.</span>canvas</span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    canvas<span class="op">.</span>width <span class="op">=</span> img<span class="op">.</span>naturalWidth</span>
 <span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    canvas<span class="op">.</span>height <span class="op">=</span> img<span class="op">.</span>naturalHeight</span>
 <span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>    ctx<span class="op">.</span>drawImage<span class="op">(</span>img<span class="op">,</span> <span class="fl">0.0</span><span class="op">,</span> <span class="fl">0.0</span><span class="op">)</span></span>
 <span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>    <span class="kw">return</span> ctx<span class="op">.</span>getImageData<span class="op">(</span><span class="fl">0.0</span><span class="op">,</span> <span class="fl">0.0</span><span class="op">,</span> img<span class="op">.</span>naturalWidth<span class="op">.</span>toDouble<span class="op">(),</span> img<span class="op">.</span>naturalHeight<span class="op">.</span>toDouble<span class="op">()).</span><span class="kw">data</span> <span class="co">// extract data from ImageData</span></span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>The <code>UInt8ClampedArray</code> has to be transformed into a <code>Float32Array</code> that the model expects.<br>
 Sounds easy? Think again!<br>
 Because JS is not a data science language it’s not surprising that the data is “incorrectly” ordered. The model expects the data to be formed as <code>[3,width,height]</code> where 3 is the number of dimensions, in our case RGB, but in JS it’s the reverse way. On top of the wrong ordering JS has a fourth dimension, namely transparency. Following all that knowledge we can transform the array.</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode kotlin code-with-copy"><code class="sourceCode kotlin"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">fun</span> <span class="fu">uInt8ClampedToFloat32Array</span><span class="op">(</span><span class="kw">data</span><span class="op">:</span> <span class="dt">Uint8ClampedArray</span><span class="op">):</span> <span class="dt">Float32Array</span> <span class="op">{</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode kotlin code-with-copy"><code class="sourceCode kotlin"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">fun</span> <span class="fu">uInt8ClampedToFloat32Array</span><span class="op">(</span><span class="kw">data</span><span class="op">:</span> <span class="dt">Uint8ClampedArray</span><span class="op">):</span> <span class="dt">Float32Array</span> <span class="op">{</span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">val</span> <span class="va">floats</span> <span class="op">=</span> Float32Array<span class="op">(</span><span class="kw">data</span><span class="op">.</span>length <span class="op">/</span> <span class="dv">4</span> <span class="op">*</span> <span class="dv">3</span><span class="op">)</span></span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    <span class="kw">val</span> <span class="va">rgb</span> <span class="op">=</span>listOf<span class="op">(</span><span class="dv">0</span><span class="op">,</span> <span class="kw">data</span><span class="op">.</span>length <span class="op">/</span> <span class="dv">4</span><span class="op">,</span> <span class="kw">data</span><span class="op">.</span>length <span class="op">/</span> <span class="dv">4</span> <span class="op">*</span> <span class="dv">2</span><span class="op">)</span></span>
 <span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a></span>
@@ -442,9 +448,9 @@ Because JS is not a data science language it’s not surprising that the data is
 <span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
 <span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>    <span class="kw">return</span> floats</span>
-<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>As ONNX expects <code>Tensor</code> we need to transform the <code>Float32Array</code> into a <code>Tensor</code> and then into <code>FeedsInput</code> which is a <code>Object</code> of the data, luckily that’s very easy after our binding is done.</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode kotlin code-with-copy"><code class="sourceCode kotlin"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="kw">fun</span> <span class="fu">tensorToInput</span><span class="op">(</span><span class="va">tensor</span><span class="op">:</span> <span class="dt">Tensor</span><span class="op">,</span> <span class="va">inputName</span><span class="op">:</span> <span class="dt">String</span> <span class="op">=</span> <span class="st">"input"</span><span class="op">):</span> <span class="dt">FeedsType</span> <span class="op">{</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode kotlin code-with-copy"><code class="sourceCode kotlin"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="kw">fun</span> <span class="fu">tensorToInput</span><span class="op">(</span><span class="va">tensor</span><span class="op">:</span> <span class="dt">Tensor</span><span class="op">,</span> <span class="va">inputName</span><span class="op">:</span> <span class="dt">String</span> <span class="op">=</span> <span class="st">"input"</span><span class="op">):</span> <span class="dt">FeedsType</span> <span class="op">{</span></span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">val</span> <span class="va">input</span><span class="op">:</span> <span class="kw">dynamic</span> <span class="op">=</span> <span class="kw">object</span> <span class="op">{}</span> <span class="co">// To hack JS Objects</span></span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>    input<span class="op">[</span>inputName<span class="op">]</span> <span class="op">=</span> tensor</span>
 <span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a></span>
@@ -452,15 +458,15 @@ Because JS is not a data science language it’s not surprising that the data is
 <span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
 <span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="kw">val</span> <span class="va">tensor</span> <span class="op">=</span> Tensor<span class="op">(</span><span class="st">"float32"</span><span class="op">,</span> floats<span class="op">,</span> arrayOf<span class="op">(</span><span class="dv">1</span><span class="op">,</span> <span class="dv">3</span><span class="op">,</span> srcImg<span class="op">.</span>domNode<span class="op">.</span>naturalWidth<span class="op">,</span> srcImg<span class="op">.</span>domNode<span class="op">.</span>naturalHeight<span class="op">))</span></span>
-<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a><span class="kw">val</span> <span class="va">input</span> <span class="op">=</span> tensorToInput<span class="op">(</span>tensor<span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a><span class="kw">val</span> <span class="va">input</span> <span class="op">=</span> tensorToInput<span class="op">(</span>tensor<span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>…and it’s time to run the model! 🥳</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode kotlin code-with-copy"><code class="sourceCode kotlin"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">val</span> <span class="va">ir</span> <span class="op">=</span> InferenceSession<span class="op">.</span>create<span class="op">(</span><span class="st">"./dce2.onnx"</span><span class="op">).</span>await<span class="op">()</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode kotlin code-with-copy"><code class="sourceCode kotlin"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">val</span> <span class="va">ir</span> <span class="op">=</span> InferenceSession<span class="op">.</span>create<span class="op">(</span><span class="st">"./dce2.onnx"</span><span class="op">).</span>await<span class="op">()</span></span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="kw">val</span> <span class="va">out</span> <span class="op">=</span> ir<span class="op">.</span>run<span class="op">(</span>input<span class="op">).</span>await<span class="op">()</span></span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="kw">val</span> <span class="va">outTensor</span> <span class="op">=</span> <span class="kw">out</span><span class="op">[</span><span class="st">"output"</span><span class="op">]</span> <span class="kw">as</span> Tensor</span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="kw">val</span> <span class="va">outData</span> <span class="op">=</span> outTensor<span class="op">.</span><span class="kw">data</span> <span class="kw">as</span> Float32Array</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="kw">val</span> <span class="va">outData</span> <span class="op">=</span> outTensor<span class="op">.</span><span class="kw">data</span> <span class="kw">as</span> Float32Array</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>The output then needs to have the reverse transform applied to be viewable in the browser. That is, reverse axis, add fourth dimension and cast into <code>int</code>.</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode kotlin code-with-copy"><code class="sourceCode kotlin"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co">// Calling on the output data, before converting to UInt8Clamped..</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode kotlin code-with-copy"><code class="sourceCode kotlin"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co">// Calling on the output data, before converting to UInt8Clamped..</span></span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> <span class="op">(</span>i <span class="kw">in</span> <span class="er">0</span>untiloutData<span class="op">.</span>length<span class="op">)</span> <span class="op">{</span></span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>    outData<span class="op">[</span>i<span class="op">]</span> <span class="op">=</span> min<span class="op">(</span>outData<span class="op">[</span>i<span class="op">],</span> <span class="fl">1f</span><span class="op">)</span> <span class="op">*</span> <span class="fl">255f</span> <span class="co">// `min` to not go above 255</span></span>
 <span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
@@ -476,7 +482,7 @@ Because JS is not a data science language it’s not surprising that the data is
 <span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>        intOut<span class="op">.</span>asDynamic<span class="op">()[</span>i <span class="op">*</span> <span class="dv">4</span> <span class="op">+</span> <span class="dv">3</span><span class="op">]</span> <span class="op">=</span> <span class="dv">255</span> <span class="op">}</span></span>
 <span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>    </span>
 <span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>    <span class="kw">return</span> intOut</span>
-<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>As you might notice we cast a lot <code>asDynamic()</code>, this is because of a current bug in Kotlin JS where it sends signed <code>Byte</code> when it should be an unsigned <code>Byte</code>.<br>
 See the current issue at <a href="https://youtrack.jetbrains.com/issue/KT-24583">youtrack.jetbrains.com</a>.</p>
 <p>We <strong>finally got all the pieces</strong>, how about gluing it all together? 😄</p>
@@ -489,7 +495,7 @@ One solution would be to preprocess the image to always be the same size, but I 
 <summary>
 View code!
 </summary>
-<div class="sourceCode" id="cb9"><pre class="sourceCode kotlin code-with-copy"><code class="sourceCode kotlin"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="kw">fun</span> <span class="fu">imgToUInt8ClampedArray</span><span class="op">(</span><span class="va">img</span><span class="op">:</span> <span class="dt">HTMLImageElement</span><span class="op">,</span> <span class="va">ctx</span><span class="op">:</span> <span class="dt">CanvasRenderingContext2D</span><span class="op">):</span> <span class="dt">Uint8ClampedArray</span> <span class="op">{</span>  </span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode kotlin code-with-copy"><code class="sourceCode kotlin"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="kw">fun</span> <span class="fu">imgToUInt8ClampedArray</span><span class="op">(</span><span class="va">img</span><span class="op">:</span> <span class="dt">HTMLImageElement</span><span class="op">,</span> <span class="va">ctx</span><span class="op">:</span> <span class="dt">CanvasRenderingContext2D</span><span class="op">):</span> <span class="dt">Uint8ClampedArray</span> <span class="op">{</span>  </span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">/** same code as previously */</span></span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="op">}</span>  </span>
 <span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>  </span>
@@ -550,7 +556,7 @@ View code!
 <span id="cb9-59"><a href="#cb9-59" aria-hidden="true" tabindex="-1"></a>        button <span class="op">{</span> text<span class="op">(</span><span class="st">"Single select"</span><span class="op">)</span> <span class="op">}</span>  </span>
 <span id="cb9-60"><a href="#cb9-60" aria-hidden="true" tabindex="-1"></a>     <span class="op">}.</span>map <span class="op">{</span> file <span class="op">-&gt;</span> <span class="st">"data:</span><span class="ss">${</span>file<span class="op">.</span>type<span class="ss">}</span><span class="st">;base64,</span><span class="ss">${</span>file<span class="op">.</span>content<span class="ss">}</span><span class="st">"</span> <span class="op">}</span> handledBy flow<span class="op">.</span>update  </span>
 <span id="cb9-61"><a href="#cb9-61" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span>  </span>
-<span id="cb9-62"><a href="#cb9-62" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb9-62"><a href="#cb9-62" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <p>With the joining bindings for ONNX.</p>
 </section>
@@ -639,13 +645,14 @@ View code!
       e.clearSelection();
     }
     const getTextToCopy = function(trigger) {
-        const codeEl = trigger.previousElementSibling.cloneNode(true);
-        for (const childEl of codeEl.children) {
-          if (isCodeAnnotation(childEl)) {
-            childEl.remove();
-          }
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
         }
-        return codeEl.innerText;
+      }
+      return codeEl.innerText;
     }
     const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
       text: getTextToCopy

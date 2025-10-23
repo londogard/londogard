@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.7.34">
+<meta name="generator" content="quarto-1.8.25">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -71,14 +71,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../favicon.ico" rel="icon">
 <script src="../site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/axe/axe-check.js" type="module"></script>
 <script src="../site_libs/quarto-html/popper.min.js"></script>
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-9582434199d49cc9e91654cdeeb4866b.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-065a5179aebd64318d7ea99d77b64a9e.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-969ddfa49e00a70eb3423444dbc81f6c.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-065a5179aebd64318d7ea99d77b64a9e.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-8ab00b4506aff93bb9d672c7d73166bb.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-7d3a565c23c4d3b0e7c030e96a8964f3.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark-7d3a565c23c4d3b0e7c030e96a8964f3.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-7d3a565c23c4d3b0e7c030e96a8964f3.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -123,7 +128,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
     <a href="../index.html" class="navbar-brand navbar-brand-logo">
-    <img src="../favicon.ico" alt="" class="navbar-logo">
+    <img src="../favicon.ico" alt="" class="navbar-logo light-content">
+    <img src="../favicon.ico" alt="" class="navbar-logo dark-content">
     </a>
     <a class="navbar-brand" href="../index.html">
     <span class="navbar-title">Londogard Blog</span>
@@ -318,30 +324,30 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>What is a class and feature?</p>
 <p>Features are the input to the model, you can see a machine learning system as a "consumer" of features. You can view this as a cookie monster consuming cookies and then he says if they taste good or bad. He has the input, cookie, that can be a feature. He then has a output, class, that is good/bad. Repeat this a lot of times and you can retrieve statistics if Cookie Y is good or bad.</p>
 <p>To generalize this system we would divide the feature into multiple feature, like what ingredients the cookie contains. So instead of saying this is a "Chocolate Chip Cookie" we know tell the system the features are:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>chocolate: yes</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>chocolate: yes</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>sugar:yes</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>honey:no</span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>oat:no</span>
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>cinnamon: no</span>
 <span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>sweet: yes</span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>sour: no\<span class="st">"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>sour: no\<span class="st">"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>. In numerical input it would translate to something as <code>[1,1,0,0,0,1,0]</code>.</p>
 <section id="one-hot-encoding---how-we-represent-features-classes" class="level4">
 <h4 class="anchored" data-anchor-id="one-hot-encoding---how-we-represent-features-classes">One-Hot-Encoding - how we represent features &amp; classes</h4>
 <p>As shown in the translation to numerical vectors we don’t represent words as actual words. We always use numbers, often we even use something called <em>One-Hot-Encoding</em>.</p>
 <p>One-Hot-Encoding means that we have an array of one 1 and the rest is 0s. This is to optimize math performed by the GPU (or CPU).</p>
 <p>Using the example of <em>Good</em> &amp; <em>Bad</em> cookies with the extension of <em>Decent</em> we will One-Hot-Encode these as the following</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>Good   <span class="op">=</span> [<span class="dv">1</span>,<span class="dv">0</span>,<span class="dv">0</span>]</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>Good   <span class="op">=</span> [<span class="dv">1</span>,<span class="dv">0</span>,<span class="dv">0</span>]</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>Bad    <span class="op">=</span> [<span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">0</span>]</span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>Decent <span class="op">=</span> [<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">1</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>Decent <span class="op">=</span> [<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">1</span>]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>The same is applied to our features. If you’re using a framework (such as Keras) it is pretty common that they include an method to do this, or even that it is done automatically for you.</p>
 </section>
 </section>
 <section id="back-to-text-classification" class="level3">
 <h3 class="anchored" data-anchor-id="back-to-text-classification">Back to text classification</h3>
 <p>To classify a text we do what is called an <em>sentiment analysis</em> meaning that we try to estimate the <em>sentiment polarity</em> of a text body. In the first part of this workshop we’ll be assuming that there’s only two sentiments, <em>Negative</em> and <em>Positive</em>. Then we can express this as the following classification problem:</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>Feature: String body</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>Class:   Bad<span class="op">|</span>Good</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>Feature: String body</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>Class:   Bad<span class="op">|</span>Good</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>The output, <em>Classes</em>, are easy to One-Hot-Encode but how do we succesfully One-Hot-Encode a string? A character can be seen as a class but is that really something we can learn from? To solve this we need to preprocess our input somehow.</p>
 </section>
 <section id="preprocessing" class="level3">
@@ -356,7 +362,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h4 class="anchored" data-anchor-id="cleaning-the-text">Cleaning the text</h4>
 <p>Why do we need to clean the text? It is to remove weird stuff &amp; outliers. If we have the text <code>I'm a cat.</code>we want to simplify this into <code>[i'm, a, cat]</code> or even <code>[im, a, cat]</code>.</p>
 <p>Removing data such as non-alphabetical characters and the letter case makes more data look a like and reduces the dimension of our input – this simplifies the learning of the system. But removing features can be bad also, if someone writes in all CAPS we can guess that they’re angry. But let’s take that later.</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> regex <span class="im">as</span> re</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> regex <span class="im">as</span> re</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> clean_text(text):</span>
@@ -379,22 +385,22 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Extra: How would we go ahead and remove HTML? Time to learn some Regex!</span></span>
 <span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a>    </span>
 <span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> text.strip().lower()</span>
-<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a>clean_text(\<span class="st">"Wow, we can clean text now. Isn't that amazing!?</span><span class="ch">\"</span><span class="st">).split()</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a>clean_text(\<span class="st">"Wow, we can clean text now. Isn't that amazing!?</span><span class="ch">\"</span><span class="st">).split()</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
 <section id="vectorization" class="level4">
 <h4 class="anchored" data-anchor-id="vectorization">Vectorization</h4>
 <p>Now that we can extract text we need to be able to input it to the system. We have to vectorize it. In this part we’ll vectorize each word as a number. The simplest approach to this is using <em>Bag of Words</em> (BOW).</p>
 <p>Bag of Words creates a list of words which is called the <em>Dictionary</em>. The Dictionary is just a list of the words from the training data.</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>Training data: [\<span class="st">"ÅF is a big company</span><span class="ch">\"</span><span class="st">, </span><span class="ch">\"</span><span class="st">ÅF making future</span><span class="ch">\"</span><span class="st">]</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>Training data: [\<span class="st">"ÅF is a big company</span><span class="ch">\"</span><span class="st">, </span><span class="ch">\"</span><span class="st">ÅF making future</span><span class="ch">\"</span><span class="st">]</span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="er">--&gt; Dictionary: </span>[ÅF, <span class="kw">is</span>, a, big, company, making, future]</span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>New text: \<span class="st">"ÅF company is a future company</span><span class="ch">\"</span><span class="st"> --&gt; [1,1,1,0,2,0,1]</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>New text: \<span class="st">"ÅF company is a future company</span><span class="ch">\"</span><span class="st"> --&gt; [1,1,1,0,2,0,1]</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Our new text is vectorized on top of the dictionary. You take the dictionary and replace the words position with the count of it that is found in the new text.</p>
 </section>
 <section id="finalizing-the-preprocessing" class="level4">
 <h4 class="anchored" data-anchor-id="finalizing-the-preprocessing">Finalizing the preprocessing</h4>
 <p>We can actually do some more things to improve the system which I won’t go into detail about (read the code). We remove stop-words and so on.</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.feature_extraction.text <span class="im">import</span> CountVectorizer</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.feature_extraction.text <span class="im">import</span> CountVectorizer</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>training_texts <span class="op">=</span> [</span>
@@ -424,13 +430,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb6-28"><a href="#cb6-28" aria-hidden="true" tabindex="-1"></a>    data<span class="op">=</span>vectorizer.transform(test_texts).toarray(),</span>
 <span id="cb6-29"><a href="#cb6-29" aria-hidden="true" tabindex="-1"></a>    index<span class="op">=</span>[\<span class="st">"Test sentence</span><span class="ch">\"</span><span class="st">],</span></span>
 <span id="cb6-30"><a href="#cb6-30" aria-hidden="true" tabindex="-1"></a><span class="er">    columns=vocabulary</span></span>
-<span id="cb6-31"><a href="#cb6-31" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb6-31"><a href="#cb6-31" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
 </section>
 <section id="lets-do-something-fun-out-of-this" class="level3">
 <h3 class="anchored" data-anchor-id="lets-do-something-fun-out-of-this">Let’s do something fun out of this!</h3>
 <p>To begin with we need data. Luckily I know a perfect dataset for this – the IMDB movie reviews from stanford. This is a widely used dataset throughout <em>Sentiment Analysis</em>. The data contains 50 000 reviews where 50 % is positive and the rest negative. First we fetch a dataset. Download <a href="http://ai.stanford.edu/~amaas/data/sentiment/aclImdb_v1.tar.gz">this file</a> and unpack it (into <code>aclImdb</code>) if the first code-snippet was unsuccessful.</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> load_train_test_imdb_data(data_dir):</span>
@@ -467,7 +473,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb7-35"><a href="#cb7-35" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb7-36"><a href="#cb7-36" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> data[\<span class="st">"train</span><span class="ch">\"</span><span class="st">], data[</span><span class="ch">\"</span><span class="st">test</span><span class="ch">\"</span><span class="st">]</span></span>
 <span id="cb7-37"><a href="#cb7-37" aria-hidden="true" tabindex="-1"></a><span class="er">train_data, test_data = load_train_test_imdb_data</span>(</span>
-<span id="cb7-38"><a href="#cb7-38" aria-hidden="true" tabindex="-1"></a>    data_dir<span class="op">=</span>\<span class="st">"aclImdb/</span><span class="ch">\"</span><span class="st">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb7-38"><a href="#cb7-38" aria-hidden="true" tabindex="-1"></a>    data_dir<span class="op">=</span>\<span class="st">"aclImdb/</span><span class="ch">\"</span><span class="st">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
 <section id="lets-create-our-classifier" class="level3">
 <h3 class="anchored" data-anchor-id="lets-create-our-classifier">Let’s create our classifier</h3>
@@ -475,7 +481,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Do you see an issue with our baseline right now?</p>
 <p>…As mentioned we want to only have important features to simplify training. Right now we have an enormous amount of features, our BOW-approach result in an 80 000-dimensional vector. Because of this we <em>must</em> use simple algorithms that learn fast &amp; easy, e.g.&nbsp;<a href="https://en.wikipedia.org/wiki/Support-vector_machine">Linear SVM</a>, <a href="https://en.wikipedia.org/wiki/Naive_Bayes_classifier">Naive Bayes</a> or <a href="https://en.wikipedia.org/wiki/Logistic_regression">Logistic Regression</a>.</p>
 <p>Let’s create some code that actually let’s us train a Linear SVM!</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> accuracy_score</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> accuracy_score</span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.svm <span class="im">import</span> LinearSVC</span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a></span>
@@ -494,7 +500,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a><span class="co"># Evaluation</span></span>
 <span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a>acc <span class="op">=</span> accuracy_score(test_data[\<span class="st">"sentiment</span><span class="ch">\"</span><span class="st">], y_pred)</span></span>
 <span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a><span class="er">print</span>(\<span class="st">"Accuracy on the IMDB dataset: </span><span class="sc">{:.2f}</span><span class="ch">\"</span><span class="st">.format(acc*100))</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a><span class="er">print</span>(\<span class="st">"Accuracy on the IMDB dataset: </span><span class="sc">{:.2f}</span><span class="ch">\"</span><span class="st">.format(acc*100))</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
 <section id="comparison-to-state-of-the-art" class="level3">
 <h3 class="anchored" data-anchor-id="comparison-to-state-of-the-art">Comparison to state-of-the-art</h3>
@@ -521,7 +527,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="implementation-details" class="level3">
 <h3 class="anchored" data-anchor-id="implementation-details">Implementation details</h3>
 <p>This is actually really easy to do as <em>sklearn</em> already has a finished <code>TfIdfVectorizer</code> so all we have to do is to replace the <code>CountVectorizer</code>. Let’s see how it goes!</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.svm <span class="im">import</span> LinearSVC</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.svm <span class="im">import</span> LinearSVC</span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> accuracy_score</span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.feature_extraction.text <span class="im">import</span> TfidfVectorizer</span>
 <span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a></span>
@@ -543,7 +549,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a><span class="er">print</span>(\<span class="st">"Accuracy on the IMDB dataset: </span><span class="sc">{:.2f}</span><span class="ch">\"</span><span class="st">.format(acc*100))</span></span>
 <span id="cb9-22"><a href="#cb9-22" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-23"><a href="#cb9-23" aria-hidden="true" tabindex="-1"></a><span class="er"># Extra: Implement our own TfIdfVectorizer.</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb9-23"><a href="#cb9-23" aria-hidden="true" tabindex="-1"></a><span class="er"># Extra: Implement our own TfIdfVectorizer.</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
 <section id="conclusion-of-tf-idf" class="level3">
 <h3 class="anchored" data-anchor-id="conclusion-of-tf-idf">Conclusion of TF-IDF</h3>
@@ -556,10 +562,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h3 class="anchored" data-anchor-id="use-of-context">Use of context</h3>
 <p>Words by themself prove some meaning but sometimes they’re used in a negated sense, e.g.&nbsp;<em>not good</em>. <em>Good</em> in itself would most likely be positive but if we can get the context around the word we can be more sure about in what manner it is applied.</p>
 <p>We call this <em>N-grams</em> where N is equal to the amount of words taken into consideration for each word. Using bigrams (N=2) we get the following:</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>companies often use corporate bs <span class="op">=&gt;</span> [companies, often, use, slogans, (companies, often), (often,use), (use,slogans)]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>companies often use corporate bs <span class="op">=&gt;</span> [companies, often, use, slogans, (companies, often), (often,use), (use,slogans)]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Sometimes you include a start &amp; ending word so that it would be <code>(\\t, companies)</code> and <code>(slogans, \\r)</code> or such. In this case as we are not finetuning we won’t go into that. We’ll keep it simple.</p>
 <p>The all-mighty sklearn <code>TfIdfVectorizer</code> actually already have included N-gram support using the parameter <code>ngram_range=(1, N)</code>. So let’s make it simple for us and make use of that!</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.svm <span class="im">import</span> LinearSVC</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.svm <span class="im">import</span> LinearSVC</span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> accuracy_score</span>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.feature_extraction.text <span class="im">import</span> TfidfVectorizer</span>
 <span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a></span>
@@ -580,7 +586,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb11-19"><a href="#cb11-19" aria-hidden="true" tabindex="-1"></a><span class="co"># Evaluation</span></span>
 <span id="cb11-20"><a href="#cb11-20" aria-hidden="true" tabindex="-1"></a>acc <span class="op">=</span> accuracy_score(test_data[\<span class="st">"sentiment</span><span class="ch">\"</span><span class="st">], y_pred)</span></span>
 <span id="cb11-21"><a href="#cb11-21" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-22"><a href="#cb11-22" aria-hidden="true" tabindex="-1"></a><span class="er">print</span>(\<span class="st">"Accuracy on the IMDB dataset: </span><span class="sc">{:.2f}</span><span class="ch">\"</span><span class="st">.format(acc*100))</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb11-22"><a href="#cb11-22" aria-hidden="true" tabindex="-1"></a><span class="er">print</span>(\<span class="st">"Accuracy on the IMDB dataset: </span><span class="sc">{:.2f}</span><span class="ch">\"</span><span class="st">.format(acc*100))</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
 <section id="conclusion-of-n-gram" class="level3">
 <h3 class="anchored" data-anchor-id="conclusion-of-n-gram">Conclusion of N-gram</h3>
@@ -591,7 +597,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li>Play around with the <code>ngram_range</code> (don’t forget a threshold if you do this)</li>
 <li>Improve the preprocessing</li>
 </ul>
-<div class="sourceCode" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Try some fun things here if you want too :)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Try some fun things here if you want too :)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
 </section>
 <section id="conclusion-of-phase-1" class="level2">
@@ -620,7 +626,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h3 class="anchored" data-anchor-id="word-embeddings-1">Word Embeddings</h3>
 <p>Word Embeddings (WE) are actually a type of Neural Network. It uses <em>embedding</em> to create the model. I quickly explained WE during my presentation on Summarization and how to build a great summarizer. Today we’ll go a little more into depth.</p>
 <p>To begin with I’ll take the most common example, WE lets us do the following arithmetiric with words:</p>
-<div class="sourceCode" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>King <span class="op">-</span> Man <span class="op">+</span> Woman <span class="op">=</span> Queen</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>King <span class="op">-</span> Man <span class="op">+</span> Woman <span class="op">=</span> Queen</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>This is, in my opinion, completely amazing and fascinating. How does this work? Where do I learn more? Those are my first thoughts. In fact the theory is pretty basic until you get to the nittygritty details, as with most things.</p>
 <p>WE is built on the concept ot learn how words are related to eachother. What company do a word have? To make the example more complex we can redefine this too the following: <code>A is to B what C is to D</code>.</p>
 <p>Currently there is three "big" models that are widely used. The first one Word2Vec (<a href="https://arxiv.org/abs/1301.3781">Mikolov et al 2013</a>), the second is GloVe (MIT <a href="https://nlp.stanford.edu/projects/glove/">MIT</a>, <a href="https://nlp.stanford.edu/pubs/glove.pdf">Pennington et al 2014</a>) and the final one is fastText (<a href="https://github.com/facebookresearch/fastText">facebook</a>).</p>
@@ -731,13 +737,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       e.clearSelection();
     }
     const getTextToCopy = function(trigger) {
-        const codeEl = trigger.previousElementSibling.cloneNode(true);
-        for (const childEl of codeEl.children) {
-          if (isCodeAnnotation(childEl)) {
-            childEl.remove();
-          }
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
         }
-        return codeEl.innerText;
+      }
+      return codeEl.innerText;
     }
     const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
       text: getTextToCopy

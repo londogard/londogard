@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.7.34">
+<meta name="generator" content="quarto-1.8.25">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -71,14 +71,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../favicon.ico" rel="icon">
 <script src="../site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/axe/axe-check.js" type="module"></script>
 <script src="../site_libs/quarto-html/popper.min.js"></script>
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-9582434199d49cc9e91654cdeeb4866b.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-065a5179aebd64318d7ea99d77b64a9e.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-969ddfa49e00a70eb3423444dbc81f6c.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-065a5179aebd64318d7ea99d77b64a9e.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-8ab00b4506aff93bb9d672c7d73166bb.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-7d3a565c23c4d3b0e7c030e96a8964f3.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark-7d3a565c23c4d3b0e7c030e96a8964f3.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-7d3a565c23c4d3b0e7c030e96a8964f3.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -123,7 +128,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
     <a href="../index.html" class="navbar-brand navbar-brand-logo">
-    <img src="../favicon.ico" alt="" class="navbar-logo">
+    <img src="../favicon.ico" alt="" class="navbar-logo light-content">
+    <img src="../favicon.ico" alt="" class="navbar-logo dark-content">
     </a>
     <a class="navbar-brand" href="../index.html">
     <span class="navbar-title">Londogard Blog</span>
@@ -295,43 +301,43 @@ With this we got a responsive email using their "homemade" templating language. 
 <section id="step-1-defining-the-format" class="level3">
 <h3 class="anchored" data-anchor-id="step-1-defining-the-format">Step 1: Defining the format</h3>
 <p>The first step was to decide what format to use, or at least begin with. Both yaml and JSON was considered and in the end JSON felt like the best fit.</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode json code-with-copy"><code class="sourceCode json"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode json code-with-copy"><code class="sourceCode json"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  <span class="er">\</span><span class="dt">"title</span><span class="ch">\"</span><span class="dt">: string,</span></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="dt">  </span><span class="ch">\"</span><span class="dt">issue</span><span class="ch">\"</span><span class="dt">: number,</span></span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="dt">  </span><span class="ch">\"</span><span class="dt">regional</span><span class="ch">\"</span><span class="dt">: [item],</span></span>
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="dt">  .. more categories</span></span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="dt">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="dt">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>where <code>item</code> is</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode json code-with-copy"><code class="sourceCode json"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode json code-with-copy"><code class="sourceCode json"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="er">\</span><span class="dt">"title</span><span class="ch">\"</span><span class="dt">: string,</span></span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="dt">  </span><span class="ch">\"</span><span class="dt">description</span><span class="ch">\"</span><span class="dt">: string,</span></span>
 <span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="dt">  </span><span class="ch">\"</span><span class="dt">url</span><span class="ch">\"</span><span class="dt">: string</span></span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="dt">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="dt">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Pretty straight-forward, as I said I prefer to keep it simple.</p>
 </section>
 <section id="step-2-reading-the-data" class="level3">
 <h3 class="anchored" data-anchor-id="step-2-reading-the-data">Step 2: Reading the data</h3>
 <p>Now that we have a definition of the data we need to read it, this is really a solved problem in most languages through some kind of library. In my case I choose the serialization library provided by Kotlin in the <code>kotlinx</code>-library. As a FYI this library can serialize using CBOR (Concise Binary Object Representation) and other formats. The name of the library is <code>kotlinx-serialization</code> and can be found <a href="https://github.com/Kotlin/kotlinx.serialization">here</a>. It’s easiest installed through <code>gradle</code> (using the Kotlin DSL):</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode kotlin code-with-copy"><code class="sourceCode kotlin"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>plugins <span class="op">{</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode kotlin code-with-copy"><code class="sourceCode kotlin"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>plugins <span class="op">{</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  kotlin<span class="op">(</span>\<span class="st">"plugin.serialization</span><span class="sc">\"</span><span class="st">) version </span><span class="sc">\"</span><span class="st">1.3.70</span><span class="sc">\"</span><span class="st"> // same version as kotlin</span></span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
 <span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>dependencies <span class="op">{</span></span>
 <span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>  <span class="op">..</span> other dependencies</span>
 <span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>  implementation<span class="op">(</span>\<span class="st">"org.jetbrains.kotlinx:kotlinx-serialization-runtime:0.20.0</span><span class="sc">\"</span><span class="st">) // Requires jcenter() as a repository</span></span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p><code>kotlinx-serialization</code> is actually cross-platform compatible meaning that it exists for Kotlin targeting JVM, Native &amp; JS (yes we can target all these platforms through Kotlin!).</p>
 <p>Once installed it’s pretty easy to serialize &amp; deserialize, like any other library really. Create the <code>data class</code>es, which is the equivalent of a <code>case class</code> in Scala.</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode kotlin code-with-copy"><code class="sourceCode kotlin"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">data</span> <span class="kw">class</span> Item<span class="op">(</span><span class="kw">val</span> <span class="va">title</span><span class="op">:</span> <span class="dt">String</span><span class="op">,</span> <span class="kw">val</span> <span class="va">description</span><span class="op">:</span> <span class="dt">String</span><span class="op">,</span> <span class="kw">val</span> <span class="va">url</span><span class="op">:</span> <span class="dt">String</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode kotlin code-with-copy"><code class="sourceCode kotlin"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">data</span> <span class="kw">class</span> Item<span class="op">(</span><span class="kw">val</span> <span class="va">title</span><span class="op">:</span> <span class="dt">String</span><span class="op">,</span> <span class="kw">val</span> <span class="va">description</span><span class="op">:</span> <span class="dt">String</span><span class="op">,</span> <span class="kw">val</span> <span class="va">url</span><span class="op">:</span> <span class="dt">String</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Currently <code>kotlinx-serialization</code> can do the serialization through two different methods, either add an annotation to the class that we’ll use Reflection - this does not work for native. Or we mark the <code>data class</code> as Serializable, the latter being preferred as it’s truly cross-platform and is more performant. If anyone is wondering a <code>data class</code> is basically a class that provides setters, getters, equality, toString and more! It’s really awesome. Adding the annotation we end up with the following:</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode kotlin code-with-copy"><code class="sourceCode kotlin"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="at">@Serializable</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="kw">data</span> <span class="kw">class</span> Item<span class="op">(</span><span class="kw">val</span> <span class="va">title</span><span class="op">:</span> <span class="dt">String</span><span class="op">,</span> <span class="kw">val</span> <span class="va">description</span><span class="op">:</span> <span class="dt">String</span><span class="op">,</span> <span class="kw">val</span> <span class="va">url</span><span class="op">:</span> <span class="dt">String</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode kotlin code-with-copy"><code class="sourceCode kotlin"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="at">@Serializable</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="kw">data</span> <span class="kw">class</span> Item<span class="op">(</span><span class="kw">val</span> <span class="va">title</span><span class="op">:</span> <span class="dt">String</span><span class="op">,</span> <span class="kw">val</span> <span class="va">description</span><span class="op">:</span> <span class="dt">String</span><span class="op">,</span> <span class="kw">val</span> <span class="va">url</span><span class="op">:</span> <span class="dt">String</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
 <section id="step-3-how-to-write-html-in-kotlin" class="level3">
 <h3 class="anchored" data-anchor-id="step-3-how-to-write-html-in-kotlin">Step 3: How to write html in Kotlin?</h3>
 <p>We all probably know about html-templating that’s available in most languages, I decided against that and went for a DSL. Kotlin is the language for DSL (Domain Specific Language), for good and bad. Through yet another <code>kotlinx</code> library we got <code>kotlinx-html</code> which provides this DSL.</p>
 <p>It looks something like this</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode kotlin code-with-copy"><code class="sourceCode kotlin"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="kw">fun</span> <span class="fu">BODY</span><span class="op">.</span><span class="fu">createFooter</span><span class="op">()</span> <span class="op">=</span> footer <span class="op">{</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode kotlin code-with-copy"><code class="sourceCode kotlin"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="kw">fun</span> <span class="fu">BODY</span><span class="op">.</span><span class="fu">createFooter</span><span class="op">()</span> <span class="op">=</span> footer <span class="op">{</span></span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>    hr <span class="op">{</span> <span class="op">}</span></span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>    section <span class="op">{</span></span>
 <span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>        p <span class="op">{</span></span>
@@ -340,7 +346,7 @@ With this we got a responsive email using their "homemade" templating language. 
 <span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>            <span class="op">+</span>\<span class="st">"Hampus &amp; Hassan</span><span class="sc">\"</span></span>
 <span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span></span>
 <span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
-<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>By using a DSL we get types (as you can see on the <code>BODY</code>) and other bonuses. Although this DSL is pretty verbose it works pretty good. In the end using a DSL or html-template engine does not matter that much in my opinion. By the way, the way this function is typed is called a <code>extension function</code> in Kotlin and is one of my favorite tools. It means that we extend the class, <code>BODY</code> with a new method which is usable on a object of the class. Cool right?</p>
 <p>Let’s move on to the styling and how CSS can be annoying.</p>
 </section>
@@ -427,13 +433,14 @@ With this we got a responsive email using their "homemade" templating language. 
       e.clearSelection();
     }
     const getTextToCopy = function(trigger) {
-        const codeEl = trigger.previousElementSibling.cloneNode(true);
-        for (const childEl of codeEl.children) {
-          if (isCodeAnnotation(childEl)) {
-            childEl.remove();
-          }
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
         }
-        return codeEl.innerText;
+      }
+      return codeEl.innerText;
     }
     const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
       text: getTextToCopy

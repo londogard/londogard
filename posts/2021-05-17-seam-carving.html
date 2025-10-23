@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.7.34">
+<meta name="generator" content="quarto-1.8.25">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -71,14 +71,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../favicon.ico" rel="icon">
 <script src="../site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/axe/axe-check.js" type="module"></script>
 <script src="../site_libs/quarto-html/popper.min.js"></script>
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-9582434199d49cc9e91654cdeeb4866b.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-065a5179aebd64318d7ea99d77b64a9e.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-969ddfa49e00a70eb3423444dbc81f6c.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-065a5179aebd64318d7ea99d77b64a9e.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-8ab00b4506aff93bb9d672c7d73166bb.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-7d3a565c23c4d3b0e7c030e96a8964f3.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark-7d3a565c23c4d3b0e7c030e96a8964f3.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-7d3a565c23c4d3b0e7c030e96a8964f3.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -121,7 +126,7 @@ const typesetMath = (el) => {
     var macros = [];
     for (var i = 0; i < mathElements.length; i++) {
       var texText = mathElements[i].firstChild;
-      if (mathElements[i].tagName == "SPAN") {
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
         window.katex.render(texText.data, mathElements[i], {
           displayMode: mathElements[i].classList.contains('display'),
           throwOnError: false,
@@ -152,7 +157,8 @@ window.Quarto = {
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
     <a href="../index.html" class="navbar-brand navbar-brand-logo">
-    <img src="../favicon.ico" alt="" class="navbar-logo">
+    <img src="../favicon.ico" alt="" class="navbar-logo light-content">
+    <img src="../favicon.ico" alt="" class="navbar-logo dark-content">
     </a>
     <a class="navbar-brand" href="../index.html">
     <span class="navbar-title">Londogard Blog</span>
@@ -294,10 +300,10 @@ window.Quarto = {
 <p>This is from a presentation I did last week (12th of May 2021). Notebook just under the slides!<br>
 Please note that this requires the Kotlin kernel to run as it’s Kotlin and <strong>not Python</strong>. <!--truncate--></p>
 <embed src="../assets/Seam_Carving.pdf" width="100%" height="400px" type="application/pdf">
-<div class="sourceCode" id="cb1"><pre class="sourceCode kotlin code-with-copy"><code class="sourceCode kotlin"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="at">@file</span><span class="op">:</span><span class="at">DependsOn</span><span class="op">(</span><span class="st">"org.boofcv:boofcv-core:0.37"</span><span class="op">)</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode kotlin code-with-copy"><code class="sourceCode kotlin"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="at">@file</span><span class="op">:</span><span class="at">DependsOn</span><span class="op">(</span><span class="st">"org.boofcv:boofcv-core:0.37"</span><span class="op">)</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="at">@file</span><span class="op">:</span><span class="at">DependsOn</span><span class="op">(</span><span class="st">"org.boofcv:boofcv-kotlin:0.37"</span><span class="op">)</span></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="op">%</span>use lib<span class="op">-</span>ext</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="sourceCode" id="cb2"><pre class="sourceCode kotlin code-with-copy"><code class="sourceCode kotlin"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">import</span> <span class="im">boofcv</span><span class="op">.</span><span class="im">abst</span><span class="op">.</span><span class="im">filter</span><span class="op">.</span><span class="im">derivative</span><span class="op">.</span><span class="im">ImageGradient_SB</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="op">%</span>use lib<span class="op">-</span>ext</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode kotlin code-with-copy"><code class="sourceCode kotlin"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">import</span> <span class="im">boofcv</span><span class="op">.</span><span class="im">abst</span><span class="op">.</span><span class="im">filter</span><span class="op">.</span><span class="im">derivative</span><span class="op">.</span><span class="im">ImageGradient_SB</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="kw">import</span> <span class="im">boofcv</span><span class="op">.</span><span class="im">kotlin</span><span class="op">.*</span></span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="kw">import</span> <span class="im">boofcv</span><span class="op">.</span><span class="im">alg</span><span class="op">.</span><span class="im">feature</span><span class="op">.</span><span class="im">detect</span><span class="op">.</span><span class="im">edge</span><span class="op">.</span><span class="im">GGradientToEdgeFeatures</span></span>
 <span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="kw">import</span> <span class="im">boofcv</span><span class="op">.</span><span class="im">factory</span><span class="op">.</span><span class="im">feature</span><span class="op">.</span><span class="im">detect</span><span class="op">.</span><span class="im">edge</span><span class="op">.</span><span class="im">FactoryEdgeDetectors</span></span>
@@ -307,8 +313,8 @@ Please note that this requires the Kotlin kernel to run as it’s Kotlin and <st
 <span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="kw">import</span> <span class="im">java</span><span class="op">.</span><span class="im">io</span><span class="op">.*</span></span>
 <span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="kw">import</span> <span class="im">javax</span><span class="op">.</span><span class="im">imageio</span><span class="op">.</span><span class="im">ImageIO</span></span>
 <span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="kw">import</span> <span class="im">java</span><span class="op">.</span><span class="im">nio</span><span class="op">.</span><span class="im">file</span><span class="op">.*</span></span>
-<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="kw">import</span> <span class="im">java</span><span class="op">.</span><span class="im">awt</span><span class="op">.</span><span class="im">image</span><span class="op">.</span><span class="im">BufferedImage</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="sourceCode" id="cb3"><pre class="sourceCode kotlin code-with-copy"><code class="sourceCode kotlin"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">val</span> <span class="va">sobel</span><span class="op">:</span> ImageGradient_SB<span class="op">.</span>Sobel<span class="op">&lt;</span>GrayF32<span class="op">,</span> GrayF32<span class="op">&gt;</span> <span class="kw">by</span> lazy <span class="op">{</span></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="kw">import</span> <span class="im">java</span><span class="op">.</span><span class="im">awt</span><span class="op">.</span><span class="im">image</span><span class="op">.</span><span class="im">BufferedImage</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode kotlin code-with-copy"><code class="sourceCode kotlin"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">val</span> <span class="va">sobel</span><span class="op">:</span> ImageGradient_SB<span class="op">.</span>Sobel<span class="op">&lt;</span>GrayF32<span class="op">,</span> GrayF32<span class="op">&gt;</span> <span class="kw">by</span> lazy <span class="op">{</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>        ImageGradient_SB<span class="op">.</span>Sobel<span class="op">(</span>GrayF32<span class="op">::</span><span class="kw">class</span>.java, GrayF32<span class="op">:</span>:<span class="kw">class</span>.java)</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>}</span>
 <span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a></span>
@@ -332,14 +338,14 @@ Please note that this requires the Kotlin kernel to run as it’s Kotlin and <st
 <span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="op">(</span>sourceIndex <span class="op">!</span><span class="kw">in</span> toRemove<span class="op">)</span> result<span class="op">[</span>targetIndex<span class="op">++]</span> <span class="op">=</span> <span class="kw">this</span><span class="op">[</span>sourceIndex<span class="op">]</span></span>
 <span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
 <span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a>    <span class="kw">return</span> result</span>
-<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <section id="loading-an-image-with-boofcv" class="level2">
 <h2 class="anchored" data-anchor-id="loading-an-image-with-boofcv">Loading an Image with BoofCV</h2>
 <p>Let’s load our first image using BoofCV. It’s simply done using <code>UtilImageIO.loadImage("path/to/file")</code>.<br>
 The conversion to show an image in a notebook is a little awkward.</p>
 <p><strong>But</strong> I talked to Jetbrains through Slack - had a response &amp; patch up within 20 minutes (waiting for the new release right now…) which simplifies this!</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode kotlin code-with-copy"><code class="sourceCode kotlin"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">val</span> <span class="va">img</span> <span class="op">=</span> UtilImageIO<span class="op">.</span>loadImage<span class="op">(</span><span class="st">"dali.jpg"</span><span class="op">)</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>Image<span class="op">(</span>img<span class="op">.</span>toByteArray<span class="op">(</span><span class="st">"jpg"</span><span class="op">),</span> <span class="st">"jpg"</span><span class="op">).</span>withWidth<span class="op">(</span><span class="st">"45%"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode kotlin code-with-copy"><code class="sourceCode kotlin"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">val</span> <span class="va">img</span> <span class="op">=</span> UtilImageIO<span class="op">.</span>loadImage<span class="op">(</span><span class="st">"dali.jpg"</span><span class="op">)</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>Image<span class="op">(</span>img<span class="op">.</span>toByteArray<span class="op">(</span><span class="st">"jpg"</span><span class="op">),</span> <span class="st">"jpg"</span><span class="op">).</span>withWidth<span class="op">(</span><span class="st">"45%"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="https://user-images.githubusercontent.com/7490199/218312158-6930b301-72e3-4d60-b374-91d29689c8b1.png" class="img-fluid figure-img"></p>
@@ -352,28 +358,28 @@ The conversion to show an image in a notebook is a little awkward.</p>
 <p>Sobel is a very simple Edge Detector that runs the gradient in two directions<br>
 <img src="https://homepages.inf.ed.ac.uk/rbf/HIPR2/figs/sobmasks.gif" class="img-fluid" alt="sobel"></p>
 <p><img src="https://user-images.githubusercontent.com/7490199/118540315-c5478f00-b750-11eb-9130-49aa13cacd9e.png" class="img-fluid" alt="image"> <img src="https://user-images.githubusercontent.com/7490199/118540425-ddb7a980-b750-11eb-85c9-cba16b218241.png" class="img-fluid" alt="image"> (18.S191 MIT Fall 2020 | Grant Sanderson) By applying this filter</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode kotlin code-with-copy"><code class="sourceCode kotlin"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">val</span> <span class="va">grayImg</span> <span class="op">=</span> img<span class="op">.</span>asGrayF32<span class="op">()</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>Image<span class="op">(</span>grayImg<span class="op">.</span>asBufferedImage<span class="op">().</span>toByteArray<span class="op">(</span><span class="st">"jpg"</span><span class="op">),</span> <span class="st">"jpg"</span><span class="op">).</span>withWidth<span class="op">(</span><span class="st">"45%"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode kotlin code-with-copy"><code class="sourceCode kotlin"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">val</span> <span class="va">grayImg</span> <span class="op">=</span> img<span class="op">.</span>asGrayF32<span class="op">()</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>Image<span class="op">(</span>grayImg<span class="op">.</span>asBufferedImage<span class="op">().</span>toByteArray<span class="op">(</span><span class="st">"jpg"</span><span class="op">),</span> <span class="st">"jpg"</span><span class="op">).</span>withWidth<span class="op">(</span><span class="st">"45%"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="https://user-images.githubusercontent.com/7490199/218312209-9a4bbd92-dd39-4b2a-ac8f-fd2f084257e2.png" class="img-fluid figure-img"></p>
 <figcaption>S. Dali Painting Gray</figcaption>
 </figure>
 </div>
-<div class="sourceCode" id="cb6"><pre class="sourceCode kotlin code-with-copy"><code class="sourceCode kotlin"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="kw">val</span> <span class="va">grayDY</span> <span class="op">=</span> GrayF32<span class="op">(</span><span class="dv">1</span><span class="op">,</span><span class="dv">1</span><span class="op">)</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode kotlin code-with-copy"><code class="sourceCode kotlin"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="kw">val</span> <span class="va">grayDY</span> <span class="op">=</span> GrayF32<span class="op">(</span><span class="dv">1</span><span class="op">,</span><span class="dv">1</span><span class="op">)</span></span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="kw">val</span> <span class="va">grayDX</span> <span class="op">=</span> GrayF32<span class="op">(</span><span class="dv">1</span><span class="op">,</span><span class="dv">1</span><span class="op">)</span></span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>sobel<span class="op">.</span>process<span class="op">(</span>grayImg<span class="op">,</span> grayDX<span class="op">,</span> grayDY<span class="op">)</span></span>
 <span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>DISPLAY<span class="op">(</span>Image<span class="op">(</span>grayDY<span class="op">.</span>asBufferedImage<span class="op">().</span>toByteArray<span class="op">(</span><span class="st">"jpg"</span><span class="op">),</span> <span class="st">"jpg"</span><span class="op">).</span>withWidth<span class="op">(</span><span class="dv">500</span><span class="op">))</span></span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>Image<span class="op">(</span>grayDX<span class="op">.</span>asBufferedImage<span class="op">().</span>toByteArray<span class="op">(</span><span class="st">"jpg"</span><span class="op">),</span> <span class="st">"jpg"</span><span class="op">).</span>withWidth<span class="op">(</span><span class="dv">500</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>Image<span class="op">(</span>grayDX<span class="op">.</span>asBufferedImage<span class="op">().</span>toByteArray<span class="op">(</span><span class="st">"jpg"</span><span class="op">),</span> <span class="st">"jpg"</span><span class="op">).</span>withWidth<span class="op">(</span><span class="dv">500</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p><img src="https://user-images.githubusercontent.com/7490199/218312358-335dfd80-56c2-497b-8210-73ef4eeacdbd.png" class="img-fluid" alt="Edges Up &amp; Down (dY)"> <img src="https://user-images.githubusercontent.com/7490199/218312465-8b015060-ae41-4706-b725-e0bfb9293f22.png" class="img-fluid" alt="Edges Left &amp; Right (dX)"></p>
 <p>Now we need to combine these two into one image, that’s done by taking the intensity, e.g.</p>
 <p><span class="math inline">\(\sqrt{D_x^2 + D_y^2}\)</span></p>
 <p>Also called <code>l2-norm</code>, <code>euclidean-norm</code> or <code>square-norm</code>.</p>
 <p>Where <span class="math inline">\(D_x\)</span> is the gradient in X direction (applying sobel-filter).</p>
 <p>Luckily this exists in BoofCV (and most libraries), in the way of <code>GGradientToEdgeFeatures.intensityE(grayDX, grayDY, intensity)</code></p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode kotlin code-with-copy"><code class="sourceCode kotlin"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">val</span> <span class="va">intensity</span> <span class="op">=</span> GrayF32<span class="op">(</span><span class="dv">1</span><span class="op">,</span><span class="dv">1</span><span class="op">)</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode kotlin code-with-copy"><code class="sourceCode kotlin"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">val</span> <span class="va">intensity</span> <span class="op">=</span> GrayF32<span class="op">(</span><span class="dv">1</span><span class="op">,</span><span class="dv">1</span><span class="op">)</span></span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>GGradientToEdgeFeatures<span class="op">.</span>intensityE<span class="op">(</span>grayDX<span class="op">,</span> grayDY<span class="op">,</span> intensity<span class="op">)</span></span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>Image<span class="op">(</span>intensity<span class="op">.</span>asBufferedImage<span class="op">().</span>toByteArray<span class="op">(</span><span class="st">"jpg"</span><span class="op">),</span> <span class="st">"jpg"</span><span class="op">).</span>withWidth<span class="op">(</span><span class="st">"75%"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>Image<span class="op">(</span>intensity<span class="op">.</span>asBufferedImage<span class="op">().</span>toByteArray<span class="op">(</span><span class="st">"jpg"</span><span class="op">),</span> <span class="st">"jpg"</span><span class="op">).</span>withWidth<span class="op">(</span><span class="st">"75%"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="https://user-images.githubusercontent.com/7490199/218312648-b444c095-d214-42b5-b4ad-9b77c202f86c.png" class="img-fluid figure-img"></p>
@@ -385,7 +391,7 @@ It is this graph we’ll use to traverse later, to find the cheapest path.</p>
 <p>So how would we do this?<br>
 Trying all paths would prove expensive, but if we traverse the reverse we can speed things up by being clever.</p>
 <p>Let’s take a look at how a <strong>subimage</strong> of the image looks.</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode kotlin code-with-copy"><code class="sourceCode kotlin"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>intensity<span class="op">.</span>subimage<span class="op">(</span><span class="dv">10</span><span class="op">,</span><span class="dv">10</span><span class="op">,</span><span class="dv">20</span><span class="op">,</span><span class="dv">20</span><span class="op">).</span>printInt<span class="op">()</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode kotlin code-with-copy"><code class="sourceCode kotlin"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>intensity<span class="op">.</span>subimage<span class="op">(</span><span class="dv">10</span><span class="op">,</span><span class="dv">10</span><span class="op">,</span><span class="dv">20</span><span class="op">,</span><span class="dv">20</span><span class="op">).</span>printInt<span class="op">()</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <pre><code>  5   9   2   7   6   6   4   4   5   6 
   3   7   4   7   4   3   3   7   3   5 
   9   7   5   6   6   1   5   5   3   6 
@@ -398,7 +404,7 @@ Trying all paths would prove expensive, but if we traverse the reverse we can sp
   4   7   3   3   4   5   6   7   7  10 </code></pre>
 <p>And now we’ll take a look at how this traversal works. These screens are taken from (18.S191 MIT Fall 2020 | Grant Sanderson) which is really good by the way.</p>
 <p><img src="https://user-images.githubusercontent.com/7490199/118539877-3fc3df00-b750-11eb-881a-49613e6e72bd.png" class="img-fluid" alt="image"> <img src="https://user-images.githubusercontent.com/7490199/118539905-46525680-b750-11eb-8481-d7150e2890ec.png" class="img-fluid" alt="image"> <img src="https://user-images.githubusercontent.com/7490199/118539926-4d796480-b750-11eb-93a6-c126a51891dc.png" class="img-fluid" alt="image"> <img src="https://user-images.githubusercontent.com/7490199/118539935-536f4580-b750-11eb-9306-e30ac5226b21.png" class="img-fluid" alt="image"> <img src="https://user-images.githubusercontent.com/7490199/118539952-5a965380-b750-11eb-9852-d103b2e1f0a2.png" class="img-fluid" alt="image"></p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode kotlin code-with-copy"><code class="sourceCode kotlin"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="kw">val</span> <span class="va">tmp</span> <span class="op">=</span> intensity<span class="op">.</span>clone<span class="op">()</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode kotlin code-with-copy"><code class="sourceCode kotlin"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="kw">val</span> <span class="va">tmp</span> <span class="op">=</span> intensity<span class="op">.</span>clone<span class="op">()</span></span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="kw">val</span> <span class="va">width</span> <span class="op">=</span> tmp<span class="op">.</span>width</span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="kw">val</span> <span class="va">height</span> <span class="op">=</span> tmp<span class="op">.</span>height</span>
 <span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a></span>
@@ -411,8 +417,8 @@ Trying all paths would prove expensive, but if we traverse the reverse we can sp
 <span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
 <span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a><span class="kw">val</span> <span class="va">max</span> <span class="op">=</span> <span class="op">(</span>tmp<span class="op">.</span><span class="kw">data</span><span class="op">.</span>maxOrNull<span class="op">()</span> <span class="op">?:</span> <span class="fl">0f</span><span class="op">)</span> <span class="op">/</span> <span class="fl">255f</span></span>
-<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a>tmp<span class="op">.</span><span class="kw">data</span><span class="op">.</span>forEachIndexed <span class="op">{</span> i<span class="op">,</span> _ <span class="op">-&gt;</span> tmp<span class="op">.</span><span class="kw">data</span><span class="op">[</span>i<span class="op">]</span> <span class="op">/=</span> max <span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="sourceCode" id="cb11"><pre class="sourceCode kotlin code-with-copy"><code class="sourceCode kotlin"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>Image<span class="op">(</span>tmp<span class="op">.</span>asBufferedImage<span class="op">().</span>toByteArray<span class="op">(</span><span class="st">"jpg"</span><span class="op">),</span> <span class="st">"jpg"</span><span class="op">).</span>withWidth<span class="op">(</span><span class="st">"50%"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a>tmp<span class="op">.</span><span class="kw">data</span><span class="op">.</span>forEachIndexed <span class="op">{</span> i<span class="op">,</span> _ <span class="op">-&gt;</span> tmp<span class="op">.</span><span class="kw">data</span><span class="op">[</span>i<span class="op">]</span> <span class="op">/=</span> max <span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="sourceCode kotlin code-with-copy"><code class="sourceCode kotlin"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>Image<span class="op">(</span>tmp<span class="op">.</span>asBufferedImage<span class="op">().</span>toByteArray<span class="op">(</span><span class="st">"jpg"</span><span class="op">),</span> <span class="st">"jpg"</span><span class="op">).</span>withWidth<span class="op">(</span><span class="st">"50%"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="https://user-images.githubusercontent.com/7490199/218312759-b6cd8a29-f1ed-4471-a440-f04c70031d44.png" class="img-fluid figure-img"></p>
@@ -421,7 +427,7 @@ Trying all paths would prove expensive, but if we traverse the reverse we can sp
 </div>
 <p>Through this image we can find the cheapest path by traversing the darkest path, where white is “expensive”.</p>
 <p>This is simply done by taking the cheapest value at each row, forming a line. We’ve precalculated the whole matrix making this a walk in the park.</p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode kotlin code-with-copy"><code class="sourceCode kotlin"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="kw">var</span> <span class="va">previousX</span> <span class="op">=</span> <span class="dv">0</span> <span class="co">//int[]</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="sourceCode kotlin code-with-copy"><code class="sourceCode kotlin"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="kw">var</span> <span class="va">previousX</span> <span class="op">=</span> <span class="dv">0</span> <span class="co">//int[]</span></span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="kw">val</span> <span class="va">cheapestPath</span> <span class="op">=</span> IntArray<span class="op">(</span>height<span class="op">)</span> <span class="op">{</span> y <span class="op">-&gt;</span></span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>    <span class="kw">val</span> <span class="va">range</span> <span class="op">=</span> <span class="cf">when</span><span class="op">(</span>y<span class="op">)</span> <span class="op">{</span></span>
 <span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>        <span class="dv">0</span> <span class="op">-&gt;</span> <span class="dv">0</span> until width</span>
@@ -431,18 +437,18 @@ Trying all paths would prove expensive, but if we traverse the reverse we can sp
 <span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>    </span>
 <span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>    previousX <span class="op">+</span> <span class="op">(</span>y <span class="op">*</span> width<span class="op">)</span></span>
 <span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
-<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>cheapestPath<span class="op">.</span>take<span class="op">(</span><span class="dv">10</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>cheapestPath<span class="op">.</span>take<span class="op">(</span><span class="dv">10</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <pre><code>[1022, 2222, 3421, 4621, 5821, 7022, 8223, 9422, 10622, 11821]</code></pre>
-<div class="sourceCode" id="cb14"><pre class="sourceCode kotlin code-with-copy"><code class="sourceCode kotlin"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="kw">val</span> <span class="va">WHITE</span> <span class="op">=</span> <span class="fl">255f</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14"><pre class="sourceCode kotlin code-with-copy"><code class="sourceCode kotlin"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="kw">val</span> <span class="va">WHITE</span> <span class="op">=</span> <span class="fl">255f</span></span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>cheapestPath<span class="op">.</span>forEach <span class="op">{</span> i <span class="op">-&gt;</span> grayImg<span class="op">.</span><span class="kw">data</span><span class="op">[</span>i<span class="op">]</span> <span class="op">=</span> WHITE <span class="op">}</span></span>
-<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>Image<span class="op">(</span>grayImg<span class="op">.</span>asBufferedImage<span class="op">().</span>toByteArray<span class="op">(</span><span class="st">"jpg"</span><span class="op">),</span> <span class="st">"jpg"</span><span class="op">).</span>withWidth<span class="op">(</span><span class="st">"75%"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>Image<span class="op">(</span>grayImg<span class="op">.</span>asBufferedImage<span class="op">().</span>toByteArray<span class="op">(</span><span class="st">"jpg"</span><span class="op">),</span> <span class="st">"jpg"</span><span class="op">).</span>withWidth<span class="op">(</span><span class="st">"75%"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="https://user-images.githubusercontent.com/7490199/218313375-eab8f208-e552-435c-988a-a60015d2f141.png" class="img-fluid figure-img"></p>
 <figcaption>The Best Seam to Remove</figcaption>
 </figure>
 </div>
-<div class="sourceCode" id="cb15"><pre class="sourceCode kotlin code-with-copy"><code class="sourceCode kotlin"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="kw">fun</span> <span class="fu">cheapestPath</span><span class="op">(</span><span class="va">image</span><span class="op">:</span> <span class="dt">GrayF32</span><span class="op">):</span> <span class="dt">Set</span><span class="op">&lt;</span><span class="dt">Int</span><span class="op">&gt;</span> <span class="op">{</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb15"><pre class="sourceCode kotlin code-with-copy"><code class="sourceCode kotlin"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="kw">fun</span> <span class="fu">cheapestPath</span><span class="op">(</span><span class="va">image</span><span class="op">:</span> <span class="dt">GrayF32</span><span class="op">):</span> <span class="dt">Set</span><span class="op">&lt;</span><span class="dt">Int</span><span class="op">&gt;</span> <span class="op">{</span></span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>        <span class="kw">val</span> <span class="va">widthRange</span> <span class="op">=</span> <span class="dv">0</span> until image<span class="op">.</span>width</span>
 <span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> <span class="op">(</span>y <span class="kw">in</span> image<span class="op">.</span>height <span class="op">-</span> <span class="dv">2</span> downTo <span class="dv">0</span><span class="op">)</span> <span class="op">{</span></span>
 <span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>            <span class="cf">for</span> <span class="op">(</span>x <span class="kw">in</span> widthRange<span class="op">)</span> <span class="op">{</span></span>
@@ -472,8 +478,8 @@ Trying all paths would prove expensive, but if we traverse the reverse we can sp
 <span id="cb15-28"><a href="#cb15-28" aria-hidden="true" tabindex="-1"></a>        sobel<span class="op">.</span>process<span class="op">(</span>img<span class="op">,</span> grayDX<span class="op">,</span> grayDY<span class="op">)</span></span>
 <span id="cb15-29"><a href="#cb15-29" aria-hidden="true" tabindex="-1"></a>        GGradientToEdgeFeatures<span class="op">.</span>intensityE<span class="op">(</span>grayDX<span class="op">,</span> grayDY<span class="op">,</span> intensity<span class="op">)</span></span>
 <span id="cb15-30"><a href="#cb15-30" aria-hidden="true" tabindex="-1"></a>        <span class="kw">return</span> cheapestPath<span class="op">(</span>intensity<span class="op">)</span></span>
-<span id="cb15-31"><a href="#cb15-31" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="sourceCode" id="cb16"><pre class="sourceCode kotlin code-with-copy"><code class="sourceCode kotlin"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="kw">val</span> <span class="va">grayImg</span> <span class="op">=</span> img<span class="op">.</span>asGrayF32<span class="op">()</span></span>
+<span id="cb15-31"><a href="#cb15-31" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb16"><pre class="sourceCode kotlin code-with-copy"><code class="sourceCode kotlin"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="kw">val</span> <span class="va">grayImg</span> <span class="op">=</span> img<span class="op">.</span>asGrayF32<span class="op">()</span></span>
 <span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="op">(</span><span class="fl">0..200</span><span class="op">).</span>forEach <span class="op">{</span> i <span class="op">-&gt;</span></span>
 <span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>    <span class="kw">val</span> <span class="va">indices</span> <span class="op">=</span> seamCarve<span class="op">(</span>grayImg<span class="op">)</span></span>
 <span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>    </span>
@@ -485,9 +491,9 @@ Trying all paths would prove expensive, but if we traverse the reverse we can sp
 <span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a>        setData<span class="op">(</span>grayImg<span class="op">.</span><span class="kw">data</span><span class="op">.</span>removeIndices<span class="op">(</span>indices<span class="op">))</span></span>
 <span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a>        reshape<span class="op">(</span>width <span class="op">-</span> <span class="dv">1</span><span class="op">,</span> height<span class="op">)</span></span>
 <span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
-<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="sourceCode" id="cb17"><pre class="sourceCode kotlin code-with-copy"><code class="sourceCode kotlin"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>DISPLAY<span class="op">(</span>Image<span class="op">(</span><span class="st">"step_0.jpg"</span><span class="op">))</span></span>
-<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>Image<span class="op">(</span><span class="st">"step_200.jpg"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb17"><pre class="sourceCode kotlin code-with-copy"><code class="sourceCode kotlin"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>DISPLAY<span class="op">(</span>Image<span class="op">(</span><span class="st">"step_0.jpg"</span><span class="op">))</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>Image<span class="op">(</span><span class="st">"step_200.jpg"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p><img src="https://user-images.githubusercontent.com/7490199/118542607-836c1800-b753-11eb-8677-b98ad12ba069.png" class="img-fluid" alt="image"> <img src="https://user-images.githubusercontent.com/7490199/118542621-89fa8f80-b753-11eb-98ee-274b0ea03c7c.png" class="img-fluid" alt="image"></p>
 
 
@@ -545,13 +551,14 @@ Trying all paths would prove expensive, but if we traverse the reverse we can sp
       e.clearSelection();
     }
     const getTextToCopy = function(trigger) {
-        const codeEl = trigger.previousElementSibling.cloneNode(true);
-        for (const childEl of codeEl.children) {
-          if (isCodeAnnotation(childEl)) {
-            childEl.remove();
-          }
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
         }
-        return codeEl.innerText;
+      }
+      return codeEl.innerText;
     }
     const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
       text: getTextToCopy

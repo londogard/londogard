@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.7.34">
+<meta name="generator" content="quarto-1.8.25">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -61,7 +61,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </style>
 
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script><script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js" integrity="sha384-ZvpUoO/+PpLXR1lu4jmpXWu80pZlYUAfxl5NsBMWOEPSjUn/6Z/hRTt8+pR6L4N2" crossorigin="anonymous"></script><script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
 <script src="../../site_libs/quarto-nav/headroom.min.js"></script>
 <script src="../../site_libs/clipboard/clipboard.min.js"></script>
 <script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
@@ -71,14 +71,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../../favicon.ico" rel="icon">
 <script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../site_libs/quarto-html/axe/axe-check.js" type="module"></script>
 <script src="../../site_libs/quarto-html/popper.min.js"></script>
 <script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-9582434199d49cc9e91654cdeeb4866b.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-065a5179aebd64318d7ea99d77b64a9e.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark-969ddfa49e00a70eb3423444dbc81f6c.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-065a5179aebd64318d7ea99d77b64a9e.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-8ab00b4506aff93bb9d672c7d73166bb.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-7d3a565c23c4d3b0e7c030e96a8964f3.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-dark-7d3a565c23c4d3b0e7c030e96a8964f3.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-7d3a565c23c4d3b0e7c030e96a8964f3.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -106,7 +111,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-label": "Search"
   }
 }</script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" integrity="sha512-c3Nl8+7g4LMSTdrm621y7kf9v3SDPnhxLNhcjFJbKECVnmZHTdo+IRO05sNLTH/D3vA6u1X32ehoLC7WFVdheg==" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/requirejs@2.3.6/require.min.js" integrity="sha384-c9c+LnTbwQ3aujuU7ULEPVvgLs+Fn6fJUvIGTsuu1ZcCf11fiEubah0ttpca4ntM sha384-6V1/AdqZRWk1KAlWbKBlGhN7VG4iE/yAZcO6NZPMF8od0vukrvr0tg4qY6NSrItx" crossorigin="anonymous"></script>
 
 <script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
 
@@ -124,7 +129,7 @@ const typesetMath = (el) => {
     var macros = [];
     for (var i = 0; i < mathElements.length; i++) {
       var texText = mathElements[i].firstChild;
-      if (mathElements[i].tagName == "SPAN") {
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
         window.katex.render(texText.data, mathElements[i], {
           displayMode: mathElements[i].classList.contains('display'),
           throwOnError: false,
@@ -158,7 +163,8 @@ window.Quarto = {
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
     <a href="../../index.html" class="navbar-brand navbar-brand-logo">
-    <img src="../../favicon.ico" alt="" class="navbar-logo">
+    <img src="../../favicon.ico" alt="" class="navbar-logo light-content">
+    <img src="../../favicon.ico" alt="" class="navbar-logo dark-content">
     </a>
     <a class="navbar-brand" href="../../index.html">
     <span class="navbar-title">Londogard Blog</span>
@@ -424,28 +430,28 @@ E.g. <span class="math inline">\(y_{the}\)</span> = <span class="math inline">\(
 <p>The set of all raw dot products w′ij forms a matrix, which we can compute simply by multiplying 𝐗 by its transpose:</p>
 <p>Let’s code!</p>
 <div id="cell-11" class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> TODO(<span class="pp">Exception</span>):</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> TODO(<span class="pp">Exception</span>):</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Raised when there is something TODO"""</span></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">pass</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">pass</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div id="cell-12" class="cell">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> torch</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> torch</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> torch.nn.functional <span class="im">as</span> F</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="co"># assume we have some tensor x with size (b=1, t=3, k=3)</span></span>
 <span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> torch.array([[<span class="fl">1.</span>,<span class="fl">2.</span>,<span class="fl">3.</span>,</span>
 <span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>                 <span class="fl">1.</span>,<span class="fl">2.</span>,<span class="fl">3.</span>,</span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>                 <span class="fl">1.</span>,<span class="fl">2.</span>,<span class="fl">3.</span>]])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>                 <span class="fl">1.</span>,<span class="fl">2.</span>,<span class="fl">3.</span>]])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div id="cell-13" class="cell">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># batch matrix multiplication</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># batch matrix multiplication</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>raw_weights <span class="op">=</span> <span class="cf">raise</span> TODO(<span class="st">"Use torch batch-matrix-multiply (bmm) to do x*x^T. Remember there's 3 dimensions!"</span>)</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Apply row-wise Softmax</span></span>
 <span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>weights <span class="op">=</span> <span class="cf">raise</span> TODO(<span class="st">"Use functional softmax to apply softmax row-wise (along which dim?)"</span>)</span>
 <span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="co"># creating y</span></span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> torch.bmm(weights, x)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> torch.bmm(weights, x)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>And that’s it. We have created basic self-attention which is the basis of Transformers (state-of-the-art).</p>
 </section>
@@ -497,7 +503,7 @@ I don’t recall where but ~ 8 years ago someone figured out that scaling the va
 <h2 class="anchored" data-anchor-id="in-pytorch-complete-self-attention">In Pytorch: complete self-attention</h2>
 <p>Let’s make the implementation with bells &amp; whistles.</p>
 <div id="cell-21" class="cell">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> torch</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> torch</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> torch <span class="im">import</span> nn</span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> torch.nn.functional <span class="im">as</span> F</span>
 <span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a></span>
@@ -505,7 +511,7 @@ I don’t recall where but ~ 8 years ago someone figured out that scaling the va
 <span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>  <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, k, heads<span class="op">=</span><span class="dv">8</span>):</span>
 <span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">raise</span> TODO(<span class="st">"Make SelfAttention a torch module (nn.Module)"</span>)</span>
 <span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>    <span class="bu">super</span>().<span class="fu">__init__</span>()</span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>    <span class="va">self</span>.k, <span class="va">self</span>.heads <span class="op">=</span> k, heads</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>    <span class="va">self</span>.k, <span class="va">self</span>.heads <span class="op">=</span> k, heads</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
@@ -520,7 +526,7 @@ I don’t recall where but ~ 8 years ago someone figured out that scaling the va
 <p>Combine all heads into three single <span class="math inline">\(k\times hk\)</span> matrices.<br>
 This means that we can compute the concatenated <em>queries</em>, <em>keys</em> &amp; <em>values</em> in a single matrix multiplication.</p>
 <div id="cell-24" class="cell">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> SelfAttention(nn.Module):</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> SelfAttention(nn.Module):</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, k, heads<span class="op">=</span><span class="dv">8</span>):</span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    <span class="bu">super</span>().<span class="fu">__init__</span>()</span>
 <span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    <span class="va">self</span>.k, <span class="va">self</span>.heads <span class="op">=</span> k, heads</span>
@@ -532,11 +538,11 @@ This means that we can compute the concatenated <em>queries</em>, <em>keys</em> 
 <span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>    <span class="va">self</span>.tovalues  <span class="op">=</span> <span class="cf">raise</span> TODO(<span class="st">"Create a linear layer of k * hk size, no bias"</span>)</span>
 <span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>      <span class="co"># This unifies the outputs of the different heads into a single k-vector</span></span>
-<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>      <span class="va">self</span>.unifyheads <span class="op">=</span> <span class="cf">raise</span> TODO(<span class="st">"Create a linear layer of k * hk size, WITH bias"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>      <span class="va">self</span>.unifyheads <span class="op">=</span> <span class="cf">raise</span> TODO(<span class="st">"Create a linear layer of k * hk size, WITH bias"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>From here we can implement the computation of the self-attention (<code>forward</code> function). Where we first calculate <em>queries, keys &amp; values</em>.</p>
 <div id="cell-26" class="cell">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> SelfAttention(nn.Module):</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> SelfAttention(nn.Module):</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, k, heads<span class="op">=</span><span class="dv">8</span>):</span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>    <span class="bu">super</span>().<span class="fu">__init__</span>()</span>
 <span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>    <span class="va">self</span>.k, <span class="va">self</span>.heads <span class="op">=</span> k, heads</span>
@@ -557,13 +563,13 @@ This means that we can compute the concatenated <em>queries</em>, <em>keys</em> 
 <span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a>    queries <span class="op">=</span> <span class="cf">raise</span> TODO(<span class="st">"Create queries and then reshape into h separate matrices, using `view`"</span>)</span>
 <span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a>    keys    <span class="op">=</span> <span class="cf">raise</span> TODO(<span class="st">"Create keys and then reshape into h separate matrices, using `view`"</span>)</span>
-<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a>    values  <span class="op">=</span> <span class="cf">raise</span> TODO(<span class="st">"Create values and then reshape into h separate matrices, using `view`"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a>    values  <span class="op">=</span> <span class="cf">raise</span> TODO(<span class="st">"Create values and then reshape into h separate matrices, using `view`"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Having reshaped <em>queries</em> etc from <span class="math inline">\((b,t, h*k)\)</span> into <span class="math inline">\((b,t,h,k)\)</span> each head has its own dimension.</p>
 <p>The step now is to <em>compute dot-product for each head</em>.<br>
 We can batch this if we reshape the matrices into something that’s possible to batch (transposing; as head/batch is not next to each-other). <strong>costly</strong></p>
 <div id="cell-28" class="cell">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> SelfAttention(nn.Module):</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> SelfAttention(nn.Module):</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, k, heads<span class="op">=</span><span class="dv">8</span>):</span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    <span class="bu">super</span>().<span class="fu">__init__</span>()</span>
 <span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>    <span class="va">self</span>.k, <span class="va">self</span>.heads <span class="op">=</span> k, heads</span>
@@ -606,7 +612,7 @@ We can batch this if we reshape the matrices into something that’s possible to
 <span id="cb7-41"><a href="#cb7-41" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb7-42"><a href="#cb7-42" aria-hidden="true" tabindex="-1"></a>    <span class="co"># swap h, t back, unify heads</span></span>
 <span id="cb7-43"><a href="#cb7-43" aria-hidden="true" tabindex="-1"></a>    out <span class="op">=</span> out.transpose(<span class="dv">1</span>, <span class="dv">2</span>).contiguous().view(b, t, h <span class="op">*</span> k)</span>
-<span id="cb7-44"><a href="#cb7-44" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="cf">raise</span> TODO(<span class="st">"Unify the heads into the classes again using unifyheads"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb7-44"><a href="#cb7-44" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="cf">raise</span> TODO(<span class="st">"Unify the heads into the classes again using unifyheads"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>And there you have it: multi-head, scaled dot-product self attention.</p>
 </section>
@@ -631,7 +637,7 @@ We can batch this if we reshape the matrices into something that’s possible to
 <li>Blue lines = Residual Connection (allow the gradient to flow through the network on a kind of “highway”, making the training faster and reducing “blown up gradients”)</li>
 </ul>
 <div id="cell-33" class="cell">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> TransformerBlock(nn.Module):</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> TransformerBlock(nn.Module):</span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, k, heads):</span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>    <span class="bu">super</span>().<span class="fu">__init__</span>()</span>
 <span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a></span>
@@ -648,7 +654,7 @@ We can batch this if we reshape the matrices into something that’s possible to
 <span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>    x <span class="op">=</span> <span class="cf">raise</span> TODO(<span class="st">"Use the first normalizer to normalizer attented+x"</span>)</span>
 <span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>    </span>
 <span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a>    fedforward <span class="op">=</span> <span class="cf">raise</span> TODO(<span class="st">"Call feedforward (ff) on new x"</span>)</span>
-<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="cf">raise</span> TODO(<span class="st">"Finally normalize with 2nd on the addition of feedforward &amp; x"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="cf">raise</span> TODO(<span class="st">"Finally normalize with 2nd on the addition of feedforward &amp; x"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>And that is really it! We have now built a Transformer Block &amp; Self Attention.</p>
 <p>Now we want to use it :)</p>
@@ -697,7 +703,7 @@ We want our State-of-the-Art model to have a sense of order so we need to fix it
 <h3 class="anchored" data-anchor-id="pytorch">PyTorch</h3>
 <p>Let’s implement this!</p>
 <div id="cell-37" class="cell">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Transformer(nn.Module):</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Transformer(nn.Module):</span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, k, heads, depth, seq_length, num_tokens, num_classes):</span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>        <span class="bu">super</span>().<span class="fu">__init__</span>()</span>
 <span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a></span>
@@ -736,7 +742,7 @@ We want our State-of-the-Art model to have a sense of order so we need to fix it
 <span id="cb9-37"><a href="#cb9-37" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Average-pool over the t dimension and project to class </span></span>
 <span id="cb9-38"><a href="#cb9-38" aria-hidden="true" tabindex="-1"></a>        <span class="co"># probabilities</span></span>
 <span id="cb9-39"><a href="#cb9-39" aria-hidden="true" tabindex="-1"></a>        x <span class="op">=</span> <span class="cf">raise</span> TODO(<span class="st">"Use the probability function, but first take the mean over dim=1 to average"</span>)</span>
-<span id="cb9-40"><a href="#cb9-40" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="cf">raise</span> TODO(<span class="st">"Use the F.log_softmax on dim=1 to normalize output!"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb9-40"><a href="#cb9-40" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="cf">raise</span> TODO(<span class="st">"Use the F.log_softmax on dim=1 to normalize output!"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>At depth 6, with a maximum sequence length of 512, this transformer achieves an accuracy of about 85%, competitive with results from RNN models, and much faster to train. To see the real near-human performance of transformers, we’d need to train a much deeper model on much more data. More about how to do that later.</p>
 </section>
@@ -768,7 +774,7 @@ This is done by applying a mask which disables all elements that are ahead of cu
 <h2 class="anchored" data-anchor-id="in-pytorch">In PyTorch</h2>
 <p>Implementing this in PyTorch</p>
 <div id="cell-44" class="cell">
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> SelfAttentionAutoRegressive(nn.Module):</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> SelfAttentionAutoRegressive(nn.Module):</span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, k, heads<span class="op">=</span><span class="dv">8</span>):</span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>    <span class="bu">super</span>().<span class="fu">__init__</span>()</span>
 <span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>    <span class="va">self</span>.k, <span class="va">self</span>.heads <span class="op">=</span> k, heads</span>
@@ -817,10 +823,10 @@ This is done by applying a mask which disables all elements that are ahead of cu
 <span id="cb10-47"><a href="#cb10-47" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb10-48"><a href="#cb10-48" aria-hidden="true" tabindex="-1"></a>    <span class="co"># swap h, t back, unify heads</span></span>
 <span id="cb10-49"><a href="#cb10-49" aria-hidden="true" tabindex="-1"></a>    out <span class="op">=</span> out.transpose(<span class="dv">1</span>, <span class="dv">2</span>).contiguous().view(b, t, h <span class="op">*</span> k)</span>
-<span id="cb10-50"><a href="#cb10-50" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="va">self</span>.unifyheads(out)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb10-50"><a href="#cb10-50" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="va">self</span>.unifyheads(out)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div id="cell-45" class="cell">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>??torch.triu_indices</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>??torch.triu_indices</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Once the model has been ‘handicapped’ as this we’re ready to go!</p>
 <p>If you’d like to learn the historical aspect of Transformers, some design consideration &amp; more details please visit the <a href="http://peterbloem.nl/blog/transformers">original blog</a> by Peter Bloem and finish that one!</p>
@@ -841,11 +847,11 @@ Do note that the depth should probably be increased as should the amount of data
 <h2 class="anchored" data-anchor-id="dependencies">Dependencies</h2>
 <p>Simply run this block to - Upgrade fastai (2.0+) - Import fastai</p>
 <div id="cell-50" class="cell">
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="op">%%</span>capture</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="op">%%</span>capture</span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>pip install <span class="op">-</span>U fastai</span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> fastai.text.<span class="bu">all</span> <span class="im">import</span> <span class="op">*</span></span>
-<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> functools <span class="im">import</span> partial <span class="co"># Can use partial to preload a transformer block</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> functools <span class="im">import</span> partial <span class="co"># Can use partial to preload a transformer block</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section id="text-classification" class="level2">
@@ -856,7 +862,7 @@ Do note that the depth should probably be increased as should the amount of data
 <h3 class="anchored" data-anchor-id="model-classifier">Model (Classifier)</h3>
 <p>Code we already wrote for the classifier</p>
 <div id="cell-53" class="cell">
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> SelfAttention(Module):</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> SelfAttention(Module):</span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>  <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, k, heads<span class="op">=</span><span class="dv">8</span>):</span>
 <span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>    <span class="va">self</span>.k, <span class="va">self</span>.heads <span class="op">=</span> k, heads</span>
 <span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a></span>
@@ -903,10 +909,10 @@ Do note that the depth should probably be increased as should the amount of data
 <span id="cb13-45"><a href="#cb13-45" aria-hidden="true" tabindex="-1"></a>    <span class="co"># swap h, t back, unify heads</span></span>
 <span id="cb13-46"><a href="#cb13-46" aria-hidden="true" tabindex="-1"></a>    out <span class="op">=</span> out.transpose(<span class="dv">1</span>, <span class="dv">2</span>).contiguous().view(b, t, h <span class="op">*</span> k)</span>
 <span id="cb13-47"><a href="#cb13-47" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb13-48"><a href="#cb13-48" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="va">self</span>.unifyheads(out)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb13-48"><a href="#cb13-48" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="va">self</span>.unifyheads(out)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div id="cell-54" class="cell">
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> TransformerBlock(Module):</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> TransformerBlock(Module):</span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>  <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, k, heads):</span>
 <span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>    <span class="bu">super</span>().<span class="fu">__init__</span>()</span>
 <span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a></span>
@@ -926,10 +932,10 @@ Do note that the depth should probably be increased as should the amount of data
 <span id="cb14-18"><a href="#cb14-18" aria-hidden="true" tabindex="-1"></a>    x <span class="op">=</span> <span class="va">self</span>.norm1(attended <span class="op">+</span> x)</span>
 <span id="cb14-19"><a href="#cb14-19" aria-hidden="true" tabindex="-1"></a>    </span>
 <span id="cb14-20"><a href="#cb14-20" aria-hidden="true" tabindex="-1"></a>    fedforward <span class="op">=</span> <span class="va">self</span>.ff(x)</span>
-<span id="cb14-21"><a href="#cb14-21" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="va">self</span>.norm2(fedforward <span class="op">+</span> x)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb14-21"><a href="#cb14-21" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="va">self</span>.norm2(fedforward <span class="op">+</span> x)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div id="cell-55" class="cell">
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Transformer(Module):</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Transformer(Module):</span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, k, heads, depth, seq_length, num_tokens, num_classes, device):</span>
 <span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>        <span class="bu">super</span>().<span class="fu">__init__</span>()</span>
 <span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a></span>
@@ -972,7 +978,7 @@ Do note that the depth should probably be increased as should the amount of data
 <span id="cb15-41"><a href="#cb15-41" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Average-pool over the t dimension and project to class </span></span>
 <span id="cb15-42"><a href="#cb15-42" aria-hidden="true" tabindex="-1"></a>        <span class="co"># probabilities</span></span>
 <span id="cb15-43"><a href="#cb15-43" aria-hidden="true" tabindex="-1"></a>        x <span class="op">=</span> <span class="va">self</span>.toprobs(x.mean(dim<span class="op">=</span><span class="dv">1</span>))</span>
-<span id="cb15-44"><a href="#cb15-44" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> F.log_softmax(x, dim<span class="op">=</span><span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb15-44"><a href="#cb15-44" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> F.log_softmax(x, dim<span class="op">=</span><span class="dv">1</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section id="the-text-classification" class="level3">
@@ -983,8 +989,8 @@ Do note that the depth should probably be increased as should the amount of data
 <li>Validation</li>
 </ul>
 <div id="cell-57" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;colab&quot;,&quot;value&quot;:{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;,&quot;height&quot;:54}}" data-outputid="fb790634-bd4a-40c6-d1b1-82d825a43a36">
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>path <span class="op">=</span> untar_data(URLs.IMDB)</span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>path.ls()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>path <span class="op">=</span> untar_data(URLs.IMDB)</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>path.ls()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display">
 
 </div>
@@ -993,9 +999,9 @@ Do note that the depth should probably be increased as should the amount of data
 </div>
 </div>
 <div id="cell-58" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;colab&quot;,&quot;value&quot;:{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;,&quot;height&quot;:70}}" data-outputid="c727a32c-5e27-451e-9307-dfaea1a79052">
-<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># === Use this if you want to use IMDB_SAMPLE: But IMDB_SAMPLE is too small for a transformer ===</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># === Use this if you want to use IMDB_SAMPLE: But IMDB_SAMPLE is too small for a transformer ===</span></span>
 <span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="co"># df = pd.read_csv(path/'texts.csv');df.head(2)</span></span>
-<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="co"># dls = TextDataLoaders.from_df(df, path=path, text_col='text', label_col='label', valid_col='is_valid')</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="co"># dls = TextDataLoaders.from_df(df, path=path, text_col='text', label_col='label', valid_col='is_valid')</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display">
 
 </div>
@@ -1005,7 +1011,7 @@ Do note that the depth should probably be increased as should the amount of data
 </div>
 </div>
 <div id="cell-59" class="cell">
-<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co"># === Enable this to use much more data (better for transformer) === </span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co"># === Enable this to use much more data (better for transformer) === </span></span>
 <span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>db <span class="op">=</span> DataBlock(</span>
 <span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>    blocks <span class="op">=</span> (TextBlock.from_folder(path, max_vocab<span class="op">=</span><span class="dv">10_000</span>, seq_len<span class="op">=</span><span class="dv">256</span>), CategoryBlock),</span>
 <span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>    get_items<span class="op">=</span>get_text_files,</span>
@@ -1013,12 +1019,12 @@ Do note that the depth should probably be increased as should the amount of data
 <span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>    get_y<span class="op">=</span>parent_label</span>
 <span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>)</span>
 <span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a>dls <span class="op">=</span> db.dataloaders(path, path <span class="op">=</span> path)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a>dls <span class="op">=</span> db.dataloaders(path, path <span class="op">=</span> path)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div id="cell-60" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;colab&quot;,&quot;value&quot;:{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;,&quot;height&quot;:174}}" data-outputid="64f23374-5fe5-49b0-98b2-a99d822cfb0c">
-<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>dls.show_batch(max_n<span class="op">=</span><span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>dls.show_batch(max_n<span class="op">=</span><span class="dv">2</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display">
-<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
 <thead>
 <tr class="header">
 <th data-quarto-table-cell-role="th"></th>
@@ -1028,12 +1034,12 @@ Do note that the depth should probably be increased as should the amount of data
 </thead>
 <tbody>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">0</td>
+<th data-quarto-table-cell-role="th">0</th>
 <td>xxbos xxmaj raising xxmaj victor xxmaj vargas : a xxmaj review \n\n xxmaj you know , xxmaj raising xxmaj victor xxmaj vargas is like sticking your hands into a big , xxunk bowl of xxunk . xxmaj it 's warm and gooey , but you 're not sure if it feels right . xxmaj try as i might , no matter how warm and gooey xxmaj raising xxmaj victor xxmaj vargas became i was always aware that something did n't quite feel right . xxmaj victor xxmaj vargas suffers from a certain xxunk on the director 's part . xxmaj apparently , the director thought that the ethnic backdrop of a xxmaj latino family on the lower east side , and an xxunk storyline would make the film critic proof . xxmaj he was right , but it did n't fool me . xxmaj raising xxmaj victor xxmaj vargas is</td>
 <td>negative</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">1</td>
+<th data-quarto-table-cell-role="th">1</th>
 <td>xxbos xxup the xxup shop xxup around xxup the xxup corner is one of the xxunk and most feel - good romantic comedies ever made . xxmaj there 's just no getting around that , and it 's hard to actually put one 's feeling for this film into words . xxmaj it 's not one of those films that tries too hard , nor does it come up with the xxunk possible scenarios to get the two protagonists together in the end . xxmaj in fact , all its charm is xxunk , contained within the characters and the setting and the plot … which is highly believable to xxunk . xxmaj it 's easy to think that such a love story , as beautiful as any other ever told , * could * happen to you … a feeling you do n't often get from other romantic comedies</td>
 <td>positive</td>
 </tr>
@@ -1042,17 +1048,17 @@ Do note that the depth should probably be increased as should the amount of data
 </div>
 </div>
 <div id="cell-61" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;colab&quot;,&quot;value&quot;:{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;}}" data-outputid="57ecd05a-1d88-4b08-9ca0-ee66ba28524f">
-<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="bu">len</span>(dls.vocab[<span class="dv">0</span>]),dls.device,dls.one_batch()[<span class="dv">0</span>].size()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="bu">len</span>(dls.vocab[<span class="dv">0</span>]),dls.device,dls.one_batch()[<span class="dv">0</span>].size()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="18">
 <pre><code>(10008, device(type='cuda', index=0), (64, 3345))</code></pre>
 </div>
 </div>
 <div id="cell-62" class="cell">
-<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co"># (self, k, heads, depth, seq_length, num_tokens, num_classes)</span></span>
-<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>learn <span class="op">=</span> Learner(dls, Transformer(k<span class="op">=</span><span class="dv">256</span>, heads<span class="op">=</span><span class="dv">8</span>, depth<span class="op">=</span><span class="dv">4</span>, seq_length<span class="op">=</span><span class="dv">256</span>, num_tokens<span class="op">=</span><span class="bu">len</span>(dls.vocab[<span class="dv">0</span>]), num_classes<span class="op">=</span><span class="dv">2</span>, device<span class="op">=</span>dls.device), metrics<span class="op">=</span>[accuracy])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co"># (self, k, heads, depth, seq_length, num_tokens, num_classes)</span></span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>learn <span class="op">=</span> Learner(dls, Transformer(k<span class="op">=</span><span class="dv">256</span>, heads<span class="op">=</span><span class="dv">8</span>, depth<span class="op">=</span><span class="dv">4</span>, seq_length<span class="op">=</span><span class="dv">256</span>, num_tokens<span class="op">=</span><span class="bu">len</span>(dls.vocab[<span class="dv">0</span>]), num_classes<span class="op">=</span><span class="dv">2</span>, device<span class="op">=</span>dls.device), metrics<span class="op">=</span>[accuracy])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div id="cell-63" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;colab&quot;,&quot;value&quot;:{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;,&quot;height&quot;:300}}" data-outputid="89ae5bc8-27a9-4b69-a879-a6aa64870781">
-<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>learn.lr_find()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>learn.lr_find()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display">
 
 </div>
@@ -1068,9 +1074,9 @@ Do note that the depth should probably be increased as should the amount of data
 </div>
 </div>
 <div id="cell-64" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;colab&quot;,&quot;value&quot;:{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;,&quot;height&quot;:225}}" data-outputid="1b8322ee-08d7-4fcc-9cfd-cee2c0fc34bb">
-<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>learn.fit_one_cycle(<span class="dv">6</span>, <span class="fl">5.7e-5</span>) <span class="co"># We can increase depth &amp; more to improve the result</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>learn.fit_one_cycle(<span class="dv">6</span>, <span class="fl">5.7e-5</span>) <span class="co"># We can increase depth &amp; more to improve the result</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display">
-<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
 <thead>
 <tr class="header">
 <th data-quarto-table-cell-role="th">epoch</th>
@@ -1129,13 +1135,13 @@ Do note that the depth should probably be increased as should the amount of data
 </div>
 <p>Fast.AI approach</p>
 <div id="cell-66" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;colab&quot;,&quot;value&quot;:{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;,&quot;height&quot;:226}}" data-outputid="b48420dd-edcd-4bfa-e95e-996089e29266">
-<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>learn <span class="op">=</span> text_classifier_learner(dls, AWD_LSTM, drop_mult<span class="op">=</span><span class="fl">0.5</span>, metrics<span class="op">=</span>accuracy)</span>
-<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>learn.fine_tune(<span class="dv">4</span>, <span class="fl">1e-2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>learn <span class="op">=</span> text_classifier_learner(dls, AWD_LSTM, drop_mult<span class="op">=</span><span class="fl">0.5</span>, metrics<span class="op">=</span>accuracy)</span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>learn.fine_tune(<span class="dv">4</span>, <span class="fl">1e-2</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display">
 
 </div>
 <div class="cell-output cell-output-display">
-<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
 <thead>
 <tr class="header">
 <th data-quarto-table-cell-role="th">epoch</th>
@@ -1157,7 +1163,7 @@ Do note that the depth should probably be increased as should the amount of data
 </table>
 </div>
 <div class="cell-output cell-output-display">
-<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
 <thead>
 <tr class="header">
 <th data-quarto-table-cell-role="th">epoch</th>
@@ -1201,7 +1207,7 @@ Do note that the depth should probably be increased as should the amount of data
 </div>
 </div>
 <div id="cell-67" class="cell">
-<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>learn.show_results()  </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>learn.show_results()  </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 </section>
@@ -1212,7 +1218,7 @@ Do note that the depth should probably be increased as should the amount of data
 <h3 class="anchored" data-anchor-id="the-model">The Model</h3>
 <p>Code we’ve done, the essential model</p>
 <div id="cell-70" class="cell">
-<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> SelfAttentionAutoRegressive(Module):</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb30"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> SelfAttentionAutoRegressive(Module):</span>
 <span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>  <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, k, heads<span class="op">=</span><span class="dv">8</span>):</span>
 <span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>    <span class="va">self</span>.k, <span class="va">self</span>.heads <span class="op">=</span> k, heads</span>
 <span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a></span>
@@ -1259,10 +1265,10 @@ Do note that the depth should probably be increased as should the amount of data
 <span id="cb30-45"><a href="#cb30-45" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb30-46"><a href="#cb30-46" aria-hidden="true" tabindex="-1"></a>    <span class="co"># swap h, t back, unify heads</span></span>
 <span id="cb30-47"><a href="#cb30-47" aria-hidden="true" tabindex="-1"></a>    out <span class="op">=</span> out.transpose(<span class="dv">1</span>, <span class="dv">2</span>).contiguous().view(b, t, h <span class="op">*</span> k)</span>
-<span id="cb30-48"><a href="#cb30-48" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="va">self</span>.unifyheads(out)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb30-48"><a href="#cb30-48" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="va">self</span>.unifyheads(out)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div id="cell-71" class="cell">
-<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> TransformerBlock(Module):</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb31"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> TransformerBlock(Module):</span>
 <span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>  <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, k, heads):</span>
 <span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>    <span class="bu">super</span>().<span class="fu">__init__</span>()</span>
 <span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a></span>
@@ -1282,10 +1288,10 @@ Do note that the depth should probably be increased as should the amount of data
 <span id="cb31-18"><a href="#cb31-18" aria-hidden="true" tabindex="-1"></a>    x <span class="op">=</span> <span class="va">self</span>.norm1(attended <span class="op">+</span> x)</span>
 <span id="cb31-19"><a href="#cb31-19" aria-hidden="true" tabindex="-1"></a>    </span>
 <span id="cb31-20"><a href="#cb31-20" aria-hidden="true" tabindex="-1"></a>    fedforward <span class="op">=</span> <span class="va">self</span>.ff(x)</span>
-<span id="cb31-21"><a href="#cb31-21" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="va">self</span>.norm2(fedforward <span class="op">+</span> x)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb31-21"><a href="#cb31-21" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="va">self</span>.norm2(fedforward <span class="op">+</span> x)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div id="cell-72" class="cell">
-<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Transformer(Module):</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb32"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Transformer(Module):</span>
 <span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, k, heads, depth, seq_length, num_tokens, device):</span>
 <span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a>        <span class="bu">super</span>().<span class="fu">__init__</span>()</span>
 <span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a></span>
@@ -1329,7 +1335,7 @@ Do note that the depth should probably be increased as should the amount of data
 <span id="cb32-42"><a href="#cb32-42" aria-hidden="true" tabindex="-1"></a>        <span class="co"># probabilities</span></span>
 <span id="cb32-43"><a href="#cb32-43" aria-hidden="true" tabindex="-1"></a>        x <span class="op">=</span> <span class="va">self</span>.toprobs(x.view(b<span class="op">*</span>t, k)).view(b, t, <span class="va">self</span>.num_tokens)</span>
 <span id="cb32-44"><a href="#cb32-44" aria-hidden="true" tabindex="-1"></a>        <span class="co"># print(x.size())</span></span>
-<span id="cb32-45"><a href="#cb32-45" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> F.log_softmax(x, dim<span class="op">=</span><span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb32-45"><a href="#cb32-45" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> F.log_softmax(x, dim<span class="op">=</span><span class="dv">2</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section id="the-text-generation" class="level3">
@@ -1340,22 +1346,22 @@ Do note that the depth should probably be increased as should the amount of data
 <li>Validation</li>
 </ul>
 <div id="cell-74" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;colab&quot;,&quot;value&quot;:{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;}}" data-outputid="e25f20d8-caa1-4948-da8d-8e5f5f9de5cd">
-<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>path <span class="op">=</span> untar_data(URLs.IMDB_SAMPLE)</span>
-<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>path.ls()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb33"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>path <span class="op">=</span> untar_data(URLs.IMDB_SAMPLE)</span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>path.ls()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="20">
 <pre><code>(#2) [Path('/root/.fastai/data/imdb_sample/texts.csv'),Path('/root/.fastai/data/imdb_sample/models')]</code></pre>
 </div>
 </div>
 <div id="cell-75" class="cell">
-<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.read_csv(path<span class="op">/</span><span class="st">'texts.csv'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb35"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.read_csv(path<span class="op">/</span><span class="st">'texts.csv'</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div id="cell-76" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;colab&quot;,&quot;value&quot;:{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;,&quot;height&quot;:94}}" data-outputid="d6c53250-dae8-4f5f-88fc-9d2a91cc881e">
-<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>df.head(<span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb36"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>df.head(<span class="dv">1</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="22">
 <div>
 
 
-<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
 <thead>
 <tr class="header">
 <th data-quarto-table-cell-role="th"></th>
@@ -1366,7 +1372,7 @@ Do note that the depth should probably be increased as should the amount of data
 </thead>
 <tbody>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">0</td>
+<th data-quarto-table-cell-role="th">0</th>
 <td>negative</td>
 <td>Un-bleeping-believable! Meg Ryan doesn't even look her usual pert lovable self in this, which normally makes me forgive her shallow ticky acting schtick. Hard to believe she was the producer on this dog. Plus Kevin Kline: what kind of suicide trip has his career been on? Whoosh... Banzai!!! Finally this was directed by the guy who did Big Chill? Must be a replay of Jonestown - hollywood style. Wooofff!</td>
 <td>False</td>
@@ -1378,7 +1384,7 @@ Do note that the depth should probably be increased as should the amount of data
 </div>
 </div>
 <div id="cell-77" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;colab&quot;,&quot;value&quot;:{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;,&quot;height&quot;:70}}" data-outputid="e5b3156e-86bb-4f4f-8475-98b32d12a49c">
-<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a>dls <span class="op">=</span> TextDataLoaders.from_df(df, path<span class="op">=</span>path, text_col<span class="op">=</span><span class="st">'text'</span>, is_lm<span class="op">=</span><span class="va">True</span>, valid_col<span class="op">=</span><span class="st">'is_valid'</span>, seq_len<span class="op">=</span><span class="dv">256</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb37"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a>dls <span class="op">=</span> TextDataLoaders.from_df(df, path<span class="op">=</span>path, text_col<span class="op">=</span><span class="st">'text'</span>, is_lm<span class="op">=</span><span class="va">True</span>, valid_col<span class="op">=</span><span class="st">'is_valid'</span>, seq_len<span class="op">=</span><span class="dv">256</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display">
 
 </div>
@@ -1388,9 +1394,9 @@ Do note that the depth should probably be increased as should the amount of data
 </div>
 </div>
 <div id="cell-78" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;colab&quot;,&quot;value&quot;:{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;,&quot;height&quot;:144}}" data-outputid="d2f8842e-64f7-405c-f689-9ffe8ad2f713">
-<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a>dls.show_batch(max_n<span class="op">=</span><span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb39"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a>dls.show_batch(max_n<span class="op">=</span><span class="dv">1</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display">
-<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
 <thead>
 <tr class="header">
 <th data-quarto-table-cell-role="th"></th>
@@ -1400,7 +1406,7 @@ Do note that the depth should probably be increased as should the amount of data
 </thead>
 <tbody>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">0</td>
+<th data-quarto-table-cell-role="th">0</th>
 <td>xxbos i enjoyed this movie . xxmaj unlike like some of the xxunk up , xxunk trash that is passed off as action movies , xxmaj playing xxmaj god is simple and realistic , with characters that are believable , action that is not over the top and enough twists and turns to keep you interested until the end . \n\n xxmaj well directed , well acted and a good story . xxbos xxmaj for those fans of xxmaj laurel and xxmaj hardy , the 1940s and beyond were a very sad time for the team . xxmaj their xxunk with xxmaj xxunk xxmaj xxunk xxmaj studios had xxunk and now they were " free xxunk to work for any studio who xxunk them a job . xxmaj unfortunately , xxmaj fox , xxup xxunk , xxup xxunk ( without xxmaj xxunk ) and even a xxmaj french film company</td>
 <td>i enjoyed this movie . xxmaj unlike like some of the xxunk up , xxunk trash that is passed off as action movies , xxmaj playing xxmaj god is simple and realistic , with characters that are believable , action that is not over the top and enough twists and turns to keep you interested until the end . \n\n xxmaj well directed , well acted and a good story . xxbos xxmaj for those fans of xxmaj laurel and xxmaj hardy , the 1940s and beyond were a very sad time for the team . xxmaj their xxunk with xxmaj xxunk xxmaj xxunk xxmaj studios had xxunk and now they were " free xxunk to work for any studio who xxunk them a job . xxmaj unfortunately , xxmaj fox , xxup xxunk , xxup xxunk ( without xxmaj xxunk ) and even a xxmaj french film company who</td>
 </tr>
@@ -1409,17 +1415,17 @@ Do note that the depth should probably be increased as should the amount of data
 </div>
 </div>
 <div id="cell-79" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;colab&quot;,&quot;value&quot;:{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;}}" data-outputid="29e0f3e4-c092-4136-de05-83a05307bff5">
-<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="bu">len</span>(dls.vocab),dls.one_batch()[<span class="dv">0</span>].size()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb40"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="bu">len</span>(dls.vocab),dls.one_batch()[<span class="dv">0</span>].size()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="27">
 <pre><code>(7080, (64, 256))</code></pre>
 </div>
 </div>
 <div id="cell-80" class="cell">
-<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a>learn <span class="op">=</span> Learner(dls, Transformer(k<span class="op">=</span><span class="dv">256</span>, heads<span class="op">=</span><span class="dv">8</span>, depth<span class="op">=</span><span class="dv">3</span>, seq_length<span class="op">=</span><span class="dv">256</span>, num_tokens<span class="op">=</span><span class="bu">len</span>(dls.vocab), device<span class="op">=</span>dls.device), loss_func<span class="op">=</span>CrossEntropyLossFlat())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb42"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a>learn <span class="op">=</span> Learner(dls, Transformer(k<span class="op">=</span><span class="dv">256</span>, heads<span class="op">=</span><span class="dv">8</span>, depth<span class="op">=</span><span class="dv">3</span>, seq_length<span class="op">=</span><span class="dv">256</span>, num_tokens<span class="op">=</span><span class="bu">len</span>(dls.vocab), device<span class="op">=</span>dls.device), loss_func<span class="op">=</span>CrossEntropyLossFlat())</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div id="cell-81" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;colab&quot;,&quot;value&quot;:{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;,&quot;height&quot;:300}}" data-outputid="8028a840-2057-4d98-8551-20935a565c95">
-<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a>learn.freeze()</span>
-<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a>learn.lr_find()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb43"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a>learn.freeze()</span>
+<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a>learn.lr_find()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display">
 
 </div>
@@ -1435,14 +1441,14 @@ Do note that the depth should probably be increased as should the amount of data
 </div>
 </div>
 <div id="cell-82" class="cell">
-<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a>learn.unfreeze()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb45"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a>learn.unfreeze()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div id="cell-83" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;colab&quot;,&quot;value&quot;:{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;,&quot;height&quot;:463}}" data-outputid="6d76f339-45e7-4ab0-c728-5f5638446c7a">
-<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a>learn.fit_one_cycle(<span class="dv">4</span>)  <span class="co"># Add suggested LR if you'd like</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb46"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a>learn.fit_one_cycle(<span class="dv">4</span>)  <span class="co"># Add suggested LR if you'd like</span></span>
 <span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a>learn.fit_one_cycle(<span class="dv">4</span>)</span>
-<span id="cb46-3"><a href="#cb46-3" aria-hidden="true" tabindex="-1"></a>learn.fit_one_cycle(<span class="dv">4</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb46-3"><a href="#cb46-3" aria-hidden="true" tabindex="-1"></a>learn.fit_one_cycle(<span class="dv">4</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display">
-<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
 <thead>
 <tr class="header">
 <th data-quarto-table-cell-role="th">epoch</th>
@@ -1480,7 +1486,7 @@ Do note that the depth should probably be increased as should the amount of data
 </table>
 </div>
 <div class="cell-output cell-output-display">
-<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
 <thead>
 <tr class="header">
 <th data-quarto-table-cell-role="th">epoch</th>
@@ -1518,7 +1524,7 @@ Do note that the depth should probably be increased as should the amount of data
 </table>
 </div>
 <div class="cell-output cell-output-display">
-<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
 <thead>
 <tr class="header">
 <th data-quarto-table-cell-role="th">epoch</th>
@@ -1557,7 +1563,7 @@ Do note that the depth should probably be increased as should the amount of data
 </div>
 </div>
 <div id="cell-84" class="cell">
-<div class="sourceCode cell-code" id="cb47"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> predict(<span class="va">self</span>, text, n_words<span class="op">=</span><span class="dv">1</span>, no_unk<span class="op">=</span><span class="va">True</span>, temperature<span class="op">=</span><span class="fl">1.</span>, min_p<span class="op">=</span><span class="va">None</span>, no_bar<span class="op">=</span><span class="va">False</span>,</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb47"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> predict(<span class="va">self</span>, text, n_words<span class="op">=</span><span class="dv">1</span>, no_unk<span class="op">=</span><span class="va">True</span>, temperature<span class="op">=</span><span class="fl">1.</span>, min_p<span class="op">=</span><span class="va">None</span>, no_bar<span class="op">=</span><span class="va">False</span>,</span>
 <span id="cb47-2"><a href="#cb47-2" aria-hidden="true" tabindex="-1"></a>            decoder<span class="op">=</span>decode_spec_tokens, only_last_word<span class="op">=</span><span class="va">False</span>):</span>
 <span id="cb47-3"><a href="#cb47-3" aria-hidden="true" tabindex="-1"></a>    <span class="co">"Return `text` and the `n_words` that come after"</span></span>
 <span id="cb47-4"><a href="#cb47-4" aria-hidden="true" tabindex="-1"></a>    </span>
@@ -1584,10 +1590,10 @@ Do note that the depth should probably be increased as should the amount of data
 <span id="cb47-25"><a href="#cb47-25" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb47-26"><a href="#cb47-26" aria-hidden="true" tabindex="-1"></a><span class="at">@delegates</span>(Learner.get_preds)</span>
 <span id="cb47-27"><a href="#cb47-27" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> get_preds(<span class="va">self</span>, concat_dim<span class="op">=</span><span class="dv">1</span>, <span class="op">**</span>kwargs):</span>
-<span id="cb47-28"><a href="#cb47-28" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> <span class="bu">super</span>().get_preds(concat_dim<span class="op">=</span>concat_dim, <span class="op">**</span>kwargs)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb47-28"><a href="#cb47-28" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> <span class="bu">super</span>().get_preds(concat_dim<span class="op">=</span>concat_dim, <span class="op">**</span>kwargs)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div id="cell-85" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;colab&quot;,&quot;value&quot;:{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;,&quot;height&quot;:35}}" data-outputid="99593356-56a4-47d5-bb8d-e35f5b5a227c">
-<div class="sourceCode cell-code" id="cb48"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a>predict(learn, <span class="st">"I think its a very"</span>, n_words<span class="op">=</span><span class="dv">20</span>, temperature<span class="op">=</span><span class="fl">1.</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb48"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a>predict(learn, <span class="st">"I think its a very"</span>, n_words<span class="op">=</span><span class="dv">20</span>, temperature<span class="op">=</span><span class="fl">1.</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display">
 
 </div>
@@ -1596,15 +1602,15 @@ Do note that the depth should probably be increased as should the amount of data
 </div>
 </div>
 <div id="cell-86" class="cell">
-<div class="sourceCode cell-code" id="cb50"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a>learn.save(<span class="st">'gen.pkl'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb50"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a>learn.save(<span class="st">'gen.pkl'</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div id="cell-87" class="cell">
-<div class="sourceCode cell-code" id="cb51"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Shakespeare for those that'd want it!</span></span>
-<span id="cb51-2"><a href="#cb51-2" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>wget https:<span class="op">//</span>cs.stanford.edu<span class="op">/</span>people<span class="op">/</span>karpathy<span class="op">/</span>char<span class="op">-</span>rnn<span class="op">/</span>shakespear.txt</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb51"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Shakespeare for those that'd want it!</span></span>
+<span id="cb51-2"><a href="#cb51-2" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>wget https:<span class="op">//</span>cs.stanford.edu<span class="op">/</span>people<span class="op">/</span>karpathy<span class="op">/</span>char<span class="op">-</span>rnn<span class="op">/</span>shakespear.txt</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>FastAI way</p>
 <div id="cell-89" class="cell">
-<div class="sourceCode cell-code" id="cb52"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a>predict(language_model_learner(dls, AWD_LSTM), <span class="st">"I think its"</span>, n_words<span class="op">=</span><span class="dv">2</span>, temperature<span class="op">=</span><span class="fl">1.</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb52"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a>predict(language_model_learner(dls, AWD_LSTM), <span class="st">"I think its"</span>, n_words<span class="op">=</span><span class="dv">2</span>, temperature<span class="op">=</span><span class="fl">1.</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 
 
@@ -1664,13 +1670,14 @@ Do note that the depth should probably be increased as should the amount of data
       e.clearSelection();
     }
     const getTextToCopy = function(trigger) {
-        const codeEl = trigger.previousElementSibling.cloneNode(true);
-        for (const childEl of codeEl.children) {
-          if (isCodeAnnotation(childEl)) {
-            childEl.remove();
-          }
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
         }
-        return codeEl.innerText;
+      }
+      return codeEl.innerText;
     }
     const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
       text: getTextToCopy

@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.7.34">
+<meta name="generator" content="quarto-1.8.25">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -71,14 +71,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../../favicon.ico" rel="icon">
 <script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../site_libs/quarto-html/axe/axe-check.js" type="module"></script>
 <script src="../../site_libs/quarto-html/popper.min.js"></script>
 <script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-9582434199d49cc9e91654cdeeb4866b.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-065a5179aebd64318d7ea99d77b64a9e.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark-969ddfa49e00a70eb3423444dbc81f6c.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-065a5179aebd64318d7ea99d77b64a9e.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-8ab00b4506aff93bb9d672c7d73166bb.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-7d3a565c23c4d3b0e7c030e96a8964f3.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-dark-7d3a565c23c4d3b0e7c030e96a8964f3.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-7d3a565c23c4d3b0e7c030e96a8964f3.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -124,7 +129,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
     <a href="../../index.html" class="navbar-brand navbar-brand-logo">
-    <img src="../../favicon.ico" alt="" class="navbar-logo">
+    <img src="../../favicon.ico" alt="" class="navbar-logo light-content">
+    <img src="../../favicon.ico" alt="" class="navbar-logo dark-content">
     </a>
     <a class="navbar-brand" href="../../index.html">
     <span class="navbar-title">Londogard Blog</span>
@@ -309,12 +315,12 @@ All which I don’t have currently.</p>
 <p>First I’ll add the code from “part one” and it’ll not be commented as it has been walked through.<br>
 Further I’ve removed the download &amp; parsing of FAQ, now the data is directly downloaded as a <code>tsv</code>-file allowing us to skip some libraries / code-cells.<br>
 Some new dependencies are also added, e.g.&nbsp;<code>stanza</code> which is Stanfords new NLP-lib in Python (inspired by <code>spaCy</code>).</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="op">%%</span>capture</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="op">%%</span>capture</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>pip install <span class="op">-</span>U gensim</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>pip install <span class="op">-</span>U fse</span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>pip install stanza</span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>pip install stop<span class="op">-</span>words</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="sourceCode" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np <span class="co"># linear algebra</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>pip install stop<span class="op">-</span>words</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np <span class="co"># linear algebra</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd <span class="co"># data processing, CSV file I/O (e.g. pd.read_csv)</span></span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tqdm <span class="im">import</span> tqdm</span>
@@ -340,25 +346,25 @@ Some new dependencies are also added, e.g.&nbsp;<code>stanza</code> which is Sta
 <span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> fse.models <span class="im">import</span> uSIF</span>
 <span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> fse.models.average <span class="im">import</span> FAST_VERSION, MAX_WORDS_IN_BATCH</span>
 <span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(MAX_WORDS_IN_BATCH)</span>
-<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(FAST_VERSION)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(FAST_VERSION)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <pre><code>10000
 1</code></pre>
-<div class="sourceCode" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Download models etc</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Download models etc</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>stanza.download(<span class="st">'sv'</span>, logging_level<span class="op">=</span><span class="st">'ERROR'</span>)</span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"OBS!!</span><span class="ch">\n</span><span class="st">Please download the Swe fastText model &amp; the CoViD FAQ data from links in this code cell!"</span>)</span>
 <span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Swe fastText reduced dimensions --&gt;   https://drive.google.com/open?id=1vaWtiSlRAZ3XCdtnSce_6dwQ0T5x0OEJ</span></span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="co"># CoViD FAQ data --&gt;                    https://github.com/londogard/nlp-projects/blob/master/datasets/covid.tsv</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="co"># CoViD FAQ data --&gt;                    https://github.com/londogard/nlp-projects/blob/master/datasets/covid.tsv</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <pre><code>OBS!!
 Please download the Swe fastText model &amp; the CoViD FAQ data from links in this code cell!</code></pre>
 <section id="loading-all-the-models" class="level4">
 <h4 class="anchored" data-anchor-id="loading-all-the-models">Loading all the models</h4>
 <p>This might take a little while, even though the dimensions are reduced the model is pretty large.</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>ft_wv <span class="op">=</span> load_facebook_vectors(<span class="st">'~/git/nlp-projects/models/cc.sv.100.bin'</span>)</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>ft_wv <span class="op">=</span> load_facebook_vectors(<span class="st">'~/git/nlp-projects/models/cc.sv.100.bin'</span>)</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.read_csv(<span class="st">'~/git/nlp-projects/datasets/covid.tsv'</span>, sep<span class="op">=</span><span class="st">'</span><span class="ch">\t</span><span class="st">'</span>)</span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>nlp <span class="op">=</span> stanza.Pipeline(lang<span class="op">=</span><span class="st">'sv'</span>, processors<span class="op">=</span><span class="st">'tokenize'</span>, logging_level<span class="op">=</span><span class="st">'ERROR'</span>)</span>
 <span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> uSIF(ft_wv, workers<span class="op">=</span><span class="dv">4</span>, lang_freq<span class="op">=</span><span class="st">"sv"</span>)</span>
 <span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>flatten <span class="op">=</span> <span class="kw">lambda</span> l: [item <span class="cf">for</span> sublist <span class="kw">in</span> l <span class="cf">for</span> item <span class="kw">in</span> sublist] <span class="co"># Helper function to flatten a list</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>flatten <span class="op">=</span> <span class="kw">lambda</span> l: [item <span class="cf">for</span> sublist <span class="kw">in</span> l <span class="cf">for</span> item <span class="kw">in</span> sublist] <span class="co"># Helper function to flatten a list</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
 </section>
 <section id="going-forward" class="level2">
@@ -368,13 +374,13 @@ Please download the Swe fastText model &amp; the CoViD FAQ data from links in th
 <h3 class="anchored" data-anchor-id="tokenization-lower-case">1. Tokenization &amp; lower-case</h3>
 <p>The first and forthmost improvement is to lowercase the text and then tokenize it using a better method of tokenization.<br>
 Let’s take a look at how <em>stanza</em> helps us out by applying a much better tokenization.</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>q <span class="op">=</span> <span class="st">"Hej där borta! Jag känner igen dig, Johan's kompis? Eller är det Johannas?"</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>q <span class="op">=</span> <span class="st">"Hej där borta! Jag känner igen dig, Johan's kompis? Eller är det Johannas?"</span></span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>stanza_tokenize <span class="op">=</span> <span class="kw">lambda</span> x: [token.text <span class="cf">for</span> sentence <span class="kw">in</span> nlp(x).sentences <span class="cf">for</span> token <span class="kw">in</span> sentence.tokens]</span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>prev <span class="op">=</span> q.split()</span>
 <span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>new <span class="op">=</span> stanza_tokenize(q)</span>
 <span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Previously:</span><span class="ch">\t</span><span class="sc">{</span>prev[:<span class="dv">12</span>]<span class="sc">}</span><span class="ss">.."</span>)</span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"After:</span><span class="ch">\t\t</span><span class="sc">{</span>new[:<span class="dv">12</span>]<span class="sc">}</span><span class="ss">.."</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"After:</span><span class="ch">\t\t</span><span class="sc">{</span>new[:<span class="dv">12</span>]<span class="sc">}</span><span class="ss">.."</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <pre><code>Previously: ['Hej', 'där', 'borta!', 'Jag', 'känner', 'igen', 'dig,', "Johan's", 'kompis?', 'Eller', 'är', 'det']..
 After:      ['Hej', 'där', 'borta', '!', 'Jag', 'känner', 'igen', 'dig', ',', 'Johan', "'", 's']..</code></pre>
 <p><strong>So, what are we looking at?</strong><br>
@@ -388,7 +394,7 @@ Yes! Keep calm and don’t jump the ship yet, the increased number of tokens wil
 <p><strong>Why is this good?</strong><br>
 Even though we see a direct increase in number of tokens we see a <strong>decrease</strong> of number of unique tokens because we now tokenize <em>borta</em>, <em>borta?</em>, &amp; <em>borta!</em> as the same token, with one additional for the punctuation in the two latter cases rather than 3 separate tokens which would map to different data.<br>
 The coverage of our Word Embeddings also increase because we now tokenize the text better. Perhaps <em>borta!</em> does not exist but <em>borta</em> surely do exist in the embedding dictionary / lookup.</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># A bit ugly, that's what happens when you're lazy</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># A bit ugly, that's what happens when you're lazy</span></span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> test_dimensions(preprocessing<span class="op">=</span>[stanza_tokenize]):</span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>    prev <span class="op">=</span> flatten(df[<span class="st">'question'</span>].<span class="bu">apply</span>(<span class="kw">lambda</span> x: x.split()).tolist())</span>
 <span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>    post <span class="op">=</span> flatten(df[<span class="st">'question'</span>].<span class="bu">apply</span>(<span class="kw">lambda</span> x: preprocess(x, preprocessing)).tolist())</span>
@@ -415,9 +421,9 @@ The coverage of our Word Embeddings also increase because we now tokenize the te
 <span id="cb9-25"><a href="#cb9-25" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> preprocess(text, preprocessing):</span>
 <span id="cb9-26"><a href="#cb9-26" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> f <span class="kw">in</span> preprocessing:</span>
 <span id="cb9-27"><a href="#cb9-27" aria-hidden="true" tabindex="-1"></a>        text <span class="op">=</span> f(text)</span>
-<span id="cb9-28"><a href="#cb9-28" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> text</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb9-28"><a href="#cb9-28" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> text</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Let’s take a look how much this actually mattered!</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>test_dimensions()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>test_dimensions()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <pre><code>Previously: 629 tokens (289 unique)
 Post: 713 tokens (273 unique)
 Token reduction by ~5.5 %</code></pre>
@@ -430,9 +436,9 @@ Token reduction by ~5.5 %</code></pre>
 <p>The expectations set up has been achieved and we can clearly see that the raw number of tokens grew while the unique token count shrinked.<br>
 Applying lower-case to the text will further reduce the number of unique tokens, and obviously keep the number of tokens at the same count.</p>
 <p>Let’s add lower-casing and see what happens!</p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>lowercase <span class="op">=</span> <span class="kw">lambda</span> x: x.lower()</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>lowercase <span class="op">=</span> <span class="kw">lambda</span> x: x.lower()</span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>preprocess_funcs <span class="op">=</span> [lowercase, stanza_tokenize]</span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>test_dimensions(preprocessing<span class="op">=</span>preprocess_funcs)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>test_dimensions(preprocessing<span class="op">=</span>preprocess_funcs)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <pre><code>Previously: 629 tokens (289 unique)
 Post: 712 tokens (260 unique)
 Token reduction by ~10.0 %</code></pre>
@@ -447,8 +453,8 @@ Token reduction by ~10.0 %</code></pre>
 <p>Going from 5.5 to 10 % reduction is nothing to sneeze at, by applying these two simple techniques we now have the same data in a better format which allows us to have a lower number of unique tokens.<br>
 Pretty awesome right?</p>
 <p>Let’s get on with this and apply the preprocessing to the questions and test it out with the FAQ-search!</p>
-<div class="sourceCode" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>df[<span class="st">'X'</span>] <span class="op">=</span> df[<span class="st">'question'</span>].<span class="bu">apply</span>(<span class="kw">lambda</span> x: preprocess(x, preprocess_funcs))</span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>df[<span class="st">'X'</span>].head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>df[<span class="st">'X'</span>] <span class="op">=</span> df[<span class="st">'question'</span>].<span class="bu">apply</span>(<span class="kw">lambda</span> x: preprocess(x, preprocess_funcs))</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>df[<span class="st">'X'</span>].head()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <pre><code>0                            [vad, är, coronavirus, ?]
 1                               [vad, är, covid-19, ?]
 2    [vad, skiljer, covid-19, från, säsongsinfluens...
@@ -461,21 +467,21 @@ Name: X, dtype: object</code></pre>
 <h3 class="anchored" data-anchor-id="testing-the-new-input-data">Testing the new input-data</h3>
 <p>Now that we’ve created our input data we need to test our model on this!<br>
 By applying the <code>IndexedList</code> which is the dataformat <code>SFE</code> wants as input we can train the model and then test it.</p>
-<div class="sourceCode" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>sfe_format <span class="op">=</span> IndexedList(df[<span class="st">'X'</span>].tolist())</span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>model.train(sfe_format)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>sfe_format <span class="op">=</span> IndexedList(df[<span class="st">'X'</span>].tolist())</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>model.train(sfe_format)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <pre><code>(75, 712)</code></pre>
-<div class="sourceCode" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Helper method to test the closest questions</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Helper method to test the closest questions</span></span>
 <span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> get_n_closest_questions(question, preprocessing, n<span class="op">=</span><span class="dv">4</span>):</span>
 <span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>    q_fixed <span class="op">=</span> preprocess(question, preprocessing)</span>
 <span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>    resp <span class="op">=</span> model.sv.similar_by_sentence(q_fixed, model<span class="op">=</span>model, indexable<span class="op">=</span>df[<span class="st">'question'</span>].tolist()) <span class="co"># [([tokens], score)]</span></span>
 <span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>    resp <span class="op">=</span> [<span class="ss">f'</span><span class="sc">{</span>result[<span class="dv">2</span>]<span class="sc">:.2f}</span><span class="ss">: </span><span class="sc">{</span>result[<span class="dv">0</span>]<span class="sc">}</span><span class="ss">'</span> <span class="cf">for</span> result <span class="kw">in</span> resp]</span>
-<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">'</span><span class="ch">\n</span><span class="st">'</span>.join(resp[:n]))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="sourceCode" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>get_n_closest_questions(<span class="st">"kan min hamster bli smittad?"</span>, preprocess_funcs)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">'</span><span class="ch">\n</span><span class="st">'</span>.join(resp[:n]))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>get_n_closest_questions(<span class="st">"kan min hamster bli smittad?"</span>, preprocess_funcs)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <pre><code>0.67: Kan man bli smittad av en person som har covid-19 men som inte har några symtom?
 0.63: Kan covid-19 smitta mellan djur och människa och kan mitt husdjur smittas av viruset?
 0.54: Kan viruset smitta till människa via post och paket?
 0.42: Kan smitta överföras från mygg till människa?</code></pre>
-<div class="sourceCode" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>get_n_closest_questions(<span class="st">"Hur får jag min son att förstå?"</span>, preprocess_funcs)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>get_n_closest_questions(<span class="st">"Hur får jag min son att förstå?"</span>, preprocess_funcs)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <pre><code>0.82: Hur pratar man med barn om det nya coronaviruset?
 0.80: Vad är covid-19?
 0.78: Hur sjuk blir man av covid-19?
@@ -506,18 +512,18 @@ By applying the <code>IndexedList</code> which is the dataformat <code>SFE</code
 <p>Stop-words are words we want to throw away as they add no real purpose. In older Machine Learning approaches it was way more important to add stop-words but in newer Deep Learning with Neural Networks stop-words often can be a negative thing, removing understanding of the sentence and perhaps minor differences which makes the world for understanding.</p>
 <p>A example of a stop-word list could be <code>["hej", "vem", "då", "och", ...]</code> which means that these words would be removed from a sentence.</p>
 <p>In our case it makes sense to remove words like ‘vad’, ‘varför’ and so on because the return of the FAQ seems to be very weighted towards these words.</p>
-<div class="sourceCode" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>nlp <span class="op">=</span> stanza.Pipeline(lang<span class="op">=</span><span class="st">'sv'</span>, processors<span class="op">=</span><span class="st">'tokenize,mwt,pos,lemma'</span>, logging_level<span class="op">=</span><span class="st">'ERROR'</span>)</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>nlp <span class="op">=</span> stanza.Pipeline(lang<span class="op">=</span><span class="st">'sv'</span>, processors<span class="op">=</span><span class="st">'tokenize,mwt,pos,lemma'</span>, logging_level<span class="op">=</span><span class="st">'ERROR'</span>)</span>
 <span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>stanza_lemma <span class="op">=</span> <span class="kw">lambda</span> x: [token.lemma <span class="cf">for</span> sentence <span class="kw">in</span> nlp(x).sentences <span class="cf">for</span> token <span class="kw">in</span> sentence.words]</span>
 <span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>preprocess_funcs_lemma <span class="op">=</span> [lowercase, stanza_lemma]</span>
 <span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'Previously:</span><span class="ch">\t</span><span class="sc">{</span>preprocess(<span class="st">"hur förklarar jag för min dotter och son?"</span>, preprocess_funcs)<span class="sc">}</span><span class="ss">'</span>)</span>
-<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'After:</span><span class="ch">\t\t</span><span class="sc">{</span>preprocess(<span class="st">"hur förklarar jag för min dotter och son?"</span>, preprocess_funcs_lemma)<span class="sc">}</span><span class="ss">'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'After:</span><span class="ch">\t\t</span><span class="sc">{</span>preprocess(<span class="st">"hur förklarar jag för min dotter och son?"</span>, preprocess_funcs_lemma)<span class="sc">}</span><span class="ss">'</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <pre><code>Previously: ['hur', 'förklarar', 'jag', 'för', 'min', 'dotter', 'och', 'son', '?']
 After:      ['hur', 'förklara', 'jag', 'för', 'jag', 'dotter', 'och', 'son', '?']</code></pre>
 <p><strong>Some interesting notes</strong><br>
 Seeing ‘<em>min</em>’ getting converted to ‘<em>jag</em>’ is both good and bad, in this case we reduce dimensionality of the problem but we loose context and understanding. <em>jag</em> and <em>min</em> certainly does not mean the same thing.</p>
 <p>Let’s see how it pans out…</p>
-<div class="sourceCode" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>test_dimensions(preprocess_funcs_lemma)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>test_dimensions(preprocess_funcs_lemma)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <pre><code>Previously: 629 tokens (289 unique)
 Post: 712 tokens (228 unique)
 Token reduction by ~21.1 %</code></pre>
@@ -527,19 +533,19 @@ Token reduction by ~21.1 %</code></pre>
 <figcaption>svg</figcaption>
 </figure>
 </div>
-<div class="sourceCode" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="kw">del</span> model</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="kw">del</span> model</span>
 <span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> uSIF(ft_wv, workers<span class="op">=</span><span class="dv">4</span>, lang_freq<span class="op">=</span><span class="st">"sv"</span>)</span>
 <span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>df[<span class="st">'X'</span>] <span class="op">=</span> df[<span class="st">'question'</span>].<span class="bu">apply</span>(<span class="kw">lambda</span> x: preprocess(x, preprocess_funcs_lemma))</span>
 <span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a>sfe_format <span class="op">=</span> IndexedList(df[<span class="st">'X'</span>].tolist())</span>
 <span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a>model.train(sfe_format)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a>model.train(sfe_format)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <pre><code>(75, 712)</code></pre>
-<div class="sourceCode" id="cb31"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>get_n_closest_questions(<span class="st">"kan min hamster bli smittad?"</span>, preprocess_funcs_lemma)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb31"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>get_n_closest_questions(<span class="st">"kan min hamster bli smittad?"</span>, preprocess_funcs_lemma)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <pre><code>0.75: Kan covid-19 smitta mellan djur och människa och kan mitt husdjur smittas av viruset?
 0.69: Hur smittar covid-19?
 0.68: Kan man smittas flera gånger av det nya coronaviruset?
 0.63: Smittar covid-19 via vatten och mat?</code></pre>
-<div class="sourceCode" id="cb33"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>get_n_closest_questions(<span class="st">"Hur får jag min son att förstå?"</span>, preprocess_funcs_lemma)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb33"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>get_n_closest_questions(<span class="st">"Hur får jag min son att förstå?"</span>, preprocess_funcs_lemma)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <pre><code>0.79: Vad är covid-19?
 0.75: Hur sjuk blir man av covid-19?
 0.74: Hur länge är man sjuk av covid-19?
@@ -557,7 +563,7 @@ Yes, we can see some pretty hefty memory-requirement reductions when working wit
 <section id="stop-words" class="level4">
 <h4 class="anchored" data-anchor-id="stop-words">Stop words</h4>
 <p>As promised we shall apply stop-words, but as we saw no performance gain with lemmatization we’ll keep the old tokenization.</p>
-<div class="sourceCode" id="cb35"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>stop_words <span class="op">=</span> get_stop_words(<span class="st">'sv'</span>)</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb35"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>stop_words <span class="op">=</span> get_stop_words(<span class="st">'sv'</span>)</span>
 <span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>clean_stop <span class="op">=</span> <span class="kw">lambda</span> x: [word <span class="cf">for</span> word <span class="kw">in</span> x <span class="cf">if</span> word <span class="kw">not</span> <span class="kw">in</span> stop_words]</span>
 <span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a>preprocessing_func_stop <span class="op">=</span> [lowercase, stanza_tokenize, clean_stop]</span>
 <span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a></span>
@@ -568,9 +574,9 @@ Yes, we can see some pretty hefty memory-requirement reductions when working wit
 <span id="cb35-9"><a href="#cb35-9" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb35-10"><a href="#cb35-10" aria-hidden="true" tabindex="-1"></a>model.train(sfe_format)</span>
 <span id="cb35-11"><a href="#cb35-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb35-12"><a href="#cb35-12" aria-hidden="true" tabindex="-1"></a>preprocess(<span class="st">"hur förklarar jag för min dotter och son?"</span>, preprocessing_func_stop)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb35-12"><a href="#cb35-12" aria-hidden="true" tabindex="-1"></a>preprocess(<span class="st">"hur förklarar jag för min dotter och son?"</span>, preprocessing_func_stop)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <pre><code>['förklarar', 'dotter', 'son', '?']</code></pre>
-<div class="sourceCode" id="cb37"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a>test_dimensions(preprocessing_func_stop)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb37"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a>test_dimensions(preprocessing_func_stop)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <pre><code>Previously: 629 tokens (289 unique)
 Post: 417 tokens (206 unique)
 Token reduction by ~28.7 %</code></pre>
@@ -580,12 +586,12 @@ Token reduction by ~28.7 %</code></pre>
 <figcaption>svg</figcaption>
 </figure>
 </div>
-<div class="sourceCode" id="cb39"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a>get_n_closest_questions(<span class="st">"kan min hamster bli smittad?"</span>, preprocessing_func_stop)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb39"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a>get_n_closest_questions(<span class="st">"kan min hamster bli smittad?"</span>, preprocessing_func_stop)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <pre><code>0.66: Kan man bli smittad av en person som har covid-19 men som inte har några symtom?
 0.64: Kan covid-19 smitta mellan djur och människa och kan mitt husdjur smittas av viruset?
 0.54: Kan viruset smitta till människa via post och paket?
 0.41: Kan smitta överföras från mygg till människa?</code></pre>
-<div class="sourceCode" id="cb41"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a>get_n_closest_questions(<span class="st">"Hur får jag min son att förstå?"</span>, preprocessing_func_stop)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb41"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a>get_n_closest_questions(<span class="st">"Hur får jag min son att förstå?"</span>, preprocessing_func_stop)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <pre><code>0.83: Vad är covid-19?
 0.83: Hur pratar man med barn om det nya coronaviruset?
 0.80: Hur sjuk blir man av covid-19?
@@ -606,12 +612,12 @@ Let’s figure out which words we should remove using the following steps (which
 <li>Find the most common words</li>
 <li>Remove the ones which does not give any greater value</li>
 </ol>
-<div class="sourceCode" id="cb43"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> collections <span class="im">import</span> Counter</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb43"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> collections <span class="im">import</span> Counter</span>
 <span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb43-3"><a href="#cb43-3" aria-hidden="true" tabindex="-1"></a>df[<span class="st">'X'</span>] <span class="op">=</span> df[<span class="st">'question'</span>].<span class="bu">apply</span>(<span class="kw">lambda</span> x: preprocess(x, preprocess_funcs))</span>
 <span id="cb43-4"><a href="#cb43-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb43-5"><a href="#cb43-5" aria-hidden="true" tabindex="-1"></a>counter <span class="op">=</span> Counter(flatten(df[<span class="st">'X'</span>].tolist()))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="sourceCode" id="cb44"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="bu">sorted</span>(counter.items(), key<span class="op">=</span><span class="kw">lambda</span> item: item[<span class="dv">1</span>], reverse<span class="op">=</span><span class="va">True</span>)[:<span class="dv">15</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb43-5"><a href="#cb43-5" aria-hidden="true" tabindex="-1"></a>counter <span class="op">=</span> Counter(flatten(df[<span class="st">'X'</span>].tolist()))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb44"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="bu">sorted</span>(counter.items(), key<span class="op">=</span><span class="kw">lambda</span> item: item[<span class="dv">1</span>], reverse<span class="op">=</span><span class="va">True</span>)[:<span class="dv">15</span>]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <pre><code>[('?', 75),
  ('covid-19', 28),
  ('vad', 25),
@@ -627,7 +633,7 @@ Let’s figure out which words we should remove using the following steps (which
  ('som', 12),
  ('är', 11),
  ('en', 11)]</code></pre>
-<div class="sourceCode" id="cb46"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a>stop_words <span class="op">=</span> [<span class="st">'?'</span>, <span class="st">'och'</span>, <span class="st">'jag'</span>, <span class="st">'i'</span>, <span class="st">'är'</span>, <span class="st">'en'</span>, <span class="st">'min'</span>, <span class="st">'?'</span>]</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb46"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a>stop_words <span class="op">=</span> [<span class="st">'?'</span>, <span class="st">'och'</span>, <span class="st">'jag'</span>, <span class="st">'i'</span>, <span class="st">'är'</span>, <span class="st">'en'</span>, <span class="st">'min'</span>, <span class="st">'?'</span>]</span>
 <span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a>clean_stop <span class="op">=</span> <span class="kw">lambda</span> x: [word <span class="cf">for</span> word <span class="kw">in</span> x <span class="cf">if</span> word <span class="kw">not</span> <span class="kw">in</span> stop_words]</span>
 <span id="cb46-3"><a href="#cb46-3" aria-hidden="true" tabindex="-1"></a>preprocessing_func_stop <span class="op">=</span> [lowercase, stanza_tokenize, clean_stop]</span>
 <span id="cb46-4"><a href="#cb46-4" aria-hidden="true" tabindex="-1"></a></span>
@@ -638,14 +644,14 @@ Let’s figure out which words we should remove using the following steps (which
 <span id="cb46-9"><a href="#cb46-9" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb46-10"><a href="#cb46-10" aria-hidden="true" tabindex="-1"></a>model.train(sfe_format)</span>
 <span id="cb46-11"><a href="#cb46-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-12"><a href="#cb46-12" aria-hidden="true" tabindex="-1"></a>preprocess(<span class="st">"hur förklarar jag för min dotter och son?"</span>, preprocessing_func_stop)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb46-12"><a href="#cb46-12" aria-hidden="true" tabindex="-1"></a>preprocess(<span class="st">"hur förklarar jag för min dotter och son?"</span>, preprocessing_func_stop)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <pre><code>['hur', 'förklarar', 'för', 'dotter', 'son']</code></pre>
-<div class="sourceCode" id="cb48"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a>get_n_closest_questions(<span class="st">"Hur får jag min son att förstå?"</span>, preprocessing<span class="op">=</span>preprocess_funcs)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb48"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a>get_n_closest_questions(<span class="st">"Hur får jag min son att förstå?"</span>, preprocessing<span class="op">=</span>preprocess_funcs)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <pre><code>0.83: Hur pratar man med barn om det nya coronaviruset?
 0.83: Vad är covid-19?
 0.80: Hur sjuk blir man av covid-19?
 0.79: Hur länge är man sjuk av covid-19?</code></pre>
-<div class="sourceCode" id="cb50"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a>get_n_closest_questions(<span class="st">"kan min hamster bli smittad?"</span>, preprocessing<span class="op">=</span>preprocess_funcs)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb50"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a>get_n_closest_questions(<span class="st">"kan min hamster bli smittad?"</span>, preprocessing<span class="op">=</span>preprocess_funcs)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <pre><code>0.66: Kan man bli smittad av en person som har covid-19 men som inte har några symtom?
 0.63: Kan covid-19 smitta mellan djur och människa och kan mitt husdjur smittas av viruset?
 0.54: Kan viruset smitta till människa via post och paket?
@@ -718,13 +724,14 @@ Let’s figure out which words we should remove using the following steps (which
       e.clearSelection();
     }
     const getTextToCopy = function(trigger) {
-        const codeEl = trigger.previousElementSibling.cloneNode(true);
-        for (const childEl of codeEl.children) {
-          if (isCodeAnnotation(childEl)) {
-            childEl.remove();
-          }
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
         }
-        return codeEl.innerText;
+      }
+      return codeEl.innerText;
     }
     const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
       text: getTextToCopy
