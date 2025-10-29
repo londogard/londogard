@@ -9,15 +9,15 @@ I know I've been praising `polars` a lot lately, and I'm still in love. `polars`
 
 However, when you work with Deep Learning and multi-modal data you need something to take the data from your Delta Lake, or wherever you store your data, and supply it to the model. That's where tools like `daft` can shine.
 
-This Data Loading and Processing steps needs to be highly optimized to utilize the underlying compute optimally, not wasting $$ on unused GPU's. The jobs should keep a high % utilization and not be bound by I/O or CPU.
+These Data Loading and Processing steps need to be highly optimized to utilize the underlying compute optimally, not wasting $$ on unused GPU's. The jobs should keep a high % utilization and not be bound by I/O or CPU.
 In other words: _you want to always have data ready when the GPU has time to process more data_.
 
 There's a lot of tools to do the job, I'll go through a few of them in upcoming blogs with a simple yet common workload: _Image Classification_. Image Classification is simple but the data can quickly grow large to not fit in-memory anymore. 
 
 1. Can't fit in-memory => I/O needs to be optimized
-2. Expensive transforms & augmenations => CPU needs to be optimized
+2. Expensive transforms & augmentations => CPU needs to be optimized
 
-An even better example would be _Object Detection_ as it has ragged (variable) dimensions, i.e. one image has 2 people and another as 1, but it's a bit more complex data processing. I'll include this in my next blog where I give "recipes" on how to use Daft.
+An even better example would be _Object Detection_ as it has ragged (variable) dimensions, i.e. one image has 2 people and another has 1, but it's a bit more complex data processing. I'll include this in my next blog where I give "recipes" on how to use Daft.
 
 Finally, this blog will be quite brief and not as in-depth as I hoped, but there'll be more blogs coming later!
 
@@ -44,13 +44,13 @@ I'll share my experience and implementations below!
 
 ## Reading Data
 
-Like most modern project _daft_ includes a smooth integration to _Apache Arrow_.
+Like most modern projects _daft_ includes a smooth integration to _Apache Arrow_.
 
 > Apache Arrow is "The universal columnar format and multi-language toolbox for fast data interchange and in-memory analytics"
 
-The Arrow integration gives _daft_ multiple ways in to read a dataset, and the dataset doesn't even have to be in-memory because of the Arrow data structure which can easily be stream "memory-map-mode" (`mmap`).
+The Arrow integration gives _daft_ multiple ways to read a dataset, and the dataset doesn't even have to be in-memory because of the Arrow data structure which can easily be streamed via "memory-map-mode" (`mmap`).
 
-To "read" a Arrow table you simply call `from_arrow`, as I do below reading a HuggingFace Datasets Arrow Table.
+To "read" an Arrow table you simply call `from_arrow`, as I do below reading a HuggingFace Datasets Arrow Table.
 
 ```python
 ds_train = daft.from_arrow(ds["train"].data.table)
@@ -113,7 +113,7 @@ With all this available we're good to go for a Deep Learning training pipeline!
 
 ## Producing a PyTorch Dataset
 
-The final part of our pipeline is to move the data into `torch.Tensor`. There's one big gotcha - don't apply `num_workers` as _daft_ already apply multi-thread/processing optimizations!
+The final part of our pipeline is to move the data into `torch.Tensor`. There's one big gotcha - don't apply `num_workers` as _daft_ already applies multi-thread/processing optimizations!
 
 ```python
 ds_train = ds_train.to_torch_iter_dataset()
