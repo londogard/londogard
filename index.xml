@@ -10,7 +10,56 @@
 <atom:link href="https://blog.londogard.com/index.xml" rel="self" type="application/rss+xml"/>
 <description>A blog which majorly focuses on Data Science, Data Engineering and sometimes Kotlin / Scala.</description>
 <generator>quarto-1.8.25</generator>
-<lastBuildDate>Wed, 22 Oct 2025 00:00:00 GMT</lastBuildDate>
+<lastBuildDate>Wed, 29 Oct 2025 00:00:00 GMT</lastBuildDate>
+<item>
+  <title>AWS Sagemaker Bring-Your-Own-Container (BYOC) with Pixi</title>
+  <dc:creator>Hampus Londögård</dc:creator>
+  <link>https://blog.londogard.com/posts/2025-10-29-til-pixi-aws-sagemaker-byoc/</link>
+  <description><![CDATA[ 
+
+
+
+
+
+<p>To run your own container in AWS Sagemaker (Training Job) it’s required to have <code>mamba</code>. So how would you use <code>pixi</code> instead?</p>
+<p>It’s quite straight-forward, <strong>first add <code>micromamba</code> as part of your dependencies in <code>pixi.toml</code></strong>. Then you update your docker to something like this:</p>
+<pre class="docker"><code>FROM --platform=linux/amd64 ghcr.io/pixi
+
+COPY pixi.toml pixi.lock ./
+
+ENV PIP_DEFAULT_TIMEOUT=360
+ENV UV_HTTP_TIMEOUT=360
+RUN pixi install --frozen # use .lock-file
+
+# === IMPORTANT PART ===
+# Link micromamba as mamba, to support AWS sagemaker
+# Replace &lt;default&gt; with the environment name you use
+
+# 1. link environments `micromamba` to `mamba`
+RUN ln -s /.pixi/envs/default/bin/micromamba /.pixi/envs/default/bin/mamba
+# 2. Add pixi to PATH
+ENV PATH="/.pixi/envs/default/bin:${PATH}"
+# 3. Add MAMBA_ROOT_PREFIX
+ENV MAMBA_ROOT_PREFIX=/.pixi
+
+# This isn't used by AWS but nice-to-have for local testing
+# RUN pixi shell-hook -e default &gt; /shell-hook.sh
+# RUN echo 'exec "$@"' &gt;&gt; /shell-hook.sh
+# ENTRYPOINT ["/bin/bash", "/shell-hook.sh"]</code></pre>
+<p>This’ll create a Docker image that’s usable inside AWS Sagemaker and let you keep using <code>pixi</code> throughout your whole dev-cycle, remote and local!</p>
+<p>Perhaps there’s a easier way, if you know one please share in comments below! 👇</p>
+<p>That’s it for now,<br>
+~Hampus Londögård</p>
+
+
+
+ ]]></description>
+  <category>python</category>
+  <category>aws</category>
+  <category>sagemaker</category>
+  <guid>https://blog.londogard.com/posts/2025-10-29-til-pixi-aws-sagemaker-byoc/</guid>
+  <pubDate>Wed, 29 Oct 2025 00:00:00 GMT</pubDate>
+</item>
 <item>
   <title>Pixi - A year later</title>
   <dc:creator>Hampus Londögård</dc:creator>
@@ -4148,172 +4197,6 @@ font-style: inherit;"># runs Solara App</span></span></code></pre></div></div>
  ]]></description>
   <category>TIL</category>
   <guid>https://blog.londogard.com/posts/2024-02-22-stlite/</guid>
-  <pubDate>Sun, 18 Feb 2024 00:00:00 GMT</pubDate>
-</item>
-<item>
-  <title>TIL: Building Docker Images with Conda and Custom Users (and devcontainers!)</title>
-  <dc:creator>Hampus Londögård</dc:creator>
-  <link>https://blog.londogard.com/posts/2024-02-18-docker-build.html</link>
-  <description><![CDATA[ 
-
-
-
-
-
-<p>When building Docker containers there’s a few things to clarify:</p>
-<ol type="1">
-<li>You’re building something layer by layer</li>
-<li>Things you do in Docker is not kept in <code>docker run</code> unless you specify it through special commands.
-<ul>
-<li>That is, it isn’t a stateful operation to run <code>RUN conda activate highlights</code>.</li>
-</ul></li>
-<li>Docker can be run as multiple users, but is built by default as <code>root</code></li>
-<li>The original container X, <code>FROM X</code>, can have an environment with magic enabled</li>
-</ol>
-<p>I found a few problems based on all this when trying to deploy my Solara application using Docker.</p>
-<ol type="1">
-<li><code>conda</code> path is not enabled by default, even if I modified <code>.bashrc</code>.</li>
-<li>User permissions where not available, i.e.&nbsp;I wasn’t allowed to create folders.</li>
-<li><code>devcontainer</code> as base image added a “default user” called <code>vscode</code>.</li>
-</ol>
-<p>Let’s go through each one step-by-step!</p>
-<section id="problem-1.-enabling-conda-in-docker-run-.." class="level2">
-<h2 class="anchored" data-anchor-id="problem-1.-enabling-conda-in-docker-run-..">Problem 1. Enabling <code>conda</code> in <code>docker run ..</code></h2>
-<p>When running <code>docker run</code> no shell is applied by default. Additionally Docker defaults to <code>/bin/sh</code> because <code>bash</code> is not available in all images. This means that <code>.bashrc</code> modifications and similar <strong>not applied</strong> when starting your container!</p>
-<p>There’s a few ways to make the <code>conda env</code> available by default in your shell, I opted for what I found simplest - modifying <code>$PATH</code>.</p>
-<p>See the following edit in <code>Dockerfile</code></p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><span class="ex" style="color: null;
-background-color: null;
-font-style: inherit;">ENV</span> PATH /opt/conda/envs/<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">&lt;</span>ENV_NAME<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">&gt;</span>/bin/:<span class="va" style="color: #111111;
-background-color: null;
-font-style: inherit;">$PATH</span></span></code></pre></div></div>
-<p>Through this when my <code>CMD</code> I can call <code>solara run</code> (<code>solara</code> is a python library available in my env).</p>
-</section>
-<section id="problem-2.-enabling-permission-to-do-os-changes-e.g.-os.mkdir" class="level2">
-<h2 class="anchored" data-anchor-id="problem-2.-enabling-permission-to-do-os-changes-e.g.-os.mkdir">Problem 2. Enabling permission to do OS changes, e.g.&nbsp;<code>os.mkdir</code></h2>
-<p>As mentioned Docker is built using <code>root</code> user. From my understanding it is later run as any user depending on how you can <code>docker run</code>, this can deactivate capabilities to modify os. One such capability that I use is to run <code>mkdir</code> and creating files.</p>
-<p>The simplest solution I found was to:</p>
-<ol type="1">
-<li>Create a new user
-<ul>
-<li>For HuggingFace spaces it’s ID should be set as <code>-u 1000</code></li>
-</ul></li>
-<li>Allow new user to control the folder where you app resides <code>COPY --chown=user</code></li>
-<li>Default to running as <code>user</code> (<code>USER user</code>)</li>
-</ol>
-<p>In a Dockerfile it ends up as follows.</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode dockerfile code-with-copy"><code class="sourceCode dockerfile"><span id="cb2-1"><span class="kw" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">RUN</span> <span class="ex" style="color: null;
-background-color: null;
-font-style: inherit;">useradd</span> <span class="at" style="color: #657422;
-background-color: null;
-font-style: inherit;">-m</span> <span class="at" style="color: #657422;
-background-color: null;
-font-style: inherit;">-u</span> 1000 user</span>
-<span id="cb2-2"><span class="kw" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">USER</span> user</span>
-<span id="cb2-3"></span>
-<span id="cb2-4"><span class="kw" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">COPY</span> <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">--chown=user</span> . /app</span>
-<span id="cb2-5">...</span></code></pre></div></div>
-<p>Voila! That should make it work!</p>
-<p>…unless you have a weird base-image that modifies the OS, i.e.&nbsp;<code>devcontainer</code> as base-image. More about this in the section below! 👇</p>
-</section>
-<section id="problem-3.-vscode-user" class="level2">
-<h2 class="anchored" data-anchor-id="problem-3.-vscode-user">Problem 3. vscode user</h2>
-<p>I mentioned that my base-image, <code>FROM mcr.microsoft.com/vscode/devcontainers/miniconda:latest</code>, there already is a user on <code>id=1000</code>. This user is apparently called <code>vscode</code>!</p>
-<blockquote class="blockquote">
-<p>I found this by running <code>docker run -it &lt;img_name&gt; /bin/bash</code> and grokking around in the terminal.</p>
-</blockquote>
-<p>This was a huge blocker for me and took a long while to understand. To enable my deployment I instead of creating a custom user hijacked the existing user <code>vscode</code>. See the final <code>Dockerfile</code>.</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode dockerfile code-with-copy"><code class="sourceCode dockerfile"><span id="cb3-1"><span class="kw" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">FROM</span> mcr.microsoft.com/vscode/devcontainers/miniconda:latest</span>
-<span id="cb3-2"></span>
-<span id="cb3-3"><span class="kw" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">USER</span> vscode</span>
-<span id="cb3-4"></span>
-<span id="cb3-5"><span class="kw" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">COPY</span> <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">--chown=vscode</span> . /app</span>
-<span id="cb3-6"><span class="kw" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">WORKDIR</span> /app</span>
-<span id="cb3-7"></span>
-<span id="cb3-8"><span class="kw" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">RUN</span> <span class="ex" style="color: null;
-background-color: null;
-font-style: inherit;">conda</span> env create <span class="at" style="color: #657422;
-background-color: null;
-font-style: inherit;">-f</span> env.yml</span>
-<span id="cb3-9"><span class="kw" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">RUN</span> <span class="ex" style="color: null;
-background-color: null;
-font-style: inherit;">conda</span> clean <span class="at" style="color: #657422;
-background-color: null;
-font-style: inherit;">-a</span> <span class="at" style="color: #657422;
-background-color: null;
-font-style: inherit;">-y</span></span>
-<span id="cb3-10"><span class="kw" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">RUN</span> <span class="ex" style="color: null;
-background-color: null;
-font-style: inherit;">conda</span> init</span>
-<span id="cb3-11"></span>
-<span id="cb3-12"><span class="kw" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">EXPOSE</span> 8765</span>
-<span id="cb3-13"></span>
-<span id="cb3-14"><span class="kw" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">ENV</span> PATH /opt/conda/envs/highlights/bin/:$PATH</span>
-<span id="cb3-15"></span>
-<span id="cb3-16"><span class="kw" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">CMD</span> [<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"solara"</span>, <span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"run"</span>, <span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"sol_app.py"</span>, <span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"--host=0.0.0.0"</span>]</span></code></pre></div></div>
-<p>And that makes everything work!</p>
-
-
-</section>
-
- ]]></description>
-  <category>TIL</category>
-  <guid>https://blog.londogard.com/posts/2024-02-18-docker-build.html</guid>
   <pubDate>Sun, 18 Feb 2024 00:00:00 GMT</pubDate>
 </item>
 </channel>
