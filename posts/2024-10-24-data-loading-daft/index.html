@@ -280,13 +280,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <p>I know I’ve been praising <code>polars</code> a lot lately, and I’m still in love. <code>polars</code> will be my continued go-to library for Data Analysis of Tabular data, and when building ETL (data pipelines) in 99% of the cases.</p>
 <p>However, when you work with Deep Learning and multi-modal data you need something to take the data from your Delta Lake, or wherever you store your data, and supply it to the model. That’s where tools like <code>daft</code> can shine.</p>
-<p>This Data Loading and Processing steps needs to be highly optimized to utilize the underlying compute optimally, not wasting $$ on unused GPU’s. The jobs should keep a high % utilization and not be bound by I/O or CPU. In other words: <em>you want to always have data ready when the GPU has time to process more data</em>.</p>
+<p>These Data Loading and Processing steps need to be highly optimized to utilize the underlying compute optimally, not wasting $$ on unused GPU’s. The jobs should keep a high % utilization and not be bound by I/O or CPU. In other words: <em>you want to always have data ready when the GPU has time to process more data</em>.</p>
 <p>There’s a lot of tools to do the job, I’ll go through a few of them in upcoming blogs with a simple yet common workload: <em>Image Classification</em>. Image Classification is simple but the data can quickly grow large to not fit in-memory anymore.</p>
 <ol type="1">
 <li>Can’t fit in-memory =&gt; I/O needs to be optimized</li>
-<li>Expensive transforms &amp; augmenations =&gt; CPU needs to be optimized</li>
+<li>Expensive transforms &amp; augmentations =&gt; CPU needs to be optimized</li>
 </ol>
-<p>An even better example would be <em>Object Detection</em> as it has ragged (variable) dimensions, i.e.&nbsp;one image has 2 people and another as 1, but it’s a bit more complex data processing. I’ll include this in my next blog where I give “recipes” on how to use Daft.</p>
+<p>An even better example would be <em>Object Detection</em> as it has ragged (variable) dimensions, i.e.&nbsp;one image has 2 people and another has 1, but it’s a bit more complex data processing. I’ll include this in my next blog where I give “recipes” on how to use Daft.</p>
 <p>Finally, this blog will be quite brief and not as in-depth as I hoped, but there’ll be more blogs coming later!</p>
 <section id="daft" class="level1">
 <h1>Daft</h1>
@@ -305,12 +305,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>I’ll share my experience and implementations below!</p>
 <section id="reading-data" class="level2">
 <h2 class="anchored" data-anchor-id="reading-data">Reading Data</h2>
-<p>Like most modern project <em>daft</em> includes a smooth integration to <em>Apache Arrow</em>.</p>
+<p>Like most modern projects <em>daft</em> includes a smooth integration to <em>Apache Arrow</em>.</p>
 <blockquote class="blockquote">
 <p>Apache Arrow is “The universal columnar format and multi-language toolbox for fast data interchange and in-memory analytics”</p>
 </blockquote>
-<p>The Arrow integration gives <em>daft</em> multiple ways in to read a dataset, and the dataset doesn’t even have to be in-memory because of the Arrow data structure which can easily be stream “memory-map-mode” (<code>mmap</code>).</p>
-<p>To “read” a Arrow table you simply call <code>from_arrow</code>, as I do below reading a HuggingFace Datasets Arrow Table.</p>
+<p>The Arrow integration gives <em>daft</em> multiple ways to read a dataset, and the dataset doesn’t even have to be in-memory because of the Arrow data structure which can easily be streamed via “memory-map-mode” (<code>mmap</code>).</p>
+<p>To “read” an Arrow table you simply call <code>from_arrow</code>, as I do below reading a HuggingFace Datasets Arrow Table.</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>ds_train <span class="op">=</span> daft.from_arrow(ds[<span class="st">"train"</span>].data.table)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>To “read” other formats from disk you simply use <code>read_(delta|csv|...)</code>, as below.</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> daft.read_deltalake(<span class="st">"some-table-uri"</span>) <span class="co"># read_(csv|parquet|json|...)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -353,7 +353,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="producing-a-pytorch-dataset" class="level2">
 <h2 class="anchored" data-anchor-id="producing-a-pytorch-dataset">Producing a PyTorch Dataset</h2>
-<p>The final part of our pipeline is to move the data into <code>torch.Tensor</code>. There’s one big gotcha - don’t apply <code>num_workers</code> as <em>daft</em> already apply multi-thread/processing optimizations!</p>
+<p>The final part of our pipeline is to move the data into <code>torch.Tensor</code>. There’s one big gotcha - don’t apply <code>num_workers</code> as <em>daft</em> already applies multi-thread/processing optimizations!</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>ds_train <span class="op">=</span> ds_train.to_torch_iter_dataset()</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">NOTE</span><span class="co">: don't apply num_workers even though PyTorch warns!</span></span>
