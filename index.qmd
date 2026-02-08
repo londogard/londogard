@@ -1,13 +1,38 @@
 ---
 title: "Londogard Blog"
 listing:
-  contents: posts
-  sort: "date desc"
-  type: default
-  categories: true
-  sort-ui: true
-  filter-ui: true
-  feed: true
+  - id: listing-posts
+    contents: posts
+    sort: "date desc"
+    type: default
+    categories: true
+    sort-ui: true
+    filter-ui: true
+    feed: true
+    page-size: 5
+    exclude:
+      categories: ["til"]
+  - id: listing-til
+    contents: posts
+    sort: "date desc"
+    type: table
+    categories: true
+    sort-ui: true
+    filter-ui: true
+    feed: true
+    include:
+      categories: ["TIL"]
 page-layout: full
 title-block-banner: true
 ---
+
+
+
+# Blogs
+::: {#listing-posts}
+:::
+
+# TIL's / Minis
+
+::: {#listing-til}
+:::

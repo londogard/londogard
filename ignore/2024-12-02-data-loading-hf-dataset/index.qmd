@@ -1,0 +1,47 @@
+---
+title: "Data Loading - HuggingFace Datasets"
+description: "Probably one of the easier and better 'getting-started' dataset libraries. It might not achieve the best results, but it's good enough and the simplicity is hard to beat!"
+categories: [hf-dataset, recipe]
+date: "2024-12-02"
+---
+
+In my previous [blog-post](/posts/2024-10-24-data-loading-daft/) I introduced Daft. Now I wish to introduce a new tool, and later I'll share both a comparison blog and recipes for both libraries on common tasks, such as Object Detection.
+
+## Loading From HuggingFace Datasets
+
+HuggingFace Datasets is one of the biggest dataset providers out there, integrating with them is something that is of great importance. Luckily it's easy!
+
+```python
+import datasets
+
+ds = datasets.load_dataset("detection-datasets/fashionpedia")
+```
+
+## Data Transforms
+
+HuggingFace Datasets comes with a lot of nice-to-haves, like being able to `.map` on all Datasets directly in one call.
+
+```python
+import albumentations as A
+import numpy as np
+
+PREPROCESS_TRANSFORMS = A.Compose(
+    [A.Resize(224, 244)],
+    bbox_params=A.BboxParams(format="pascal_voc", label_fields=["category"]),
+)
+
+AUGMENTATIONS = A.Compose([A.HorizontalFlip(p=0.1), A.VerticalFlip(p=0.1)])
+
+
+# test if we'd run batched mode and compare.
+def transform_images(data: dict) -> dict:
+    out = PREPROCESS_TRANSFORMS(
+        image=np.array(data["image"]),
+        bboxes=data["objects"]["bbox"],
+        category=data["objects"]["category"],
+    )
+    return out
+
+ds.map(transform_images, num_proc=4)
+```
+

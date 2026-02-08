@@ -1,0 +1,21 @@
+---
+title: "Recipe - Daft Image Classification"
+description: "A recipe on how to load data for Image Classification using Daft"
+categories: [daft, recipe]
+date: "2024-11-20"
+---
+
+In my previous [blog-post](/posts/2024-10-24-data-loading-daft/) I introduced Daft. Now I wish to share recipes on how to do some things.
+
+## Loading From HuggingFace Datasets
+
+HuggingFace Datasets is one of the biggest dataset providers out there, integrating with them is something that is of great importance. Luckily it's easy!
+
+```python
+import daft
+import datasets
+
+def load_from_hf_dataset() -> daft.DataFrame:
+    ds = datasets.load_dataset("detection-datasets/fashionpedia")
+    ds.table.arrow
+```
