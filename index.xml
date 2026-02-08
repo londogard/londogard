@@ -9,7 +9,7 @@
 <link>https://blog.londogard.com/</link>
 <atom:link href="https://blog.londogard.com/index.xml" rel="self" type="application/rss+xml"/>
 <description>A blog which majorly focuses on Data Science, Data Engineering and sometimes Kotlin / Scala.</description>
-<generator>quarto-1.8.25</generator>
+<generator>quarto-1.8.27</generator>
 <lastBuildDate>Wed, 29 Oct 2025 00:00:00 GMT</lastBuildDate>
 <item>
   <title>AWS Sagemaker Bring-Your-Own-Container (BYOC) with Pixi</title>
@@ -526,6 +526,275 @@ Hampus Londögård</p>
   <category>inference</category>
   <category>onnxruntime</category>
   <guid>https://blog.londogard.com/posts/2025-03-19-wasm-python-js-inference/</guid>
+  <pubDate>Wed, 19 Mar 2025 00:00:00 GMT</pubDate>
+</item>
+<item>
+  <title>Transformers.js.py accelerated on-device inference with Python WASM</title>
+  <dc:creator>Hampus Londögård</dc:creator>
+  <link>https://blog.londogard.com/posts/2025-03-25-trimesh-marimo-pr/</link>
+  <description><![CDATA[ 
+
+
+
+
+
+<p><a href="https://huggingface.co/docs/transformers.js/en/index">Transformers.js</a> is an ambitious project by HuggingFace to bring <em>transformers</em> to Web/JS and simplify inference on-device, running <code>onnxruntime-web</code> under-the-hood.<br>
+I’ve written blogs and apps with <code>onnxruntime-web</code><sup>1</sup>, and I must say - I’m a sucker for efficient on-device inference!</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://blog.londogard.com/posts/2025-03-25-trimesh-marimo-pr/image.png" class="img-fluid figure-img"></p>
+<figcaption>Marimo WASM App: Before/After Prediction</figcaption>
+</figure>
+</div>
+<p>Test it live <a href="https://marimo.io/p/@hlondogard/notebook-transformer-js-py-object-detection-wasm?show-code=false">here</a>, and yes it runs on your device in the browser!</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Embedded Live Demo (running on device, in browser)
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-1" class="callout-1-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>I’m not sure why the width can’t resolve itself, if you can’t use it try <a href="https://marimo.io/p/@hlondogard/notebook-transformer-js-py-object-detection-wasm?show-code=false">here</a>.</p>
+<iframe src="https://marimo.io/p/@hlondogard/notebook-transformer-js-py-object-detection-wasm?show-code=false&amp;embed=true" frameborder="0" width="100%" height="600px"></iframe>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>ONNX Runtime and <code>onnxruntime-web</code>
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-2" class="callout-2-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p><code>onnxruntime-web</code> helps run models efficiently directly in your browser (JS) through the default backend <em>WASM</em> (cpu).</p>
+<p>Additionally you can accelerate inference via GPU/NPU when swapping backend to either <code>WebGL</code>, <code>WebGPU</code>, or <code>WebNN</code>. I think this is really cool as we can now develop Progressive Web Apps (PWA) that accelerate their inference using a smartphones NPU - crazy!</p>
+<p>ONNX Runtime also supports many other ways to run inference, e.g.&nbsp;JVM, .NET, Python, and C++.</p>
+</div>
+</div>
+</div>
+<p>And recently I learned about a thin wrapper around <code>transformers.js</code>, namely <a href="https://github.com/whitphx/transformers.js.py">Transformers.js.py</a> that proxies the API to <a href="https://pyodide.org/en/stable/">Pyodide</a><sup>2</sup>.<br>
+Right below 👇 I share how to run Object Detection.</p>
+<section id="how-to-object-detection-inference" class="level2">
+<h2 class="anchored" data-anchor-id="how-to-object-detection-inference">How to: Object Detection Inference</h2>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>infer.py</strong></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-1" data-filename="infer.py" style="background: #f1f3f5;"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><a class="code-annotation-anchor" data-target-cell="annotated-cell-1" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-1-1" class="code-annotation-target"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">from</span> transformers_js_py <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> import_transformers_js, as_url</span>
+<span id="annotated-cell-1-2">transformers <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">await</span> import_transformers_js()</span>
+<span id="annotated-cell-1-3">pipeline <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> transformers.pipeline</span>
+<span id="annotated-cell-1-4"></span>
+<span id="annotated-cell-1-5">img <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"&lt;URL_OR_PATH_TO_AN_IMAGE&gt;"</span></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-1" data-target-annotation="2" onclick="event.preventDefault();">2</a><span id="annotated-cell-1-6" class="code-annotation-target">pipe <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">await</span> pipeline(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"object-detection"</span>)</span>
+<span id="annotated-cell-1-7"></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-1" data-target-annotation="3" onclick="event.preventDefault();">3</a><span id="annotated-cell-1-8" class="code-annotation-target">pred <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">await</span> pipe(as_url(img))</span>
+<span id="annotated-cell-1-9"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">print</span>(pred) <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># list of predictions [{"score": float, "label": str, "box": dict[str, int]}, ...]</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div></div>
+</div>
+<dl class="code-annotation-container-grid">
+<dt data-target-cell="annotated-cell-1" data-target-annotation="1">1</dt>
+<dd>
+<span data-code-cell="annotated-cell-1" data-code-lines="1,2,3" data-code-annotation="1">Import library and “import” <code>pipeline</code></span>
+</dd>
+<dt data-target-cell="annotated-cell-1" data-target-annotation="2">2</dt>
+<dd>
+<span data-code-cell="annotated-cell-1" data-code-lines="6" data-code-annotation="2">Set up <code>pipeline</code> object, downloading model and making things ready to run</span>
+</dd>
+<dt data-target-cell="annotated-cell-1" data-target-annotation="3">3</dt>
+<dd>
+<span data-code-cell="annotated-cell-1" data-code-lines="8" data-code-annotation="3">Run inference. <code>as_url</code> converts local/virtual files to a URL as <code>pipeline</code> object requires URL’s that can be opened in the JS context.</span>
+</dd>
+</dl>
+<p>I share how to customize the inference in Section&nbsp;3 and a full-fledged WebApp with on-device inference using Marimo in Section&nbsp;4</p>
+</section>
+<section id="why-transformer.js.py-pyodide" class="level2">
+<h2 class="anchored" data-anchor-id="why-transformer.js.py-pyodide">Why <code>transformer.js.py</code> + <code>pyodide</code></h2>
+<p>There’s a good question here: <em>why not run JS directly?</em><br>
+I don’t have a great answer, it’s all about trade-offs.</p>
+<p>JS enables “native” usage which likely works better in real-time applications, as it runs JS-&gt;WASM rather than WASM-&gt;JS-&gt;WASM.<br>
+What JS doesn’t have is a robust data science ecosystem, unlike Python. “Merging” the two through Pyodide makes sense, and further its fun! 🤓</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-3-contents" aria-controls="callout-3" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>A quick Pro/Con list of JS vs Pyodide
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-3" class="callout-3-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p><strong>Why JS?</strong></p>
+<ul>
+<li><strong>Pros:</strong>
+<ul>
+<li>Faster / Realtime (as no WASM/JS communication)</li>
+<li>Native integration in webapps</li>
+</ul></li>
+<li><strong>Cons:</strong>
+<ul>
+<li>Not great data science tools</li>
+</ul></li>
+</ul>
+<p><strong>Why Python (Pyodide)?</strong></p>
+<ul>
+<li><strong>Pros:</strong>
+<ul>
+<li>Great ecosystem (PIL.Image, numpy, altair, polars, …)</li>
+<li>Familarity</li>
+<li>Simpler PoC UI tools available (marimo, streamlit, solara, jupyterlite)</li>
+</ul></li>
+<li><strong>Cons:</strong>
+<ul>
+<li>Overhead moving data from Pyodide (WASM) to JS
+<ul>
+<li>Hard to make realtime because of this</li>
+</ul></li>
+</ul></li>
+</ul>
+</div>
+</div>
+</div>
+</section>
+<section id="sec-usage" class="level2">
+<h2 class="anchored" data-anchor-id="sec-usage">Inference Customization</h2>
+<p>To select a specific model define the name as you build the pipeline.</p>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>infer_options.py</strong></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-2" data-filename="infer_options.py" style="background: #f1f3f5;"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><span id="annotated-cell-2-1">pipe <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">await</span> pipeline(</span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-2" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-2-2" class="code-annotation-target">  <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"object-detection"</span>, <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># task_name</span></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-2" data-target-annotation="2" onclick="event.preventDefault();">2</a><span id="annotated-cell-2-3" class="code-annotation-target">  <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Xenova/yolos-tiny"</span>, <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># model_name</span></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-2" data-target-annotation="3" onclick="event.preventDefault();">3</a><span id="annotated-cell-2-4" class="code-annotation-target">  {</span>
+<span id="annotated-cell-2-5">    dtype: <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"q4"</span>, <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># default "q8" for WASM.</span></span>
+<span id="annotated-cell-2-6">    device: <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"webgpu"</span>, <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># default "WASM" (cpu)</span></span>
+<span id="annotated-cell-2-7">    use_external_data_format: <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"false"</span> <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># default "false", set "true" to load &gt;= 2GB model</span></span>
+<span id="annotated-cell-2-8">  }</span>
+<span id="annotated-cell-2-9">)</span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div></div>
+</div>
+<dl class="code-annotation-container-grid">
+<dt data-target-cell="annotated-cell-2" data-target-annotation="1">1</dt>
+<dd>
+<span data-code-cell="annotated-cell-2" data-code-lines="2" data-code-annotation="1">Find all available tasks and their linked model-list <a href="https://huggingface.co/docs/transformers.js/index#tasks">here</a>.</span>
+</dd>
+<dt data-target-cell="annotated-cell-2" data-target-annotation="2">2</dt>
+<dd>
+<span data-code-cell="annotated-cell-2" data-code-lines="3" data-code-annotation="2">Find all available Object Detection models <a href="https://huggingface.co/models?pipeline_tag=object-detection&amp;library=transformers.js">here</a>.</span>
+</dd>
+<dt data-target-cell="annotated-cell-2" data-target-annotation="3">3</dt>
+<dd>
+<span data-code-cell="annotated-cell-2" data-code-lines="4,5,6,7,8" data-code-annotation="3">Find all options <a href="https://huggingface.co/docs/transformers.js/en/api/utils/hub#utilshubmodelspecificpretrainedoptions--code-object-code">here</a> and <a href="https://huggingface.co/docs/transformers.js/en/api/utils/hub#utilshubmodelspecificpretrainedoptions--code-object-code">here</a>.</span>
+</dd>
+</dl>
+<p>Simple right?<br>
+I’m continuously impressed by how far we’ve gotten. On-device inference, even with acceleration, is a painless thing today. If you want simplicity I recommend <code>web</code> and otherwise to use the <em>mobile</em>/<em>native</em> releases or alternatively <a href="https://ai.google.dev/edge/litert">LiteRT</a> (previously TFLite).</p>
+<p>What’s left?<br>
+Improving the JS data science ecosystem, for now I prefer Pyodide because of the vast ecosystem. Though I’d like to congratulate <code>transformers.js</code> at successfully making inference simple for people who simply wants a blackbox. Personally I usually want to work with data before/after inference which requires better tools that Pyodide provides.</p>
+</section>
+<section id="sec-marimo" class="level2">
+<h2 class="anchored" data-anchor-id="sec-marimo">WASM App using Marimo</h2>
+<p>If you’ve read my blog you know I recently discovered <a href="https://marimo.io/">Marimo</a>, and as always with new tools you try to use them, perhaps a bit too much, whenever you can.<br>
+I thought I’d give it a shot to integrate with <code>transformer.js.py</code> and run the inference fully on-device with WASM.<br>
+It’s certainly not real-time, but ~5 seconds per image is OK I’d say.</p>
+<div id="fig-infernce" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-infernce-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="quarto-video"><video id="video_shortcode_videojs_video1" class="video-js vjs-default-skin vjs-fluid" controls="" preload="auto" data-setup="{}" title=""><source src="on-device-preds.mp4"></video></div>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-infernce-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1: Marimo WASM App running inference on two images.
+</figcaption>
+</figure>
+</div>
+<p>All in all I think this approach is quite neat and could provide very useful, especially for Proof-of-Concepts or Internal Tooling.</p>
+<p>Run the app yourself via my <a href="https://marimo.io/p/@hlondogard/notebook-transformer-js-py-object-detection-wasm?show-code=false">marimo.io WASM notebook</a>. Show the code by clicking the three dots in top-right corner.</p>
+<p>Thanks for this time,<br>
+Hampus Londögård</p>
+
+
+</section>
+
+
+<div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
+
+<ol>
+<li id="fn1"><p>through JS / KotlinJS perspective↩︎</p></li>
+<li id="fn2"><p>Pyodide is CPython port to WASM, enabling Python running directly in the browser↩︎</p></li>
+</ol>
+</section></div> ]]></description>
+  <category>python</category>
+  <category>wasm</category>
+  <category>js</category>
+  <category>inference</category>
+  <category>onnxruntime</category>
+  <guid>https://blog.londogard.com/posts/2025-03-25-trimesh-marimo-pr/</guid>
   <pubDate>Wed, 19 Mar 2025 00:00:00 GMT</pubDate>
 </item>
 <item>
@@ -4161,42 +4430,6 @@ font-style: inherit;"># runs Solara App</span></span></code></pre></div></div>
  ]]></description>
   <category>TIL</category>
   <guid>https://blog.londogard.com/posts/2024-02-18-git-remote.html</guid>
-  <pubDate>Sun, 18 Feb 2024 00:00:00 GMT</pubDate>
-</item>
-<item>
-  <title>TIL: Stlite - running streamlit in WASM through b64-encoded URL’s</title>
-  <dc:creator>Hampus Londögård</dc:creator>
-  <link>https://blog.londogard.com/posts/2024-02-22-stlite/</link>
-  <description><![CDATA[ 
-
-
-
-
-
-<p><strong>Amazing one-off tools deployed as a URL that embeds a WASM app is officially here! 🤯</strong></p>
-<p>Wow, that was a mouthful! There’s a mini-breakdown of the tech utilized to enable this at the bottom.👇</p>
-<p>What does this mean? It means that I can build assistive apps that has the following properties:</p>
-<ol type="1">
-<li>Deplyed as a URL - <strong>no server, no nothing</strong>, simply share away 🦸</li>
-<li>Runs completely inside browser, on the user-device 💻</li>
-<li>Requires NO developer or developer environment to run! 😇</li>
-</ol>
-<p>This is what I call truly Serverless! Because code and everything is embedded in the URL and runs inside a contained environemnt in the browser it cannot be simpler to share one-off tools! I’m excited to utilize this a lot more to enable my colleagues in sister-teams!</p>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="https://blog.londogard.com/posts/2024-02-22-stlite/sample.jpeg" class="img-fluid figure-img"></p>
-<figcaption>Sample image of internal app I made</figcaption>
-</figure>
-</div>
-<p>Here is a URL for a tool that does real-time image processing <strong>in the browser</strong>: <a href="https://edit.share.stlite.net/?sampleAppId=realtime_image_processing">stlite.net</a>! Here’s where you can work inside the browser to build a script: <a href="https://edit.share.stlite.net/">edit.share.stlite.net</a>.</p>
-<p><strong>Tech breakdown that enables everything:</strong> 1. Emscripten/WASM enables C code running efficiently in the browser 2. Pyodide is a cPython port to Emscripten/WASM that works brilliantly, including micropip that enables a bunch of libraries 3. Stlite is a Streamlit port to Pyodide (with few caveats)</p>
-<p>P.S. I heard that Solara is potentially working on the same functionality natively 😉</p>
-
-
-
- ]]></description>
-  <category>TIL</category>
-  <guid>https://blog.londogard.com/posts/2024-02-22-stlite/</guid>
   <pubDate>Sun, 18 Feb 2024 00:00:00 GMT</pubDate>
 </item>
 </channel>
