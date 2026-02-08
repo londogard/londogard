@@ -11,3 +11,5 @@ site_libs/
 .env.production.local
 
 /.luarc.json
+
+**/*.quarto_ipynb

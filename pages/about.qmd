@@ -21,13 +21,27 @@ about:
 
 At Londogard we find order in chaos by creating structures and understanding out of unstructured data. Our belief is that by creating understanding of data new possibilities open up and a lot of automation is possible where today manual tedious work is applied.
 
-Our goal is to employ Machine Learning models that makes sense and provide value rather than being made to tick of a check-box. The aim is to provide **Efficient, Performant, Measurable & Understandable** models.
+Our goal is to deploy Machine Learning models that makes sense and provide value rather than being made to tick of a check-box. The aim is to provide **Efficient[^1], Performant[^2], Measurable[^3] & Understandable[^4]** models.
 
-1. _Efficient_ should truly run on a single small machine (the edge).  
-2. _Performant_ achieving very close to State-of-the-Art performance, striking a good balance of performance & efficiency.  
-3. _Measurable_ in a way that makes sense for your personal use-case. Not some random metrics.  
-4. _Understandable_ to the level where you understand why a prediction was made as it was.
+[^1]: _Efficient_ should truly run on a single small machine (the edge).  
+[^2]: _Performant_ achieving very close to State-of-the-Art performance, striking a good balance of performance & efficiency.  
+[^3]: _Measurable_ in a way that makes sense for your personal use-case. Not random metrics that no-one understands and doesn't map to real-world performance.  
+[^4]: _Understandable_ to the level where you understand why a prediction was made as it was.
 
-Through our blog & demos we try to show-case powerful models that all run on the same single Raspberry Pi 4 (4GB)
+Through our blog & demos we try to share powerful models and concepts that we find interesting or exciting!
 
-Email us @ dev@londogard.com
+## Who are we?
+
+::: {layout-ncol=2}
+# Hampus Londögård
+_Senior Machine Learning Engineer & AI Cloud Lead  @ Verisure_   
+Have worked with multiple technologies across the Data & AI space. Currently enjoying working with highly efficient local tools such as Polars and training models using PyTorch.
+
+# Dennis Londögård
+_Software Developer (Big Data)  @ Apple via AFRY_   
+Has worked a lot with Scala, both backend (Play) and Data (Apache Spark).
+:::
+
+## Contact us
+
+See social buttons or email us at [dev@londogard.com](mailto:dev@londogard.com).

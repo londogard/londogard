@@ -1,38 +1,24 @@
 ---
 title: "Londogard Blog"
 listing:
-  - id: listing-posts
-    contents: posts
-    sort: "date desc"
-    type: default
-    categories: true
-    sort-ui: true
-    filter-ui: true
-    feed: true
-    page-size: 5
-    exclude:
-      categories: ["til"]
-  - id: listing-til
-    contents: posts
-    sort: "date desc"
-    type: table
-    categories: true
-    sort-ui: true
-    filter-ui: true
-    feed: true
-    include:
-      categories: ["TIL"]
+  id: sample-listings
+  contents: posts
+  sort: "date desc"
+  type: default
+  categories: true
+  sort-ui: true
+  filter-ui: true
+  feed: true
 page-layout: full
 title-block-banner: true
 ---
 
+# Londogard AB
 
+Read more about us in [About](pages/about.qmd).
+
+In here we share our work and exciting side-projects!
 
 # Blogs
-::: {#listing-posts}
-:::
-
-# TIL's / Minis
-
-::: {#listing-til}
+::: {#sample-listings}
 :::
