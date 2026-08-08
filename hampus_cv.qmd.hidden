@@ -42,13 +42,13 @@ format:
 
 I’m passionate about transforming ML and data R&D into real products. By combining software engineering with data science, I help build robust systems grounded in MLOps and DataOps principles. This help the team ship safer iterations faster and focus on high-impact outcomes.
 
-Since my university days I’ve loved enabling others through mentoring, better tooling (developer experience), and knowledge sharing. That motivation has grown over time, and I’m now looking for a Lead/Manager role (again) where I can help foster a great team dynamic that balances research with engineering and trust.
+Since my university days I’ve loved enabling others through mentoring & knowledge sharing, tooling (developer experience), and strategy. That motivation has grown over time, and I’m now looking for a role where I can impact the platform/infrastructure and tooling the teams use and how they work in a safe but fast pace keeping engineering principles at top. 
 
 **Core strengths**
 
 - R&D → production: turning prototypes into reliable, maintainable systems with clear ownership
-- ML platforms & applied ML: data infrastructure, CV/time-series/NLP, deployment and operationalization
-- Engineering leadership: team lead, hiring, mentoring, and stakeholder alignment
+- ML platforms & MLOps: data infrastructure, training/inference pipelines, deployment, and operationalization
+- Technical leadership: architecture, mentoring, cross-functional collaboration, and stakeholder alignment
 
 ### Other Experiences
 
@@ -97,6 +97,7 @@ Snowflake[^7], Databricks[^8], Azure[^9], AICenter[^10], Scaled Agile Inc.[^11],
 - **2024-08- | Senior ML Engineer & Cloud ML Lead**  
   - Leading the AWS Cloud ML approach and integrating scalable cloud solutions (real-time inference and high-scale data infrastructure).
   - Within the AI team: leading the privacy-aware data collection initiative and owning the data infrastructure enabling GDPR compliance and anonymization.
+  - Note-worthy achievements: Data Versioning, Half Compute Cost (GPU utilization optimizations), GDPR compliance, Synthetic Data Generation, CICD, Docker Image improvement (1/3rd of size), and more.
 
 **Technologies**: Python, Delta Lake, PyTorch, TensorFlow, ONNX, Keras, AWS, IaC, Azure, MLFlow, Docker, Kubernetes, Jenkins (CI/CD)
 
