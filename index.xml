@@ -10,7 +10,410 @@
 <atom:link href="https://blog.londogard.com/index.xml" rel="self" type="application/rss+xml"/>
 <description>A blog which majorly focuses on Data Science, Data Engineering and sometimes Kotlin / Scala.</description>
 <generator>quarto-1.10.18</generator>
-<lastBuildDate>Sat, 08 Aug 2026 00:00:00 GMT</lastBuildDate>
+<lastBuildDate>Thu, 13 Aug 2026 00:00:00 GMT</lastBuildDate>
+<item>
+  <title>Hot Tub (Balboa) + Home Assistant + ESP32 (M5Stack) = &lt;3</title>
+  <dc:creator>Hampus Londögård</dc:creator>
+  <link>https://blog.londogard.com/posts/2026-08-13-balboa-spa-home-assistant/</link>
+  <description><![CDATA[ 
+
+
+
+
+
+<p>One day I asked a chatbot how easy it would be to make my Balboa hot tub smart. Apparently: quite easy.</p>
+<p>A quick search turned up an existing GitHub repository (<a href="https://github.com/shomanjk/esp32_balboa_spa">shomanjk/esp32_balboa_spa</a>) that controls Balboa spas / hot tub over RS485 with an ESP32, and it supports my spa’s (Iva Idun) control board.</p>
+<p>Let’s take a step back: why do I want my spa to be smart?</p>
+<ol type="1">
+<li>Only heat the water when my solar cells produce energy (summer), and/or when electricity is cheap (winter).</li>
+<li>It’s fun, I can, and it impresses my wife &amp; kids.</li>
+</ol>
+<section id="hardware" class="level2">
+<h2 class="anchored" data-anchor-id="hardware">Hardware</h2>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://blog.londogard.com/posts/2026-08-13-balboa-spa-home-assistant/m5stack_device_test_infront_of_computer.jpg" class="img-fluid figure-img" style="width:50.0%"></p>
+<figcaption>Atom S3 Lite + Atomic RS485 Base stacked</figcaption>
+</figure>
+</div>
+<p>I landed on M5Stack, which is an impressive project (<a href="https://shop.m5stack.com/">shop</a>). These devices are like the Raspberry Pi of the ESP32 world, plug n’ play really. I bought the <a href="https://shop.m5stack.com/products/atoms3-lite-esp32s3-dev-kit">Atom S3 Lite</a> (ESP32-S3, 8 MB flash, no screen) with the <a href="https://docs.m5stack.com/en/atom/Atomic%20RS485%20Base">Atomic RS485 Base</a>, and they snap together.</p>
+<p>On my MacBook the device showed up as <code>/dev/cu.usbmodem101</code> after installing the CH34x/CH9102 drivers, and of I went!</p>
+</section>
+<section id="firmware-flashing" class="level2">
+<h2 class="anchored" data-anchor-id="firmware-flashing">Firmware &amp; flashing</h2>
+<p>I cloned the repo, installed PlatformIO (<code>uv pip install platformio</code>), and added an environment for the Atom S3 Lite. The interesting bits of <code>platformio.ini</code>:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode ini code-with-copy"><code class="sourceCode ini"><span id="cb1-1"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">[env:M5AtomS3Lite-tub]</span></span>
+<span id="cb1-2"><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">board </span><span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;"> esp32-s3-devkitc-1</span></span>
+<span id="cb1-3"><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">upload_speed </span><span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;"> </span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">115200</span></span>
+<span id="cb1-4"><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">build_flags </span><span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">=</span></span>
+<span id="cb1-5"><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">    '-DPRODUCTION'</span></span>
+<span id="cb1-6"><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">    '-DLOCAL_CONNECT'</span></span>
+<span id="cb1-7"><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">    '-DLOCAL_CLIENT'</span></span>
+<span id="cb1-8"><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">    '-DBRIDGE'</span></span>
+<span id="cb1-9"><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">    '-DARDUINO_USB_CDC_ON_BOOT</span><span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">1'</span></span>
+<span id="cb1-10"><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">    '-DARDUINO_USB_MODE</span><span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">1'</span></span>
+<span id="cb1-11"><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">    </span><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">; Atomic RS485 Base UART on AtomS3 Lite: RX=5, TX=6.</span></span>
+<span id="cb1-12"><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">    '-DTX485_Rx</span><span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">5'</span></span>
+<span id="cb1-13"><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">    '-DTX485_Tx</span><span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">6'</span></span>
+<span id="cb1-14"><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">    '-DAUTO_TX</span><span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">true'</span></span></code></pre></div></div>
+<p>The RS485 pins (RX=5, TX=6) and <code>AUTO_TX</code> come from the environment, not from <code>config.h</code>. I also added a <code>-ota</code> variant of the same env for future over-the-air updates (not used yet).</p>
+<p>In <code>src/config.h</code> the relevant settings are:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode c code-with-copy"><code class="sourceCode c"><span id="cb2-1"><span class="pp" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">#define MQTT_SERVER </span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"192.168.8.48"</span></span>
+<span id="cb2-2"><span class="pp" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">#define MQTT_PORT </span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1883</span></span>
+<span id="cb2-3"><span class="pp" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">#define MQTT_HA_TEMP_UNIT </span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"°C"</span></span>
+<span id="cb2-4"><span class="pp" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">#define GMT_OFFSET </span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">3600</span><span class="pp" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">       </span><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">// Swedish time (CET)</span></span>
+<span id="cb2-5"><span class="pp" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">#define DAYLIGHT_OFFSET </span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">3600</span></span>
+<span id="cb2-6"><span class="pp" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">#define AUTO_SYNC_PANEL_CLOCK </span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span></span></code></pre></div></div>
+<p>(WiFi credentials and the MQTT broker credentials, empty in my case, live in the same file.)</p>
+<p>Flashing was a breeze:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">pio</span> run <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">-e</span> M5AtomS3Lite-tub               <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># build the firmware</span></span>
+<span id="cb3-2"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">pio</span> run <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">-e</span> M5AtomS3Lite-tub <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">-t</span> uploadfs   <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># flash LittleFS (the web UI / PWA)</span></span>
+<span id="cb3-3"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">pio</span> run <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">-e</span> M5AtomS3Lite-tub <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">-t</span> upload     <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># flash the firmware over USB</span></span></code></pre></div></div>
+<p>My device was at IP 192.168.8.86, and accessible at the same IP.</p>
+</section>
+<section id="home-assistant-mqtt" class="level2">
+<h2 class="anchored" data-anchor-id="home-assistant-mqtt">Home Assistant &amp; MQTT</h2>
+<p>After verifying the web portal was reachable over WiFi, I connected the MQTT side. My Home Assistant runs as Docker on 192.168.8.48 (no add-ons), so I added Mosquitto (<code>eclipse-mosquitto:2</code>) as a separate container on the same host, with anonymous access on port 1883. I put the broker address into the firmware config, and shortly after boot the ESP32 reported “MQTT Connected” and Home Assistant auto-discovered the devices. The values showed up as nulls at first — which made sense, since the spa wasn’t wired up yet.</p>
+<div class="quarto-layout-panel" data-layout-ncol="2">
+<div class="quarto-layout-row">
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: flex-start;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://blog.londogard.com/posts/2026-08-13-balboa-spa-home-assistant/ha_controllers.png" class="img-fluid figure-img"></p>
+<figcaption>Home Assistant with the discovered spa controllers</figcaption>
+</figure>
+</div>
+</div>
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: flex-start;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://blog.londogard.com/posts/2026-08-13-balboa-spa-home-assistant/ha_simple_control_pane.png" class="img-fluid figure-img"></p>
+<figcaption>A simple control panel for the spa in Home Assistant</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="wiring-it-up-the-hard-part" class="level2">
+<h2 class="anchored" data-anchor-id="wiring-it-up-the-hard-part">Wiring it up (the “hard” part)</h2>
+<div class="quarto-layout-panel" data-layout-ncol="2">
+<div class="quarto-layout-row">
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: flex-start;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://blog.londogard.com/posts/2026-08-13-balboa-spa-home-assistant/balboa_viva_hot_tub_open_side_panel.webp" class="img-fluid figure-img"></p>
+<figcaption>The spa’s side panel opened up</figcaption>
+</figure>
+</div>
+</div>
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: flex-start;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://blog.londogard.com/posts/2026-08-13-balboa-spa-home-assistant/balboa_viva_hot_tub_control_board.webp" class="img-fluid figure-img"></p>
+<figcaption>The spa’s control board before splitting the cable and connecting to RS485</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<p>To keep both the spa’s control panel and the ESP32 on the main board’s bus I needed a Y-splitter. Everything here is on the low-voltage RS485 control bus, no mains involved.</p>
+<p>The Y-splitter is a Molex 2×2 connector. I cut it open and wired the pins to the Atomic RS485 Base’s screw terminals:</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Y-splitter pin</th>
+<th>Signal</th>
+<th>RS485 Base terminal</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td>+12 V</td>
+<td>DC24V</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td>B</td>
+<td>B</td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td>A</td>
+<td>A</td>
+</tr>
+<tr class="even">
+<td>4</td>
+<td>GND</td>
+<td>GND</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="it-works" class="level2">
+<h2 class="anchored" data-anchor-id="it-works">It works!</h2>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://blog.londogard.com/posts/2026-08-13-balboa-spa-home-assistant/status_portal.webp" class="img-fluid figure-img" style="width:50.0%"></p>
+<figcaption>The firmware /status page with live values</figcaption>
+</figure>
+</div>
+<p>Did it work? Yes, indeed it did! The ESP32 booted, the web portal was running powered by the RS-485, but no numbers were showing… Swapping the A &amp; B wires solved it: the RS485 polarity was reversed (a classic Balboa gotcha), and after the swap the firmware reported valid frames (<code>VALID_FRAMES_OK</code>) and locked the polarity. The spa started producing reasonable values e.g.&nbsp;setTemp 36 °C, Running, etc. on the built-in <code>/status</code> page.</p>
+<div id="fig-rs485-live" class="quarto-float quarto-figure quarto-figure-center anchored" style="width:50%">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-rs485-live-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="quarto-video"><video id="video_shortcode_videojs_video1" class="video-js vjs-default-skin vjs-big-play-centered vjs-fluid" controls="" preload="auto" data-setup="{}" title=""><source src="m5_stack_blinking_green_inside_hot_tub_control_board_rs485.mp4"></video></div>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-rs485-live-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1: The M5Stack blinking green on the RS485 bus.
+</figcaption>
+</figure>
+</div>
+<p>The final test: could I start the jets and change temperature from my laptop? From the web UI, oh yeah!</p>
+<div class="quarto-layout-panel" data-layout-ncol="2">
+<div class="quarto-layout-row">
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: flex-start;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://blog.londogard.com/posts/2026-08-13-balboa-spa-home-assistant/laptop_connected_to_m5stack_inside_hot_tub.jpg" class="img-fluid figure-img"></p>
+<figcaption>The web portal on my laptop</figcaption>
+</figure>
+</div>
+</div>
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: flex-start;">
+<div id="fig-remote" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-remote-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="quarto-video"><video id="video_shortcode_videojs_video2" class="video-js vjs-default-skin vjs-big-play-centered vjs-fluid" controls="" preload="auto" data-setup="{}" title=""><source src="remote_controlling_hot_tub.mp4"></video></div>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-remote-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2: Controlling the hot tub from my laptop.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="whats-next" class="level2">
+<h2 class="anchored" data-anchor-id="whats-next">What’s next</h2>
+<p>The whole point was heating on cheap energy: a Home Assistant automation that turns on the heater when solar production exceeds household usage (summer) or when the electricity price drops (winter). That’s the next part! :)</p>
+<p>~Hampus Londögård</p>
+
+
+</section>
+
+ ]]></description>
+  <category>iot</category>
+  <category>homeassistant</category>
+  <guid>https://blog.londogard.com/posts/2026-08-13-balboa-spa-home-assistant/</guid>
+  <pubDate>Thu, 13 Aug 2026 00:00:00 GMT</pubDate>
+</item>
+<item>
+  <title>Automate EV Charging using Home Assistant, EVCC, Easee and Sigenergy</title>
+  <dc:creator>Hampus Londögård</dc:creator>
+  <link>https://blog.londogard.com/posts/2026-08-13-evcc-sigenstor/</link>
+  <description><![CDATA[ 
+
+
+
+
+
+<p>This spring my wife and I went ahead and bought a (used) EV, Skoda Enyaq iV80 2022. It’s not relevant for this blog but it’s a very nice car, and I do enjoy the EV “way”.<br>
+With that said I found myself trying to optimize the charging and our electricity provider didn’t really integrate more than price optimization. I wished to include solar energy into the optimization engine.</p>
+<section id="the-problem" class="level2">
+<h2 class="anchored" data-anchor-id="the-problem">The problem</h2>
+<p>I’m currently on Skellefteå Kraft which doesn’t really integrate more than spot-optimization on the charger. Tibber, the “modern” alternative, doesn’t yet integrate with SigenStor from Sigenergy, though I’m told it’s in beta right now. When that arrives I might simply move to Tibber and drop EVCC, KISS is the king after all.</p>
+<p>A third solution is to go all-in Sigenergy and buy their EV Charger, super easy <em>but</em> costly and why should I replace a functional EV Charger to begin?</p>
+</section>
+<section id="the-solution-evcc" class="level2">
+<h2 class="anchored" data-anchor-id="the-solution-evcc">The solution: EVCC</h2>
+<p>What I found is that <a href="https://evcc.io">EVCC</a> solves all my problems, and is very user friendly. It takes the electricity price, solar production, and my custom plans into account and decides when to charge:</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://blog.londogard.com/posts/2026-08-13-evcc-sigenstor/forecast_evcc.png" class="img-fluid figure-img" style="width:75.0%"></p>
+<figcaption>EVCC forecast view</figcaption>
+</figure>
+</div>
+<section id="the-setup" class="level3">
+<h3 class="anchored" data-anchor-id="the-setup">The setup</h3>
+<p>EVCC runs standalone, through Docker, on my Raspberry Pi. For the integrations:</p>
+<ul>
+<li><strong>Nordpool</strong> — electricity prices (SE4) with custom formula (add your own costs).</li>
+<li><strong>SigenStor</strong> — solar and battery status, so the car charges on surplus solar when the sun is out.</li>
+</ul>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://blog.londogard.com/posts/2026-08-13-evcc-sigenstor/sigenstor_battery_evcc.png" class="img-fluid figure-img" style="width:50.0%"></p>
+<figcaption>SigenStor battery state in EVCC</figcaption>
+</figure>
+</div>
+<ul>
+<li><strong>Easee</strong> — the EV charger, via cloud integration.</li>
+<li><strong>Skoda</strong> — the EV, via cloud integration.</li>
+</ul>
+<p>One thing worth noting: I don’t have an <code>evcc.yaml</code> at all — EVCC only uses its <code>.db</code>. Most guides assume the yaml config, so it took me a moment to realize the setup simply lives in the database and using the UI.</p>
+<p>I control EVCC mainly from the EVCC web portal, but sometimes I do it from Home Assistant using the <a href="https://github.com/marq24/ha-evcc">HACS evcc integration</a>.</p>
+<p>And it works cleanly:</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://blog.londogard.com/posts/2026-08-13-evcc-sigenstor/evcc_charging.png" class="img-fluid figure-img" style="width:50.0%"></p>
+<figcaption>EVCC showing the car charging</figcaption>
+</figure>
+</div>
+</section>
+<section id="additional-info" class="level3">
+<h3 class="anchored" data-anchor-id="additional-info">Additional info</h3>
+<p>I believe there are some very important parts I left out, namely:</p>
+<section id="plans" class="level4">
+<h4 class="anchored" data-anchor-id="plans">Plans</h4>
+<p>You can add one or more plans, recurring or not, where you say “I need X % by Y”. These are then automatically optimized together with all available sensors and metrics.</p>
+<p><strong>Arrival</strong> is a sub-setting where you can also tell EVCC to always charge the car to X % directly as it arrives.</p>
+</section>
+<section id="battery" class="level4">
+<h4 class="anchored" data-anchor-id="battery">Battery</h4>
+<p><strong>Battery Boost:</strong> lets EVCC draw on the home battery to charge the car beyond pure solar surplus (handy right before a departure). It’s enabled per charging session, with a configurable limit for how far the battery may be drained. I keep this blocked to allow SigEnergy to optimize it’s AI better.</p>
+<p><strong>Battery Prioritization:</strong> you can choose which gets priority — battery over car, or the reverse.</p>
+</section>
+<section id="spot-price" class="level4">
+<h4 class="anchored" data-anchor-id="spot-price">Spot Price</h4>
+<p>There are additional tweaks to add, such as “don’t charge when export price is above X SEK, then rather export energy to earn money”. And the reversed option, import energy when it’s cheap enough to charge the car.</p>
+</section>
+<section id="mode" class="level4">
+<h4 class="anchored" data-anchor-id="mode">Mode</h4>
+<p>EVCC has 4 modes, “Off”/“Solar”/“Min+Solar”/“Fast”, which control how aggressively the car is charged. I use “Solar” which means that unless a Plan is active it’ll only charge using Solar excess power, when price is under my defined SEK limit.</p>
+</section>
+</section>
+<section id="final-words" class="level3">
+<h3 class="anchored" data-anchor-id="final-words">Final words</h3>
+<p>EVCC is great, I highly recommend it to anyone on the fence.</p>
+<p>~Hampus Londögård</p>
+
+
+</section>
+</section>
+
+ ]]></description>
+  <category>ev</category>
+  <category>homeassistant</category>
+  <category>iot</category>
+  <guid>https://blog.londogard.com/posts/2026-08-13-evcc-sigenstor/</guid>
+  <pubDate>Thu, 13 Aug 2026 00:00:00 GMT</pubDate>
+</item>
 <item>
   <title>Repair: Baby-Monitor (Padwico 850)</title>
   <dc:creator>Hampus Londögård</dc:creator>
@@ -1337,185 +1740,6 @@ font-style: inherit;">True</span>,</span>
   <pubDate>Tue, 25 Feb 2025 00:00:00 GMT</pubDate>
 </item>
 <item>
-  <title>Gradio Client - An intro</title>
-  <dc:creator>Hampus Londögård</dc:creator>
-  <link>https://blog.londogard.com/posts/2025-02-20-gradio-client/</link>
-  <description><![CDATA[ 
-
-
-
-
-
-<section id="gradio-client" class="level1">
-<h1>Gradio Client</h1>
-<p>Most people in the AI-sphere (Deep Learning, LLM’s) are aware of the <a href="https://www.gradio.app/">Gradio</a> project (now under the <a href="https://huggingface.co/">huggingface</a> umbrella).</p>
-<div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Tip</span>Gradio in short
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>Gradio is a simple Machine Learning App framework that provides easy components and reactivity. See for yourself:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><span class="im" style="color: #00769E;
-background-color: null;
-font-style: inherit;">import</span> gradio <span class="im" style="color: #00769E;
-background-color: null;
-font-style: inherit;">as</span> gr</span>
-<span id="cb1-2"></span>
-<span id="cb1-3"><span class="kw" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">def</span> greet(name):</span>
-<span id="cb1-4">    <span class="cf" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">return</span> <span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"Hello "</span> <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">+</span> name <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">+</span> <span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"!"</span></span>
-<span id="cb1-5"></span>
-<span id="cb1-6">demo <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> gr.Interface(fn<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span>greet, inputs<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span><span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"text"</span>, outputs<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span><span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"text"</span>)</span>
-<span id="cb1-7">demo.launch()</span></code></pre></div></div>
-<p>One drawback is that <em>input, output</em>, and <em>function</em> are separated which reduces type-safety and removes all intellisense. This is a big one for me and makes me highly prefer <code>streamlit</code> &amp; <code>solara</code>. Though I can’t deny all the greatness Gradio provides to the table.</p>
-</div>
-</div>
-<p>Even though Gradio is well-known some people might’ve missed that they’ve added two new projects in their fast pace!</p>
-<ol type="1">
-<li><a href="https://www.gradio.app/guides/getting-started-with-the-python-client"><strong><code>gradio_client</code></strong></a>: A client that can call any Gradio Application (!)
-<ol type="1">
-<li>Gradio clients are easily deployed on HuggingFace, and there exist a ton of them. All are now accessible in a REST-like interface (including the compute)!</li>
-</ol></li>
-<li><a href="https://www.gradio.app/guides/gradio-lite"><strong><code>gradio_lite</code></strong></a>: A WASM version of Gradio.
-<ol type="1">
-<li>Very simple to embed a Gradio app inside a HTML file or JS app.</li>
-<li>They’ve implemented smooth solutions for things like Multi File, PIP Requirements and more.</li>
-<li>WASM brings <em>Serverless</em> deployment with <em>Low Latency</em> and high <em>Privacy</em>.</li>
-</ol></li>
-</ol>
-<section id="how-do-i-use-gradio-client" class="level2">
-<h2 class="anchored" data-anchor-id="how-do-i-use-gradio-client">How do I use Gradio Client?</h2>
-<p><strong>Step 1: Connect to a Client</strong></p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><span class="im" style="color: #00769E;
-background-color: null;
-font-style: inherit;">from</span> gradio_client <span class="im" style="color: #00769E;
-background-color: null;
-font-style: inherit;">import</span> Client, handle_file</span>
-<span id="cb2-2"></span>
-<span id="cb2-3">client <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> Client(<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"abidlabs/whisper"</span>)</span></code></pre></div></div>
-<p><strong>Step 2: Predict</strong></p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1">client.predict(</span>
-<span id="cb3-2">    audio<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span>handle_file(<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"audio_sample.wav"</span>)</span>
-<span id="cb3-3">)</span>
-<span id="cb3-4"></span>
-<span id="cb3-5"><span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">&gt;&gt;</span> <span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"This is a test of the whisper speech recognition model."</span> </span></code></pre></div></div>
-<p>Easy right?!</p>
-<p>If we have multiple boxes / steps in the Gradio App we can call each of the components. The client usage of any Gradio App is <strong>easily found at the bottom.</strong></p>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="https://images.amplenote.com/627f2784-ef96-11ef-a1f4-4f6319174ddb/0c668288-7e63-4469-9d64-946abf665652.png" class="img-fluid figure-img"></p>
-<figcaption>Gradio Client Button in Gradio Apps (to the left)</figcaption>
-</figure>
-</div>
-<p>And that opens a new menu which shows how to use each box of the App.</p>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="https://images.amplenote.com/627f2784-ef96-11ef-a1f4-4f6319174ddb/5dd37151-9c78-4e80-af48-94d9e78ca5a0.png" class="img-fluid figure-img"></p>
-<figcaption>The API documentation and How-To-Guide after clicking</figcaption>
-</figure>
-</div>
-</section>
-<section id="available-clients" class="level2">
-<h2 class="anchored" data-anchor-id="available-clients">Available Clients</h2>
-<p>Anyone can run this as it supports <em>regular REST requests</em>! They supply a <code>curl</code> sample on how to query the App. But they’ve got a <em>Python and JS native client.</em></p>
-</section>
-<section id="possibilities" class="level2">
-<h2 class="anchored" data-anchor-id="possibilities">Possibilities</h2>
-<p>Gradio implemented the whole thing in a way where you don’t need to do anything at all. In turn we now get user-friendly App that is easily deployed with an <em>automatically included REST API</em>. It’s two birds with one stone!</p>
-<p>Combining this “App+API” deployment with the free, or paid, <a href="https://huggingface.co/spaces">HuggingFace Spaces</a> creates a high-value package!</p>
-<div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Tip</span>HuggingFace Spaces
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>HuggingFace (HF) Spaces is as simple deployments get:</p>
-<ul>
-<li>Free compute<sup>1</sup>
-<ul>
-<li><em>ZeroGPU available using Gradio SDK</em></li>
-</ul></li>
-<li>Natively Support <em>streamlit, Gradio, static (webapp)</em></li>
-<li>Support any app via Docker<sup>2</sup></li>
-</ul>
-<p>HF Spaces can deploy apps via <em>Client</em>, <em>git</em>, or <em>Drag n’ Drop</em>.<br>
-You get a public pretty URL <code>huggingface.co/spaces/&lt;USER&gt;/&lt;APP_NAME&gt;</code> to share. All in all a great tool that puts the power into developers hands!</p>
-</div>
-</div>
-</section>
-</section>
-<section id="outro" class="level1">
-<h1>Outro</h1>
-<p>This blog is really short and to the point. The Gradio Client is sweet and I really wanted to share the experience.<br>
-The combination of App+API written at the same time is exciting, when enhancing it with HuggingFace Spaces it all becomes magical. And Gradio’s “auto-share” when running locally that can then provide an API too is not too shabby 😉</p>
-<p>This is it for this time,<br>
-Hampus Londögård</p>
-
-
-</section>
-
-
-<div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
-
-<ol>
-<li id="fn1"><p>Pay for GPU and/or better CPU↩︎</p></li>
-<li id="fn2"><p>Multiple templates to get started fast↩︎</p></li>
-</ol>
-</section></div> ]]></description>
-  <category>python</category>
-  <category>app</category>
-  <category>rest</category>
-  <category>machine-learning</category>
-  <guid>https://blog.londogard.com/posts/2025-02-20-gradio-client/</guid>
-  <pubDate>Mon, 17 Feb 2025 00:00:00 GMT</pubDate>
-</item>
-<item>
   <title>Marimo - A new Notebook/App on the block!</title>
   <dc:creator>Hampus Londögård</dc:creator>
   <link>https://blog.londogard.com/posts/2025-02-17-marimo/</link>
@@ -1850,6 +2074,185 @@ Hampus Londögård</p>
   <category>app</category>
   <category>notebook</category>
   <guid>https://blog.londogard.com/posts/2025-02-17-marimo/</guid>
+  <pubDate>Mon, 17 Feb 2025 00:00:00 GMT</pubDate>
+</item>
+<item>
+  <title>Gradio Client - An intro</title>
+  <dc:creator>Hampus Londögård</dc:creator>
+  <link>https://blog.londogard.com/posts/2025-02-20-gradio-client/</link>
+  <description><![CDATA[ 
+
+
+
+
+
+<section id="gradio-client" class="level1">
+<h1>Gradio Client</h1>
+<p>Most people in the AI-sphere (Deep Learning, LLM’s) are aware of the <a href="https://www.gradio.app/">Gradio</a> project (now under the <a href="https://huggingface.co/">huggingface</a> umbrella).</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Gradio in short
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Gradio is a simple Machine Learning App framework that provides easy components and reactivity. See for yourself:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> gradio <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">as</span> gr</span>
+<span id="cb1-2"></span>
+<span id="cb1-3"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">def</span> greet(name):</span>
+<span id="cb1-4">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">return</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Hello "</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> name <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"!"</span></span>
+<span id="cb1-5"></span>
+<span id="cb1-6">demo <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> gr.Interface(fn<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>greet, inputs<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"text"</span>, outputs<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"text"</span>)</span>
+<span id="cb1-7">demo.launch()</span></code></pre></div></div>
+<p>One drawback is that <em>input, output</em>, and <em>function</em> are separated which reduces type-safety and removes all intellisense. This is a big one for me and makes me highly prefer <code>streamlit</code> &amp; <code>solara</code>. Though I can’t deny all the greatness Gradio provides to the table.</p>
+</div>
+</div>
+<p>Even though Gradio is well-known some people might’ve missed that they’ve added two new projects in their fast pace!</p>
+<ol type="1">
+<li><a href="https://www.gradio.app/guides/getting-started-with-the-python-client"><strong><code>gradio_client</code></strong></a>: A client that can call any Gradio Application (!)
+<ol type="1">
+<li>Gradio clients are easily deployed on HuggingFace, and there exist a ton of them. All are now accessible in a REST-like interface (including the compute)!</li>
+</ol></li>
+<li><a href="https://www.gradio.app/guides/gradio-lite"><strong><code>gradio_lite</code></strong></a>: A WASM version of Gradio.
+<ol type="1">
+<li>Very simple to embed a Gradio app inside a HTML file or JS app.</li>
+<li>They’ve implemented smooth solutions for things like Multi File, PIP Requirements and more.</li>
+<li>WASM brings <em>Serverless</em> deployment with <em>Low Latency</em> and high <em>Privacy</em>.</li>
+</ol></li>
+</ol>
+<section id="how-do-i-use-gradio-client" class="level2">
+<h2 class="anchored" data-anchor-id="how-do-i-use-gradio-client">How do I use Gradio Client?</h2>
+<p><strong>Step 1: Connect to a Client</strong></p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">from</span> gradio_client <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> Client, handle_file</span>
+<span id="cb2-2"></span>
+<span id="cb2-3">client <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> Client(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"abidlabs/whisper"</span>)</span></code></pre></div></div>
+<p><strong>Step 2: Predict</strong></p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1">client.predict(</span>
+<span id="cb3-2">    audio<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>handle_file(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"audio_sample.wav"</span>)</span>
+<span id="cb3-3">)</span>
+<span id="cb3-4"></span>
+<span id="cb3-5"><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&gt;&gt;</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"This is a test of the whisper speech recognition model."</span> </span></code></pre></div></div>
+<p>Easy right?!</p>
+<p>If we have multiple boxes / steps in the Gradio App we can call each of the components. The client usage of any Gradio App is <strong>easily found at the bottom.</strong></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://images.amplenote.com/627f2784-ef96-11ef-a1f4-4f6319174ddb/0c668288-7e63-4469-9d64-946abf665652.png" class="img-fluid figure-img"></p>
+<figcaption>Gradio Client Button in Gradio Apps (to the left)</figcaption>
+</figure>
+</div>
+<p>And that opens a new menu which shows how to use each box of the App.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://images.amplenote.com/627f2784-ef96-11ef-a1f4-4f6319174ddb/5dd37151-9c78-4e80-af48-94d9e78ca5a0.png" class="img-fluid figure-img"></p>
+<figcaption>The API documentation and How-To-Guide after clicking</figcaption>
+</figure>
+</div>
+</section>
+<section id="available-clients" class="level2">
+<h2 class="anchored" data-anchor-id="available-clients">Available Clients</h2>
+<p>Anyone can run this as it supports <em>regular REST requests</em>! They supply a <code>curl</code> sample on how to query the App. But they’ve got a <em>Python and JS native client.</em></p>
+</section>
+<section id="possibilities" class="level2">
+<h2 class="anchored" data-anchor-id="possibilities">Possibilities</h2>
+<p>Gradio implemented the whole thing in a way where you don’t need to do anything at all. In turn we now get user-friendly App that is easily deployed with an <em>automatically included REST API</em>. It’s two birds with one stone!</p>
+<p>Combining this “App+API” deployment with the free, or paid, <a href="https://huggingface.co/spaces">HuggingFace Spaces</a> creates a high-value package!</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>HuggingFace Spaces
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>HuggingFace (HF) Spaces is as simple deployments get:</p>
+<ul>
+<li>Free compute<sup>1</sup>
+<ul>
+<li><em>ZeroGPU available using Gradio SDK</em></li>
+</ul></li>
+<li>Natively Support <em>streamlit, Gradio, static (webapp)</em></li>
+<li>Support any app via Docker<sup>2</sup></li>
+</ul>
+<p>HF Spaces can deploy apps via <em>Client</em>, <em>git</em>, or <em>Drag n’ Drop</em>.<br>
+You get a public pretty URL <code>huggingface.co/spaces/&lt;USER&gt;/&lt;APP_NAME&gt;</code> to share. All in all a great tool that puts the power into developers hands!</p>
+</div>
+</div>
+</section>
+</section>
+<section id="outro" class="level1">
+<h1>Outro</h1>
+<p>This blog is really short and to the point. The Gradio Client is sweet and I really wanted to share the experience.<br>
+The combination of App+API written at the same time is exciting, when enhancing it with HuggingFace Spaces it all becomes magical. And Gradio’s “auto-share” when running locally that can then provide an API too is not too shabby 😉</p>
+<p>This is it for this time,<br>
+Hampus Londögård</p>
+
+
+</section>
+
+
+<div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
+
+<ol>
+<li id="fn1"><p>Pay for GPU and/or better CPU↩︎</p></li>
+<li id="fn2"><p>Multiple templates to get started fast↩︎</p></li>
+</ol>
+</section></div> ]]></description>
+  <category>python</category>
+  <category>app</category>
+  <category>rest</category>
+  <category>machine-learning</category>
+  <guid>https://blog.londogard.com/posts/2025-02-20-gradio-client/</guid>
   <pubDate>Mon, 17 Feb 2025 00:00:00 GMT</pubDate>
 </item>
 <item>
@@ -3522,961 +3925,6 @@ font-style: inherit;">"path"</span>).url.download())</span></code></pre></div></
   <category>data</category>
   <guid>https://blog.londogard.com/posts/2024-10-24-data-loading-daft/</guid>
   <pubDate>Tue, 19 Nov 2024 00:00:00 GMT</pubDate>
-</item>
-<item>
-  <title>ZenML or ClearML? Which MLOps tool strikes best?</title>
-  <dc:creator>Hampus Londögård</dc:creator>
-  <link>https://blog.londogard.com/posts/2024-05-05-zenml-vs-clearml/</link>
-  <description><![CDATA[ 
-
-
-
-
-
-<p>Making it as few words as possible.</p>
-<table class="caption-top table">
-<colgroup>
-<col style="width: 33%">
-<col style="width: 33%">
-<col style="width: 33%">
-</colgroup>
-<thead>
-<tr class="header">
-<th><strong>Tool</strong></th>
-<th><strong>Pro</strong></th>
-<th><strong>Con</strong></th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td><strong>ClearML</strong></td>
-<td>Simple &amp; Everything “fits”</td>
-<td>Locked into ClearML, i.e.&nbsp;cannot use best tool for the job</td>
-</tr>
-<tr class="even">
-<td><strong>ZenML</strong></td>
-<td>Composable &amp; Extendable</td>
-<td>Multiple tools to get job done (e.g.&nbsp;MLFlow not visualized in UI)</td>
-</tr>
-</tbody>
-</table>
-<section id="similarities" class="level2">
-<h2 class="anchored" data-anchor-id="similarities">Similarities:</h2>
-<p>There’s a lot of similarities, it’s quite easy to get started.</p>
-<section id="building-pipelines" class="level3">
-<h3 class="anchored" data-anchor-id="building-pipelines">Building Pipelines</h3>
-<p>They both have the possibility to use decorators which makes the code very simple to read, alas the ClearML way of doing things is not quite as smooth as ZenML.</p>
-<blockquote class="blockquote">
-<p><strong>ZenML</strong> builds <em>pipelines</em> and <em>tasks/components</em> in a simpler better way.</p>
-</blockquote>
-</section>
-<section id="tracking-experiments" class="level3">
-<h3 class="anchored" data-anchor-id="tracking-experiments">Tracking Experiments</h3>
-<p>To track experiments I believe both solutions got you covered. ClearML’s experiment tracker is quite good and works as you’d expect, while ZenML you decide which tool you want to use (I opted to MLFlow).</p>
-<p>ZenML supports: Comet, MLFlow, Neptune, WandB, &amp; Custom. ClearML supports: ClearML.</p>
-<blockquote class="blockquote">
-<p>It’s a <strong>draw</strong>, ZenML supports “better” trackers BUT <strong>ClearML has a native integration which makes things a lot easier.</strong></p>
-</blockquote>
-</section>
-<section id="orchestrators" class="level3">
-<h3 class="anchored" data-anchor-id="orchestrators">Orchestrators</h3>
-<p>Both have a simple to use orchestrator. Once again ZenML leans back towards the giants while ClearML uses a built-in native orchestrator that binds everything together.</p>
-<blockquote class="blockquote">
-<p>It’s a <strong>draw</strong>.</p>
-</blockquote>
-</section>
-</section>
-<section id="ui" class="level2">
-<h2 class="anchored" data-anchor-id="ui">UI</h2>
-<p>One of the more important parts of a tool is the UI. Here I believe in a way ZenML is strong as they “off-load” each components UI to the component itself, i.e.&nbsp;MLFlow tracing is shown in MLFlow UI.</p>
-<p>The UI itself of each tool, i.e.&nbsp;WandB, is much better than ClearML’s offering in my opinion.<br>
-<strong>But</strong> the integration of ClearML as a tool “solve all” is a HUGE timesaver and I think could outweigh using the “better” tooling. Integrating everything from Experiment Comparison to Report Building is an quite amazing feat that I think is worthwhile applauding.</p>
-</section>
-<section id="conclusion" class="level1">
-<h1>Conclusion</h1>
-<p>First and foremost, I see both Open Source offering moving more and more towards a SaaS. This is clearly visible by locking certain features in the UI (ZenML, the new UI is beautiful but locked down without your Cloud offering). It’s also shown by supplying additional superb features even when self-hosted. I do understand the need to pay your bills, but it’s sad to see Open Source moving to this either way.</p>
-<p>See <a href="https://www.zenml.io/open-source-vs-cloud">ZenML comparison (Open Source &lt;&gt; Cloud)</a> and <a href="https://clear.ml/pricing">ClearML one</a>.</p>
-<p>Sometimes the best option is to opt for the “cloud-native” one, i.e.&nbsp;AWS/Azure/GCP tools. But I love open source… :)</p>
-<p><strong>Anyhow, to finalize here’s my judgement:</strong></p>
-<ul>
-<li>If you prefer to keep your stack as simple as possible: ClearML.</li>
-<li>If you prefer to keep your stack customized having the best tool for each part: ZenML.</li>
-</ul>
-<p>I cannot pick a winner, ZenML enables simpler transition and better tooling all in all, but the full-on integration of ClearML with “everything working together” is quite magical and similar to the cloud-native options (AWS Sagemaker/Azure MLStudio/GCP Vertex).</p>
-<p>Find the code for each framework running MNIST: ….</p>
-<p>Thanks for this time, Hampus</p>
-<section id="clearml" class="level3">
-<h3 class="anchored" data-anchor-id="clearml">ClearML</h3>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1">task <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> Task.init(</span>
-<span id="cb1-2">    project_name<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span><span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"MNIST Digit Recognition"</span>,</span>
-<span id="cb1-3">    task_name<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span><span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"Simple NN model with PyTorch Lightning"</span>,</span>
-<span id="cb1-4">    task_type<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span>Task.TaskTypes.training,</span>
-<span id="cb1-5">    output_uri<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span><span class="va" style="color: #111111;
-background-color: null;
-font-style: inherit;">None</span>,</span>
-<span id="cb1-6">)</span>
-<span id="cb1-7"></span>
-<span id="cb1-8"></span>
-<span id="cb1-9"><span class="kw" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">class</span> SimpleNN(pl.LightningModule):</span>
-<span id="cb1-10">    <span class="kw" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">def</span> <span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">__init__</span>(<span class="va" style="color: #111111;
-background-color: null;
-font-style: inherit;">self</span>):</span>
-<span id="cb1-11">        <span class="bu" style="color: null;
-background-color: null;
-font-style: inherit;">super</span>(SimpleNN, <span class="va" style="color: #111111;
-background-color: null;
-font-style: inherit;">self</span>).<span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">__init__</span>()</span>
-<span id="cb1-12">        <span class="va" style="color: #111111;
-background-color: null;
-font-style: inherit;">self</span>.fc1 <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> nn.Linear(<span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">784</span>, <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">512</span>)</span>
-<span id="cb1-13">        <span class="va" style="color: #111111;
-background-color: null;
-font-style: inherit;">self</span>.dropout <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> nn.Dropout(<span class="fl" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">0.2</span>)</span>
-<span id="cb1-14">        <span class="va" style="color: #111111;
-background-color: null;
-font-style: inherit;">self</span>.fc2 <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> nn.Linear(<span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">512</span>, <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">10</span>)</span>
-<span id="cb1-15"></span>
-<span id="cb1-16">    <span class="kw" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">def</span> forward(<span class="va" style="color: #111111;
-background-color: null;
-font-style: inherit;">self</span>, x):</span>
-<span id="cb1-17">        x <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> torch.flatten(x, <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">1</span>)</span>
-<span id="cb1-18">        x <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> <span class="va" style="color: #111111;
-background-color: null;
-font-style: inherit;">self</span>.fc1(x)</span>
-<span id="cb1-19">        x <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> torch.relu(x)</span>
-<span id="cb1-20">        x <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> <span class="va" style="color: #111111;
-background-color: null;
-font-style: inherit;">self</span>.dropout(x)</span>
-<span id="cb1-21">        x <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> <span class="va" style="color: #111111;
-background-color: null;
-font-style: inherit;">self</span>.fc2(x)</span>
-<span id="cb1-22">        <span class="cf" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">return</span> torch.log_softmax(x, dim<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span><span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">1</span>)</span>
-<span id="cb1-23"></span>
-<span id="cb1-24">    <span class="kw" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">def</span> training_step(<span class="va" style="color: #111111;
-background-color: null;
-font-style: inherit;">self</span>, batch, batch_idx):</span>
-<span id="cb1-25">        data, target <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> batch</span>
-<span id="cb1-26">        output <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> <span class="va" style="color: #111111;
-background-color: null;
-font-style: inherit;">self</span>(data)</span>
-<span id="cb1-27">        loss <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> nn.functional.cross_entropy(output, target)</span>
-<span id="cb1-28">        <span class="va" style="color: #111111;
-background-color: null;
-font-style: inherit;">self</span>.log(<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"train_loss"</span>, loss)</span>
-<span id="cb1-29">        <span class="cf" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">return</span> loss</span>
-<span id="cb1-30"></span>
-<span id="cb1-31">    <span class="kw" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">def</span> test_step(<span class="va" style="color: #111111;
-background-color: null;
-font-style: inherit;">self</span>, batch, batch_idx):</span>
-<span id="cb1-32">        <span class="cf" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">return</span> <span class="va" style="color: #111111;
-background-color: null;
-font-style: inherit;">self</span>(batch[<span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">0</span>])</span>
-<span id="cb1-33"></span>
-<span id="cb1-34">    <span class="kw" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">def</span> configure_optimizers(<span class="va" style="color: #111111;
-background-color: null;
-font-style: inherit;">self</span>):</span>
-<span id="cb1-35">        <span class="cf" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">return</span> optim.Adam(<span class="va" style="color: #111111;
-background-color: null;
-font-style: inherit;">self</span>.parameters(), lr<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span><span class="fl" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">0.001</span>)</span>
-<span id="cb1-36"></span>
-<span id="cb1-37"></span>
-<span id="cb1-38">params_dictionary <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> {<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"epochs"</span>: <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">3</span>}</span>
-<span id="cb1-39">task.<span class="ex" style="color: null;
-background-color: null;
-font-style: inherit;">connect</span>(params_dictionary)</span>
-<span id="cb1-40"></span>
-<span id="cb1-41">transform <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> transforms.Compose(</span>
-<span id="cb1-42">    [transforms.ToTensor(), transforms.Normalize((<span class="fl" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">0.5</span>,), (<span class="fl" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">0.5</span>,))]</span>
-<span id="cb1-43">)</span>
-<span id="cb1-44"></span>
-<span id="cb1-45">train_dataset <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> datasets.MNIST(</span>
-<span id="cb1-46">    root<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span><span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"./data"</span>, train<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span><span class="va" style="color: #111111;
-background-color: null;
-font-style: inherit;">True</span>, transform<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span>transform, download<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span><span class="va" style="color: #111111;
-background-color: null;
-font-style: inherit;">True</span></span>
-<span id="cb1-47">)</span>
-<span id="cb1-48">test_dataset <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> datasets.MNIST(root<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span><span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"./data"</span>, train<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span><span class="va" style="color: #111111;
-background-color: null;
-font-style: inherit;">False</span>, transform<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span>transform)</span>
-<span id="cb1-49"></span>
-<span id="cb1-50">train_loader <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> torch.utils.data.DataLoader(</span>
-<span id="cb1-51">    dataset<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span>train_dataset, batch_size<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span><span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">128</span>, shuffle<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span><span class="va" style="color: #111111;
-background-color: null;
-font-style: inherit;">True</span></span>
-<span id="cb1-52">)</span>
-<span id="cb1-53">test_loader <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> torch.utils.data.DataLoader(</span>
-<span id="cb1-54">    dataset<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span>test_dataset, batch_size<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span><span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">128</span>, shuffle<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span><span class="va" style="color: #111111;
-background-color: null;
-font-style: inherit;">False</span></span>
-<span id="cb1-55">)</span>
-<span id="cb1-56"></span>
-<span id="cb1-57">model <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> SimpleNN()</span>
-<span id="cb1-58">trainer <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> pl.Trainer(max_epochs<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span>params_dictionary[<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"epochs"</span>])</span>
-<span id="cb1-59">trainer.fit(model, train_loader)</span>
-<span id="cb1-60">trainer.test(dataloaders<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span>test_loader)</span></code></pre></div></div>
-</section>
-<section id="zenml" class="level3">
-<h3 class="anchored" data-anchor-id="zenml">ZenML</h3>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><span class="at" style="color: #657422;
-background-color: null;
-font-style: inherit;">@zenml.step</span></span>
-<span id="cb2-2"><span class="kw" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">def</span> load_mnist() <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">-&gt;</span> Tuple[</span>
-<span id="cb2-3">    Annotated[torch.utils.data.DataLoader, <span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"train_loader"</span>],</span>
-<span id="cb2-4">    Annotated[torch.utils.data.DataLoader, <span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"test_loader"</span>],</span>
-<span id="cb2-5">]:</span>
-<span id="cb2-6">    ...</span>
-<span id="cb2-7">    <span class="cf" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">return</span> train_loader, test_loader</span>
-<span id="cb2-8"></span>
-<span id="cb2-9"><span class="at" style="color: #657422;
-background-color: null;
-font-style: inherit;">@zenml.step</span></span>
-<span id="cb2-10"><span class="kw" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">def</span> train_model(</span>
-<span id="cb2-11">    train_loader: torch.utils.data.DataLoader, test_loader: torch.utils.data.DataLoader</span>
-<span id="cb2-12">):</span>
-<span id="cb2-13">    model <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> SimpleNN()</span>
-<span id="cb2-14">    trainer <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> pl.Trainer()</span>
-<span id="cb2-15">    trainer.fit(model, train_loader)</span>
-<span id="cb2-16">    trainer.test(dataloaders<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span>test_loader)</span>
-<span id="cb2-17"></span>
-<span id="cb2-18"></span>
-<span id="cb2-19"><span class="at" style="color: #657422;
-background-color: null;
-font-style: inherit;">@zenml.pipeline</span></span>
-<span id="cb2-20"><span class="kw" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">def</span> train_pipeline():</span>
-<span id="cb2-21">    train_loader, test_loader <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> load_mnist()</span>
-<span id="cb2-22">    train_model(train_loader, test_loader)</span>
-<span id="cb2-23"></span>
-<span id="cb2-24"></span>
-<span id="cb2-25"><span class="cf" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">if</span> <span class="va" style="color: #111111;
-background-color: null;
-font-style: inherit;">__name__</span> <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">==</span> <span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"__main__"</span>:</span>
-<span id="cb2-26">    train_pipeline()</span></code></pre></div></div>
-
-
-</section>
-</section>
-
- ]]></description>
-  <category>mlops</category>
-  <guid>https://blog.londogard.com/posts/2024-05-05-zenml-vs-clearml/</guid>
-  <pubDate>Sun, 05 May 2024 00:00:00 GMT</pubDate>
-</item>
-<item>
-  <title>Streamlit Fragments - Make the Dashboard Dream come true</title>
-  <dc:creator>Hampus Londögård</dc:creator>
-  <link>https://blog.londogard.com/posts/2024-04-17-streamlit-fragments/</link>
-  <description><![CDATA[ 
-
-
-
-
-
-<p>An old coworker gave me a shout-out that <a href="https://docs.streamlit.io/develop/quick-reference/changelog">Streamlits latest (1.33.0)</a> release added Fragments.</p>
-<p>Fragments simply put enables creation of <em>indepedently updated</em> fragments inside your streamlit application. Further they add a simple <code>run_every</code>which simplify dashboards (continuously fetching data).</p>
-<p>As always, the <a href="https://docs.streamlit.io/develop/api-reference/execution-flow/st.fragment">documentation</a> explains a lot of how it works.</p>
-<section id="play-around" class="level2">
-<h2 class="anchored" data-anchor-id="play-around">Play Around</h2>
-<p>First I play around with fragments, testing the most simple use-case – and I’m sold!</p>
-<blockquote class="blockquote">
-<p><strong>N.B.</strong> this is already possible in other tools such as Solara that has a better reactive approach, but streamlit has a bigger user-base and I love to see a solution to this long-standing problem!</p>
-</blockquote>
-<div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Tip</span>The code
-</div>
-<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
-</div>
-<div id="callout-1" class="callout-1-contents callout-collapse collapse">
-<div class="callout-body-container callout-body">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><span class="im" style="color: #00769E;
-background-color: null;
-font-style: inherit;">import</span> numpy <span class="im" style="color: #00769E;
-background-color: null;
-font-style: inherit;">as</span> np</span>
-<span id="cb1-2"><span class="im" style="color: #00769E;
-background-color: null;
-font-style: inherit;">import</span> streamlit <span class="im" style="color: #00769E;
-background-color: null;
-font-style: inherit;">as</span> st</span>
-<span id="cb1-3"></span>
-<span id="cb1-4"></span>
-<span id="cb1-5"><span class="kw" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">def</span> main():</span>
-<span id="cb1-6">    st.write(<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"# Main Function"</span>)</span>
-<span id="cb1-7">    st.write(<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"Hello, World! (main)"</span>)</span>
-<span id="cb1-8">    st.toggle(<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"Toggle me!"</span>)</span>
-<span id="cb1-9"></span>
-<span id="cb1-10"></span>
-<span id="cb1-11"><span class="at" style="color: #657422;
-background-color: null;
-font-style: inherit;">@st.experimental_fragment</span>()</span>
-<span id="cb1-12"><span class="kw" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">def</span> first_fragment():</span>
-<span id="cb1-13">    st.write(<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"## First Fragment"</span>)</span>
-<span id="cb1-14">    random_choice <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> np.random.choice([<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"a"</span>, <span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"b"</span>, <span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"c"</span>])</span>
-<span id="cb1-15">    st.write(<span class="ss" style="color: #20794D;
-background-color: null;
-font-style: inherit;">f"Random choice: </span><span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">{</span>random_choice<span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">}</span><span class="ss" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"</span>)</span>
-<span id="cb1-16">    st.toggle(<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"Toggle me! (1st Fragment)"</span>)</span>
-<span id="cb1-17"></span>
-<span id="cb1-18"></span>
-<span id="cb1-19"><span class="at" style="color: #657422;
-background-color: null;
-font-style: inherit;">@st.experimental_fragment</span>(run_every<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span><span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"2s"</span>)</span>
-<span id="cb1-20"><span class="kw" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">def</span> second_fragment():</span>
-<span id="cb1-21">    st.write(<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"## Second Fragment"</span>)</span>
-<span id="cb1-22">    st.write(<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"Hello, World! (2nd Fragment)"</span>)</span>
-<span id="cb1-23">    random_choice <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> np.random.choice([<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"a"</span>, <span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"b"</span>, <span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"c"</span>])</span>
-<span id="cb1-24">    st.write(<span class="ss" style="color: #20794D;
-background-color: null;
-font-style: inherit;">f"Random choice: </span><span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">{</span>random_choice<span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">}</span><span class="ss" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"</span>)</span>
-<span id="cb1-25">    st.toggle(<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"Toggle me! (2nd Fragment)"</span>)</span>
-<span id="cb1-26"></span>
-<span id="cb1-27"></span>
-<span id="cb1-28"><span class="cf" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">if</span> <span class="va" style="color: #111111;
-background-color: null;
-font-style: inherit;">__name__</span> <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">==</span> <span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"__main__"</span>:</span>
-<span id="cb1-29">    main()</span>
-<span id="cb1-30">    c1, c2 <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> st.columns(<span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">2</span>)</span>
-<span id="cb1-31"></span>
-<span id="cb1-32">    <span class="cf" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">with</span> c1:</span>
-<span id="cb1-33">        first_fragment()</span>
-<span id="cb1-34">    <span class="cf" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">with</span> c2:</span>
-<span id="cb1-35">        second_fragment()</span></code></pre></div></div>
-</div>
-</div>
-</div>
-<p>This enables the following behavior:</p>
-<ol type="1">
-<li>Toggling “main” will refresh everything</li>
-<li>Toggling a fragment will <em>only</em> refresh that fragment</li>
-<li>Second fragment will refresh every 2 seconds</li>
-</ol>
-<blockquote class="blockquote">
-<p><strong>What is refreshed?</strong> The <em>Random choice</em> letter is updated to a random letter (a, b, or c).</p>
-</blockquote>
-<p>All in all this is what we’d probably do in a Dashboard. See the following GIF’s:</p>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="https://blog.londogard.com/posts/2024-04-17-streamlit-fragments/assets/toggle_fragments.gif" class="img-fluid figure-img"></p>
-<figcaption>Streamlit Fragments and Toggling (simplest use-case) - note the ‘Random Choice’ changing.</figcaption>
-</figure>
-</div>
-</section>
-<section id="adding-complexity" class="level2">
-<h2 class="anchored" data-anchor-id="adding-complexity">Adding Complexity</h2>
-<p>As always it’s a lot more fun to test these things in scenarios that are closer to real-life, and that’s what I intend to do!</p>
-<ol type="1">
-<li>Fetching data from a data storage</li>
-<li>Displaying different graphs</li>
-<li>Sharing state from main</li>
-</ol>
-<p>In this graph we have a <em>Amplitude Multiplier</em> (main) that affects both fragments, additionally we have a sine wave where the frequency is editable and will only re-render (re-compute) that fragment (first). Finally there’s a Stock Fragment (second) which automatically updates every 2 seconds, unless locked it’ll randomly select a stock, if locked we can still change stock and it’ll only re-render that fragment (second).</p>
-<p>See the GIF below! 👇</p>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="https://blog.londogard.com/posts/2024-04-17-streamlit-fragments/assets/complex_fragments.gif" class="img-fluid figure-img"></p>
-<figcaption>Sine wave and Stocks, with automatic Stock Refresh</figcaption>
-</figure>
-</div>
-<div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Tip</span>Code
-</div>
-<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
-</div>
-<div id="callout-2" class="callout-2-contents callout-collapse collapse">
-<div class="callout-body-container callout-body">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><span class="im" style="color: #00769E;
-background-color: null;
-font-style: inherit;">import</span> numpy <span class="im" style="color: #00769E;
-background-color: null;
-font-style: inherit;">as</span> np</span>
-<span id="cb2-2"><span class="im" style="color: #00769E;
-background-color: null;
-font-style: inherit;">import</span> streamlit <span class="im" style="color: #00769E;
-background-color: null;
-font-style: inherit;">as</span> st</span>
-<span id="cb2-3"><span class="im" style="color: #00769E;
-background-color: null;
-font-style: inherit;">import</span> polars <span class="im" style="color: #00769E;
-background-color: null;
-font-style: inherit;">as</span> pl</span>
-<span id="cb2-4"><span class="im" style="color: #00769E;
-background-color: null;
-font-style: inherit;">import</span> plotly.express <span class="im" style="color: #00769E;
-background-color: null;
-font-style: inherit;">as</span> px</span>
-<span id="cb2-5"></span>
-<span id="cb2-6"></span>
-<span id="cb2-7"><span class="kw" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">def</span> main() <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">-&gt;</span> <span class="bu" style="color: null;
-background-color: null;
-font-style: inherit;">float</span>:</span>
-<span id="cb2-8">    st.write(<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"# Main Function"</span>)</span>
-<span id="cb2-9">    st.write(<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"Hello, World! (main)"</span>)</span>
-<span id="cb2-10">    multiplier <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> st.slider(<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"Amplitude Multiplier"</span>, <span class="fl" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">0.0</span>, <span class="fl" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">10.0</span>, <span class="fl" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">1.0</span>, <span class="fl" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">0.1</span>)</span>
-<span id="cb2-11"></span>
-<span id="cb2-12">    <span class="cf" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">return</span> multiplier</span>
-<span id="cb2-13"></span>
-<span id="cb2-14"></span>
-<span id="cb2-15"><span class="at" style="color: #657422;
-background-color: null;
-font-style: inherit;">@st.cache_resource</span></span>
-<span id="cb2-16"><span class="kw" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">def</span> get_stocks() <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">-&gt;</span> pl.DataFrame:</span>
-<span id="cb2-17">    <span class="cf" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">return</span> pl.read_csv(</span>
-<span id="cb2-18">        <span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"https://raw.githubusercontent.com/vega/datalib/master/test/data/stocks.csv"</span></span>
-<span id="cb2-19">    )</span>
-<span id="cb2-20"></span>
-<span id="cb2-21"></span>
-<span id="cb2-22"><span class="at" style="color: #657422;
-background-color: null;
-font-style: inherit;">@st.experimental_fragment</span>()</span>
-<span id="cb2-23"><span class="kw" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">def</span> first_fragment(multiplier: <span class="bu" style="color: null;
-background-color: null;
-font-style: inherit;">float</span>):</span>
-<span id="cb2-24">    st.write(<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"## First Fragment"</span>)</span>
-<span id="cb2-25">    sine_frequency <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> st.slider(<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"Sine Frequency"</span>, <span class="fl" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">0.0</span>, <span class="fl" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">10.0</span>, <span class="fl" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">1.0</span>, <span class="fl" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">0.1</span>)</span>
-<span id="cb2-26">    <span class="co" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;"># create sine wave with multiplier height and sine_frequency as frequency</span></span>
-<span id="cb2-27">    t <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> np.linspace(<span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">0</span>, <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">2</span> <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">*</span> np.pi <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">*</span> sine_frequency, <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">100</span>)</span>
-<span id="cb2-28">    y <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> multiplier <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">*</span> np.sin(t)</span>
-<span id="cb2-29"></span>
-<span id="cb2-30">    df <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> pl.DataFrame({<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"t"</span>: t, <span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"y"</span>: y})</span>
-<span id="cb2-31">    st.plotly_chart(</span>
-<span id="cb2-32">        px.line(df, x<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span><span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"t"</span>, y<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span><span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"y"</span>, title<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span><span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"Sine wave"</span>), use_container_width<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span><span class="va" style="color: #111111;
-background-color: null;
-font-style: inherit;">True</span></span>
-<span id="cb2-33">    )</span>
-<span id="cb2-34"></span>
-<span id="cb2-35"></span>
-<span id="cb2-36"><span class="at" style="color: #657422;
-background-color: null;
-font-style: inherit;">@st.experimental_fragment</span>(run_every<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span><span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"2s"</span>)</span>
-<span id="cb2-37"><span class="kw" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">def</span> second_fragment(multiplier: <span class="bu" style="color: null;
-background-color: null;
-font-style: inherit;">float</span>):</span>
-<span id="cb2-38">    st.write(<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"## Second Fragment"</span>)</span>
-<span id="cb2-39">    c1, c2 <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> st.columns(<span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">2</span>)</span>
-<span id="cb2-40"></span>
-<span id="cb2-41">    <span class="cf" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">with</span> c1:</span>
-<span id="cb2-42">        <span class="cf" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">if</span> <span class="kw" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">not</span> st.checkbox(<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"Lock company"</span>):</span>
-<span id="cb2-43">            st.session_state[<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"ticker_select"</span>] <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> np.random.choice(</span>
-<span id="cb2-44">                [<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"AAPL"</span>, <span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"GOOG"</span>, <span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"AMZN"</span>]</span>
-<span id="cb2-45">            )</span>
-<span id="cb2-46">    <span class="cf" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">with</span> c2:</span>
-<span id="cb2-47">        ticker <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> st.selectbox(</span>
-<span id="cb2-48">            <span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"Company (symbol)"</span>, [<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"AAPL"</span>, <span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"GOOG"</span>, <span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"AMZN"</span>], key<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span><span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"ticker_select"</span></span>
-<span id="cb2-49">        )</span>
-<span id="cb2-50">    stocks <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> get_stocks()</span>
-<span id="cb2-51">    stocks <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> stocks.<span class="bu" style="color: null;
-background-color: null;
-font-style: inherit;">filter</span>(pl.col(<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"symbol"</span>) <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">==</span> ticker).with_columns(</span>
-<span id="cb2-52">        pl.col(<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"price"</span>) <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">*</span> multiplier</span>
-<span id="cb2-53">    )</span>
-<span id="cb2-54"></span>
-<span id="cb2-55">    st.plotly_chart(</span>
-<span id="cb2-56">        px.line(stocks, x<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span><span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"date"</span>, y<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span><span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"price"</span>, title<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span><span class="ss" style="color: #20794D;
-background-color: null;
-font-style: inherit;">f"Stock price (</span><span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">{</span>ticker<span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">}</span><span class="ss" style="color: #20794D;
-background-color: null;
-font-style: inherit;">)"</span>),</span>
-<span id="cb2-57">        use_container_width<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span><span class="va" style="color: #111111;
-background-color: null;
-font-style: inherit;">True</span>,</span>
-<span id="cb2-58">    )</span>
-<span id="cb2-59"></span>
-<span id="cb2-60"></span>
-<span id="cb2-61"><span class="cf" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">if</span> <span class="va" style="color: #111111;
-background-color: null;
-font-style: inherit;">__name__</span> <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">==</span> <span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"__main__"</span>:</span>
-<span id="cb2-62">    multiplier <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> main()</span>
-<span id="cb2-63">    c1, c2 <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> st.columns(<span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">2</span>)</span>
-<span id="cb2-64"></span>
-<span id="cb2-65">    <span class="cf" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">with</span> c1:</span>
-<span id="cb2-66">        first_fragment(multiplier)</span>
-<span id="cb2-67">    <span class="cf" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">with</span> c2:</span>
-<span id="cb2-68">        second_fragment(multiplier)</span></code></pre></div></div>
-</div>
-</div>
-</div>
-</section>
-<section id="drawbacks" class="level2">
-<h2 class="anchored" data-anchor-id="drawbacks">Drawbacks</h2>
-<p>This solution doesn’t fit every scenario, and as usual with Streamlit, integrating it introduces complexity via state management. Fragments add another level atop the existing <code>st.state</code>, potentially introducing more intricacies and headaches.</p>
-<p>Other solutions such as Solara and Panel has this more built into the solution, but then again their entry threshold is a lot higher!</p>
-</section>
-<section id="outro" class="level1">
-<h1>Outro</h1>
-<p>Any other questions? Please go ahead and ask!</p>
-<p>This development is exciting and will for sure give Streamlit new life in “efficiency”. I, for one, am happy to see all new Data Apps fighting!</p>
-<p>Finally, all the code is available on this blogs <a href="https://github.com/londogard/londogard">github</a> under <em>code_snippets</em>.</p>
-<p>/ Hampus Londögård</p>
-
-
-</section>
-
- ]]></description>
-  <category>streamlit</category>
-  <guid>https://blog.londogard.com/posts/2024-04-17-streamlit-fragments/</guid>
-  <pubDate>Wed, 17 Apr 2024 00:00:00 GMT</pubDate>
 </item>
 </channel>
 </rss>
