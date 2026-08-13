@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Voxel-Lulu 3D</title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            background-color: #87CEEB; /* Himmelsblå bakgrund */
+        }
+        #info {
+            position: absolute;
+            top: 10px;
+            width: 100%;
+            text-align: center;
+            color: #333;
+            font-family: sans-serif;
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body>
+    <div id="info">Voxel-Lulu<br>Figuren roterar automatiskt</div>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+    <script>
+        // 1. SCEN, KAMERA OCH RENDERARE
+        const scene = new THREE.Scene();
+        scene.background = new THREE.Color(0x87CEEB);
+
+        const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 100);
+        camera.position.set(0, 8, 20);
+
+        const renderer = new THREE.WebGLRenderer({ antialias: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.shadowMap.enabled = true;
+        document.body.appendChild(renderer.domElement);
+
+        // 2. LJUSSÄTTNING
+        const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
+        scene.add(ambientLight);
+
+        const dirLight = new THREE.DirectionalLight(0xffffff, 0.8);
+        dirLight.position.set(10, 20, 10);
+        dirLight.castShadow = true;
+        scene.add(dirLight);
+
+        // 3. SKAPA EN GOLVYTA
+        const planeGeo = new THREE.PlaneGeometry(50, 50);
+        const planeMat = new THREE.MeshStandardMaterial({ color: 0x90EE90 }); // Ljusgrönt gräs
+        const plane = new THREE.Mesh(planeGeo, planeMat);
+        plane.rotation.x = -Math.PI / 2;
+        plane.receiveShadow = true;
+        scene.add(plane);
+
+        // 4. HJÄLPFUNKTION FÖR ATT BYGGA BLOCK (VOXELS)
+        function createBlock(w, h, d, color, x, y, z) {
+            const geo = new THREE.BoxGeometry(w, h, d);
+            const mat = new THREE.MeshStandardMaterial({ color: color });
+            const mesh = new THREE.Mesh(geo, mat);
+            mesh.position.set(x, y, z);
+            mesh.castShadow = true;
+            mesh.receiveShadow = true;
+            return mesh;
+        }
+
+        // 5. BYGG LULU (Gruppering av alla block)
+        const lulu = new THREE.Group();
+
+        // Färgpalett
+        const skinColor = 0xCDB5E5; // Lavendel
+        const hairColor = 0x68228B; // Mörklila
+        const hatOrange = 0xFF8C00; 
+        const hatRed = 0xDC143C;
+        const clothesRed = 0xFF4500;
+        const strapBrown = 0x8B4513;
+        const eyeGreen = 0x2E8B57;
+        const earPink = 0xFFB6C1;
+        const staffWood = 0x5C3A21;
+
+        // Kropp (Röd/Orange tunika)
+        lulu.add(createBlock(2.2, 2, 1.8, clothesRed, 0, 1, 0));
+        
+        // Axelrem (Brun)
+        const strap = createBlock(2.3, 0.3, 1.9, strapBrown, 0, 1.2, 0);
+        strap.rotation.z = 0.4;
+        lulu.add(strap);
+
+        // Huvud (Lavendel, chibi-proportioner)
+        lulu.add(createBlock(4, 3.5, 3, skinColor, 0, 3.75, 0.2));
+
+        // Ögon (Gröna block på ansiktet)
+        lulu.add(createBlock(0.8, 1, 0.2, eyeGreen, -0.8, 3.75, 1.7));
+        lulu.add(createBlock(0.8, 1, 0.2, eyeGreen, 0.8, 3.75, 1.7));
+
+        // Mun (Litet rött block)
+        lulu.add(createBlock(0.6, 0.3, 0.2, hatRed, 0, 2.7, 1.7));
+
+        // Hår (Tjocka tentakler ner till golvet)
+        lulu.add(createBlock(1.2, 4.5, 1.5, hairColor, -2.2, 1.5, 0));
+        lulu.add(createBlock(1.2, 4.5, 1.5, hairColor, 2.2, 1.5, 0));
+        // Hårböjar längst ner
+        lulu.add(createBlock(1.5, 1, 1.5, hairColor, -2.6, 0.5, 0));
+        lulu.add(createBlock(1.5, 1, 1.5, hairColor, 2.6, 0.5, 0));
+
+        // Hatten (Enorm, orange bas med röda detaljer uppåt)
+        lulu.add(createBlock(6, 0.8, 5, hatOrange, 0, 5.8, 0.2)); // Brätte
+        lulu.add(createBlock(4, 1.5, 3.5, hatOrange, 0, 6.8, 0.2)); // Mellandel
+        lulu.add(createBlock(2.5, 1.5, 2.5, hatRed, 0, 8.3, 0)); // Spets 1
+        lulu.add(createBlock(1.5, 1.5, 1.5, hatOrange, 0, 9.5, -0.5)); // Spets 2 (böjd bakåt)
+
+        // Öron (Sticker ut under hatten)
+        const leftEar = createBlock(1.5, 2, 0.5, earPink, -2.5, 4.5, 0);
+        leftEar.rotation.z = 0.5;
+        lulu.add(leftEar);
+        
+        const rightEar = createBlock(1.5, 2, 0.5, earPink, 2.5, 4.5, 0);
+        rightEar.rotation.z = -0.5;
+        lulu.add(rightEar);
+
+        // Armar och Händer
+        lulu.add(createBlock(1, 1.2, 1, hairColor, -1.6, 1.2, 0)); // Vänster ärm
+        lulu.add(createBlock(0.8, 0.8, 0.8, skinColor, -1.6, 0.2, 0)); // Vänster hand
+        
+        lulu.add(createBlock(1, 1.2, 1, hairColor, 1.6, 1.2, 0)); // Höger ärm
+        lulu.add(createBlock(0.8, 0.8, 0.8, skinColor, 1.6, 0.2, 0)); // Höger hand
+
+        // Staven (I Lulus högra hand, vänster på skärmen/i blockkoordinater)
+        lulu.add(createBlock(0.4, 8, 0.4, staffWood, -2.5, 3, 1)); // Skaftet
+        lulu.add(createBlock(1.5, 0.4, 0.4, staffWood, -3, 7, 1)); // Kroken övre del
+        lulu.add(createBlock(0.4, 1, 0.4, staffWood, -3.5, 6.5, 1)); // Kroken spets ner
+        lulu.add(createBlock(1.2, 1.2, 1.2, earPink, -2.5, 7.6, 1)); // Tulpanblomman (Rosa block)
+
+        // Lägg till hela Lulu i scenen
+        scene.add(lulu);
+
+        // Få kameran att titta på karaktären
+        camera.lookAt(0, 4, 0);
+
+        // Hantera fönsterstorlek om användaren ändrar storlek på webbläsaren
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+
+        // 6. ANIMATIONSLOOP
+        function animate() {
+            requestAnimationFrame(animate);
+
+            // Rotera Lulu långsamt för att visa hela 3D-modellen
+            lulu.rotation.y += 0.01;
+
+            renderer.render(scene, camera);
+        }
+
+        animate();
+    </script>
+</body>
+</html>
